@@ -1,5 +1,6 @@
 # Laravel Admin
 
+[![StyleCI](ico-styleci)](link-styleci)
 [![Latest Version on Packagist][ico-version]][link-packagist]
 [![Software License][ico-license]](LICENSE.md)
 [![Build Status][ico-travis]][link-travis]
@@ -13,7 +14,7 @@
 Via Composer
 
 ``` bash
-$ composer require sco/admin
+$ composer require scolib/admin
 ```
 
 ## Usage
@@ -53,9 +54,11 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 [ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
 [ico-travis]: https://img.shields.io/travis/ScoLib/admin/master.svg?style=flat-square
 [ico-downloads]: https://img.shields.io/packagist/dt/ScoLib/admin.svg?style=flat-square
+[ico-styleci]: https://styleci.io/repos/82435198/shield?branch=master
 
 [link-packagist]: https://packagist.org/packages/ScoLib/admin
 [link-travis]: https://travis-ci.org/ScoLib/admin
 [link-downloads]: https://packagist.org/packages/ScoLib/admin
+[link-styleci]: https://styleci.io/repos/82435198
 [link-author]: https://github.com/klgd
 [link-contributors]: ../../contributors
