@@ -25,7 +25,11 @@
     "autoload": {
         "psr-4": {
             "Sco\\Admin\\": "src"
-        }
+        },
+        "classmap": [
+            "database/seeds/AdminTableSeeder.php",
+            "database/seeds/RbacTableSeeder.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {
