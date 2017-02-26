@@ -14,13 +14,16 @@
 Via Composer
 
 ``` bash
-$ composer require scolib/admin
+"scolib/admin": "1.0.0@dev",
+"zizaco/entrust": "5.2.x-dev"
 ```
 
 ## Usage
 
 ``` php
+Zizaco\Entrust\EntrustServiceProvider::class,
 
+'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
 ```
 
 ## 更新日志
