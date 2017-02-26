@@ -14,7 +14,7 @@
 Via Composer
 
 ``` bash
-"scolib/admin": "1.0.0@dev",
+"scolib/admin": "1.0.x@dev",
 "zizaco/entrust": "5.2.x-dev"
 ```
 
@@ -22,6 +22,7 @@ Via Composer
 
 ``` php
 Zizaco\Entrust\EntrustServiceProvider::class,
+Sco\Admin\Providers\AdminServiceProvider::class,
 
 'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
 ```

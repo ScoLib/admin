@@ -32,7 +32,7 @@ class AdminServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->registerMiddleware();
+        //$this->registerMiddleware();
 
         // 后台模板目录
         $this->loadViewsFrom($this->getBasePath() . '/resources/admin', 'admin');
@@ -45,7 +45,7 @@ class AdminServiceProvider extends ServiceProvider
                 $this->getBasePath() . '/resources' => base_path('resources')
             ], 'shop-views');*/
             $this->publishes([
-                $this->getBasePath() . '/config/scoadmin.php' => config_path('scoadmin.php'),
+                $this->getBasePath() . '/config/admin.php' => config_path('admin.php'),
                 $this->getBasePath() . '/config/entrust.php'  => config_path('entrust.php'),
                 $this->getBasePath() . '/install/public'      => base_path() . '/public',
             ]);
@@ -59,11 +59,11 @@ class AdminServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->register(RouteServiceProvider::class);
+        //$this->app->register(RouteServiceProvider::class);
 
-        $this->commands($this->commands);
+        //$this->commands($this->commands);
 
-        $this->mergeConfigFrom($this->getBasePath() . '/config/scoadmin.php', 'scoadmin');
+        $this->mergeConfigFrom($this->getBasePath() . '/config/admin.php', 'admin');
     }
 
     protected function registerMiddleware()

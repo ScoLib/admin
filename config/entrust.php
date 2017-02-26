@@ -33,28 +33,6 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Application User Model
-    |--------------------------------------------------------------------------
-    |
-    | This is the User model used by Entrust to create correct relations.
-    | Update the User if it is in a different namespace.
-    |
-    */
-    'user' => 'App\User',
-
-    /*
-    |--------------------------------------------------------------------------
-    | Application Users Table
-    |--------------------------------------------------------------------------
-    |
-    | This is the users table used by the application to save users to the
-    | database.
-    |
-    */
-    'users_table' => 'users',
-
-    /*
-    |--------------------------------------------------------------------------
     | Entrust Permission Model
     |--------------------------------------------------------------------------
     |
@@ -62,7 +40,7 @@ return [
     | Update the permission if it is in a different namespace.
     |
     */
-    'permission' => 'App\Permission',
+    'permission' => Sco\Admin\Models\Permission::class,
 
     /*
     |--------------------------------------------------------------------------
@@ -97,5 +75,18 @@ return [
     */
     'role_user_table' => 'role_user',
 
+    /*
+    |--------------------------------------------------------------------------
+    | User Foreign key on Entrust's role_user Table (Pivot)
+    |--------------------------------------------------------------------------
+    */
+    'user_foreign_key' => 'admin_user_id',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Role Foreign key on Entrust's role_user Table (Pivot)
+    |--------------------------------------------------------------------------
+    */
+    'role_foreign_key' => 'role_id',
 
 ];

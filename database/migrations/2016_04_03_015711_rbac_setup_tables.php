@@ -12,6 +12,17 @@ class RbacSetupTables extends Migration
      */
     public function up()
     {
+        // Create table for admin user
+        Schema::create('admin_users', function (Blueprint $table) {
+            $table->engine = "InnoDB COMMENT='管理员表'";
+            $table->increments('id');
+            $table->string('name')->unique()->comment('名称');
+            $table->string('email')->nullable()->unique()->comment('邮箱');
+            $table->string('password')->nullable()->comment('密码');
+            $table->rememberToken();
+            $table->timestamps();
+        });
+
         // Create table for storing roles
         Schema::create('roles', function (Blueprint $table) {
             $table->engine = "InnoDB COMMENT='角色表'";
@@ -25,7 +36,7 @@ class RbacSetupTables extends Migration
         // Create table for associating roles to users (Many-to-Many)
         Schema::create('role_user', function (Blueprint $table) {
             $table->engine = "InnoDB COMMENT='角色与用户对应表'";
-            $table->integer('user_id')->unsigned()->comment('用户ID');
+            $table->integer('admin_user_id')->unsigned()->comment('用户ID');
             $table->integer('role_id')->unsigned()->comment('角色ID');
 
             /*$table->foreign('uid')->references('id')->on('users')
@@ -33,7 +44,7 @@ class RbacSetupTables extends Migration
             $table->foreign('role_id')->references('id')->on('roles')
                 ->onUpdate('cascade')->onDelete('cascade');*/
 
-            $table->primary(['user_id', 'role_id']);
+            $table->primary(['admin_user_id', 'role_id']);
         });
 
         // Create table for storing permissions
@@ -72,5 +83,6 @@ class RbacSetupTables extends Migration
         Schema::drop('permissions');
         Schema::drop('role_user');
         Schema::drop('roles');
+        Schema::drop('admin_users');
     }
 }
