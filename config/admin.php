@@ -2,7 +2,9 @@
 
 return [
     /**
-     * ScoAdmin Authentication Guard Name
+     * Admin Authentication Guard Name
      */
-    'guard' => 'admin',
+    'guard'      => 'admin',
+    'user_table' => 'admin_users',
+    'user_foreign_key' => 'admin_user_id',
 ];
