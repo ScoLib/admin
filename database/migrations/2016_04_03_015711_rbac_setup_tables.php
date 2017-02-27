@@ -88,6 +88,5 @@ class RbacSetupTables extends Migration
         if (config('admin.user_table') != 'users') {
             Schema::drop(config('admin.user_table'));
         }
-
     }
 }

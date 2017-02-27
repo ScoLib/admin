@@ -149,7 +149,6 @@ class Permission extends EntrustPermission
             return $parent;
         }
         return false;
-
     }
 
     public function saveMenu(Request $request, $id = 0)
@@ -158,5 +157,4 @@ class Permission extends EntrustPermission
         $this->updateOrCreate(['id' => $id], $input);
         return true;
     }
-
 }
