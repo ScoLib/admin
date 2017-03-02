@@ -26,6 +26,27 @@ Zizaco\Entrust\EntrustServiceProvider::class,
 Sco\Admin\Providers\AdminServiceProvider::class,
 
 'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
+
+
+
+    
+```
+
+编辑auth.php
+```php
+    'guards' => [
+        'admin' => [
+            'driver' => 'session',
+            'provider' => 'admin',
+        ],
+    ],
+    
+    'providers' => [
+            'admin' => [
+                'driver' => 'eloquent',
+                'model' => \Sco\Admin\Models\AdminUser::class,
+            ],
+        ],
 ```
 
 ## 更新日志
