@@ -18,7 +18,7 @@
     ],
     "require": {
         "php": "~5.6|~7.0",
-        "scolib/tree": "^1.0"
+        "scolib/tree": "~1.0"
     },
     "require-dev": {
         "phpunit/phpunit" : "~4.0||~5.0"
