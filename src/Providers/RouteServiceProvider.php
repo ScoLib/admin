@@ -21,7 +21,7 @@ class RouteServiceProvider extends ServiceProvider
             'middleware' => 'web',
             'namespace' => $this->namespace,
         ], function ($router) {
-            require dirname(dirname(__DIR__)) . '/routes/web.php';
+            require dirname(dirname(__DIR__)) . '/routes/admin.php';
         });
     }
 }
