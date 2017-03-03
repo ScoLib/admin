@@ -76,7 +76,7 @@ class AdminServiceProvider extends ServiceProvider
 
     protected function publishConfig()
     {
-        $this->publishs([
+        $this->publishes([
             $this->getBasePath() . '/config/admin.php' => config_path('admin.php'),
             $this->getBasePath() . '/config/entrust.php'  => config_path('entrust.php'),
         ], 'config');
@@ -84,14 +84,14 @@ class AdminServiceProvider extends ServiceProvider
 
     protected function publishViews()
     {
-        $this->publishs([
+        $this->publishes([
             $this->getBasePath() . '/resources/views' => base_path('resources/views/vendor/admin'),
         ], 'views');
     }
 
     protected function publishTranslations()
     {
-        $this->publishs([
+        $this->publishes([
             $this->getBasePath() . '/resources/lang' => base_path('resources/lang/vendor/admin'),
         ], 'lang');
     }
