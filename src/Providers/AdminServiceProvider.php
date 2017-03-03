@@ -32,7 +32,7 @@ class AdminServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //$this->registerMiddleware();
+        $this->registerMiddleware();
 
         // 后台模板目录
         $this->loadViewsFrom($this->getBasePath() . '/resources/admin', 'admin');
@@ -41,14 +41,7 @@ class AdminServiceProvider extends ServiceProvider
 
         if ($this->app->runningInConsole()) {
             $this->loadMigrationsFrom($this->getBasePath() . '/database/migrations');
-            /*$this->publishes([
-                $this->getBasePath() . '/resources' => base_path('resources')
-            ], 'shop-views');*/
-            $this->publishes([
-                $this->getBasePath() . '/config/admin.php' => config_path('admin.php'),
-                $this->getBasePath() . '/config/entrust.php'  => config_path('entrust.php'),
-                $this->getBasePath() . '/install/public'      => base_path() . '/public',
-            ]);
+            $this->publishAdmin();
         }
     }
 
@@ -72,5 +65,34 @@ class AdminServiceProvider extends ServiceProvider
         foreach ($this->middlewares as $key => $middleware) {
             $router->middleware($key, $middleware);
         }
+    }
+
+    protected function publishAdmin()
+    {
+        $this->publishConfig();
+        $this->publishViews();
+        $this->publishTranslations();
+    }
+
+    protected function publishConfig()
+    {
+        $this->publishs([
+            $this->getBasePath() . '/config/admin.php' => config_path('admin.php'),
+            $this->getBasePath() . '/config/entrust.php'  => config_path('entrust.php'),
+        ], 'config');
+    }
+
+    protected function publishViews()
+    {
+        $this->publishs([
+            $this->getBasePath() . '/resources/views' => base_path('resources/views/vendor/admin'),
+        ], 'views');
+    }
+
+    protected function publishTranslations()
+    {
+        $this->publishs([
+            $this->getBasePath() . '/resources/lang' => base_path('resources/lang/vendor/admin'),
+        ], 'lang');
     }
 }

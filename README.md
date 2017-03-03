@@ -49,6 +49,10 @@ Sco\Admin\Providers\AdminServiceProvider::class,
         ],
 ```
 
+```php
+php artisan vendor:publish --provider="Sco\Admin\Providers\AdminServiceProvider" --tag="config"
+```
+
 ## 更新日志
 
  [CHANGELOG](CHANGELOG.md) 
