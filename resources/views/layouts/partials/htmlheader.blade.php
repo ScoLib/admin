@@ -7,16 +7,16 @@
 @yield('meta')
 
 <!-- Bootstrap 3.3.6 -->
-<link rel="stylesheet" href="{{ asset('sco-admin/css/bootstrap.min.css') }}">
+<link rel="stylesheet" href="{{ mix('css/bootstrap.css') }}">
 <!-- Font Awesome -->
-<link rel="stylesheet" href="{{ asset('sco-admin/css/font-awesome.min.css') }}">
+<link rel="stylesheet" href="{{ mix('css/font-awesome.css') }}">
 <!-- Theme style -->
-<link rel="stylesheet" href="{{ asset('sco-admin/css/admin.css') }}">
+<link rel="stylesheet" href="{{ mix('css/admin.css') }}">
 @yield('css')
 
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 <!--[if lt IE 9]>
-<script src="{{ asset('sco-admin/js/html5shiv-3.7.3.min.js') }}"></script>
-<script src="{{ asset('sco-admin/js/respond-1.4.2.min.js') }}"></script>
+<script src="{{ asset('js/html5shiv-3.7.3.min.js') }}"></script>
+<script src="{{ asset('js/respond-1.4.2.min.js') }}"></script>
 <![endif]-->

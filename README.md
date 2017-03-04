@@ -11,6 +11,34 @@
 
 
 ## Install
+NPM
+```json
+  "devDependencies": {
+    "font-awesome": "^4.7.0",
+    "jquery": "^2.2.4"
+  }
+```
+
+```javascript
+mix.copy('node_modules/bootstrap-sass/assets/javascripts/bootstrap.min.js', 'public/js')
+    .copy('node_modules/jquery/dist/jquery.min.js', 'public/js')
+    .copy('resources/assets/admin/js', 'public/js');
+
+mix.js('resources/assets/admin/admin.js', 'public')
+    .sass('node_modules/bootstrap-sass/assets/stylesheets/_bootstrap.scss', 'public/css/bootstrap.css')
+    .less('resources/assets/admin/AdminLTE/AdminLTE.less', 'public/css/admin.css');
+
+if (mix.config.inProduction) {
+    mix.version();
+    mix.disableNotifications();
+}
+```
+
+```sh
+npm install 
+npm run production
+```
+
 
 Via Composer
 
