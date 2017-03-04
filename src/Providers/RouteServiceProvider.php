@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Route;
 
 class RouteServiceProvider extends ServiceProvider
 {
-    protected $namespace = 'Sco\Admin\Controllers';
+    protected $namespace = 'Sco\Admin\Http\Controllers';
 
 
     public function map()

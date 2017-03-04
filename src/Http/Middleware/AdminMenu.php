@@ -1,6 +1,6 @@
 <?php
 
-namespace Sco\Admin\Middleware;
+namespace Sco\Admin\Http\Middleware;
 
 use Closure;
 use Route;

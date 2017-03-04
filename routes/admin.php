@@ -2,13 +2,13 @@
 
 Route::group(['prefix' => 'admin'], function () {
     //登录页
-    Route::get('login', 'Auth\AuthController@showLoginForm')->name('admin.login');
+    Route::get('login', 'Auth\LoginController@showLoginForm')->name('admin.login');
     //登录提交
-    Route::post('postLogin', 'Auth\AuthController@login')->name('admin.postLogin');
+    Route::post('postLogin', 'Auth\LoginController@login')->name('admin.postLogin');
     //退出
-    Route::get('logout', 'Auth\AuthController@logout')->name('admin.logout');
+    Route::get('logout', 'Auth\LoginController@logout')->name('admin.logout');
 
-    Route::group(['middleware' => 'auth.scoadmin'], function () {
+    Route::group(['middleware' => 'auth.admin'], function () {
         // 控制台
         Route::get('/', 'BaseController@index')
             ->name('admin.index')
