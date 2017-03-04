@@ -17,7 +17,7 @@ class AdminServiceProvider extends ServiceProvider
     protected $middlewares = [
         'auth.admin'  => \Sco\Admin\Middleware\AdminAuthenticate::class,
         'guest.admin' => \Sco\Admin\Middleware\RedirectIfAuthenticated::class,
-        'admin.menu'     => \Sco\Admin\Middleware\AdminMenu::class,
+        'admin.menu'  => \Sco\Admin\Middleware\AdminMenu::class,
     ];
 
     public function getBasePath()
@@ -35,9 +35,11 @@ class AdminServiceProvider extends ServiceProvider
         $this->registerMiddleware();
 
         // 后台模板目录
-        $this->loadViewsFrom($this->getBasePath() . '/resources/admin', 'admin');
+        $this->loadViewsFrom($this->getBasePath() . '/resources/admin',
+            'admin');
         // 后台语言包目录
-        $this->loadTranslationsFrom($this->getBasePath() . '/resources/lang', 'Admin');
+        $this->loadTranslationsFrom($this->getBasePath() . '/resources/lang',
+            'Admin');
 
         if ($this->app->runningInConsole()) {
             $this->loadMigrationsFrom($this->getBasePath() . '/database/migrations');
@@ -56,7 +58,8 @@ class AdminServiceProvider extends ServiceProvider
 
         //$this->commands($this->commands);
 
-        $this->mergeConfigFrom($this->getBasePath() . '/config/admin.php', 'admin');
+        $this->mergeConfigFrom($this->getBasePath() . '/config/admin.php',
+            'admin');
     }
 
     protected function registerMiddleware()
@@ -69,16 +72,24 @@ class AdminServiceProvider extends ServiceProvider
 
     protected function publishAdmin()
     {
+        $this->publishAssets();
         $this->publishConfig();
         $this->publishViews();
         $this->publishTranslations();
     }
 
+    protected function publishAssets()
+    {
+        $this->publishes([
+            $this->getBasePath() . '/resources/assets' => base_path('resources/assets/admin'),
+        ], 'assets');
+    }
+
     protected function publishConfig()
     {
         $this->publishes([
-            $this->getBasePath() . '/config/admin.php' => config_path('admin.php'),
-            $this->getBasePath() . '/config/entrust.php'  => config_path('entrust.php'),
+            $this->getBasePath() . '/config/admin.php'   => config_path('admin.php'),
+            $this->getBasePath() . '/config/entrust.php' => config_path('entrust.php'),
         ], 'config');
     }
 
