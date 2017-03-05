@@ -2,6 +2,9 @@
 
 namespace Sco\Admin\Http\Controllers\Auth;
 
+use Auth;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
@@ -18,7 +21,7 @@ class LoginController extends Controller
     |
     */
 
-    use AuthenticatesUsers;
+    use AuthenticatesUsers, ValidatesRequests;
 
     /**
      * Where to redirect users after login.
@@ -40,24 +43,6 @@ class LoginController extends Controller
     public function showLoginForm()
     {
         return view('admin::auth.login');
-    }
-
-    /**
-     * Validate the user login request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return void
-     */
-    protected function validateLogin(Request $request)
-    {
-        $rules = [
-            $this->username() => 'required',
-            'password' => 'required',
-        ];
-        if (config('captcha.switch.admin')) {
-            $rules['captcha'] = 'required|captcha';
-        }
-        $this->validate($request, $rules);
     }
 
     /**

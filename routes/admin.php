@@ -15,7 +15,7 @@ Route::group(['prefix' => 'admin'], function () {
             ->middleware('admin.menu');
 
         // 系统管理
-        Route::group(['prefix' => 'system', 'namespace' => 'System'], function () {
+        /*Route::group(['prefix' => 'system', 'namespace' => 'System'], function () {
             // 站点设置
             Route::get('config', 'ConfigController@getIndex')
                 ->name('admin.system.config')
@@ -105,6 +105,6 @@ Route::group(['prefix' => 'admin'], function () {
             // 保存角色授权
             Route::post('role/{id}/authorize', 'RoleController@postAuthorize')
                 ->name('admin.users.role.postAuthorize');
-        });
+        });*/
     });
 });
