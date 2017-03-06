@@ -12,7 +12,11 @@ class RbacTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table(config('admin.user_table'))->insertGetId([
+        $provider = config('auth.guards.' . config('admin.guard') . '.provider');
+        $userModelName = config("auth.providers.{$provider}.model");
+        $userModel = new $userModelName();
+
+        DB::table($userModel->getTable())->insertGetId([
             'name'       => 'admin',
             'email'      => 'admin@admin.com',
             'password'   => bcrypt('123456'),

@@ -5,6 +5,18 @@ use Illuminate\Database\Migrations\Migration;
 
 class RbacSetupTables extends Migration
 {
+    private $userTable;
+    private $userForeignKey;
+
+    public function __construct()
+    {
+        $provider = config('auth.guards.' . config('admin.guard') . '.provider');
+        $userModelName = config("auth.providers.{$provider}.model");
+        $userModel = new $userModelName();
+        $this->userTable = $userModel->getTable();
+        $this->userForeignKey = $userModel->getForeignKey();
+    }
+
     /**
      * Run the migrations.
      *
@@ -13,8 +25,8 @@ class RbacSetupTables extends Migration
     public function up()
     {
         // Create table for admin user
-        if (config('admin.user_table') != 'users') {
-            Schema::create(config('admin.user_table'), function (Blueprint $table) {
+        if ($this->userTable != 'users') {
+            Schema::create($this->userTable, function (Blueprint $table) {
                 $table->engine = "InnoDB COMMENT='管理员表'";
                 $table->increments('id');
                 $table->string('name')->unique()->comment('名称');
@@ -38,7 +50,7 @@ class RbacSetupTables extends Migration
         // Create table for associating roles to users (Many-to-Many)
         Schema::create('role_user', function (Blueprint $table) {
             $table->engine = "InnoDB COMMENT='角色与用户对应表'";
-            $table->integer(config('admin.user_foreign_key'))->unsigned()->comment('管理员ID');
+            $table->integer($this->userForeignKey)->unsigned()->comment('管理员ID');
             $table->integer('role_id')->unsigned()->comment('角色ID');
 
             /*$table->foreign('uid')->references('id')->on('users')
@@ -46,7 +58,7 @@ class RbacSetupTables extends Migration
             $table->foreign('role_id')->references('id')->on('roles')
                 ->onUpdate('cascade')->onDelete('cascade');*/
 
-            $table->primary([config('admin.user_foreign_key'), 'role_id']);
+            $table->primary([$this->userForeignKey, 'role_id']);
         });
 
         // Create table for storing permissions
@@ -85,8 +97,8 @@ class RbacSetupTables extends Migration
         Schema::drop('permissions');
         Schema::drop('role_user');
         Schema::drop('roles');
-        if (config('admin.user_table') != 'users') {
-            Schema::drop(config('admin.user_table'));
+        if ($this->userTable != 'users') {
+            Schema::drop($this->userTable);
         }
     }
 }
