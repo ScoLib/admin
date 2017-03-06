@@ -15,15 +15,15 @@ Route::group(['prefix' => 'admin'], function () {
             ->middleware('admin.menu');
 
         // 系统管理
-        /*Route::group(['prefix' => 'system', 'namespace' => 'System'], function () {
+        Route::group(['prefix' => 'system', 'namespace' => 'System'], function () {
             // 站点设置
-            Route::get('config', 'ConfigController@getIndex')
+            /*Route::get('config', 'ConfigController@getIndex')
                 ->name('admin.system.config')
-                ->middleware('admin.menu');
+                ->middleware('admin.menu');*/
 
             // 保存设置
-            Route::post('config/save', 'ConfigController@postIndex')
-                ->name('admin.system.config.save');
+            /*Route::post('config/save', 'ConfigController@postIndex')
+                ->name('admin.system.config.save');*/
 
             // 菜单管理
             Route::get('menu', 'MenuController@getIndex')
@@ -52,7 +52,7 @@ Route::group(['prefix' => 'admin'], function () {
         });
 
         //用户管理
-        Route::group(['prefix' => 'users', 'namespace' => 'Users'], function () {
+        /*Route::group(['prefix' => 'users', 'namespace' => 'Users'], function () {
             //用户列表
             Route::get('user', 'UserController@getIndex')
                 ->name('admin.users.user')

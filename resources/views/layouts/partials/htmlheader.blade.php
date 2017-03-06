@@ -12,11 +12,5 @@
 <link rel="stylesheet" href="{{ mix('css/font-awesome.css') }}">
 <!-- Theme style -->
 <link rel="stylesheet" href="{{ mix('css/admin.css') }}">
+<link rel="stylesheet" href="{{ mix('css/skin-green.css') }}">
 @yield('css')
-
-<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-<!--[if lt IE 9]>
-<script src="{{ asset('js/html5shiv-3.7.3.min.js') }}"></script>
-<script src="{{ asset('js/respond-1.4.2.min.js') }}"></script>
-<![endif]-->

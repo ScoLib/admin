@@ -15,19 +15,22 @@ NPM
 ```json
   "devDependencies": {
     "font-awesome": "^4.7.0",
-    "jquery": "^2.2.4"
+    "jquery": "^2.2.4",
+    "jquery-slimscroll": "^1.3.8",
   }
 ```
 
 ```javascript
 mix.copy('node_modules/bootstrap-sass/assets/javascripts/bootstrap.min.js', 'public/js')
     .copy('node_modules/jquery/dist/jquery.min.js', 'public/js')
+    .copy('node_modules/jquery-slimscroll/jquery.slimscroll.min.js', 'public/js')
     .copy('resources/assets/admin/js', 'public/js', false);
 
 mix.js('resources/assets/admin/admin.js', 'public/js')
     .sass('node_modules/bootstrap-sass/assets/stylesheets/_bootstrap.scss', 'public/css/bootstrap.css')
     .sass('node_modules/font-awesome/scss/font-awesome.scss', 'public/css')
-    .less('resources/assets/admin/AdminLTE/AdminLTE.less', 'public/css/admin.css');
+    .less('resources/assets/admin/AdminLTE/AdminLTE.less', 'public/css/admin.css')
+    .less('resources/assets/admin/AdminLTE/skins/skin-green.less', 'public/css/skin-green.css');
 
 if (mix.config.inProduction) {
     mix.version();
@@ -81,6 +84,8 @@ Sco\Admin\Providers\AdminServiceProvider::class,
 tag: assets/config/views/lang
 ```php
 php artisan vendor:publish --provider="Sco\Admin\Providers\AdminServiceProvider" --tag="config" --force
+php artisan migrate
+php artisan db:seed --class=AdminTableSeeder
 ```
 
 ## 更新日志
