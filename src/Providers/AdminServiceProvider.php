@@ -3,7 +3,6 @@
 namespace Sco\Admin\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Zizaco\Entrust\EntrustServiceProvider;
 
 /**
  *

@@ -10,6 +10,8 @@
 
 return [
 
+    'provider' => config('auth.guards.' . config('admin.guard') . '.provider'),
+
     /*
     |--------------------------------------------------------------------------
     | Entrust Role Model

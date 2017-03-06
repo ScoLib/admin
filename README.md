@@ -22,10 +22,11 @@ NPM
 ```javascript
 mix.copy('node_modules/bootstrap-sass/assets/javascripts/bootstrap.min.js', 'public/js')
     .copy('node_modules/jquery/dist/jquery.min.js', 'public/js')
-    .copy('resources/assets/admin/js', 'public/js');
+    .copy('resources/assets/admin/js', 'public/js', false);
 
-mix.js('resources/assets/admin/admin.js', 'public')
+mix.js('resources/assets/admin/admin.js', 'public/js')
     .sass('node_modules/bootstrap-sass/assets/stylesheets/_bootstrap.scss', 'public/css/bootstrap.css')
+    .sass('node_modules/font-awesome/scss/font-awesome.scss', 'public/css')
     .less('resources/assets/admin/AdminLTE/AdminLTE.less', 'public/css/admin.css');
 
 if (mix.config.inProduction) {
@@ -44,7 +45,7 @@ Via Composer
 
 ``` bash
 "scolib/admin": "1.0.x@dev",
-"zizaco/entrust": "5.2.x-dev"
+"scolib/entrust": "dev-sco"
 ```
 
 ## Usage
@@ -70,15 +71,16 @@ Sco\Admin\Providers\AdminServiceProvider::class,
     ],
     
     'providers' => [
-            'admin' => [
-                'driver' => 'eloquent',
-                'model' => \Sco\Admin\Models\AdminUser::class,
-            ],
+        'admin' => [
+            'driver' => 'eloquent',
+            'model' => \Sco\Admin\Models\AdminUser::class,
         ],
+    ],
 ```
 
+tag: assets/config/views/lang
 ```php
-php artisan vendor:publish --provider="Sco\Admin\Providers\AdminServiceProvider" --tag="config"
+php artisan vendor:publish --provider="Sco\Admin\Providers\AdminServiceProvider" --tag="config" --force
 ```
 
 ## 更新日志
