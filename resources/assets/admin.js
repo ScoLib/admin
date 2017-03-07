@@ -1,3 +1,8 @@
+window.axios.defaults.headers.common = {
+    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+    'X-Requested-With': 'XMLHttpRequest'
+};
+
 /*! AdminLTE app.js
  * ================
  * Main JS application file for AdminLTE v2. This file
