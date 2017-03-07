@@ -33,6 +33,8 @@ class AdminServiceProvider extends ServiceProvider
     {
         $this->registerMiddleware();
 
+        // 路由文件
+        $this->loadRoutesFrom($this->getBasePath() . '/routes/admin.php');
         // 后台模板目录
         $this->loadViewsFrom($this->getBasePath() . '/resources/views', 'admin');
         // 后台语言包目录
@@ -51,8 +53,6 @@ class AdminServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->register(RouteServiceProvider::class);
-
         //$this->commands($this->commands);
 
         $this->mergeConfigFrom($this->getBasePath() . '/config/admin.php', 'admin');

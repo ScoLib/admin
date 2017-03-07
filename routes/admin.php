@@ -1,6 +1,10 @@
 <?php
 
-Route::group(['prefix' => 'admin'], function () {
+Route::group([
+    'prefix' => 'admin',
+    'middleware' => 'web',
+    'namespace' => 'Sco\Admin\Http\Controllers',
+], function () {
     //登录页
     Route::get('login', 'Auth\LoginController@showLoginForm')->name('admin.login');
     //登录提交
