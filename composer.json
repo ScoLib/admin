@@ -19,6 +19,7 @@
     "require": {
         "php": "~5.6|~7.0",
         "illuminate/support": "~5.4",
+        "league/fractal": "~0.15.0",
         "scolib/tree": "~1.0"
     },
     "require-dev": {

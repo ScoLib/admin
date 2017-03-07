@@ -1,11 +1,10 @@
 <?php
 
-namespace Sco\Admin\Http\Controllers\Controllers\System;
+namespace Sco\Admin\Http\Controllers\System;
 
 use Sco\Admin\Http\Controllers\BaseController;
 use Illuminate\Http\Request;
 use Sco\Admin\Models\Permission;
-use Sco\Admin\Repositories\PermissionRepository;
 
 /**
  * 菜单管理
@@ -14,6 +13,8 @@ use Sco\Admin\Repositories\PermissionRepository;
 class MenuController extends BaseController
 {
 
+    private $permissionModel;
+
     /**
      * 菜单列表
      *
@@ -21,7 +22,7 @@ class MenuController extends BaseController
      */
     public function getIndex()
     {
-        $menus = (new Permission())->getMenuTreeList();
+        $menus = $this->getPermissionModel()->getMenuTreeList();
 
         return $this->render('system.menu.index', compact('menus'));
     }
@@ -40,7 +41,8 @@ class MenuController extends BaseController
 
         }
 
-        $menus = app(PermissionRepository::class)->getMenuTreeList();
+        $menus = $this->getPermissionModel()->getMenuTreeList();
+        //return response()->json($menus);
         return $this->render('system.menu.add', compact('menus'));
     }
 
@@ -60,7 +62,7 @@ class MenuController extends BaseController
             //'' => '',
         ]);
 
-        app(PermissionRepository::class)->saveMenu($request);
+        $this->getPermissionModel()->saveMenu($request);
         return response()->json(success('新增菜单完成', ['url' => route('admin.system.menu')]));
     }
 
@@ -74,7 +76,7 @@ class MenuController extends BaseController
     public function getEdit($id)
     {
         $menu  = Permission::find($id);
-        $menus = (new Permission)->getMenuTreeList();
+        $menus = $this->getPermissionModel()->getMenuTreeList();
         return response()->json(success('ok', compact('menu', 'menus')));
         //return $this->render('system.menu.edit', compact('menu', 'menus'));
     }
@@ -96,7 +98,7 @@ class MenuController extends BaseController
             //'' => '',
         ]);
 
-        app(PermissionRepository::class)->saveMenu($request, $id);
+        $this->getPermissionModel()->saveMenu($request, $id);
         return response()->json(success('编辑菜单完成', ['url' => route('admin.system.menu')]));
     }
 
@@ -111,4 +113,15 @@ class MenuController extends BaseController
     }
 
 
+    /**
+     * @return \Sco\Admin\Models\Permission
+     */
+    private function getPermissionModel()
+    {
+        if ($this->permissionModel) {
+            return $this->permissionModel;
+        }
+
+        return $this->permissionModel = new Permission();
+    }
 }
