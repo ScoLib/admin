@@ -6,11 +6,5 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 @yield('meta')
 
-<!-- Bootstrap 3.3.6 -->
-<link rel="stylesheet" href="{{ mix('css/bootstrap.css') }}">
-<!-- Font Awesome -->
-<link rel="stylesheet" href="{{ mix('css/font-awesome.css') }}">
-<!-- Theme style -->
 <link rel="stylesheet" href="{{ mix('css/admin.css') }}">
-<link rel="stylesheet" href="{{ mix('css/skin-green.css') }}">
 @yield('css')

@@ -13,29 +13,24 @@
 ## Install
 NPM
 ```json
-  "devDependencies": {
+  "dependencies": {
+    "bootstrap": "^3.3.7",
     "font-awesome": "^4.7.0",
     "jquery": "^2.2.4",
     "jquery-slimscroll": "^1.3.8",
+    "vue-router": "^2.3.0"
   }
 ```
 
 ```javascript
-mix.copy('node_modules/bootstrap-sass/assets/javascripts/bootstrap.min.js', 'public/js')
-    .copy('node_modules/jquery/dist/jquery.min.js', 'public/js')
-    .copy('node_modules/jquery-slimscroll/jquery.slimscroll.min.js', 'public/js')
-    .copy('node_modules/vue/dist/vue.min.js', 'public/js')
-    .copy('node_modules/axios/dist/axios.min.js', 'public/js');
+mix.autoload({
+    'window.jQuery': 'jquery'
+});
 
 mix.copy('resources/assets/admin/js', 'public/js', false);
 
-mix.js('resources/assets/admin/admin.js', 'public/js');
-
-mix.sass('node_modules/bootstrap-sass/assets/stylesheets/_bootstrap.scss', 'public/css/bootstrap.css')
-    .sass('node_modules/font-awesome/scss/font-awesome.scss', 'public/css')
-    .less('resources/assets/admin/AdminLTE/AdminLTE.less', 'public/css/admin.css')
-    .less('resources/assets/admin/AdminLTE/skins/skin-green.less', 'public/css/skin-green.css')
-;
+mix.js('resources/assets/admin/main.js', 'public/js/admin.js');
+mix.less('resources/assets/admin/less/admin.less', 'public/css/admin.css');
 
 if (mix.config.inProduction) {
     mix.version();

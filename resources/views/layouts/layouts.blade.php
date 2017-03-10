@@ -36,7 +36,7 @@
             <!-- mini logo for sidebar mini 50x50 pixels -->
             <span class="logo-mini"><b>S</b>co</span>
             <!-- logo for regular state and mobile devices -->
-            <span class="logo-lg"><b>Sco</b>CMF</span>
+            <span class="logo-lg"><b>Sco</b>Admin</span>
         </a>
         <!-- Header Navbar: style can be found in header.less -->
         <nav class="navbar navbar-static-top">
@@ -82,8 +82,7 @@
 
         <!-- Main content -->
         <section class="content">
-            @yield('content')
-
+            <router-view></router-view>
         </section>
         <!-- /.content -->
     </div>
@@ -100,13 +99,6 @@
 <!-- ./wrapper -->
 
 @include('admin::layouts.partials.script')
-
-<!-- SlimScroll -->
-<script src="{{ asset('js/jquery.slimscroll.min.js') }}"></script>
-<!-- AdminLTE App -->
-<script src="{{ mix('js/admin.js') }}"></script>
-
-<script src="{{ asset('js/layer/layer.js') }}"></script>
 @yield('script')
 </body>
 </html>
