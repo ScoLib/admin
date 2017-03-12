@@ -7,7 +7,7 @@ axios.defaults.headers.common = {
 };
 
 require('bootstrap');
-require('./ace/ace');
+require('./ace/script');
 
 
 import Vue from 'vue';
