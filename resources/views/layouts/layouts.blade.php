@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="{{ config('app.locale') }}">
 <head>
-    @include('admin::layouts.partials.htmlheader')
+    @include('admin::layouts.partials.head')
 </head>
 
 <body class="no-skin">
