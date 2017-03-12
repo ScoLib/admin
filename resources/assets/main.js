@@ -7,8 +7,7 @@ axios.defaults.headers.common = {
 };
 
 require('bootstrap');
-require('jquery-slimscroll');
-window.AdminLTE = require('./admin.js');
+require('./ace/ace');
 
 
 import Vue from 'vue';
@@ -24,4 +23,4 @@ const router = new VueRouter({
 
 new Vue({
     router
-}).$mount('.wrapper');
+}).$mount('#main-container');

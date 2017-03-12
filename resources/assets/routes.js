@@ -1,9 +1,8 @@
-import Hello from './components/Hello'
 
 const routes = [
     {
         path: '/admin',
-        component:Hello,
+        component: require('./components/admin/index'),
         name: 'Hello'
     }
 ];

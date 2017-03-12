@@ -1,125 +1,244 @@
-<ul class="nav navbar-nav">
-    <!-- Messages: style can be found in dropdown.less-->
-    <li class="dropdown messages-menu">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            <i class="fa fa-envelope-o"></i>
-            <span class="label label-success">4</span>
-        </a>
-        <ul class="dropdown-menu">
-            <li class="header">You have 4 messages</li>
-            <li>
-                <!-- inner menu: contains the actual data -->
-                <ul class="menu">
-                    <li><!-- start message -->
-                        <a href="#">
-                            <div class="pull-left">
-                                <img src="../../dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
-                            </div>
-                            <h4>
-                                Support Team
-                                <small><i class="fa fa-clock-o"></i> 5 mins</small>
-                            </h4>
-                            <p>Why not buy a new awesome theme?</p>
-                        </a>
-                    </li>
-                    <!-- end message -->
-                </ul>
-            </li>
-            <li class="footer"><a href="#">See All Messages</a></li>
-        </ul>
-    </li>
-    <!-- Notifications: style can be found in dropdown.less -->
-    <li class="dropdown notifications-menu">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            <i class="fa fa-bell-o"></i>
-            <span class="label label-warning">10</span>
-        </a>
-        <ul class="dropdown-menu">
-            <li class="header">You have 10 notifications</li>
-            <li>
-                <!-- inner menu: contains the actual data -->
-                <ul class="menu">
-                    <li>
-                        <a href="#">
-                            <i class="fa fa-users text-aqua"></i> 5 new members joined today
-                        </a>
-                    </li>
-                </ul>
-            </li>
-            <li class="footer"><a href="#">View all</a></li>
-        </ul>
-    </li>
-    <!-- Tasks: style can be found in dropdown.less -->
-    <li class="dropdown tasks-menu">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            <i class="fa fa-flag-o"></i>
-            <span class="label label-danger">9</span>
-        </a>
-        <ul class="dropdown-menu">
-            <li class="header">You have 9 tasks</li>
-            <li>
-                <!-- inner menu: contains the actual data -->
-                <ul class="menu">
-                    <li><!-- Task item -->
-                        <a href="#">
-                            <h3>
-                                Design some buttons
-                                <small class="pull-right">20%</small>
-                            </h3>
-                            <div class="progress xs">
-                                <div class="progress-bar progress-bar-aqua" style="width: 20%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-                                    <span class="sr-only">20% Complete</span>
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-                    <!-- end task item -->
-                </ul>
-            </li>
-            <li class="footer">
-                <a href="#">View all tasks</a>
-            </li>
-        </ul>
-    </li>
-    <!-- User Account: style can be found in dropdown.less -->
-    <li class="dropdown user user-menu">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            <img src="../../dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
-            <span class="hidden-xs">{{ auth()->user()->name }}</span>
-        </a>
-        <ul class="dropdown-menu">
-            <!-- User image -->
-            <li class="user-header">
-                <img src="../../dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+<!-- #section:basics/navbar.layout -->
+<div id="navbar" class="navbar navbar-default ace-save-state navbar-fixed-top">
+    <div class="navbar-container ace-save-state" id="navbar-container">
+        <!-- #section:basics/sidebar.mobile.toggle -->
+        <button type="button" class="navbar-toggle menu-toggler pull-left"
+                id="menu-toggler" data-target="#sidebar">
+            <span class="sr-only">Toggle sidebar</span>
 
-                <p>
-                    {{ auth()->user()->roles->first()->display_name }}
-                </p>
-            </li>
-            <!-- Menu Body -->
-            {{--<li class="user-body">
-                <div class="row">
-                    <div class="col-xs-4 text-center">
-                        <a href="#">Followers</a>
-                    </div>
-                    <div class="col-xs-4 text-center">
-                        <a href="#">Sales</a>
-                    </div>
-                    <div class="col-xs-4 text-center">
-                        <a href="#">Friends</a>
-                    </div>
-                </div>
-                <!-- /.row -->
-            </li>--}}
-            <!-- Menu Footer-->
-            <li class="user-footer">
-                <div class="pull-left">
-                    <a href="#" class="btn btn-default btn-flat">资料</a>
-                </div>
-                <div class="pull-right">
-                    <a href="{{ route('admin.logout') }}" class="btn btn-default btn-flat">退出</a>
-                </div>
-            </li>
-        </ul>
-    </li>
-</ul>
+            <span class="icon-bar"></span>
+
+            <span class="icon-bar"></span>
+
+            <span class="icon-bar"></span>
+        </button>
+
+        <!-- /section:basics/sidebar.mobile.toggle -->
+        <div class="navbar-header pull-left">
+            <!-- #section:basics/navbar.layout.brand -->
+            <a href="{{ route('admin.index') }}" class="navbar-brand">
+                <small>
+                    <i class="fa fa-leaf"></i>
+                    Sco Admin
+                </small>
+            </a>
+
+            <!-- /section:basics/navbar.layout.brand -->
+
+            <!-- #section:basics/navbar.toggle -->
+
+            <!-- /section:basics/navbar.toggle -->
+        </div>
+
+        <!-- #section:basics/navbar.dropdown -->
+        <div class="navbar-buttons navbar-header pull-right" role="navigation">
+            <ul class="nav ace-nav">
+                <li class="grey dropdown-modal">
+                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                        <i class="ace-icon fa fa-tasks"></i>
+                        <span class="badge badge-grey">4</span>
+                    </a>
+
+                    <ul class="dropdown-menu-right dropdown-navbar dropdown-menu dropdown-caret dropdown-close">
+                        <li class="dropdown-header">
+                            <i class="ace-icon fa fa-check"></i>
+                            4 Tasks to complete
+                        </li>
+
+                        <li class="dropdown-content">
+                            <ul class="dropdown-menu dropdown-navbar">
+                                <li>
+                                    <a href="#">
+                                        <div class="clearfix">
+                                            <span class="pull-left">Software Update</span>
+                                            <span class="pull-right">65%</span>
+                                        </div>
+
+                                        <div class="progress progress-mini">
+                                            <div style="width:65%"
+                                                 class="progress-bar"></div>
+                                        </div>
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a href="#">
+                                        <div class="clearfix">
+                                            <span class="pull-left">Hardware Upgrade</span>
+                                            <span class="pull-right">35%</span>
+                                        </div>
+
+                                        <div class="progress progress-mini">
+                                            <div style="width:35%"
+                                                 class="progress-bar progress-bar-danger"></div>
+                                        </div>
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </li>
+
+                        <li class="dropdown-footer">
+                            <a href="#">
+                                See tasks with details
+                                <i class="ace-icon fa fa-arrow-right"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="purple dropdown-modal">
+                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                        <i class="ace-icon fa fa-bell icon-animated-bell"></i>
+                        <span class="badge badge-important">8</span>
+                    </a>
+
+                    <ul class="dropdown-menu-right dropdown-navbar navbar-pink dropdown-menu dropdown-caret dropdown-close">
+                        <li class="dropdown-header">
+                            <i class="ace-icon fa fa-exclamation-triangle"></i>
+                            8 Notifications
+                        </li>
+
+                        <li class="dropdown-content">
+                            <ul class="dropdown-menu dropdown-navbar navbar-pink">
+                                <li>
+                                    <a href="#">
+                                        <div class="clearfix">
+                                                    <span class="pull-left">
+                                                        <i class="btn btn-xs no-hover btn-pink fa fa-comment"></i>
+                                                        New Comments
+                                                    </span>
+                                            <span class="pull-right badge badge-info">+12</span>
+                                        </div>
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a href="#">
+                                        <i class="btn btn-xs btn-primary fa fa-user"></i>
+                                        Bob just signed up as an editor ...
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </li>
+
+                        <li class="dropdown-footer">
+                            <a href="#">
+                                See all notifications
+                                <i class="ace-icon fa fa-arrow-right"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="green dropdown-modal">
+                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                        <i class="ace-icon fa fa-envelope icon-animated-vertical"></i>
+                        <span class="badge badge-success">5</span>
+                    </a>
+
+                    <ul class="dropdown-menu-right dropdown-navbar dropdown-menu dropdown-caret dropdown-close">
+                        <li class="dropdown-header">
+                            <i class="ace-icon fa fa-envelope-o"></i>
+                            5 Messages
+                        </li>
+
+                        <li class="dropdown-content">
+                            <ul class="dropdown-menu dropdown-navbar">
+                                <li>
+                                    <a href="#" class="clearfix">
+                                        <img src="../assets/avatars/avatar.png"
+                                             class="msg-photo"
+                                             alt="Alex's Avatar"/>
+                                        <span class="msg-body">
+                                                    <span class="msg-title">
+                                                        <span class="blue">Alex:</span>
+                                                        Ciao sociis natoque penatibus et auctor ...
+                                                    </span>
+
+                                                    <span class="msg-time">
+                                                        <i class="ace-icon fa fa-clock-o"></i>
+                                                        <span>a moment ago</span>
+                                                    </span>
+                                                </span>
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <a href="#" class="clearfix">
+                                        <img src="../assets/avatars/avatar3.png"
+                                             class="msg-photo"
+                                             alt="Susan's Avatar"/>
+                                        <span class="msg-body">
+                                                    <span class="msg-title">
+                                                        <span class="blue">Susan:</span>
+                                                        Vestibulum id ligula porta felis euismod ...
+                                                    </span>
+
+                                                    <span class="msg-time">
+                                                        <i class="ace-icon fa fa-clock-o"></i>
+                                                        <span>20 minutes ago</span>
+                                                    </span>
+                                                </span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="dropdown-footer">
+                            <a href="inbox.html">
+                                See all messages
+                                <i class="ace-icon fa fa-arrow-right"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <!-- #section:basics/navbar.user_menu -->
+                <li class="light-blue dropdown-modal">
+                    <a data-toggle="dropdown" href="#" class="dropdown-toggle">
+                        <img class="nav-user-photo"
+                             src="../assets/avatars/user.jpg"
+                             alt="{{ auth()->user()->name }}"/>
+                        <span class="user-info">
+                            <small>{{ auth()->user()->roles->first()->display_name }},</small>
+                            {{ auth()->user()->name }}
+                        </span>
+
+                        <i class="ace-icon fa fa-caret-down"></i>
+                    </a>
+
+                    <ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
+                        <li>
+                            <a href="#">
+                                <i class="ace-icon fa fa-cog"></i>
+                                设置
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="profile.html">
+                                <i class="ace-icon fa fa-user"></i>
+                                资料
+                            </a>
+                        </li>
+
+                        <li class="divider"></li>
+
+                        <li>
+                            <a href="{{ route('admin.logout') }}">
+                                <i class="ace-icon fa fa-power-off"></i>
+                                退出
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <!-- /section:basics/navbar.user_menu -->
+            </ul>
+        </div>
+
+        <!-- /section:basics/navbar.dropdown -->
+    </div><!-- /.navbar-container -->
+</div>
