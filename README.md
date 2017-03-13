@@ -17,7 +17,6 @@ NPM
     "bootstrap": "^3.3.7",
     "font-awesome": "^4.7.0",
     "jquery": "^2.2.4",
-    "jquery-slimscroll": "^1.3.8",
     "vue-router": "^2.3.0"
   }
 ```
@@ -30,7 +29,7 @@ mix.autoload({
 mix.copy('resources/assets/admin/js', 'public/js', false);
 
 mix.js('resources/assets/admin/main.js', 'public/js/admin.js');
-mix.less('resources/assets/admin/less/admin.less', 'public/css/admin.css');
+mix.less('resources/assets/admin/less/ace.less', 'public/css/admin.css');
 
 if (mix.config.inProduction) {
     mix.version();
