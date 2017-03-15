@@ -5,6 +5,7 @@
 [![Software License][ico-license]](LICENSE.md)
 [![Build Status][ico-travis]][link-travis]
 [![Coverage Status][ico-scrutinizer]][link-scrutinizer]
+[![Quality Score][ico-code-quality]][link-code-quality]
 [![Total Downloads][ico-downloads]][link-downloads]
 
 基于Laravel5.4的一个后台管理包
@@ -114,17 +115,19 @@ $ composer test
 
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
 
+[ico-styleci]: https://styleci.io/repos/82435198/shield?branch=master
 [ico-version]: https://img.shields.io/packagist/v/ScoLib/admin.svg?style=flat-square
 [ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
 [ico-travis]: https://img.shields.io/travis/ScoLib/admin/master.svg?style=flat-square
 [ico-scrutinizer]: https://img.shields.io/scrutinizer/coverage/g/ScoLib/admin.svg?style=flat-square
+[ico-code-quality]: https://img.shields.io/scrutinizer/g/ScoLib/admin.svg?style=flat-square
 [ico-downloads]: https://img.shields.io/packagist/dt/ScoLib/admin.svg?style=flat-square
-[ico-styleci]: https://styleci.io/repos/82435198/shield?branch=master
 
+[link-styleci]: https://styleci.io/repos/82435198
 [link-packagist]: https://packagist.org/packages/ScoLib/admin
 [link-travis]: https://travis-ci.org/ScoLib/admin
-[link-scrutinizer]: https://scrutinizer-ci.com/g/ScoLib/admin/code-structure
+[link-scrutinizer]: https://scrutinizer-ci.com/g/ScoLib/admin/?branch=master
+[link-code-quality]: https://scrutinizer-ci.com/g/ScoLib/admin
 [link-downloads]: https://packagist.org/packages/ScoLib/admin
-[link-styleci]: https://styleci.io/repos/82435198
 [link-author]: https://github.com/klgd
 [link-contributors]: ../../contributors

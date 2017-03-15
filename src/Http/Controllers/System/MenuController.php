@@ -12,7 +12,6 @@ use Sco\Admin\Models\Permission;
  */
 class MenuController extends BaseController
 {
-
     private $permissionModel;
 
     /**
@@ -36,9 +35,7 @@ class MenuController extends BaseController
      */
     public function getAdd($pid = 0)
     {
-
         if ($pid) {
-
         }
 
         $menus = $this->getPermissionModel()->getMenuTreeList();
@@ -109,7 +106,6 @@ class MenuController extends BaseController
      */
     public function getDelete($id)
     {
-
     }
 
 

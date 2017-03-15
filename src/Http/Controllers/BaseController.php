@@ -3,7 +3,10 @@
 
 namespace Sco\Admin\Http\Controllers;
 
-use Auth, Route, Breadcrumbs, Event;
+use Auth;
+use Route;
+use Breadcrumbs;
+use Event;
 use Illuminate\Auth\Events\Authenticated;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Routing\Controller;
@@ -61,5 +64,4 @@ class BaseController extends Controller
         }
         return parent::buildFailedValidationResponse($request, $errors);
     }
-
 }
