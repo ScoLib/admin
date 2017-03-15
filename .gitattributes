@@ -1,3 +1,11 @@
+* text=auto
+*.css linguist-vendored
+
+*.blade.php linguist-language=PHP
+*.less linguist-language=PHP
+*.html linguist-language=PHP
+*.js linguist-language=PHP
+
 # Path-based git attributes
 # https://www.kernel.org/pub/software/scm/git/docs/gitattributes.html
 
