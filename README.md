@@ -17,7 +17,9 @@ NPM
   "dependencies": {
     "bootstrap": "^3.3.7",
     "font-awesome": "^4.7.0",
+    "iview": "^2.0.0-rc.5",
     "jquery": "^2.2.4",
+    "vue-resource": "^1.2.1",
     "vue-router": "^2.3.0"
   }
 ```
