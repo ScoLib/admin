@@ -2,7 +2,9 @@
 const routes = [
     {
         path: '/admin',
-        component: require('./components/admin/index'),
+        component (resolve) {
+            require(['./components/admin/index.vue'], resolve);
+        },
         name: 'Hello'
     }
 ];

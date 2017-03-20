@@ -1,10 +1,4 @@
-window.$ = window.jQuery = require('jquery');
-
-import axios from 'axios';
-axios.defaults.headers.common = {
-    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-    'X-Requested-With': 'XMLHttpRequest'
-};
+require('jquery');
 
 require('bootstrap');
 require('./ace/script');
@@ -12,13 +6,21 @@ require('./ace/script');
 
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-Vue.use(VueRouter);
-
 import routes from './routes';
+import {Message,Modal} from 'iview';
+import 'iview/dist/styles/iview.css';
+
+Vue.use(VueRouter);
+Vue.use(Message);
+Vue.use(Modal);
+
 
 const router = new VueRouter({
     routes,
-    mode: 'history'
+    mode: 'history',
+    scrollBehavior (to, from, savedPosition) {
+        return savedPosition || { x: 0, y: 0 }
+    }
 });
 
 new Vue({

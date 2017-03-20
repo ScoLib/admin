@@ -26,12 +26,21 @@ NPM
 
 ```javascript
 mix.autoload({
-    'window.jQuery': 'jquery'
+    jquery: ['$', 'window.jQuery', 'jQuery']
 });
 
 mix.copy('resources/assets/admin/js', 'public/js', false);
 
 mix.js('resources/assets/admin/main.js', 'public/js/admin.js');
+
+mix.js('resources/assets/admin/main.js', 'public/js/admin.js')
+    .extract(['vue', 'jquery', 'bootstrap', 'vue-router', 'iview'])
+    .webpackConfig({
+        output: {
+            chunkFilename: `js/[name]${mix.config.inProduction ? '.[chunkhash].chunk.js' : '.chunk.js'}`,
+            publicPath: '/',
+        },
+    });
 mix.less('resources/assets/admin/less/ace.less', 'public/css/admin.css');
 
 if (mix.config.inProduction) {
