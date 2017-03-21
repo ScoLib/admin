@@ -24,7 +24,7 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-    // Vue.http.post('/admin');
+    // Vue.http.post('/');
 })
 
 
