@@ -22,15 +22,20 @@
 
 <script>
     export default {
-        route: {
-            data() {
-                document.title = 'test';
-                console.log(this);
-            }
-        },
         data() {
             return {
                 msg: '控制台'
+            }
+        },
+        created () {
+            this.fetchData();
+        },
+        watch: {
+            '$route': 'fetchData'
+        },
+        methods: {
+            fetchData () {
+                this.$Message.info('这是一个消息', 200);
             }
         }
     }

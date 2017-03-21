@@ -7,13 +7,11 @@ require('./ace/script');
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import routes from './routes';
-import {Message,Modal} from 'iview';
+import iView from 'iview';
 import 'iview/dist/styles/iview.css';
 
 Vue.use(VueRouter);
-Vue.use(Message);
-Vue.use(Modal);
-
+Vue.use(iView);
 
 const router = new VueRouter({
     routes,
