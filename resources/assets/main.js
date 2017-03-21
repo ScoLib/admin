@@ -6,13 +6,15 @@ require('./ace/script');
 
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import routes from './routes';
+import VueResource from 'vue-resource';
+// import routes from './routes';
 import iView from 'iview';
 import 'iview/dist/styles/iview.css';
 
 Vue.use(VueRouter);
+Vue.use(VueResource);
 Vue.use(iView);
-
+const routes = [];
 const router = new VueRouter({
     routes,
     mode: 'history',
@@ -20,6 +22,11 @@ const router = new VueRouter({
         return savedPosition || { x: 0, y: 0 }
     }
 });
+
+router.beforeEach((to, from, next) => {
+    // Vue.http.post('/admin');
+})
+
 
 new Vue({
     router
