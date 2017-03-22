@@ -25,6 +25,15 @@ const router = new VueRouter({
     }
 });
 
+router.beforeEach((to, from, next) => {
+    iView.LoadingBar.start();
+    next();
+});
+
+router.afterEach((to, from, next) => {
+    iView.LoadingBar.finish();
+});
+
 new Vue({
     router,
     created () {

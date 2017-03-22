@@ -37,14 +37,14 @@
         <router-link tag="li" :to="{ name: 'admin.system.menu'}">
             <a>
                 <i class="menu-icon fa fa-folder"></i>
-                <span class="menu-text"> ≤Àµ• </span>
+                <span class="menu-text"> ËèúÂçï </span>
             </a>
             <b class="arrow"></b>
         </router-link>
         <router-link tag="li" :to="{ name: 'admin.index'}">
             <a>
                 <i class="menu-icon fa fa-folder"></i>
-                <span class="menu-text"> øÿ÷∆Ã® </span>
+                <span class="menu-text"> ÊéßÂà∂Âè∞ </span>
             </a>
             <b class="arrow"></b>
         </router-link>
