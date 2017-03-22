@@ -34,6 +34,20 @@
     </div><!-- /.sidebar-shortcuts -->
 
     <ul class="nav nav-list">
+        <router-link tag="li" :to="{ name: 'admin.system.menu'}">
+            <a>
+                <i class="menu-icon fa fa-folder"></i>
+                <span class="menu-text"> ²Ëµ¥ </span>
+            </a>
+            <b class="arrow"></b>
+        </router-link>
+        <router-link tag="li" :to="{ name: 'admin.index'}">
+            <a>
+                <i class="menu-icon fa fa-folder"></i>
+                <span class="menu-text"> ¿ØÖÆÌ¨ </span>
+            </a>
+            <b class="arrow"></b>
+        </router-link>
         @foreach (request()->get('admin.menu') as $menu)
             @permission($menu->name)
             @if ($menu->child->isEmpty())

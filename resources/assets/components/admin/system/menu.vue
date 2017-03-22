@@ -1,69 +1,44 @@
-var vm = new Vue({
-    el: '.wrapper',
-    data: {
-        info: {}
-    },
-    methods: {
-        createMenu: function (event) {
-            // layer.load(2);
-            axios.get($(event.target).data('url')).then(function (response) {
-                console.log(response);
-            }).catch(function (error) {
-                if (error.response) {
-                    // 请求已发出，但服务器响应的状态码不在 2xx 范围内
-                    console.log(error.response.statusText);
-                } else {
-                    // Something happened in setting up the request that triggered an Error
-                    console.log('Error', error.message);
-                }
-            });
-            /*$.getJSON($(event.target).data('url'), function (result) {
-                layer.closeAll();
-                if (result.state) {
-                    vm.info = result.data;
-                    layer.open({
-                        title: '添加菜单',
-                        type: 1,
-                        shadeClose: true,
-                        area: '450px',
-                        content: $('#menu-add').html(),
-                        btn: ['确定', '取消'],
-                        yes: function (index, layero) {
-                            console.log(index);
-                        }, cancel: function (index) {
-                            layer.close(index);
-                        }
-                    });
-                } else {
-                    layer.msg(result.message, {'icon': 2, time : 2500, offset : 0});
-                }
+<template>
+    <div class="hello">
+        <h1>{{ msg }}</h1>
+        <h2>Essential Links</h2>
+        <ul>
+            <li><a href="https://vuejs.org" target="_blank">Core Docs</a></li>
+            <li><a href="https://forum.vuejs.org" target="_blank">Forum</a></li>
+            <li><a href="https://gitter.im/vuejs/vue" target="_blank">Gitter Chat</a></li>
+            <li><a href="https://twitter.com/vuejs" target="_blank">Twitter</a></li>
+            <br>
+            <li><a href="http://vuejs-templates.github.io/webpack/" target="_blank">Docs for This Template</a></li>
+        </ul>
+        <h2>Ecosystem</h2>
+        <ul>
+            <li><a href="http://router.vuejs.org/" target="_blank">vue-router</a></li>
+            <li><a href="http://vuex.vuejs.org/" target="_blank">vuex</a></li>
+            <li><a href="http://vue-loader.vuejs.org/" target="_blank">vue-loader</a></li>
+            <li><a href="https://github.com/vuejs/awesome-vue" target="_blank">awesome-vue</a></li>
+        </ul>
+    </div>
+</template>
 
-            });*/
+<script>
+    export default {
+        data() {
+            return {
+                title: '菜单'
+            }
         },
-        editMenu: function (event) {
-            layer.load(2);
-            $.getJSON($(event.target).data('url'), function (result) {
-                layer.closeAll();
-                if (result.state) {
-                    vm.info = result.data;
-                    layer.open({
-                        title: '修改状态',
-                        type: 1,
-                        shadeClose: true,
-                        area: '450px',
-                        content: $('#menu-add').html(),
-                        btn: ['确定', '取消'],
-                        yes: function (index, layero) {
-                            console.log(index);
-                        }, cancel: function (index) {
-                            layer.close(index);
-                        }
-                    });
-                } else {
-                    layer.msg(result.message, {'icon': 2, time : 2500, offset : 0});
-                }
-
-            });
+        created () {
+            this.fetchData();
+        },
+        watch: {
+            '$route': 'fetchData'
+        },
+        methods: {
+            fetchData () {
+                this.title = '菜单管理';
+                this.$Message.info('这是一个菜单', 200);
+            }
         }
     }
-});
+</script>
+
