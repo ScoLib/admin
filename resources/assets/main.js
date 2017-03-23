@@ -35,13 +35,4 @@ router.afterEach((to, from, next) => {
     iView.LoadingBar.finish();
 });
 
-/*new Vue({
-    router,
-    App
-}).$mount('#app');*/
-
-const app = new Vue({
-    router,
-    template: '<App/>',
-    components: { App }
-}).$mount('#app');
+new Vue(Vue.util.extend({router}, App)).$mount('#app');

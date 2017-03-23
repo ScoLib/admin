@@ -35,21 +35,35 @@
         </div><!-- /.sidebar-shortcuts -->
 
         <ul class="nav nav-list">
-            <router-link tag="li"
-                         :to="menu.name == '#' ? {path:'#'} : { name: menu.name}"
-                         :active-class="Object.keys(menu.child).length > 0 ? 'active open' : 'active'"
-                         exact
-                         v-for="menu in menus"
-            >
-                <a :class="{ 'dropdown-toggle' : Object.keys(menu.child).length > 0 }">
-                    <i :class="menu.icon"></i>
-                    <span class="menu-text"> {{ menu.display_name }} </span>
+            <template v-for="menu in menus">
+                <li v-if="menu.name == '#'">
+                    <a href="#" :class="{ 'dropdown-toggle' : Object.keys(menu.child).length > 0 }">
+                        <i :class="menu.icon"></i>
+                        <span class="menu-text"> {{ menu.display_name }} </span>
 
-                    <b v-if="Object.keys(menu.child).length > 0" class="arrow fa fa-angle-down"></b>
-                </a>
-                <b class="arrow"></b>
-                <item v-if="Object.keys(menu.child).length > 0" :childs="menu.child"></item>
-            </router-link>
+                        <b v-if="Object.keys(menu.child).length > 0" class="arrow fa fa-angle-down"></b>
+                    </a>
+                    <b class="arrow"></b>
+                    <item v-if="Object.keys(menu.child).length > 0" :childs="menu.child"></item>
+
+                </li>
+
+                <router-link tag="li"
+                             v-if="menu.name != '#'"
+                             :to="{ name: menu.name}"
+                             :active-class="Object.keys(menu.child).length > 0 ? 'active open' : 'active'"
+                             exact
+                >
+                    <a :class="{ 'dropdown-toggle' : Object.keys(menu.child).length > 0 }">
+                        <i :class="menu.icon"></i>
+                        <span class="menu-text"> {{ menu.display_name }} </span>
+
+                        <b v-if="Object.keys(menu.child).length > 0" class="arrow fa fa-angle-down"></b>
+                    </a>
+                    <b class="arrow"></b>
+                    <item v-if="Object.keys(menu.child).length > 0" :childs="menu.child"></item>
+                </router-link>
+            </template>
         </ul><!-- /.nav-list -->
 
         <!-- #section:basics/sidebar.layout.minimize -->

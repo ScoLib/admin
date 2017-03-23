@@ -15,7 +15,11 @@
                                 <i class="ace-icon fa fa-home home-icon"></i>
                                 <a href="/admin">首页</a>
                             </li>
+                            <!--<li v-for="entry in breadcrumbs">
+                                <a :href="entry.url">{{ entry.title }}</a>
+                            </li>
 
+                            <li class="active">{{ title }}</li>-->
 
                         </ul><!-- /.breadcrumb -->
 
@@ -74,9 +78,18 @@
     import Sidebar from './layouts/sidebar.vue';
 
     export default {
+        data () {
+            return {
+                title: '',
+                breadcrumbs: []
+            }
+        },
         components: {
             Navbar,
             Sidebar
+        },
+        methods: {
+
         }
     }
 </script>

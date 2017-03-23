@@ -26,12 +26,11 @@ NPM
 
 ```javascript
 mix.autoload({
-    jquery: ['$', 'window.jQuery', 'jQuery']
+    jquery: ['$', 'window.jQuery', 'jQuery'],
+    vue: ['Vue']
 });
 
-mix.copy('resources/assets/admin/js', 'public/js', false);
-
-mix.js('resources/assets/admin/main.js', 'public/js/admin.js');
+// mix.copy('resources/assets/admin/js', 'public/js', false);
 
 mix.js('resources/assets/admin/main.js', 'public/js/admin.js')
     .extract(['vue', 'jquery', 'bootstrap', 'vue-router', 'iview'])
