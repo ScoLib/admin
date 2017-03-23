@@ -10,6 +10,7 @@ import VueResource from 'vue-resource';
 import routes from './routes';
 import iView from 'iview';
 import 'iview/dist/styles/iview.css';
+import App from './components/App.vue';
 
 Vue.use(VueRouter);
 Vue.use(VueResource);
@@ -34,9 +35,13 @@ router.afterEach((to, from, next) => {
     iView.LoadingBar.finish();
 });
 
-new Vue({
+/*new Vue({
     router,
-    created () {
+    App
+}).$mount('#app');*/
 
-    }
-}).$mount('#main-container');
+const app = new Vue({
+    router,
+    template: '<App/>',
+    components: { App }
+}).$mount('#app');

@@ -1,6 +1,6 @@
 <template>
     <div class="hello">
-        <h1>{{ msg }}</h1>
+        <h1>{{ title }}</h1>
         <h2>Essential Links</h2>
         <ul>
             <li><a href="https://vuejs.org" target="_blank">Core Docs</a></li>
@@ -24,8 +24,13 @@
     export default {
         data() {
             return {
-                msg: '控制台'
+                title: '控制台'
             }
+        },
+        beforeRouteEnter (to, from, next) {
+            next(vm => {
+                document.title = vm.title + ' - Sco Admin';
+            });
         },
         created () {
             this.fetchData();
@@ -35,7 +40,7 @@
         },
         methods: {
             fetchData () {
-                this.$Message.info('这是一个消息', 200);
+//                this.$Message.info('这是一个消息', 200);
             }
         }
     }

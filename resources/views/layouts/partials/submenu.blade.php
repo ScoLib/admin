@@ -1,9 +1,3 @@
-<ul class="treeview-menu">
-
-</ul>
-
-
-
 <ul class="submenu">
     @foreach ($childs as $child)
         @permission($child->name)

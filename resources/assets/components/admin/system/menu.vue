@@ -1,6 +1,6 @@
 <template>
     <div class="hello">
-        <h1>{{ msg }}</h1>
+        <h1>{{ title }}</h1>
         <h2>Essential Links</h2>
         <ul>
             <li><a href="https://vuejs.org" target="_blank">Core Docs</a></li>
@@ -24,8 +24,13 @@
     export default {
         data() {
             return {
-                title: '菜单'
+                title: '菜单管理'
             }
+        },
+        beforeRouteEnter (to, from, next) {
+            next(vm => {
+                document.title = vm.title + ' - Sco Admin';
+            });
         },
         created () {
             this.fetchData();
@@ -35,8 +40,7 @@
         },
         methods: {
             fetchData () {
-                this.title = '菜单管理';
-                this.$Message.info('这是一个菜单', 200);
+//                this.$Message.info('这是一个消息', 200);
             }
         }
     }
