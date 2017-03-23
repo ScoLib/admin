@@ -34,7 +34,8 @@ class AdminServiceProvider extends ServiceProvider
         $this->registerMiddleware();
 
         // 路由文件
-        $this->loadRoutesFrom($this->getBasePath() . '/routes/admin.php');
+        $this->loadRoutes();
+
         // 后台模板目录
         $this->loadViewsFrom($this->getBasePath() . '/resources/views', 'admin');
         // 后台语言包目录
@@ -58,6 +59,17 @@ class AdminServiceProvider extends ServiceProvider
         $this->mergeConfigFrom($this->getBasePath() . '/config/admin.php', 'admin');
     }
 
+
+    protected function loadRoutes()
+    {
+        $routesFile = $this->getBasePath() . '/routes/admin.php';
+        if (file_exists(base_path('routes/admin.php'))) {
+            $routesFile = base_path('routes/admin.php');
+        }
+
+        $this->loadRoutesFrom($routesFile);
+    }
+
     protected function registerMiddleware()
     {
         $router = $this->app['router'];
@@ -72,6 +84,7 @@ class AdminServiceProvider extends ServiceProvider
         $this->publishConfig();
         $this->publishViews();
         $this->publishTranslations();
+        $this->publishRoutes();
     }
 
     protected function publishAssets()
@@ -101,5 +114,12 @@ class AdminServiceProvider extends ServiceProvider
         $this->publishes([
             $this->getBasePath() . '/resources/lang' => base_path('resources/lang/vendor/admin'),
         ], 'lang');
+    }
+
+    protected function publishRoutes()
+    {
+        $this->publishes([
+            $this->getBasePath() . '/routes/admin.php' => base_path('routes/admin.php')
+        ], 'routes');
     }
 }
