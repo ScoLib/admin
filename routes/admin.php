@@ -12,6 +12,12 @@ Route::group([
     //退出
     Route::get('logout', 'Auth\LoginController@logout')->name('admin.logout');
 
+    Route::get('/menu', function () {
+        $menus = request()->get('admin.menu');
+        return response()->json($menus);
+    })->name('admin.menu')
+        ->middleware('admin.menu');
+
     Route::group(['middleware' => 'auth.admin'], function () {
         // 控制台
         Route::get('/', 'BaseController@index')

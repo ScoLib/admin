@@ -81,7 +81,7 @@
 
 <script>
 
-    import item from './submenu.vue';
+    import item from './Submenu.vue';
 
     export default {
         data () {

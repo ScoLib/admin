@@ -7,15 +7,18 @@ require('./ace/script');
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import VueResource from 'vue-resource';
-import routes from './routes';
 import iView from 'iview';
 import 'iview/dist/styles/iview.css';
+
+import routes from './routes';
 import App from './components/App.vue';
+import store from './store/';
 
 Vue.use(VueRouter);
 Vue.use(VueResource);
 Vue.use(iView);
 
+// Vue.component('vTable', require('./components/Table.vue'));
 
 const router = new VueRouter({
     routes,
@@ -35,4 +38,4 @@ router.afterEach((to, from, next) => {
     iView.LoadingBar.finish();
 });
 
-new Vue(Vue.util.extend({router}, App)).$mount('#app');
+new Vue(Vue.util.extend({router, store}, App)).$mount('#app');

@@ -1,5 +1,6 @@
 <template>
     <div id="app">
+
         <navbar></navbar>
         <!-- /section:basics/navbar.layout -->
         <div class="main-container ace-save-state" id="main-container">
@@ -15,11 +16,13 @@
                                 <i class="ace-icon fa fa-home home-icon"></i>
                                 <a href="/admin">首页</a>
                             </li>
-                            <!--<li v-for="entry in breadcrumbs">
-                                <a :href="entry.url">{{ entry.title }}</a>
+                            <li v-for="entry in breads">
+
+                                <a href="#" v-if="entry.url == ''">{{ entry.title }}</a>
+                                <router-link :to="entry.url" v-if="entry.url != ''">{{ entry.title }}</router-link>
                             </li>
 
-                            <li class="active">{{ title }}</li>-->
+                            <li class="active">{{ title }}</li>
 
                         </ul><!-- /.breadcrumb -->
 
@@ -74,14 +77,14 @@
 </template>
 
 <script>
-    import Navbar from './layouts/navbar.vue';
-    import Sidebar from './layouts/sidebar.vue';
+    import Navbar from './layouts/Navbar.vue';
+    import Sidebar from './layouts/Sidebar.vue';
 
     export default {
         data () {
             return {
                 title: '',
-                breadcrumbs: []
+                breads: []
             }
         },
         components: {
@@ -89,7 +92,11 @@
             Sidebar
         },
         methods: {
-
+            setBreads (breads, title) {
+                this.title = title;
+                this.breads = breads;
+                document.title = title + ' - Sco Admin';
+            }
         }
     }
 </script>
