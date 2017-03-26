@@ -105,7 +105,10 @@
             }
         },
         props: {
-
+            columns: {
+                type: Object,
+                default () => {}
+            }
         }
     }
 </script>
