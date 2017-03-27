@@ -24,7 +24,7 @@
         methods: {
             fetchData () {
                 this.$parent.setBreads(this.breads, this.title);
-//                this.$Message.info('这是一个消息', 200);
+                this.$Message.info('这是一个消息', 200);
             }
         }
     }
