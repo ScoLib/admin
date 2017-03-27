@@ -2,8 +2,13 @@
     <table class="table table-striped table-bordered table-hover">
         <thead class="thin-border-bottom">
         <tr>
-            <th v-for="column in columns">
-                {{ column.title }}
+            <th v-for="column in columns" :class="column.class">
+                <template v-if="column.type == 'selection'">
+                    <input type="checkbox">
+                </template>
+                <template v-else>
+                    {{ column.title }}
+                </template>
             </th>
         </tr>
         </thead>
@@ -11,7 +16,12 @@
         <tbody>
         <tr v-for="row in data">
             <td v-for="column in columns">
-                {{ row[column.key] }}
+                <template v-if="column.type == 'selection'">
+                    <input type="checkbox">
+                </template>
+                <template v-else>
+                    <slot :name="column.key" :row="row">{{ row[column.key] }}</slot>
+                </template>
             </td>
         </tr>
         </tbody>
@@ -32,7 +42,7 @@
         },
         props: {
             data: {
-                type: Object,
+                type: Object|Array,
                 default () {
                     return {};
                 }

@@ -13,6 +13,7 @@ import 'iview/dist/styles/iview.css';
 import routes from './routes';
 import App from './components/App.vue';
 import store from './store/';
+import filters from './filters/';
 
 Vue.use(VueRouter);
 Vue.use(VueResource);
@@ -36,4 +37,6 @@ router.afterEach((to, from, next) => {
     iView.LoadingBar.finish();
 });
 
-new Vue(Vue.util.extend({router, store}, App)).$mount('#app');
+// Vue.http.headers.common['X-CSRF-TOKEN'] = 'ssss';
+
+const app = new Vue(Vue.util.extend({router, store, filters}, App)).$mount('#app');
