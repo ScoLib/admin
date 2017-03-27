@@ -1,7 +1,7 @@
 <template>
     <div class="row">
         <div class="col-xs-12">
-            <Table :columns="columns" :data="data"></Table>
+            <b-table :columns="columns" :data="data"></b-table>
         </div>
     </div>
 </template>
@@ -19,22 +19,34 @@
                     }
                 ],
                 columns: [
-                    {
+/*                    {
                         type: 'selection',
                         width: 60,
                         align: 'center'
+                    },*/
+                    {
+                        title: 'ID',
+                        key: 'id'
                     },
                     {
-                        title: '姓名',
+                        title: '标题',
+                        key: 'display_name'
+                    },
+                    {
+                        title: '名称',
                         key: 'name'
                     },
                     {
-                        title: '年龄',
-                        key: 'age'
+                        title: '菜单',
+                        key: 'is_menu',
                     },
                     {
-                        title: '地址',
-                        key: 'address'
+                        title: '图标',
+                        key: 'icon',
+                    },
+                    {
+                        title: '排序',
+                        key: 'sort',
                     },
                     {
                         title: '操作',
@@ -46,28 +58,7 @@
                         }
                     }
                 ],
-                data: [
-                    {
-                        name: '王小明',
-                        age: 18,
-                        address: '北京市朝阳区芍药居'
-                    },
-                    {
-                        name: '张小刚',
-                        age: 25,
-                        address: '北京市海淀区西二旗'
-                    },
-                    {
-                        name: '李小红',
-                        age: 30,
-                        address: '上海市浦东新区世纪大道'
-                    },
-                    {
-                        name: '周小伟',
-                        age: 26,
-                        address: '深圳市南山区深南大道'
-                    }
-                ]
+                data: {}
             }
         },
         beforeRouteEnter (to, from, next) {
@@ -80,8 +71,18 @@
             '$route': 'fetchData'
         },
         methods: {
+            getResults(page) {
+                if (typeof page === 'undefined') {
+                    page = 1;
+                }
+                this.$http.get('/admin/system/menu/list').then(response => {
+                    this.data = response.data;
+                })
+
+            },
             fetchData () {
                 this.$parent.setBreads(this.breads, this.title);
+                this.getResults(1);
 
 //                this.$Message.info('这是一个消息', 200);
             },

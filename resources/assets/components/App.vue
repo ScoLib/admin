@@ -80,6 +80,12 @@
     import Navbar from './layouts/Navbar.vue';
     import Sidebar from './layouts/Sidebar.vue';
 
+    import bTable from  './Table.vue';
+    import bPagination from './Pagination.vue';
+
+    Vue.component('bTable', bTable);
+    Vue.component('bPagination', bPagination);
+
     export default {
         data () {
             return {

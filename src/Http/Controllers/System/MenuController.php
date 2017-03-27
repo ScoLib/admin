@@ -19,11 +19,11 @@ class MenuController extends BaseController
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function getIndex()
+    public function getList()
     {
         $menus = $this->getPermissionModel()->getMenuTreeList();
 
-        return $this->render('system.menu.index', compact('menus'));
+        return response()->json($menus);
     }
 
     /**

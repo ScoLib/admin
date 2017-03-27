@@ -18,8 +18,6 @@ Vue.use(VueRouter);
 Vue.use(VueResource);
 Vue.use(iView);
 
-// Vue.component('vTable', require('./components/Table.vue'));
-
 const router = new VueRouter({
     routes,
     mode: 'history',

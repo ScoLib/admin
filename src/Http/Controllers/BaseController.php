@@ -30,7 +30,7 @@ class BaseController extends Controller
      */
     public function index()
     {
-        return $this->render('index');
+        return view('admin::index');
     }
 
     /**

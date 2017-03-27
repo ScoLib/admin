@@ -38,13 +38,13 @@
             <template v-for="menu in menus">
                 <li v-if="menu.name == '#'">
                     <a href="#" :class="{ 'dropdown-toggle' : Object.keys(menu.child).length > 0 }">
-                        <i :class="menu.icon"></i>
+                        <i :class="['menu-icon', 'fa', menu.icon ? menu.icon : '']"></i>
                         <span class="menu-text"> {{ menu.display_name }} </span>
 
                         <b v-if="Object.keys(menu.child).length > 0" class="arrow fa fa-angle-down"></b>
                     </a>
                     <b class="arrow"></b>
-                    <item v-if="Object.keys(menu.child).length > 0" :childs="menu.child"></item>
+                    <Submenu v-if="Object.keys(menu.child).length > 0" :childs="menu.child"></Submenu>
 
                 </li>
 
@@ -55,13 +55,13 @@
                              exact
                 >
                     <a :class="{ 'dropdown-toggle' : Object.keys(menu.child).length > 0 }">
-                        <i :class="menu.icon"></i>
+                        <i :class="['menu-icon', 'fa', menu.icon ? menu.icon : '']"></i>
                         <span class="menu-text"> {{ menu.display_name }} </span>
 
                         <b v-if="Object.keys(menu.child).length > 0" class="arrow fa fa-angle-down"></b>
                     </a>
                     <b class="arrow"></b>
-                    <item v-if="Object.keys(menu.child).length > 0" :childs="menu.child"></item>
+                    <Submenu v-if="Object.keys(menu.child).length > 0" :childs="menu.child"></Submenu>
                 </router-link>
             </template>
         </ul><!-- /.nav-list -->
@@ -81,7 +81,7 @@
 
 <script>
 
-    import item from './Submenu.vue';
+    import Submenu from './Submenu.vue';
 
     export default {
         data () {
@@ -90,7 +90,7 @@
             }
         },
         components: {
-            item
+            Submenu
         },
         created () {
 //            this.$Message.loading('正在加载中...', 0);

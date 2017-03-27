@@ -20,6 +20,7 @@
 
 <script>
     export default {
+        name: 'bPagination',
         props: {
             data: {
                 type: Object,

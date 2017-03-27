@@ -24,6 +24,14 @@ Route::group([
             ->name('admin.index')
             ->middleware('admin.menu');
 
+        Route::group(['prefix' => 'system'], function ()
+        {
+            // 菜单管理
+            Route::get('menu', 'BaseController@index')
+                ->name('admin.system.menu')
+                ->middleware('admin.menu');
+        });
+
         // 系统管理
         Route::group(['prefix' => 'system', 'namespace' => 'System'], function () {
             // 站点设置
@@ -35,10 +43,10 @@ Route::group([
             /*Route::post('config/save', 'ConfigController@postIndex')
                 ->name('admin.system.config.save');*/
 
-            // 菜单管理
-            Route::get('menu', 'MenuController@getIndex')
-                ->name('admin.system.menu')
-                ->middleware('admin.menu');
+
+
+            Route::get('menu/list', 'MenuController@getList')
+                ->name('admin.system.menu');
 
             // 新增菜单
             Route::get('menu/add/{pid?}', 'MenuController@getAdd')
