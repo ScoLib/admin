@@ -10,7 +10,7 @@ const routes = [
     {
         path: '/admin/system/menu',
         component (resolve) {
-            require(['./views/system/menu.vue'], resolve);
+            require(['./views/system/menu/index.vue'], resolve);
         },
         name: 'admin.system.menu'
     }
