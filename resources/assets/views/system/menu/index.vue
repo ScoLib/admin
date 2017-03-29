@@ -1,30 +1,18 @@
-<style>
-    .nav-tabs { top:0px; border-bottom:0px;}
-    .header {padding-bottom:0px; width: 100%}
-</style>
 <template>
     <div class="row">
         <div class="col-xs-12">
             <div class="header pull-left">
                 <ul class="nav nav-tabs padding-10 pull-left">
-                    <li class="">
-                        <a data-toggle="tab" href="#home" aria-expanded="false">
-                            <i class="green ace-icon fa fa-home bigger-120"></i>
-                            Home
-                        </a>
-                    </li>
-
                     <li class="active">
-                        <a data-toggle="tab" href="#messages" aria-expanded="true">
-                            Messages
-                            <span class="badge badge-danger">4</span>
+                        <a data-toggle="tab" href="#" aria-expanded="true">
+                            列表
                         </a>
                     </li>
 
                 </ul>
 
-                <ul class="pull-right">
-                    <li><button type="button" class="btn btn-default btn-xs" @click.prevent="addMenu">新建菜单</button></li>
+                <ul class="pull-right right-btn">
+                    <li><button type="button" class="btn btn-primary btn-xs" @click.prevent="addMenu">新建菜单</button></li>
                 </ul>
             </div>
 
@@ -48,7 +36,8 @@
             <Modal
                     v-model="editModal"
                     :title="modalTitle"
-                    :loading="true"
+                    :loading="modalLoading"
+                    :value="modalVisible"
                     @on-ok="saveMenu"
             >
                 <form-dialog :info="info" :menuList="menuList"></form-dialog>
@@ -77,6 +66,8 @@
 
                 editModal: false,
                 info: {},
+                modalLoading: true,
+                modalVisible: false,
 
                 columns: [
                     {
@@ -152,9 +143,22 @@
 //                this.data.splice(index, 1);
             },
             saveMenu () {
+//                this.$loading.start();
+                this.modalVisible = false;
+                this.$http.post('/admin/system/menu/save', this.info).then((response) => {
+                    console.log(response.data);
+//                    this.editModal = false;
+                }, (response) => {
+                    this.$loading.close();
+//                    this.modalLoading = false;
+                    this.modalVisible = false;
+                    console.log(response);
+                });
+//                console.log(response);
+
                 console.log(this.info);
-                this.editModal = false;
-                this.getResults();
+
+//                this.getResults();
             }
         }
     }

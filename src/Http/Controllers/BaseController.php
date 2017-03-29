@@ -23,6 +23,8 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 class BaseController extends Controller
 {
 
+    use ValidatesRequests;
+
     /**
      * 后台入口页（控制台）
      *
@@ -55,7 +57,7 @@ class BaseController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function buildFailedValidationResponse(Request $request, array $errors)
+    /*protected function buildFailedValidationResponse(Request $request, array $errors)
     {
         if (($request->ajax() && !$request->pjax()) || $request->wantsJson()) {
             $error = array_shift($errors);
@@ -63,5 +65,5 @@ class BaseController extends Controller
             return new JsonResponse(error($error));
         }
         return parent::buildFailedValidationResponse($request, $errors);
-    }
+    }*/
 }

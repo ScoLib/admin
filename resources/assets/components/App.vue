@@ -1,6 +1,5 @@
 <template>
     <div id="app">
-        <!--<loading :loading="loading"></loading>-->
         <navbar></navbar>
         <!-- /section:basics/navbar.layout -->
         <div class="main-container ace-save-state" id="main-container">
@@ -79,7 +78,6 @@
 <script>
     import Navbar from './layouts/Navbar.vue';
     import Sidebar from './layouts/Sidebar.vue';
-    import Loading from './Loading.vue';
 
     import bTable from  './Table.vue';
     import bPagination from './Pagination.vue';
@@ -97,7 +95,6 @@
         components: {
             Navbar,
             Sidebar,
-            Loading,
         },
         methods: {
             setBreads (breads, title) {

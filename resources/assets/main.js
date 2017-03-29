@@ -14,10 +14,12 @@ import routes from './routes';
 import App from './components/App.vue';
 import store from './store/';
 import filters from './filters/';
+import Loading from './loading';
 
 Vue.use(VueRouter);
 Vue.use(VueResource);
 Vue.use(iView);
+Vue.use(Loading);
 
 const router = new VueRouter({
     routes,
@@ -37,6 +39,7 @@ router.afterEach((to, from, next) => {
     iView.LoadingBar.finish();
 });
 
-// Vue.http.headers.common['X-CSRF-TOKEN'] = 'ssss';
+Vue.http.headers.common['X-CSRF-TOKEN'] = $('meta[name="csrf-token"]').attr('content');
+Vue.http.credientials = true;
 
 const app = new Vue(Vue.util.extend({router, store, filters}, App)).$mount('#app');

@@ -36,7 +36,8 @@ class AdminAuthenticate
 
         if (!$request->user()->can(Route::currentRouteName())) {
             if ($request->ajax() || $request->wantsJson()) {
-                return response()->json(error('您没有权限执行此操作'));
+                return response('Unauthorized.', 401);
+                //return response()->json(error('您没有权限执行此操作'));
             } else {
                 $previousUrl = URL::previous();
 

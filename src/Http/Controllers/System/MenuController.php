@@ -82,11 +82,10 @@ class MenuController extends BaseController
      * 保存菜单信息
      *
      * @param \Illuminate\Http\Request $request 提交数据
-     * @param integer                  $id      菜单ID
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function postEdit(Request $request, $id)
+    public function save(Request $request)
     {
         $this->validate($request, [
             'pid'          => 'integer',
@@ -95,9 +94,12 @@ class MenuController extends BaseController
             //'' => '',
         ]);
 
-        $this->getPermissionModel()->saveMenu($request, $id);
-        return response()->json(success('编辑菜单完成', ['url' => route('admin.system.menu')]));
+        return response()->json($request->all());
+
+        //$this->getPermissionModel()->saveMenu($request, $id);
+        //return response()->json(success('编辑菜单完成', ['url' => route('admin.system.menu')]));
     }
+
 
     /**
      * 删除菜单
