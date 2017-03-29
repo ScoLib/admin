@@ -53,8 +53,8 @@ Route::group([
                 ->name('admin.system.menu.add');
 
             // 保存新增菜单
-            Route::post('menu/postAdd', 'MenuController@postAdd')
-                ->name('admin.system.menu.postAdd');
+            Route::post('menu/save', 'MenuController@save')
+                ->name('admin.system.menu.save');
 
             // 编辑路由
             Route::get('menu/{id}/edit', 'MenuController@getEdit')
