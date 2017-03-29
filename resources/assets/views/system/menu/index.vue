@@ -37,10 +37,10 @@
                     v-model="editModal"
                     :title="modalTitle"
                     :loading="modalLoading"
-                    :value="modalVisible"
                     @on-ok="saveMenu"
             >
-                <form-dialog :info="info" :menuList="menuList"></form-dialog>
+                <form-dialog :info="info" :menuList="menuList" :errors="errors"></form-dialog>
+
             </Modal>
         </div>
     </div>
@@ -67,7 +67,7 @@
                 editModal: false,
                 info: {},
                 modalLoading: true,
-                modalVisible: false,
+                errors: {},
 
                 columns: [
                     {
@@ -143,21 +143,18 @@
 //                this.data.splice(index, 1);
             },
             saveMenu () {
-//                this.$loading.start();
-                this.modalVisible = false;
+                this.$loading.start();
                 this.$http.post('/admin/system/menu/save', this.info).then((response) => {
                     console.log(response.data);
 //                    this.editModal = false;
                 }, (response) => {
+                    this.errors = response.data;
                     this.$loading.close();
-//                    this.modalLoading = false;
-                    this.modalVisible = false;
-                    console.log(response);
+                    this.modalLoading = false;
+                    setTimeout(() => {
+                        this.modalLoading = true;
+                    }, 300);
                 });
-//                console.log(response);
-
-                console.log(this.info);
-
 //                this.getResults();
             }
         }
