@@ -132,7 +132,7 @@
             },
             addMenu () {
                 this.editModal = true;
-                this.info = {pid: 0};
+                this.info = {pid: 0, is_menu: 1};
             },
             editMenu (index) {
                 this.editModal = true;
