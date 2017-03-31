@@ -53,8 +53,8 @@ class MenuController extends BaseController
     public function postAdd(Request $request)
     {
         $this->validate($request, [
-            'pid'          => 'integer',
-            'display_name' => 'required',
+            'pid'          => 'bail|integer',
+            'display_name' => 'bail|required',
             'name'         => ['bail', 'required', 'regex:/^[\w\.]+$/'],
             //'' => '',
         ]);
