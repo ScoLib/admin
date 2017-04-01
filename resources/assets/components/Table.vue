@@ -12,19 +12,18 @@
             </th>
         </tr>
         </thead>
-
-        <tbody>
-        <tr v-for="row in data">
-            <td v-for="column in columns">
-                <template v-if="column.type == 'selection'">
-                    <input type="checkbox">
-                </template>
-                <template v-else>
-                    <slot :name="column.key" :row="row">{{ row[column.key] }}</slot>
-                </template>
-            </td>
-        </tr>
-        </tbody>
+        <transition-group name="fade" tag="tbody">
+            <tr v-for="(row, key) in data" :key="key">
+                <td v-for="column in columns">
+                    <template v-if="column.type == 'selection'">
+                        <input type="checkbox">
+                    </template>
+                    <template v-else>
+                        <slot :name="column.key" :row="row">{{ row[column.key] }}</slot>
+                    </template>
+                </td>
+            </tr>
+        </transition-group>
     </table>
 </template>
 

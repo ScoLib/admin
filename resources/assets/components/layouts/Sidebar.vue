@@ -49,7 +49,7 @@
                 </li>
 
                 <router-link tag="li"
-                             v-if="menu.name != '#'"
+                             v-else
                              :to="{ name: menu.name}"
                              :active-class="Object.keys(menu.child).length > 0 ? 'active open' : 'active'"
                              exact
