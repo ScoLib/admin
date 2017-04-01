@@ -94,7 +94,9 @@
         },
         created () {
 //            this.$Message.loading('正在加载中...', 0);
+//            this.$loading.start();
             this.$http.get('/admin/menu').then(response => {
+//                this.$loading.close();
                 this.menus = response.data;
 //                this.$Message.destroy();
             });

@@ -7,12 +7,11 @@ let loadingInstance;
 Loading.newInstance = properties => {
     const _props = properties || {};
 
-    const div = document.createElement('div');
-    div.innerHTML = `<loading></loading>`;
-    document.body.appendChild(div);
+    const el = document.createElement('loading');
+    document.body.appendChild(el);
 
     const loading = new Vue({
-        el: div,
+        el: el,
         data: _props,
         components: {Loading}
     }).$children[0];

@@ -121,7 +121,9 @@
         },
         methods: {
             getResults() {
+                this.$loading.start();
                 this.$http.get('/admin/system/menu/list').then(response => {
+                    this.$loading.close();
                     this.menuList = response.data;
                 });
 
@@ -144,17 +146,28 @@
             },
             saveMenu () {
                 this.$loading.start();
-                this.$http.post('/admin/system/menu/save', this.info).then((response) => {
-                    console.log(response.data);
-//                    this.editModal = false;
-                }, (response) => {
-                    this.errors = response.data;
-                    this.$loading.close();
-                    this.modalLoading = false;
-                    setTimeout(() => {
-                        this.modalLoading = true;
-                    }, 300);
-                });
+                this.$http.post('/admin/system/menu/save', this.info)
+                    .then((response) => {
+                        console.log(response.data);
+                        this.$loading.close();
+                        this.editModal = false;
+                    }, (response) => {
+                        this.$loading.close();
+//                        console.log(response);
+//                        console.log(typeof response.data);
+                        if (typeof response.data == 'object') {
+                            this.errors = response.data;
+                        }
+                            this.modalLoading = false;
+                            setTimeout(() => {
+                                this.modalLoading = true;
+                            }, 300);
+//                        } else {
+//                            this.editModal = false;
+                            this.$Message.error(response.statusText);
+//                        }
+                    });
+
 //                this.getResults();
             }
         }

@@ -39,7 +39,7 @@ class AdminServiceProvider extends ServiceProvider
         // 后台模板目录
         $this->loadViewsFrom($this->getBasePath() . '/resources/views', 'admin');
         // 后台语言包目录
-        $this->loadTranslationsFrom($this->getBasePath() . '/resources/lang', 'Admin');
+        $this->loadTranslationsFrom($this->getBasePath() . '/resources/lang', 'admin');
 
         if ($this->app->runningInConsole()) {
             $this->loadMigrationsFrom($this->getBasePath() . '/database/migrations');
@@ -90,7 +90,7 @@ class AdminServiceProvider extends ServiceProvider
     protected function publishAssets()
     {
         $this->publishes([
-            $this->getBasePath() . '/resources/assets' => base_path('resources/assets/admin'),
+            $this->getBasePath() . '/resources/assets' => base_path('resources/assets/vendor/admin'),
         ], 'assets');
     }
 

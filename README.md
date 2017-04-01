@@ -30,9 +30,7 @@ mix.autoload({
     vue: ['Vue']
 });
 
-// mix.copy('resources/assets/admin/js', 'public/js', false);
-
-mix.js('resources/assets/admin/main.js', 'public/js/admin.js')
+mix.js('resources/assets/vendor/admin/main.js', 'public/js/admin.js')
     .extract(['vue', 'jquery', 'bootstrap', 'vue-router', 'iview'])
     .webpackConfig({
         output: {
@@ -40,7 +38,7 @@ mix.js('resources/assets/admin/main.js', 'public/js/admin.js')
             publicPath: '/',
         },
     });
-mix.less('resources/assets/admin/less/ace.less', 'public/css/admin.css');
+mix.less('resources/assets/vendor/admin/less/ace.less', 'public/css/admin.css');
 
 if (mix.config.inProduction) {
     mix.version();

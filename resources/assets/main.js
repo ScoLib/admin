@@ -41,5 +41,16 @@ router.afterEach((to, from, next) => {
 
 Vue.http.headers.common['X-CSRF-TOKEN'] = $('meta[name="csrf-token"]').attr('content');
 Vue.http.credientials = true;
+// console.log(Loading.service);
+// console.log(Vue.$loading);
+/*Vue.http.interceptors.push((request, next) => {
+    // console.log(request);
+    Loading.service.start();
+    next((response) => {
+        // console.log(response);
+        Loading.service.close();
+        return response;
+    });
+});*/
 
 const app = new Vue(Vue.util.extend({router, store, filters}, App)).$mount('#app');

@@ -87,12 +87,17 @@ class MenuController extends BaseController
      */
     public function save(Request $request)
     {
+        //throw new \InvalidArgumentException('sssssss');
+
         $this->validate($request, [
-            'pid'          => 'integer',
-            'display_name' => 'required',
+            'pid'          => 'bail|integer',
+            'display_name' => 'bail|required',
             'name'         => ['bail', 'required', 'regex:/^[\w\.]+$/'],
             //'' => '',
-        ]);
+        ], [
+            'display_name.required' => trans('admin::validation.required')
+        ], trans('admin::validation.attributes'));
+
 
         return response()->json($request->all());
 
