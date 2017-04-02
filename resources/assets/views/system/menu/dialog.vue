@@ -67,6 +67,7 @@
             <textarea id="description" class="input-xlarge" rows="3" name="description" v-model="info.description"></textarea>
         </form-group>
 
+        <input type="hidden" name="id" v-model="info.id">
     </div>
 </template>
 

@@ -34,37 +34,24 @@
             </div>
         </div><!-- /.sidebar-shortcuts -->
 
-        <ul class="nav nav-list">
-            <template v-for="menu in menus">
-                <li v-if="menu.name == '#'">
-                    <a href="#" :class="{ 'dropdown-toggle' : Object.keys(menu.child).length > 0 }">
-                        <i :class="['menu-icon', 'fa', menu.icon ? menu.icon : '']"></i>
-                        <span class="menu-text"> {{ menu.display_name }} </span>
+        <transition-group name="fade" class="nav nav-list" tag="ul">
+            <router-link tag="li"
+                         v-for="(menu, menu_key) in menus"
+                         :to="menu.name == '#' ? notUrl : {name: menu.name}"
+                         :key="menu_key"
+                         :active-class="Object.keys(menu.child).length > 0 ? 'active open' : 'active'"
+                         exact
+            >
+                <a :class="{ 'dropdown-toggle' : Object.keys(menu.child).length > 0 }">
+                    <i :class="['menu-icon', 'fa', menu.icon ? menu.icon : '']"></i>
+                    <span class="menu-text"> {{ menu.display_name }} </span>
 
-                        <b v-if="Object.keys(menu.child).length > 0" class="arrow fa fa-angle-down"></b>
-                    </a>
-                    <b class="arrow"></b>
-                    <Submenu v-if="Object.keys(menu.child).length > 0" :childs="menu.child"></Submenu>
-
-                </li>
-
-                <router-link tag="li"
-                             v-else
-                             :to="{ name: menu.name}"
-                             :active-class="Object.keys(menu.child).length > 0 ? 'active open' : 'active'"
-                             exact
-                >
-                    <a :class="{ 'dropdown-toggle' : Object.keys(menu.child).length > 0 }">
-                        <i :class="['menu-icon', 'fa', menu.icon ? menu.icon : '']"></i>
-                        <span class="menu-text"> {{ menu.display_name }} </span>
-
-                        <b v-if="Object.keys(menu.child).length > 0" class="arrow fa fa-angle-down"></b>
-                    </a>
-                    <b class="arrow"></b>
-                    <Submenu v-if="Object.keys(menu.child).length > 0" :childs="menu.child"></Submenu>
-                </router-link>
-            </template>
-        </ul><!-- /.nav-list -->
+                    <b v-if="Object.keys(menu.child).length > 0" class="arrow fa fa-angle-down"></b>
+                </a>
+                <b class="arrow"></b>
+                <Submenu v-if="Object.keys(menu.child).length > 0" :childs="menu.child"></Submenu>
+            </router-link>
+        </transition-group><!-- /.nav-list -->
 
         <!-- #section:basics/sidebar.layout.minimize -->
         <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
@@ -100,6 +87,11 @@
                 this.menus = response.data;
 //                this.$Message.destroy();
             });
+        },
+        computed: {
+            notUrl () {
+                return '/#';
+            }
         }
     }
 </script>

@@ -24,8 +24,7 @@ Route::group([
             ->name('admin.index')
             ->middleware('admin.menu');
 
-        Route::group(['prefix' => 'system'], function ()
-        {
+        Route::group(['prefix' => 'system'], function () {
             // 菜单管理
             Route::get('menu', 'BaseController@index')
                 ->name('admin.system.menu')

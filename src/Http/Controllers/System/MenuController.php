@@ -87,22 +87,16 @@ class MenuController extends BaseController
      */
     public function save(Request $request)
     {
-        //throw new \InvalidArgumentException('sssssss');
-
         $this->validate($request, [
             'pid'          => 'bail|integer',
             'display_name' => 'bail|required',
-            'name'         => ['bail', 'required', 'regex:/^[\w\.]+$/'],
+            'name'         => ['bail', 'required', 'regex:/^[\w\.#]+$/'],
             //'' => '',
-        ], [
-            'display_name.required' => trans('admin::validation.required')
-        ], trans('admin::validation.attributes'));
+        ], trans('admin::validation'), trans('admin::validation.attributes'));
 
 
-        return response()->json($request->all());
-
-        //$this->getPermissionModel()->saveMenu($request, $id);
-        //return response()->json(success('编辑菜单完成', ['url' => route('admin.system.menu')]));
+        $this->getPermissionModel()->saveMenu($request);
+        return response()->json(['message' => 'ok']);
     }
 
 

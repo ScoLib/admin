@@ -31,8 +31,12 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
+    // console.log(from);
+    // console.log(to);
     iView.LoadingBar.start();
-    next();
+    if (to.fullPath != '/#') {
+        next();
+    }
 });
 
 router.afterEach((to, from, next) => {

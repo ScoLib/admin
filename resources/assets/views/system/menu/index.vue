@@ -134,11 +134,13 @@
             },
             addMenu () {
                 this.editModal = true;
-                this.info = {pid: 0, is_menu: 1};
+                this.info = {pid: 0, is_menu: 1, sort: 255};
+                this.errors = {};
             },
             editMenu (index) {
                 this.editModal = true;
                 this.info = this.menuList[index];
+                this.errors = {};
             },
             removeMenu (index) {
                 console.log(this.data);
@@ -148,9 +150,10 @@
                 this.$loading.start();
                 this.$http.post('/admin/system/menu/save', this.info)
                     .then((response) => {
-                        console.log(response.data);
+                        console.log(response);
                         this.$loading.close();
                         this.editModal = false;
+                        this.getResults();
                     }, (response) => {
                         this.$loading.close();
 //                        console.log(response);

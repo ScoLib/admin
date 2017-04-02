@@ -66,11 +66,11 @@ class RbacSetupTables extends Migration
             $table->engine = "InnoDB COMMENT='权限（即菜单）表'";
             $table->increments('id')->comment('主键');
             $table->integer('pid')->comment('父ID');
-            $table->string('icon', 100)->comment('图标class');
+            $table->string('icon', 100)->comment('图标class')->default('');
             $table->string('display_name', 200)->comment('显示名称');
             $table->string('name', 100)->comment('名称');
             $table->tinyInteger('is_menu')->comment('是否作为菜单')->default('1');
-            $table->tinyInteger('sort')->unsigned()->comment('排序');
+            $table->tinyInteger('sort')->unsigned()->comment('排序')->default('0');
             $table->string('description')->nullable()->comment('描述');
             $table->timestamps();
             $table->index('pid');

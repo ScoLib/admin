@@ -3,6 +3,7 @@
 namespace Sco\Admin\Models;
 
 use Cache;
+use Illuminate\Http\Request;
 use Sco\Tree\Traits\TreeTrait;
 use Zizaco\Entrust\EntrustPermission;
 
@@ -151,10 +152,19 @@ class Permission extends EntrustPermission
         return false;
     }
 
-    public function saveMenu(Request $request, $id = 0)
+    public function saveMenu(Request $request)
     {
-        $input = $request->input();
-        $this->updateOrCreate(['id' => $id], $input);
+        if ($request->exists('id')) {
+            $model = $this->findOrFail($request->input('id'));
+            $model->pid = $request->input('pid');
+            $model->display_name = $request->input('display_name');
+
+            $model->save();
+        } else {
+            $this->create($request->input());
+        }
+
+        Cache::forget('permission_all');
         return true;
     }
 }
