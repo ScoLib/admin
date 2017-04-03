@@ -64,7 +64,7 @@ Route::group([
                 ->name('admin.system.menu.postEdit');
 
             // 删除菜单
-            Route::get('menu/{id}/delete', 'MenuController@getDelete')
+            Route::delete('menu/{id}', 'MenuController@delete')
                 ->name('admin.system.menu.delete');
         });
 

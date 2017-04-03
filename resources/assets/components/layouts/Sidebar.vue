@@ -43,7 +43,7 @@
                          exact
             >
                 <a :class="{ 'dropdown-toggle' : Object.keys(menu.child).length > 0 }">
-                    <i :class="['menu-icon', 'fa', menu.icon ? menu.icon : '']"></i>
+                    <i :class="['menu-icon', 'fa', menu.icon ? menu.icon : 'fa-file-o']"></i>
                     <span class="menu-text"> {{ menu.display_name }} </span>
 
                     <b v-if="Object.keys(menu.child).length > 0" class="arrow fa fa-angle-down"></b>

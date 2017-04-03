@@ -3,7 +3,7 @@
         <template v-for="child in childs">
             <li v-if="child.name == '#'">
                 <a href="#" :class="{ 'dropdown-toggle' : Object.keys(child.child).length > 0 }">
-                    <i :class="['menu-icon', 'fa', child.icon ? child.icon : '']"></i>
+                    <i :class="['menu-icon', 'fa', child.icon ? child.icon : 'fa-caret-right']"></i>
                     <span class="menu-text">1 {{ child.display_name }} </span>
                 </a>
                 <b class="arrow"></b>
@@ -15,7 +15,7 @@
                          exact
             >
                 <a :class="{ 'dropdown-toggle' : Object.keys(child.child).length > 0 }">
-                    <i :class="['menu-icon', 'fa', child.icon ? child.icon : '']"></i>
+                    <i :class="['menu-icon', 'fa', child.icon ? child.icon : 'fa-caret-right']"></i>
                     <span class="menu-text"> {{ child.display_name }} </span>
                 </a>
                 <b class="arrow"></b>

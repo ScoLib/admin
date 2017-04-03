@@ -105,8 +105,10 @@ class MenuController extends BaseController
      *
      * @param integer $id
      */
-    public function getDelete($id)
+    public function delete($id)
     {
+        $this->getPermissionModel()->deleteMenu($id);
+        return response()->json(['message' => 'ok']);
     }
 
 

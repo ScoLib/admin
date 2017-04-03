@@ -72,6 +72,12 @@ Sco\Admin\Providers\AdminServiceProvider::class,
     
 ```
 
+```php
+        if ($exception instanceof AdminHttpException) {
+            return response($exception->getMessage(), $exception->getStatusCode());
+        }
+```
+
 编辑auth.php
 ```php
     'guards' => [

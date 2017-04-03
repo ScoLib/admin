@@ -2,8 +2,10 @@
 
 namespace Sco\Admin\Models;
 
+use DB;
 use Cache;
 use Illuminate\Http\Request;
+use Sco\Admin\Exceptions\AdminHttpException;
 use Sco\Tree\Traits\TreeTrait;
 use Zizaco\Entrust\EntrustPermission;
 
@@ -40,9 +42,10 @@ class Permission extends EntrustPermission
             return $this->allRoutes;
         }
 
-        $this->allRoutes = Cache::rememberForever('permission_all', function () {
-            return $this->orderBy('sort')->get();
-        });
+        $this->allRoutes = Cache::rememberForever('permission_all',
+            function () {
+                return $this->orderBy('sort')->get();
+            });
         return $this->allRoutes;
     }
 
@@ -80,7 +83,6 @@ class Permission extends EntrustPermission
 
     /**
      * 获取权限列表
-     *
      *
      * @return \Illuminate\Support\Collection|null
      */
@@ -143,7 +145,7 @@ class Permission extends EntrustPermission
 
     public function getParentTreeAndSelfByName($name)
     {
-        $self   = $this->getInfoByName($name);
+        $self = $this->getInfoByName($name);
         if ($self) {
             $parent = $this->getParentTree($self->id);
             $parent->push($self);
@@ -156,15 +158,44 @@ class Permission extends EntrustPermission
     {
         if ($request->exists('id')) {
             $model = $this->findOrFail($request->input('id'));
-            $model->pid = $request->input('pid');
+
+            $model->pid          = $request->input('pid');
             $model->display_name = $request->input('display_name');
+            $model->name         = $request->input('name');
+            $model->icon         = $request->input('icon');
+            $model->is_menu      = $request->input('is_menu');
+            $model->sort         = $request->input('sort');
+            $model->description  = $request->input('description');
 
             $model->save();
         } else {
             $this->create($request->input());
         }
 
-        Cache::forget('permission_all');
+        $this->clearCache();
         return true;
+    }
+
+    public function deleteMenu($id)
+    {
+        $info = $this->getInfoById($id);
+        if (is_null($info)) {
+            throw new AdminHttpException(404, '菜单不存在');
+        }
+
+        $childs = $this->getDescendants($id)->keys();
+        $childs->push($id);
+        DB::transaction(function () use ($childs) {
+            $this->destroy($childs->toArray());
+        });
+
+        $this->clearCache();
+
+        return true;
+    }
+
+    private function clearCache()
+    {
+        Cache::forget('permission_all');
     }
 }

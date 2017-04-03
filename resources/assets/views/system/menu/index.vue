@@ -143,7 +143,24 @@
                 this.errors = {};
             },
             removeMenu (index) {
-                console.log(this.data);
+                this.$Modal.confirm({
+                    title: '提示',
+                    content: '确定要删除此菜单及其所有子菜单吗？',
+                    loading: true,
+                    onOk: () => {
+                        this.$http.delete('/admin/system/menu/' + index)
+                            .then((response) => {
+                                this.$Modal.remove();
+                                this.$Message.success('删除成功');
+                                this.getResults();
+                            }, (response) => {
+                                console.log(response);
+                                this.$Modal.remove();
+                                this.$Message.error(response.data);
+                            });
+                    }
+                });
+//                console.log(this.data);
 //                this.data.splice(index, 1);
             },
             saveMenu () {
