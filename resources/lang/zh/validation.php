@@ -49,7 +49,7 @@ return [
     'ip'                   => ':attribute 格式不正确',
     'json'                 => ':attribute 必须是JSON数据',
     'max'                  => [
-        'numeric' => 'The :attribute may not be greater than :max.',
+        'numeric' => ':attribute may not be greater than :max.',
         'file'    => 'The :attribute may not be greater than :max kilobytes.',
         'string'  => 'The :attribute may not be greater than :max characters.',
         'array'   => 'The :attribute may not have more than :max items.',

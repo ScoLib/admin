@@ -158,19 +158,19 @@ class Permission extends EntrustPermission
     {
         if ($request->exists('id')) {
             $model = $this->findOrFail($request->input('id'));
-
-            $model->pid          = $request->input('pid');
-            $model->display_name = $request->input('display_name');
-            $model->name         = $request->input('name');
-            $model->icon         = $request->input('icon');
-            $model->is_menu      = $request->input('is_menu');
-            $model->sort         = $request->input('sort');
-            $model->description  = $request->input('description');
-
-            $model->save();
         } else {
-            $this->create($request->input());
+            $model = new self();
         }
+
+        $model->pid          = $request->input('pid');
+        $model->display_name = $request->input('display_name');
+        $model->name         = $request->input('name');
+        $model->icon         = $request->input('icon') ?: '';
+        $model->is_menu      = $request->input('is_menu');
+        $model->sort         = $request->input('sort');
+        $model->description  = $request->input('description') ?: '';
+
+        $model->save();
 
         $this->clearCache();
         return true;

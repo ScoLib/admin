@@ -14,8 +14,6 @@ use Sco\Admin\Exceptions\Handler;
  */
 class BaseController extends Controller
 {
-    use ValidatesRequests;
-
     public function __construct()
     {
         $ehandler = app(\Illuminate\Contracts\Debug\ExceptionHandler::class);

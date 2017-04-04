@@ -3,7 +3,7 @@
 namespace Sco\Admin\Http\Controllers\System;
 
 use Sco\Admin\Http\Controllers\BaseController;
-use Illuminate\Http\Request;
+use Sco\Admin\Http\Requests\PermissionRequest;
 use Sco\Admin\Models\Permission;
 
 /**
@@ -27,74 +27,14 @@ class MenuController extends BaseController
     }
 
     /**
-     * 新增菜单
-     *
-     * @param int $pid
-     *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function getAdd($pid = 0)
-    {
-        if ($pid) {
-        }
-
-        $menus = $this->getPermissionModel()->getMenuTreeList();
-        //return response()->json($menus);
-        return $this->render('system.menu.add', compact('menus'));
-    }
-
-    /**
      * 保存菜单信息
      *
-     * @param \Illuminate\Http\Request $request
+     * @param \Sco\Admin\Http\Requests\PermissionRequest $request 提交数据
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function postAdd(Request $request)
+    public function save(PermissionRequest $request)
     {
-        $this->validate($request, [
-            'pid'          => 'bail|integer',
-            'display_name' => 'bail|required',
-            'name'         => ['bail', 'required', 'regex:/^[\w\.]+$/'],
-            //'' => '',
-        ]);
-
-        $this->getPermissionModel()->saveMenu($request);
-        return response()->json(success('新增菜单完成', ['url' => route('admin.system.menu')]));
-    }
-
-    /**
-     * 编辑菜单
-     *
-     * @param integer $id 菜单ID
-     *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function getEdit($id)
-    {
-        $menu  = Permission::find($id);
-        $menus = $this->getPermissionModel()->getMenuTreeList();
-        return response()->json(success('ok', compact('menu', 'menus')));
-        //return $this->render('system.menu.edit', compact('menu', 'menus'));
-    }
-
-    /**
-     * 保存菜单信息
-     *
-     * @param \Illuminate\Http\Request $request 提交数据
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function save(Request $request)
-    {
-        $this->validate($request, [
-            'pid'          => 'bail|integer',
-            'display_name' => 'bail|required',
-            'name'         => ['bail', 'required', 'regex:/^[\w\.#]+$/'],
-            //'' => '',
-        ], trans('admin::validation'), trans('admin::validation.attributes'));
-
-
         $this->getPermissionModel()->saveMenu($request);
         return response()->json(['message' => 'ok']);
     }

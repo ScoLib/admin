@@ -173,22 +173,17 @@
                         this.getResults();
                     }, (response) => {
                         this.$loading.close();
-//                        console.log(response);
-//                        console.log(typeof response.data);
+                        this.modalLoading = false;
+                        setTimeout(() => {
+                            this.modalLoading = true;
+                        }, 300);
+
                         if (typeof response.data == 'object') {
                             this.errors = response.data;
-                        }
-                            this.modalLoading = false;
-                            setTimeout(() => {
-                                this.modalLoading = true;
-                            }, 300);
-//                        } else {
-//                            this.editModal = false;
+                        } else {
                             this.$Message.error(response.statusText);
-//                        }
+                        }
                     });
-
-//                this.getResults();
             }
         }
     }
