@@ -37,9 +37,15 @@ class AdminServiceProvider extends ServiceProvider
         $this->loadRoutes();
 
         // 后台模板目录
-        $this->loadViewsFrom($this->getBasePath() . '/resources/views', 'admin');
+        $this->loadViewsFrom(
+            $this->getBasePath() . '/resources/views',
+            'admin'
+        );
         // 后台语言包目录
-        $this->loadTranslationsFrom($this->getBasePath() . '/resources/lang', 'admin');
+        $this->loadTranslationsFrom(
+            $this->getBasePath() . '/resources/lang',
+            'admin'
+        );
 
         if ($this->app->runningInConsole()) {
             $this->loadMigrationsFrom($this->getBasePath() . '/database/migrations');
@@ -56,9 +62,11 @@ class AdminServiceProvider extends ServiceProvider
     {
         //$this->commands($this->commands);
 
-        $this->mergeConfigFrom($this->getBasePath() . '/config/admin.php', 'admin');
+        $this->mergeConfigFrom(
+            $this->getBasePath() . '/config/admin.php',
+            'admin'
+        );
     }
-
 
     protected function loadRoutes()
     {
