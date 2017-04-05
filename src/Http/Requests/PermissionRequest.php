@@ -23,8 +23,9 @@ class PermissionRequest extends BaseFormRequest
     {
         return [
             'pid'          => 'integer',
-            'display_name' => 'required|max:5',
+            'display_name' => 'required|max:50',
             'name'         => ['bail', 'required', 'regex:/^[\w\.#]+$/'],
+            'is_menu'      => 'in:0,1',
             'sort'         => 'integer|between:0,255',
         ];
     }

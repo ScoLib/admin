@@ -160,8 +160,6 @@
                             });
                     }
                 });
-//                console.log(this.data);
-//                this.data.splice(index, 1);
             },
             saveMenu () {
                 this.$loading.start();

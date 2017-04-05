@@ -4,6 +4,8 @@ namespace Sco\Admin\Exceptions;
 
 use Exception;
 use Illuminate\Contracts\Debug\ExceptionHandler as ExceptionHandlerContract;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class Handler implements ExceptionHandlerContract
 {
@@ -37,7 +39,11 @@ class Handler implements ExceptionHandlerContract
      */
     public function render($request, Exception $exception)
     {
-        if ($exception instanceof AdminHttpException) {
+        if ($exception instanceof ModelNotFoundException) {
+            return response($exception->getMessage(), 404);
+        }
+
+        if ($exception instanceof HttpException) {
             return response($exception->getMessage(), $exception->getStatusCode());
         }
 

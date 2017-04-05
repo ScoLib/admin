@@ -4,6 +4,7 @@ namespace Sco\Admin\Http\Middleware;
 
 use Closure;
 use Route;
+use Auth;
 use Sco\Admin\Models\Permission;
 
 class AdminMenu
@@ -25,7 +26,23 @@ class AdminMenu
 
     protected function getAdminMenu()
     {
-        return (new Permission())->getMenuList();
+        return $this->checkMenuPermission((new Permission())->getMenuList());
+
+    }
+
+    private function checkMenuPermission($list)
+    {
+
+        $return = $list->filter(function ($permission, $key) {
+            if (request()->user()->can($permission->name)) {
+                if (!$permission->child->isEmpty()) {
+                    $permission->child = $this->checkMenuPermission($permission->child);
+                }
+                return $permission;
+            }
+        });
+
+        return $return;
     }
 
     protected function getCurrentMenuIds()

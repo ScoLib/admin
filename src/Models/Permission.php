@@ -156,18 +156,18 @@ class Permission extends EntrustPermission
 
     public function saveMenu(Request $request)
     {
-        if ($request->exists('id')) {
-            $model = $this->findOrFail($request->input('id'));
+        if (empty($request->input('id'))) {
+            $model = $this;
         } else {
-            $model = new self();
+            $model = $this->findOrFail($request->input('id'));
         }
 
         $model->pid          = $request->input('pid');
         $model->display_name = $request->input('display_name');
         $model->name         = $request->input('name');
         $model->icon         = $request->input('icon') ?: '';
-        $model->is_menu      = $request->input('is_menu');
-        $model->sort         = $request->input('sort');
+        $model->is_menu      = $request->input('is_menu', 0);
+        $model->sort         = $request->input('sort', 255);
         $model->description  = $request->input('description') ?: '';
 
         $model->save();
