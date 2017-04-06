@@ -43,15 +43,11 @@
 
                     <!-- /section:basics/content.breadcrumbs -->
                     <div class="page-content">
-                        <div class="row">
-                            <div class="col-xs-12">
-                                <!-- PAGE CONTENT BEGINS -->
-                                <transition name="fade">
-                                    <router-view></router-view>
-                                </transition>
-                                <!-- PAGE CONTENT ENDS -->
-                            </div><!-- /.col -->
-                        </div><!-- /.row -->
+                        <!-- PAGE CONTENT BEGINS -->
+                        <transition name="fade">
+                            <router-view></router-view>
+                        </transition>
+                        <!-- PAGE CONTENT ENDS -->
                     </div><!-- /.page-content -->
                 </div>
             </div><!-- /.main-content -->

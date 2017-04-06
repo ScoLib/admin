@@ -23,7 +23,7 @@ class MenuController extends BaseController
     {
         $menus = $this->getPermissionModel()->getMenuTreeList();
 
-        return response()->json($menus);
+        return response()->json($menus->values());
     }
 
     /**

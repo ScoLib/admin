@@ -12,23 +12,21 @@ Route::group([
     //退出
     Route::get('logout', 'Auth\LoginController@logout')->name('admin.logout');
 
-    Route::get('/menu', function () {
-        $menus = request()->get('admin.menu');
-        return response()->json($menus);
-    })->name('admin.menu')
-        ->middleware('admin.menu');
-
     Route::group(['middleware' => 'auth.admin'], function () {
         // 控制台
         Route::get('/', 'BaseController@index')
-            ->name('admin.index')
+            ->name('admin.index');
+
+        Route::get('menu', function () {
+            $menus = request()->get('admin.menu');
+            return response()->json($menus);
+        })->name('admin.menu')
             ->middleware('admin.menu');
 
         Route::group(['prefix' => 'system'], function () {
             // 菜单管理
             Route::get('menu', 'BaseController@index')
-                ->name('admin.system.menu')
-                ->middleware('admin.menu');
+                ->name('admin.system.menu');
         });
 
         // 系统管理

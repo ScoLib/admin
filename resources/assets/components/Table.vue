@@ -1,6 +1,6 @@
 <template>
-    <table class="table table-striped table-bordered table-hover">
-        <thead class="thin-border-bottom">
+    <table class="table table-hover">
+        <thead>
         <tr>
             <th v-for="column in columns" :class="column.class">
                 <template v-if="column.type == 'selection'">
@@ -33,11 +33,47 @@
         name: 'bTable',
         data () {
             return {
+                checkboxData: {},
 
             }
         },
+        watch: {
+            data: {
+                handler () {
+                    this.checkboxData = this.makeCheckboxData();
+                },
+                deep: true
+            }
+        },
         methods: {
+            toggleSelect (status) {
+                console.log(status);
+            },
+            selectAll (status) {
+                console.log(status);
+//                for (row in this.data) {
+//                    this.checkboxData = this.makeCheckboxData();
+//                }
+            },
+            makeCheckboxData () {
+                let data = {};
+                this.data.forEach((row, index) => {
+                    const newRow = row;
+                    if (newRow._disabled) {
+                        newRow._isDisabled = newRow._disabled;
+                    } else {
+                        newRow._isDisabled = false;
+                    }
+                    if (newRow._checked) {
+                        newRow._isChecked = newRow._checked;
+                    } else {
+                        newRow._isChecked = false;
+                    }
+                    data[index] = newRow;
+                });
 
+                return data;
+            }
         },
         props: {
             data: {

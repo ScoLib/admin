@@ -1,38 +1,90 @@
 <template>
     <div class="row">
         <div class="col-xs-12">
-            <div class="header pull-left">
-                <ul class="nav nav-tabs padding-10 pull-left">
+            <div class="tabbable">
+                <ul class="nav nav-tabs">
                     <li class="active">
-                        <a data-toggle="tab" href="#" aria-expanded="true">
+                        <a data-toggle="tab" href="#">
                             列表
                         </a>
                     </li>
 
+
                 </ul>
 
-                <ul class="pull-right right-btn">
-                    <li><button type="button" class="btn btn-primary btn-xs" @click.prevent="addMenu">新建菜单</button></li>
-                </ul>
+                <div class="tab-content">
+                    <div class="box">
+                        <div class="box-header clearfix">
+                            <div class="btn-group">
+                                <button data-toggle="dropdown" class="btn btn-primary btn-xs btn-white dropdown-toggle">
+                                    批量
+                                    <i class="ace-icon fa fa-angle-down icon-on-right"></i>
+                                </button>
+
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a href="#">Action</a>
+                                    </li>
+
+                                    <li>
+                                        <a href="#">Another action</a>
+                                    </li>
+
+                                    <li>
+                                        <a href="#">Something else here</a>
+                                    </li>
+
+                                    <li class="divider"></li>
+
+                                    <li>
+                                        <a href="#">Separated link</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="btn-group pull-right">
+                                <button type="button" class="btn btn-success btn-xs" @click.prevent="addMenu">
+                                    <i class="ace-icon fa fa-plus bigger-120"></i></button>
+                            </div>
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body table-responsive no-padding">
+                            <b-table :columns="columns" :data="menuList">
+                                <template slot="display_name" scope="props">
+                                    <i v-html="props.row.spacer"></i> {{ props.row.display_name }}
+                                </template>
+                                <template slot="is_menu" scope="props">
+                                    {{ props.row.is_menu ? '是' : '否' }}
+                                </template>
+                                <template slot="icon" scope="props">
+                                    <i :class="['menu-icon', 'fa', props.row.icon]"></i>
+                                </template>
+                                <template slot="actions" scope="props">
+                                    <div class="hidden-sm hidden-xs btn-group">
+                                        <button class="btn btn-xs btn-info" @click.prevent="editMenu(props.row.id)">
+                                            <i class="ace-icon fa fa-pencil bigger-120"></i>
+                                        </button>
+                                        <button class="btn btn-xs btn-danger" @click.prevent="removeMenu(props.row.id)">
+                                            <i class="ace-icon fa fa-trash-o bigger-120"></i>
+                                        </button>
+                                    </div>
+                                </template>
+                            </b-table>
+                        </div>
+                        <!-- /.box-body -->
+                        <div class="box-footer clearfix">
+                            <ul class="pagination pagination-sm no-margin pull-right">
+                                <li><a href="#">«</a></li>
+                                <li><a href="#">1</a></li>
+                                <li><a href="#">2</a></li>
+                                <li><a href="#">3</a></li>
+                                <li><a href="#">»</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+
+                </div>
             </div>
-
-            <b-table :columns="columns" :data="menuList">
-                <template slot="display_name" scope="props">
-                    <i v-html="props.row.spacer"></i> {{ props.row.display_name }}
-                </template>
-                <template slot="icon" scope="props">
-                    <i :class="['menu-icon', 'fa', props.row.icon]"></i>
-                </template>
-                <template slot="actions" scope="props">
-                    <button type="button" class="btn btn-default btn-xs" @click.prevent="editMenu(props.row.id)">
-                        <i class="fa fa-pencil"></i> 编辑
-                    </button>
-                    <button type="button" class="btn btn-danger btn-xs" @click.prevent="removeMenu(props.row.id)">
-                        <i class="fa fa-trash-o"></i> 删除
-                    </button>
-                </template>
-            </b-table>
-
             <Modal
                     v-model="editModal"
                     :title="modalTitle"
