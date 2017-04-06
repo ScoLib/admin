@@ -4,7 +4,7 @@
         <tr>
             <th v-for="column in columns" :class="column.class">
                 <template v-if="column.type == 'selection'">
-                    <input type="checkbox">
+                    <Checkbox :value="checkAll" @on-change="selectAll"></Checkbox>
                 </template>
                 <template v-else>
                     {{ column.title }}
@@ -16,7 +16,7 @@
             <tr v-for="(row, key) in data" :key="key">
                 <td v-for="column in columns">
                     <template v-if="column.type == 'selection'">
-                        <input type="checkbox">
+                        <Checkbox :label="row[column.key]" @on-change="toggleSelect"></Checkbox>
                     </template>
                     <template v-else>
                         <slot :name="column.key" :row="row">{{ row[column.key] }}</slot>
@@ -34,7 +34,7 @@
         data () {
             return {
                 checkboxData: {},
-
+                checkAll: false,
             }
         },
         watch: {
@@ -50,10 +50,9 @@
                 console.log(status);
             },
             selectAll (status) {
-                console.log(status);
-//                for (row in this.data) {
-//                    this.checkboxData = this.makeCheckboxData();
-//                }
+                for (const row of this.data) {
+                    console.log(row);
+                }
             },
             makeCheckboxData () {
                 let data = {};

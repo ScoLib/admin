@@ -43,12 +43,15 @@
                             </div>
                             <div class="btn-group pull-right">
                                 <button type="button" class="btn btn-success btn-xs" @click.prevent="addMenu">
-                                    <i class="ace-icon fa fa-plus bigger-120"></i></button>
+                                    <i class="fa fa-plus bigger-120"></i></button>
                             </div>
                         </div>
                         <!-- /.box-header -->
                         <div class="box-body table-responsive no-padding">
-                            <b-table :columns="columns" :data="menuList">
+
+                            <Table :columns="columns" :data="menuList" @on-selection-change="getSelected"></Table>
+
+                            <!--<b-table :columns="columns" :data="menuList">
                                 <template slot="display_name" scope="props">
                                     <i v-html="props.row.spacer"></i> {{ props.row.display_name }}
                                 </template>
@@ -61,14 +64,14 @@
                                 <template slot="actions" scope="props">
                                     <div class="hidden-sm hidden-xs btn-group">
                                         <button class="btn btn-xs btn-info" @click.prevent="editMenu(props.row.id)">
-                                            <i class="ace-icon fa fa-pencil bigger-120"></i>
+                                            <i class="fa fa-pencil bigger-120"></i>
                                         </button>
                                         <button class="btn btn-xs btn-danger" @click.prevent="removeMenu(props.row.id)">
-                                            <i class="ace-icon fa fa-trash-o bigger-120"></i>
+                                            <i class="fa fa-trash-o bigger-120"></i>
                                         </button>
                                     </div>
                                 </template>
-                            </b-table>
+                            </b-table>-->
                         </div>
                         <!-- /.box-body -->
                         <div class="box-footer clearfix">
@@ -124,17 +127,20 @@
                 columns: [
                     {
                         type: 'selection',
-                        width: 60,
-                        align: 'center'
+                        width: 40,
+                        align: 'center',
                     },
                     {
                         title: 'ID',
+                        width: 60,
                         key: 'id'
                     },
                     {
                         title: '标题',
                         key: 'display_name',
-                        class: 'col-sm-3',
+                        render (row, column, index) {
+                            return `${row.spacer} ${row.display_name}`;
+                        }
                     },
                     {
                         title: '名称',
@@ -142,23 +148,42 @@
                     },
                     {
                         title: '菜单',
+                        width: 60,
                         key: 'is_menu',
+                        render (row, column, index) {
+                            return row.is_menu ? '是' : '否';
+                        }
                     },
                     {
                         title: '图标',
+                        width: 60,
                         key: 'icon',
+                        render (row, column, index) {
+                            return `<i class="menu-icon fa ${row.icon}"></i>`;
+                        }
                     },
                     {
                         title: '排序',
+                        width: 60,
                         key: 'sort',
                     },
                     {
                         title: '操作',
-                        key: 'actions',
+                        key: 'action',
                         align: 'center',
+                        render (row, column, index) {
+                            return `<div class="hidden-sm hidden-xs btn-group">
+                                        <button class="btn btn-xs btn-info" @click.prevent="editMenu(${index})">
+                                            <i class="fa fa-pencil bigger-120"></i>
+                                        </button>
+                                        <button class="btn btn-xs btn-danger" @click.prevent="removeMenu(${index})">
+                                            <i class="fa fa-trash-o bigger-120"></i>
+                                        </button>
+                                    </div>`;
+                        }
                     }
                 ],
-                menuList: {}
+                menuList: []
             }
         },
         computed: {
@@ -172,6 +197,9 @@
         watch: {
         },
         methods: {
+            getSelected (selection) {
+                console.log(selection);
+            },
             getResults() {
                 this.$loading.start();
                 this.$http.get('/admin/system/menu/list').then(response => {
@@ -200,13 +228,13 @@
                     content: '确定要删除此菜单及其所有子菜单吗？',
                     loading: true,
                     onOk: () => {
-                        this.$http.delete('/admin/system/menu/' + index)
+                        this.$http.delete('/admin/system/menu/' + this.menuList[index].id)
                             .then((response) => {
                                 this.$Modal.remove();
                                 this.$Message.success('删除成功');
                                 this.getResults();
                             }, (response) => {
-                                console.log(response);
+//                                console.log(response);
                                 this.$Modal.remove();
                                 this.$Message.error(response.data);
                             });
