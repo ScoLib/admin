@@ -2,6 +2,7 @@
 
 namespace Sco\Admin\Providers;
 
+use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\ServiceProvider;
 
 /**
@@ -53,6 +54,24 @@ class AdminServiceProvider extends ServiceProvider
         }
     }
 
+    protected function registerMiddleware()
+    {
+        $router = $this->app['router'];
+        foreach ($this->middlewares as $key => $middleware) {
+            $router->aliasMiddleware($key, $middleware);
+        }
+    }
+
+    protected function loadRoutes()
+    {
+        $routesFile = $this->getBasePath() . '/routes/admin.php';
+        if (file_exists(base_path('routes/admin.php'))) {
+            $routesFile = base_path('routes/admin.php');
+        }
+
+        $this->loadRoutesFrom($routesFile);
+    }
+
     /**
      * Register the application services.
      *
@@ -66,25 +85,17 @@ class AdminServiceProvider extends ServiceProvider
             $this->getBasePath() . '/config/admin.php',
             'admin'
         );
+
+        $this->registerEntrust();
     }
 
-    protected function loadRoutes()
+    protected function registerEntrust()
     {
-        $routesFile = $this->getBasePath() . '/routes/admin.php';
-        if (file_exists(base_path('routes/admin.php'))) {
-            $routesFile = base_path('routes/admin.php');
-        }
+        $this->app->register(\Zizaco\Entrust\EntrustServiceProvider::class);
 
-        $this->loadRoutesFrom($routesFile);
+        AliasLoader::getInstance()->alias('Entrust', \Zizaco\Entrust\EntrustFacade::class);
     }
 
-    protected function registerMiddleware()
-    {
-        $router = $this->app['router'];
-        foreach ($this->middlewares as $key => $middleware) {
-            $router->aliasMiddleware($key, $middleware);
-        }
-    }
 
     protected function publishAdmin()
     {
@@ -127,7 +138,7 @@ class AdminServiceProvider extends ServiceProvider
     protected function publishRoutes()
     {
         $this->publishes([
-            $this->getBasePath() . '/routes/admin.php' => base_path('routes/admin.php')
+            $this->getBasePath() . '/routes/admin.php' => base_path('routes/admin.php'),
         ], 'routes');
     }
 }

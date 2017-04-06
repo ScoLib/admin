@@ -55,17 +55,13 @@ npm run production
 Via Composer
 
 ``` bash
-"scolib/admin": "1.0.x@dev",
-"scolib/entrust": "dev-sco"
+"scolib/admin": "1.0.x@dev"
 ```
 
 ## Usage
 
 ``` php
-Zizaco\Entrust\EntrustServiceProvider::class,
 Sco\Admin\Providers\AdminServiceProvider::class,
-
-'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
     
 ```
 

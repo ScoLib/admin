@@ -25,12 +25,10 @@ class AdminMenu
     protected function getAdminMenu()
     {
         return $this->checkMenuPermission((new Permission())->getMenuList());
-
     }
 
     private function checkMenuPermission($list)
     {
-
         $return = $list->filter(function ($permission, $key) {
             if (request()->user()->can($permission->name)) {
                 if (!$permission->child->isEmpty()) {
