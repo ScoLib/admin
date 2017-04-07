@@ -7,19 +7,22 @@ require('./ace/script');
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import VueResource from 'vue-resource';
-import iView from 'iview';
-import 'iview/dist/styles/iview.css';
+import ElementUI from 'element-ui';
+
+// import iView from 'iview';
+// import 'iview/dist/styles/iview.css';
 
 import routes from './routes';
 import App from './components/App.vue';
 import store from './store/';
 import filters from './filters/';
-import Loading from './loading';
+// import Loading from './loading';
 
 Vue.use(VueRouter);
 Vue.use(VueResource);
-Vue.use(iView);
-Vue.use(Loading);
+Vue.use(ElementUI);
+// Vue.use(iView);
+// Vue.use(Loading);
 
 const router = new VueRouter({
     routes,
@@ -33,14 +36,14 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
     // console.log(from);
     // console.log(to);
-    iView.LoadingBar.start();
+    // iView.LoadingBar.start();
     if (to.fullPath != '/#') {
         next();
     }
 });
 
 router.afterEach((to, from, next) => {
-    iView.LoadingBar.finish();
+    // iView.LoadingBar.finish();
 });
 
 Vue.http.headers.common['X-CSRF-TOKEN'] = $('meta[name="csrf-token"]').attr('content');

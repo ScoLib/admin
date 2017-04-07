@@ -17,10 +17,10 @@ NPM
   "dependencies": {
     "bootstrap": "^3.3.7",
     "font-awesome": "^4.7.0",
-    "iview": "^2.0.0-rc.5",
     "jquery": "^2.2.4",
     "vue-resource": "^1.2.1",
-    "vue-router": "^2.3.0"
+    "vue-router": "^2.3.0",
+    "element-ui": "^1.2.7"
   }
 ```
 
@@ -38,7 +38,7 @@ mix.js('resources/assets/vendor/admin/main.js', 'public/js/admin.js')
             publicPath: '/',
         },
     });
-mix.less('resources/assets/vendor/admin/less/ace.less', 'public/css/admin.css');
+mix.less('resources/assets/vendor/admin/less/admin.less', 'public/css/admin.css');
 
 if (mix.config.inProduction) {
     mix.version();

@@ -1,57 +1,59 @@
 <template>
     <div id="sidebar" class="sidebar responsive ace-save-state sidebar-fixed display">
 
-        <div class="sidebar-shortcuts" id="sidebar-shortcuts">
-            <div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
-                <button class="btn btn-success">
-                    <i class="ace-icon fa fa-signal"></i>
-                </button>
+        <aside v-loading="loading">
+            <div class="sidebar-shortcuts" id="sidebar-shortcuts">
+                <div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
+                    <button class="btn btn-success">
+                        <i class="ace-icon fa fa-signal"></i>
+                    </button>
 
-                <button class="btn btn-info">
-                    <i class="ace-icon fa fa-pencil"></i>
-                </button>
+                    <button class="btn btn-info">
+                        <i class="ace-icon fa fa-pencil"></i>
+                    </button>
 
-                <!-- #section:basics/sidebar.layout.shortcuts -->
-                <button class="btn btn-warning">
-                    <i class="ace-icon fa fa-users"></i>
-                </button>
+                    <!-- #section:basics/sidebar.layout.shortcuts -->
+                    <button class="btn btn-warning">
+                        <i class="ace-icon fa fa-users"></i>
+                    </button>
 
-                <button class="btn btn-danger">
-                    <i class="ace-icon fa fa-cogs"></i>
-                </button>
+                    <button class="btn btn-danger">
+                        <i class="ace-icon fa fa-cogs"></i>
+                    </button>
 
-                <!-- /section:basics/sidebar.layout.shortcuts -->
-            </div>
+                    <!-- /section:basics/sidebar.layout.shortcuts -->
+                </div>
 
-            <div class="sidebar-shortcuts-mini" id="sidebar-shortcuts-mini">
-                <span class="btn btn-success"></span>
+                <div class="sidebar-shortcuts-mini" id="sidebar-shortcuts-mini">
+                    <span class="btn btn-success"></span>
 
-                <span class="btn btn-info"></span>
+                    <span class="btn btn-info"></span>
 
-                <span class="btn btn-warning"></span>
+                    <span class="btn btn-warning"></span>
 
-                <span class="btn btn-danger"></span>
-            </div>
-        </div><!-- /.sidebar-shortcuts -->
+                    <span class="btn btn-danger"></span>
+                </div>
+            </div><!-- /.sidebar-shortcuts -->
 
-        <transition-group name="fade" class="nav nav-list" tag="ul">
-            <router-link tag="li"
-                         v-for="(menu, menu_key) in menus"
-                         :to="menu.name == '#' ? notUrl : {name: menu.name}"
-                         :key="menu_key"
-                         :active-class="Object.keys(menu.child).length > 0 ? 'active open' : 'active'"
-                         exact
-            >
-                <a :class="{ 'dropdown-toggle' : Object.keys(menu.child).length > 0 }">
-                    <i :class="['menu-icon', 'fa', menu.icon ? menu.icon : 'fa-file-o']"></i>
-                    <span class="menu-text"> {{ menu.display_name }} </span>
+            <transition-group name="fade" class="nav nav-list" tag="ul">
+                <router-link tag="li"
+                             v-for="(menu, menu_key) in menus"
+                             :to="menu.name == '#' ? notUrl : {name: menu.name}"
+                             :key="menu_key"
+                             :active-class="Object.keys(menu.child).length > 0 ? 'active open' : 'active'"
+                             exact
+                >
+                    <a :class="{ 'dropdown-toggle' : Object.keys(menu.child).length > 0 }">
+                        <i :class="['menu-icon', 'fa', menu.icon ? menu.icon : 'fa-file-o']"></i>
+                        <span class="menu-text"> {{ menu.display_name }} </span>
 
-                    <b v-if="Object.keys(menu.child).length > 0" class="arrow fa fa-angle-down"></b>
-                </a>
-                <b class="arrow"></b>
-                <Submenu v-if="Object.keys(menu.child).length > 0" :childs="menu.child"></Submenu>
-            </router-link>
-        </transition-group><!-- /.nav-list -->
+                        <b v-if="Object.keys(menu.child).length > 0" class="arrow fa fa-angle-down"></b>
+                    </a>
+                    <b class="arrow"></b>
+                    <Submenu v-if="Object.keys(menu.child).length > 0" :childs="menu.child"></Submenu>
+                </router-link>
+            </transition-group><!-- /.nav-list -->
+        </aside>
 
         <!-- #section:basics/sidebar.layout.minimize -->
         <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
@@ -73,19 +75,18 @@
     export default {
         data () {
             return {
-                menus: {}
+                menus: {},
+                loading: false,
             }
         },
         components: {
             Submenu
         },
         created () {
-//            this.$Message.loading('正在加载中...', 0);
-//            this.$loading.start();
+            this.loading = true;
             this.$http.get('/admin/menu').then(response => {
-//                this.$loading.close();
+                this.loading = false;
                 this.menus = response.data;
-//                this.$Message.destroy();
             });
         },
         computed: {
