@@ -118,6 +118,16 @@
                     <el-button type="primary" @click="saveMenu" :loading="formLoading">确 定</el-button>
                 </div>
             </el-dialog>
+
+            <!--<Modal
+                    v-model="editModal"
+                    :title="modalTitle"
+                    :loading="modalLoading"
+                    @on-ok="saveMenu"
+            >
+                <form-dialog :info="info" :menuList="menuList" :errors="errors"></form-dialog>
+
+            </Modal>-->
         </div>
     </div>
 </template>
