@@ -13,6 +13,13 @@ const routes = [
             require(['./views/system/menu/index.vue'], resolve);
         },
         name: 'admin.system.menu'
+    },
+    {
+        path: '/admin/manager/user',
+        component (resolve) {
+            require(['./views/manager/user/index.vue'], resolve);
+        },
+        name: 'admin.manager.user'
     }
 ];
 export default routes;

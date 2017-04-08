@@ -82,9 +82,9 @@ Sco\Admin\Providers\AdminServiceProvider::class,
     ],
 ```
 
-tag: assets/config/views/lang
+--tag: assets/config/views/lang/routes
 ```php
-php artisan vendor:publish --provider="Sco\Admin\Providers\AdminServiceProvider" --tag="config" --force
+php artisan vendor:publish --provider="Sco\Admin\Providers\AdminServiceProvider" --force
 php artisan migrate
 php artisan db:seed --class=AdminTableSeeder
 ```

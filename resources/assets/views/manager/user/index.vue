@@ -42,47 +42,27 @@
                                 </ul>
                             </div>
                             <div class="btn-group pull-right">
-                                <button type="button" class="btn btn-success btn-xs" @click.prevent="addMenu">
+                                <button type="button" class="btn btn-success btn-xs" @click.prevent="add">
                                     <i class="fa fa-plus bigger-120"></i></button>
                             </div>
                         </div>
                         <!-- /.box-header -->
                         <div class="box-body table-responsive no-padding">
 
-                            <el-table :data="menuList" v-loading="tableLoading">
+                            <el-table :data="pageData.data" v-loading="tableLoading">
                                 <el-table-column type="selection">
                                 </el-table-column>
 
                                 <el-table-column label="ID" prop="id" width="60">
                                 </el-table-column>
 
-                                <el-table-column label="显示名称">
-                                    <template scope="scope">
-                                        <span v-html="scope.row.spacer"></span> {{ scope.row.display_name }}
-                                    </template>
+                                <el-table-column label="名称" prop="name">
                                 </el-table-column>
 
-                                <el-table-column
-                                        label="名称"
-                                        prop="name"
-                                        class-name="hidden-xs">
+                                <el-table-column label="邮箱" prop="email">
                                 </el-table-column>
 
-                                <el-table-column
-                                        label="菜单"
-                                        width="60">
-                                    <template scope="scope">
-                                        {{ scope.row.is_menu ? '是' : '否' }}
-                                    </template>
-                                </el-table-column>
-
-                                <el-table-column
-                                        label="图标"
-                                        width="60"
-                                        class-name="hidden-xs">
-                                    <template scope="scope">
-                                        <i :class="['menu-icon', 'fa', scope.row.icon]"></i>
-                                    </template>
+                                <el-table-column label="创建时间" prop="created_at">
                                 </el-table-column>
 
                                 <el-table-column
@@ -91,7 +71,7 @@
                                         align="center"
                                         column-key="index">
                                     <template scope="scope">
-                                        <div class=" btn-group">
+                                        <div class="hidden-xs btn-group">
                                             <button class="btn btn-xs btn-info" @click.prevent="editMenu(scope.$index)">
                                                 <i class="fa fa-pencil bigger-120"></i>
                                             </button>
@@ -113,6 +93,10 @@
                                 <li><a href="#">3</a></li>
                                 <li><a href="#">»</a></li>
                             </ul>-->
+                            <el-pagination
+                                    layout="total, prev, pager, next"
+                                    :total="pageData.total">
+                            </el-pagination>
                         </div>
                     </div>
 
@@ -120,22 +104,13 @@
                 </div>
             </div>
             <el-dialog :title="modalTitle" v-model="editModal">
-                <form-dialog :info="info" :menuList="menuList" :errors="errors"></form-dialog>
+                <form-dialog :info="info" :errors="errors"></form-dialog>
                 <div slot="footer" class="dialog-footer">
                     <el-button @click="editModal = false">取 消</el-button>
                     <el-button type="primary" @click="saveMenu" :loading="formLoading">确 定</el-button>
                 </div>
             </el-dialog>
 
-            <!--<Modal
-                    v-model="editModal"
-                    :title="modalTitle"
-                    :loading="modalLoading"
-                    @on-ok="saveMenu"
-            >
-                <form-dialog :info="info" :menuList="menuList" :errors="errors"></form-dialog>
-
-            </Modal>-->
         </div>
     </div>
 </template>
@@ -150,11 +125,11 @@
         },
         data() {
             return {
-                title: '菜单管理',
+                title: '管理员',
                 breads: [
                     {
                         'url': '',
-                        'title': '系统管理',
+                        'title': '管理组',
                     }
                 ],
 
@@ -165,13 +140,13 @@
 
                 tableLoading: false,
                 formLoading: false,
-                menuList: [],
+                pageData: {},
                 selection: [],
             }
         },
         computed: {
             modalTitle: function () {
-                return this.info.id ? '编辑菜单' : '新建菜单';
+                return this.info.id ? '编辑管理员' : '新建管理员';
             },
         },
         created () {
@@ -186,10 +161,10 @@
             getResults() {
 //                this.$loading.start();
                 this.tableLoading = true;
-                this.$http.get('/admin/system/menu/list').then(response => {
+                this.$http.get('/admin/manager/user/list').then(response => {
                     this.tableLoading = false;
 //                    this.$loading.close();
-                    this.menuList = response.data;
+                    this.pageData = response.data;
                 });
 
             },
@@ -197,16 +172,16 @@
                 this.$parent.setBreads(this.breads, this.title);
                 this.getResults();
             },
-            addMenu () {
+            add () {
                 this.editModal = true;
                 this.info = {pid: 0, is_menu: 1, sort: 255};
                 this.errors = {};
             },
             editMenu (index) {
 //                console.log(index);
-//                console.log(this.menuList[index]);
+//                console.log(this.userList[index]);
                 this.editModal = true;
-                this.info = this.menuList[index];
+                this.info = this.pageData.data[index];
                 this.errors = {};
             },
             removeMenu (id) {

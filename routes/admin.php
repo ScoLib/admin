@@ -23,48 +23,28 @@ Route::group([
         })->name('admin.menu')
             ->middleware('admin.menu');
 
-        Route::group(['prefix' => 'system'], function () {
-            // 菜单管理
-            Route::get('menu', 'BaseController@index')
-                ->name('admin.system.menu');
-        });
+        // 菜单管理
+        Route::get('system/menu', 'BaseController@index')
+            ->name('admin.system.menu');
 
-        // 系统管理
-        Route::group(['prefix' => 'system', 'namespace' => 'System'], function () {
-            // 站点设置
-            /*Route::get('config', 'ConfigController@getIndex')
-                ->name('admin.system.config')
-                ->middleware('admin.menu');*/
+        // 菜单列表数据
+        Route::get('system/menu/list', 'System\MenuController@getList')
+            ->name('admin.system.menu.list');
 
-            // 保存设置
-            /*Route::post('config/save', 'ConfigController@postIndex')
-                ->name('admin.system.config.save');*/
+        // 保存菜单
+        Route::post('system/menu/save', 'System\MenuController@save')
+            ->name('admin.system.menu.save');
 
+        // 删除菜单
+        Route::delete('system/menu/{id}', 'System\MenuController@delete')
+            ->name('admin.system.menu.delete');
 
+        Route::get('manager/user', 'BaseController@index')
+            ->name('admin.manager.user');
 
-            Route::get('menu/list', 'MenuController@getList')
-                ->name('admin.system.menu');
-
-            // 新增菜单
-            Route::get('menu/add/{pid?}', 'MenuController@getAdd')
-                ->name('admin.system.menu.add');
-
-            // 保存新增菜单
-            Route::post('menu/save', 'MenuController@save')
-                ->name('admin.system.menu.save');
-
-            // 编辑路由
-            Route::get('menu/{id}/edit', 'MenuController@getEdit')
-                ->name('admin.system.menu.edit');
-
-            // 保存编辑菜单
-            Route::post('menu/{id}/edit', 'MenuController@postEdit')
-                ->name('admin.system.menu.postEdit');
-
-            // 删除菜单
-            Route::delete('menu/{id}', 'MenuController@delete')
-                ->name('admin.system.menu.delete');
-        });
+        // 管理员列表数据
+        Route::get('manager/user/list', 'Manager\UserController@getList')
+            ->name('admin.manager.user.list');
 
         //用户管理
         /*Route::group(['prefix' => 'users', 'namespace' => 'Users'], function () {
