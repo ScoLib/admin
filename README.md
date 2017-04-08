@@ -77,7 +77,7 @@ Sco\Admin\Providers\AdminServiceProvider::class,
     'providers' => [
         'admin' => [
             'driver' => 'eloquent',
-            'model' => \Sco\Admin\Models\AdminUser::class,
+            'model' => \Sco\Admin\Models\Manager::class,
         ],
     ],
 ```
