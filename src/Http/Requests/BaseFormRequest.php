@@ -7,7 +7,6 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class BaseFormRequest extends FormRequest
 {
-
     public function messages()
     {
         return array_merge(trans('admin::validation'), $this->getMessages());
@@ -16,7 +15,6 @@ class BaseFormRequest extends FormRequest
     public function attributes()
     {
         return array_merge(trans('admin::validation.attributes'), $this->getAttributes());
-
     }
 
     protected function getMessages()

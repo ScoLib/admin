@@ -55,5 +55,4 @@ class ManagerRequest extends BaseFormRequest
             'name' => '管理员名称',
         ];
     }
-
 }
