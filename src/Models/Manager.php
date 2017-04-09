@@ -10,7 +10,13 @@ class Manager extends Authenticatable
 {
     use EntrustUserTrait;
 
-    protected $visible = ['id', 'name', 'email', 'created_at'];
+    protected $visible = ['id', 'name', 'email', 'created_at', 'roles'];
 
     protected $guarded = ['created_at', 'updated_at'];
+
+    public function setPasswordAttribute($value)
+    {
+        $this->attributes['password'] = bcrypt($value);
+    }
+
 }

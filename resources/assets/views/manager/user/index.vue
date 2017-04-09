@@ -65,6 +65,14 @@
                                 <el-table-column label="创建时间" prop="created_at">
                                 </el-table-column>
 
+                                <el-table-column label="管理组">
+                                    <template scope="scope">
+                                        <template v-for="role in scope.row.roles">
+                                            {{ role.name }}
+                                        </template>
+                                    </template>
+                                </el-table-column>
+
                                 <el-table-column
                                         label="操作"
                                         width="120"
@@ -72,10 +80,10 @@
                                         column-key="index">
                                     <template scope="scope">
                                         <div class="hidden-xs btn-group">
-                                            <button class="btn btn-xs btn-info" @click.prevent="editMenu(scope.$index)">
+                                            <button class="btn btn-xs btn-info" @click.prevent="edit(scope.$index)">
                                                 <i class="fa fa-pencil bigger-120"></i>
                                             </button>
-                                            <button class="btn btn-xs btn-danger" @click.prevent="removeMenu(scope.row.id)">
+                                            <button class="btn btn-xs btn-danger" @click.prevent="delete(scope.row.id)">
                                                 <i class="fa fa-trash-o bigger-120"></i>
                                             </button>
                                         </div>
@@ -95,6 +103,7 @@
                             </ul>-->
                             <el-pagination
                                     layout="total, prev, pager, next"
+                                    :page-size="pageData.per_page"
                                     :total="pageData.total">
                             </el-pagination>
                         </div>
@@ -107,7 +116,7 @@
                 <form-dialog :info="info" :errors="errors"></form-dialog>
                 <div slot="footer" class="dialog-footer">
                     <el-button @click="editModal = false">取 消</el-button>
-                    <el-button type="primary" @click="saveMenu" :loading="formLoading">确 定</el-button>
+                    <el-button type="primary" @click="save" :loading="formLoading">确 定</el-button>
                 </div>
             </el-dialog>
 
@@ -174,22 +183,26 @@
             },
             add () {
                 this.editModal = true;
-                this.info = {pid: 0, is_menu: 1, sort: 255};
+                this.info = {};
                 this.errors = {};
             },
-            editMenu (index) {
+            edit (index) {
 //                console.log(index);
 //                console.log(this.userList[index]);
                 this.editModal = true;
-                this.info = this.pageData.data[index];
+                this.info = {
+                    id: this.pageData.data[index].id,
+                    name: this.pageData.data[index].name,
+                    email: this.pageData.data[index].email,
+                };
                 this.errors = {};
             },
-            removeMenu (id) {
-                this.$confirm('确定要删除此菜单及其所有子菜单吗？', '提示',{
+            delete (id) {
+                this.$confirm('确定要删除此管理员吗？', '提示',{
                     type: 'warning'
                 }).then(() => {
                     this.$loading();
-                    this.$http.delete('/admin/system/menu/' + id)
+                    this.$http.delete('/admin/manager/user/' + id)
                         .then((response) => {
                             this.$loading().close();
                             this.$message.success('删除成功');
@@ -201,10 +214,10 @@
                         });
                 }).catch(() => {});
             },
-            saveMenu () {
+            save () {
                 this.formLoading = true;
 //                this.$loading.start();
-                this.$http.post('/admin/system/menu/save', this.info)
+                this.$http.post('/admin/manager/user/save', this.info)
                     .then((response) => {
                         console.log(response);
 //                        this.$loading.close();

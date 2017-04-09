@@ -1,7 +1,7 @@
 <template>
     <div class="form-horizontal">
 
-        <form-group :error="errors.name" name="name" title="名称">
+        <form-group :error="errors.name" name="name" title="管理员名称">
             <input type="text" id="name" name="name"
                    class="col-xs-12 col-sm-9"
                    v-model="info.name">

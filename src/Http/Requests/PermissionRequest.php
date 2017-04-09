@@ -29,4 +29,21 @@ class PermissionRequest extends BaseFormRequest
             'sort'         => 'integer|between:0,255',
         ];
     }
+
+    protected function getMessages()
+    {
+        return [
+            'required' => trans('admin::validation.required'),
+            'max'      => trans('admin::validation.max.numeric'),
+            'regex'    => trans('admin::validation.regex'),
+            'between'     => trans('admin::validation.between.numeric'),
+        ];
+    }
+
+    protected function getAttributes()
+    {
+        return [
+            'name' => '菜单名称',
+        ];
+    }
 }

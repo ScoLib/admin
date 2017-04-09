@@ -83,7 +83,7 @@ return [
     ],
     'string'               => ':attribute 必须是字符串',
     'timezone'             => 'The :attribute must be a valid zone.',
-    'unique'               => ':attribute 已存在',
+    'unique'               => '该 :attribute 已存在',
     'uploaded'             => 'The :attribute failed to upload.',
     'url'                  => ':attribute 格式不正确',
 
