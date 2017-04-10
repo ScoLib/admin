@@ -1,6 +1,12 @@
-var scoHttp = function (method, url, data, successCallback, errorCallback) {
+export default function (method, url, data, successCallback, errorCallback) {
     // Vue.http.headers.common['X-CSRF-TOKEN'] = $('meta[name="csrf-token"]').attr('content');
     // Vue.http.credientials = true;
+
+    if (typeof data === 'function') {
+        errorCallback = successCallback;
+        successCallback = data;
+        data = {};
+    }
 
     let options = {
         headers: {
@@ -41,5 +47,3 @@ var scoHttp = function (method, url, data, successCallback, errorCallback) {
             }
         });
 };
-
-export default scoHttp

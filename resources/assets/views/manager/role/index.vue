@@ -179,10 +179,18 @@
             },
             getResults() {
                 this.tableLoading = true;
-                this.scoHttp('get', '/admin/manager/user/list', function (response) {
+                var _this = this;
+                this.scoHttp('get', '/admin/manager/user/list', {}, function (response) {
                     this.tableLoading = false;
                     this.pageData = response.data;
                 });
+                /*this.scoHttp({
+                    url: '/admin/manager/user/list',
+                    method: 'get',
+                }, function (response) {
+                    this.tableLoading = false;
+                    this.pageData = response.data;
+                });*/
             },
             fetchData () {
                 this.$parent.setBreads(this.breads, this.title);
