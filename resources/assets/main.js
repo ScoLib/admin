@@ -21,6 +21,8 @@ import filters from './filters/';
 Vue.use(VueRouter);
 Vue.use(VueResource);
 Vue.use(ElementUI);
+Vue.use(filters);
+
 // Vue.use(iView);
 // Vue.use(Loading);
 
@@ -46,20 +48,9 @@ router.afterEach((to, from, next) => {
     // iView.LoadingBar.finish();
 });
 
-Vue.http.headers.common['X-CSRF-TOKEN'] = $('meta[name="csrf-token"]').attr('content');
-Vue.http.credientials = true;
-// console.log(Loading.service);
-Vue.http.interceptors.push((request, next) => {
-    // console.log(request);
-    // Loading.service.start();
-    next((response) => {
-        // console.log(response);
-        if (response.status == 401) {
-            ElementUI.Message.error(response.statusText);
-        }
-        // Loading.service.close();
-        return response;
-    });
-});
 
-const app = new Vue(Vue.util.extend({router, store, filters}, App)).$mount('#app');
+Vue.component(
+    'FormGroup',
+    require('./components/FormGroup.vue')
+);
+const app = new Vue(Vue.util.extend({router, store}, App)).$mount('#app');

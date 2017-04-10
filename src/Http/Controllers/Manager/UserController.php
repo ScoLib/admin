@@ -32,4 +32,9 @@ class UserController extends BaseController
 
         return response()->json(['message' => 'ok']);
     }
+
+    public function authorize()
+    {
+
+    }
 }

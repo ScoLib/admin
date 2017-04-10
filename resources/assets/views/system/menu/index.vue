@@ -243,7 +243,7 @@
                         if (typeof response.data == 'object') {
                             this.errors = response.data;
                         } else {
-                            this.$Message.error(response.statusText);
+                            this.$message.error(response.statusText);
                         }
                     });
             }

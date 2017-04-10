@@ -80,10 +80,20 @@
                                         column-key="index">
                                     <template scope="scope">
                                         <div class="hidden-xs btn-group">
-                                            <button class="btn btn-xs btn-info" @click.prevent="edit(scope.$index)">
+                                            <button class="btn btn-xs btn-info"
+                                                    @click.prevent="authorize(scope.$index)"
+                                                    title="授权">
+                                                <i class="fa fa-user-plus bigger-120"></i>
+                                            </button>
+
+                                            <button class="btn btn-xs btn-info"
+                                                    @click.prevent="edit(scope.$index)"
+                                                    title="编辑">
                                                 <i class="fa fa-pencil bigger-120"></i>
                                             </button>
-                                            <button class="btn btn-xs btn-danger" @click.prevent="delete(scope.row.id)">
+                                            <button class="btn btn-xs btn-danger"
+                                                    @click.prevent="delete(scope.row.id)"
+                                                    title="删除">
                                                 <i class="fa fa-trash-o bigger-120"></i>
                                             </button>
                                         </div>
@@ -168,14 +178,20 @@
                 this.selection = selection;
             },
             getResults() {
-//                this.$loading.start();
                 this.tableLoading = true;
-                this.$http.get('/admin/manager/user/list').then(response => {
+                this.scoHttp.get('/admin/manager/user/list', function (response) {
+                    console.log(this);
+
                     this.tableLoading = false;
-//                    this.$loading.close();
                     this.pageData = response.data;
                 });
-
+                /*this.scoHttp({
+                    url: '/admin/manager/user/list',
+                    method: 'get',
+                }, function (response) {
+                    this.tableLoading = false;
+                    this.pageData = response.data;
+                });*/
             },
             fetchData () {
                 this.$parent.setBreads(this.breads, this.title);
@@ -216,24 +232,16 @@
             },
             save () {
                 this.formLoading = true;
-//                this.$loading.start();
-                this.$http.post('/admin/manager/user/save', this.info)
-                    .then((response) => {
-                        console.log(response);
-//                        this.$loading.close();
-                        this.editModal = false;
-                        this.formLoading = false;
-                        this.getResults();
-                    }, (response) => {
-//                        this.$loading.close();
+                this.scoHttp('post', '/admin/manager/user/save', this.info, (response) => {
+                    this.editModal = false;
+                    this.formLoading = false;
+                    this.getResults();
+                });
+            },
+            authorize () {
+                this.scoHttp('get', '/admin/manager/user/authorize', {}, (response) => {
 
-                        this.formLoading = false;
-                        if (typeof response.data == 'object') {
-                            this.errors = response.data;
-                        } else {
-                            this.$Message.error(response.statusText);
-                        }
-                    });
+                });
             }
         }
     }

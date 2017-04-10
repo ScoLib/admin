@@ -49,8 +49,11 @@ Route::group([
         Route::post('manager/user/save', 'Manager\UserController@save')
             ->name('admin.manager.user.save');
 
-        Route::delete('manager/user/{id}', 'System\UserController@delete')
+        Route::delete('manager/user/{id}', 'Manager\UserController@delete')
             ->name('admin.manager/user.delete');
+
+        Route::get('manager/user/authorize', 'Manager\UserController@authorize')
+            ->name('admin.manager.user.authorize');
 
         //用户管理
         /*Route::group(['prefix' => 'users', 'namespace' => 'Users'], function () {
