@@ -179,9 +179,8 @@
             },
             getResults() {
                 this.tableLoading = true;
-                this.scoHttp.get('/admin/manager/user/list', function (response) {
-                    console.log(this);
-
+                var _this = this;
+                this.scoHttp('get', '/admin/manager/user/list', {}, function (response) {
                     this.tableLoading = false;
                     this.pageData = response.data;
                 });
