@@ -285,8 +285,8 @@
             },
             saveRole () {
                 this.buttonLoading = true;
-                this.scoHttp('post', '/admin/manager/user/role/save', this.roleData, (response) => {
-                    
+                this.scoHttp('post', '/admin/manager/user/save/role', this.roleData, (response) => {
+
                 })
             }
         }
