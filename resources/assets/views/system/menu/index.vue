@@ -123,7 +123,7 @@
                 <form-dialog :info="info" :menuList="menuList" :errors="errors"></form-dialog>
                 <div slot="footer" class="dialog-footer">
                     <el-button @click="editModal = false">取 消</el-button>
-                    <el-button type="primary" @click="saveMenu" :loading="formLoading">确 定</el-button>
+                    <el-button type="primary" @click="saveMenu" :loading="buttonLoading">确 定</el-button>
                 </div>
             </el-dialog>
 
@@ -164,7 +164,7 @@
                 errors: {},
 
                 tableLoading: false,
-                formLoading: false,
+                buttonLoading: false,
                 menuList: [],
                 selection: [],
             }
@@ -227,19 +227,19 @@
                 }).catch(() => {});
             },
             saveMenu () {
-                this.formLoading = true;
+                this.buttonLoading = true;
 //                this.$loading.start();
                 this.$http.post('/admin/system/menu/save', this.info)
                     .then((response) => {
                         console.log(response);
 //                        this.$loading.close();
                         this.editModal = false;
-                        this.formLoading = false;
+                        this.buttonLoading = false;
                         this.getResults();
                     }, (response) => {
 //                        this.$loading.close();
 
-                        this.formLoading = false;
+                        this.buttonLoading = false;
                         if (typeof response.data == 'object') {
                             this.errors = response.data;
                         } else {

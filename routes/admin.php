@@ -49,11 +49,22 @@ Route::group([
         Route::post('manager/user/save', 'Manager\UserController@save')
             ->name('admin.manager.user.save');
 
+        Route::post('manager/user/save/role', 'Manager\UserController@saveRole')
+            ->name('admin.manager.user.save.role');
+
         Route::delete('manager/user/{id}', 'Manager\UserController@delete')
             ->name('admin.manager/user.delete');
 
-        Route::get('manager/user/authorize', 'Manager\UserController@authorize')
-            ->name('admin.manager.user.authorize');
+        //角色管理
+        Route::get('manager/role', 'BaseController@index')
+            ->name('admin.manager.role');
+
+        // 角色列表
+        Route::get('manager/role/list', 'Manager\RoleController@getList')
+            ->name('admin.manager.role.list');
+
+        Route::post('manager/role/authorize', 'Manager\RoleController@authorize')
+            ->name('admin.manager.role.authorize');
 
         //用户管理
         /*Route::group(['prefix' => 'users', 'namespace' => 'Users'], function () {

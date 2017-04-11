@@ -126,7 +126,7 @@
                 <form-dialog :info="info" :errors="errors"></form-dialog>
                 <div slot="footer" class="dialog-footer">
                     <el-button @click="editModal = false">取 消</el-button>
-                    <el-button type="primary" @click="save" :loading="formLoading">确 定</el-button>
+                    <el-button type="primary" @click="save" :loading="buttonLoading">确 定</el-button>
                 </div>
             </el-dialog>
 
@@ -158,7 +158,7 @@
                 errors: {},
 
                 tableLoading: false,
-                formLoading: false,
+                buttonLoading: false,
                 pageData: {},
                 selection: [],
             }
@@ -230,10 +230,10 @@
                 }).catch(() => {});
             },
             save () {
-                this.formLoading = true;
+                this.buttonLoading = true;
                 this.scoHttp('post', '/admin/manager/user/save', this.info, (response) => {
                     this.editModal = false;
-                    this.formLoading = false;
+                    this.buttonLoading = false;
                     this.getResults();
                 });
             },

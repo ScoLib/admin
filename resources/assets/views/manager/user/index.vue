@@ -81,8 +81,8 @@
                                     <template scope="scope">
                                         <div class="hidden-xs btn-group">
                                             <button class="btn btn-xs btn-info"
-                                                    @click.prevent="authorize(scope.$index)"
-                                                    title="授权">
+                                                    @click.prevent="setRole(scope.$index)"
+                                                    title="角色">
                                                 <i class="fa fa-user-plus bigger-120"></i>
                                             </button>
 
@@ -104,13 +104,6 @@
                         </div>
                         <!-- /.box-body -->
                         <div class="box-footer clearfix">
-                            <!--<ul class="pagination pagination-sm no-margin pull-right">
-                                <li><a href="#">«</a></li>
-                                <li><a href="#">1</a></li>
-                                <li><a href="#">2</a></li>
-                                <li><a href="#">3</a></li>
-                                <li><a href="#">»</a></li>
-                            </ul>-->
                             <el-pagination
                                     layout="total, prev, pager, next"
                                     :page-size="pageData.per_page"
@@ -126,7 +119,36 @@
                 <form-dialog :info="info" :errors="errors"></form-dialog>
                 <div slot="footer" class="dialog-footer">
                     <el-button @click="editModal = false">取 消</el-button>
-                    <el-button type="primary" @click="save" :loading="formLoading">确 定</el-button>
+                    <el-button type="primary" @click="save" :loading="buttonLoading">确 定</el-button>
+                </div>
+            </el-dialog>
+
+            <el-dialog title="设置角色" v-model="setRoleModal">
+                <div class="form-horizontal">
+
+                    <form-group name="name" title="管理员名称">
+                        <input type="text"
+                               class="col-xs-12 col-sm-9"
+                               :value="roleData.name" disabled>
+                    </form-group>
+
+                    <div class="space-2"></div>
+
+                    <form-group name="role" title="角色">
+                            <div v-for="role in roleList">
+                                <label>
+                                    <input name="role[]" :value="role.id" type="checkbox" class="ace" v-model="roleData.roles">
+                                    <span class="lbl"> {{ role.display_name }}</span>
+                                </label>
+                            </div>
+                    </form-group>
+
+                    <input type="hidden" name="id" v-model="roleData.id">
+                </div>
+
+                <div slot="footer" class="dialog-footer">
+                    <el-button @click="setRoleModal = false">取 消</el-button>
+                    <el-button type="primary" @click="saveRole" :loading="buttonLoading">确 定</el-button>
                 </div>
             </el-dialog>
 
@@ -152,21 +174,38 @@
                     }
                 ],
 
+                // 编辑
                 editModal: false,
                 info: {},
                 modalLoading: true,
                 errors: {},
 
+                // 列表
                 tableLoading: false,
-                formLoading: false,
                 pageData: {},
+
                 selection: [],
+                buttonLoading: false,
+
+                // 角色
+                setRoleModal: false,
+                roleData: {},
+                roleList: {},
             }
         },
         computed: {
-            modalTitle: function () {
+            modalTitle () {
                 return this.info.id ? '编辑管理员' : '新建管理员';
             },
+            roles () {
+                let roles = [];
+                if (typeof this.info.roles != 'undefined') {
+                    this.info.roles.forEach(role => {
+                        roles.push(role.id);
+                    });
+                }
+                return roles;
+            }
         },
         created () {
             this.fetchData();
@@ -179,9 +218,13 @@
             },
             getResults() {
                 this.tableLoading = true;
-                this.scoHttp('get', '/admin/manager/user/list', function (response) {
+                this.scoHttp('get', '/admin/manager/user/list', (response) => {
                     this.tableLoading = false;
                     this.pageData = response.data;
+                });
+
+                this.scoHttp('get', '/admin/manager/role/list', (response) => {
+                    this.roleList = response.data;
                 });
             },
             fetchData () {
@@ -194,8 +237,6 @@
                 this.errors = {};
             },
             edit (index) {
-//                console.log(index);
-//                console.log(this.userList[index]);
                 this.editModal = true;
                 this.info = {
                     id: this.pageData.data[index].id,
@@ -222,17 +263,31 @@
                 }).catch(() => {});
             },
             save () {
-                this.formLoading = true;
+                this.buttonLoading = true;
                 this.scoHttp('post', '/admin/manager/user/save', this.info, (response) => {
                     this.editModal = false;
-                    this.formLoading = false;
+                    this.buttonLoading = false;
                     this.getResults();
                 });
             },
-            authorize () {
-                this.scoHttp('get', '/admin/manager/user/authorize', {}, (response) => {
+            setRole (index) {
+                this.setRoleModal = true;
+                this.buttonLoading = false;
+                this.roleData = {
+                    id: this.pageData.data[index].id,
+                    name: this.pageData.data[index].name,
+                    roles: [],
+                };
 
+                this.pageData.data[index].roles.forEach(role => {
+                    this.roleData.roles.push(role.id);
                 });
+            },
+            saveRole () {
+                this.buttonLoading = true;
+                this.scoHttp('post', '/admin/manager/user/role/save', this.roleData, (response) => {
+                    
+                })
             }
         }
     }

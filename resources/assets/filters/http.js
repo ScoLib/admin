@@ -31,8 +31,8 @@ export default function (method, url, data, successCallback, errorCallback) {
                 this.errorCallback(response);
             } else {
                 // form表单
-                if (typeof this.formLoading != 'undefined') {
-                    this.formLoading = false;
+                if (typeof this.buttonLoading != 'undefined') {
+                    this.buttonLoading = false;
                 }
                 if (typeof this.errors != 'undefined' && typeof response.data == 'object') {
                     this.errors = response.data;

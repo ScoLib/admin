@@ -1,20 +1,3 @@
-/*
-Navicat MySQL Data Transfer
-
-Source Server         : 192.168.56.101
-Source Server Version : 50711
-Source Host           : 127.0.0.1:3306
-Source Database       : scocmf
-
-Target Server Type    : MYSQL
-Target Server Version : 50711
-File Encoding         : 65001
-
-Date: 2016-08-05 16:51:10
-*/
-
-SET FOREIGN_KEY_CHECKS=0;
-
 -- ----------------------------
 -- Records of sco_role_user
 -- ----------------------------
@@ -83,14 +66,14 @@ INSERT INTO `sco_permissions` VALUES ('11', '0', '', '管理组', '#', '1', '1',
 INSERT INTO `sco_permissions` VALUES ('12', '11', 'fa-user', '管理员', 'admin.manager.user', '1', '1', '管理员', '2016-08-05 16:50:19', '2016-08-05 16:50:19');
 INSERT INTO `sco_permissions` VALUES ('13', '12', '', '管理员列表数据', 'admin.manager.user.list', '0', '1', '', '2016-08-11 15:19:32', '2016-08-11 15:19:32');
 INSERT INTO `sco_permissions` VALUES ('14', '12', '', '保存管理员', 'admin.manager.user.save', '0', '1', '', '2016-08-11 16:05:06', '2016-08-11 16:05:06');
--- INSERT INTO `sco_permissions` VALUES ('15', '12', '', '保存添加用户', 'admin.users.user.postAdd', '0', '1', '', '2016-08-11 16:39:43', '2016-08-11 16:39:43');
--- INSERT INTO `sco_permissions` VALUES ('16', '12', '', '保存编辑用户', 'admin.users.user.postEdit', '0', '1', '', '2016-08-11 16:39:43', '2016-08-11 16:39:43');
+INSERT INTO `sco_permissions` VALUES ('15', '12', '', '设置角色', 'admin.manager.user.save.role', '0', '1', '', '2016-08-11 16:39:43', '2016-08-11 16:39:43');
+-- INSERT INTO `sco_permissions` VALUES ('16', '12', '', '保存编辑用户', 'admin.manager.user.postEdit', '0', '1', '', '2016-08-11 16:39:43', '2016-08-11 16:39:43');
 INSERT INTO `sco_permissions` VALUES ('17', '12', '', '删除管理员', 'admin.manager.user.delete', '0', '1', '', '2016-08-18 14:43:03', '2016-08-18 14:43:03');
 INSERT INTO `sco_permissions` VALUES ('18', '11', 'fa-users', '角色管理', 'admin.manager.role', '1', '1', '用户列表', '2016-08-05 16:50:19', '2016-08-05 16:50:19');
 INSERT INTO `sco_permissions` VALUES ('19', '18', '', '角色列表数据', 'admin.manager.role.list', '0', '0', '', '2016-08-19 17:20:39', '2016-08-19 17:20:39');
 INSERT INTO `sco_permissions` VALUES ('20', '18', '', '保存角色', 'admin.manager.role.save', '0', '0', '', '2016-08-19 17:20:39', '2016-08-19 17:20:39');
--- INSERT INTO `sco_permissions` VALUES ('21', '18', '', '编辑角色', 'admin.users.role.edit', '0', '0', '', '2016-08-19 17:20:39', '2016-08-19 17:20:39');
--- INSERT INTO `sco_permissions` VALUES ('22', '18', '', '保存编辑角色', 'admin.users.role.postEdit', '0', '0', '', '2016-08-19 17:20:39', '2016-08-19 17:20:39');
--- INSERT INTO `sco_permissions` VALUES ('23', '18', '', '角色授权', 'admin.manager.role.authorize', '0', '0', '', '2016-08-19 17:20:39', '2016-08-19 17:20:39');
+-- INSERT INTO `sco_permissions` VALUES ('21', '18', '', '编辑角色', 'admin.manager.role.edit', '0', '0', '', '2016-08-19 17:20:39', '2016-08-19 17:20:39');
+-- INSERT INTO `sco_permissions` VALUES ('22', '18', '', '保存编辑角色', 'admin.manager.role.postEdit', '0', '0', '', '2016-08-19 17:20:39', '2016-08-19 17:20:39');
+INSERT INTO `sco_permissions` VALUES ('23', '18', '', '角色授权', 'admin.manager.role.authorize', '0', '0', '', '2016-08-19 17:20:39', '2016-08-19 17:20:39');
 INSERT INTO `sco_permissions` VALUES ('24', '18', '', '删除角色', 'admin.manager.role.delete', '0', '0', '', '2016-08-19 17:20:39', '2016-08-19 17:20:39');
 -- INSERT INTO `sco_permissions` VALUES ('25', '18', '', '保存角色授权', 'admin.manager.role.postAuthorize', '0', '0', '', '2016-08-23 11:18:46', '2016-08-23 11:18:49');
