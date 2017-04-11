@@ -3,6 +3,7 @@
 
 namespace Sco\Admin\Http\Controllers\Manager;
 
+use Illuminate\Http\Request;
 use Sco\Admin\Http\Controllers\BaseController;
 use Sco\Admin\Http\Requests\ManagerRequest;
 use Sco\Admin\Models\Manager;
@@ -33,8 +34,11 @@ class UserController extends BaseController
         return response()->json(['message' => 'ok']);
     }
 
-    public function authorize()
+    public function saveRole(Request $request)
     {
+        $user = Manager::findOrFail($request->input('id'));
+        $user->roles()->sync($request->input('roles'));
 
+        return response()->json(['message' => 'ok']);
     }
 }

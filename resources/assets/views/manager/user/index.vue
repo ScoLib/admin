@@ -68,7 +68,7 @@
                                 <el-table-column label="管理组">
                                     <template scope="scope">
                                         <template v-for="role in scope.row.roles">
-                                            {{ role.name }}
+                                            {{ role.display_name }}[{{ role.name }}]<br>
                                         </template>
                                     </template>
                                 </el-table-column>
@@ -222,14 +222,14 @@
                     this.tableLoading = false;
                     this.pageData = response.data;
                 });
-
-                this.scoHttp('get', '/admin/manager/role/list', (response) => {
-                    this.roleList = response.data;
-                });
             },
             fetchData () {
                 this.$parent.setBreads(this.breads, this.title);
                 this.getResults();
+
+                this.scoHttp('get', '/admin/manager/role/list', (response) => {
+                    this.roleList = response.data;
+                });
             },
             add () {
                 this.editModal = true;
@@ -286,8 +286,10 @@
             saveRole () {
                 this.buttonLoading = true;
                 this.scoHttp('post', '/admin/manager/user/save/role', this.roleData, (response) => {
-
-                })
+                    this.setRoleModal = false;
+                    this.buttonLoading = false;
+                    this.getResults();
+                });
             }
         }
     }
