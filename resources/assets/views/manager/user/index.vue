@@ -49,11 +49,17 @@
                         <!-- /.box-header -->
                         <div class="box-body table-responsive no-padding">
 
-                            <el-table :data="pageData.data" v-loading="tableLoading">
-                                <el-table-column type="selection">
+                            <el-table :data="pageData.data"
+                                      v-loading="tableLoading"
+                                      @selection-change="getSelected">
+                                <el-table-column
+                                        type="selection"
+                                        :selectable="selectable">
                                 </el-table-column>
 
-                                <el-table-column label="ID" prop="id" width="60">
+                                <el-table-column label="ID"
+                                                 prop="id"
+                                                 width="60">
                                 </el-table-column>
 
                                 <el-table-column label="名称" prop="name">
@@ -213,7 +219,11 @@
         watch: {
         },
         methods: {
+            selectable (row, index) {
+                return row.id == 1 ? false : true;
+            },
             getSelected (selection) {
+                console.log(selection);
                 this.selection = selection;
             },
             getResults() {

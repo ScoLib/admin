@@ -15,32 +15,6 @@
                 <div class="tab-content">
                     <div class="box">
                         <div class="box-header clearfix">
-                            <div class="btn-group">
-                                <button data-toggle="dropdown" class="btn btn-primary btn-xs btn-white dropdown-toggle">
-                                    批量
-                                    <i class="ace-icon fa fa-angle-down icon-on-right"></i>
-                                </button>
-
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <a href="#">Action</a>
-                                    </li>
-
-                                    <li>
-                                        <a href="#">Another action</a>
-                                    </li>
-
-                                    <li>
-                                        <a href="#">Something else here</a>
-                                    </li>
-
-                                    <li class="divider"></li>
-
-                                    <li>
-                                        <a href="#">Separated link</a>
-                                    </li>
-                                </ul>
-                            </div>
                             <div class="btn-group pull-right">
                                 <button type="button" class="btn btn-success btn-xs" @click.prevent="addMenu">
                                     <i class="fa fa-plus bigger-120"></i></button>
@@ -50,8 +24,6 @@
                         <div class="box-body table-responsive no-padding">
 
                             <el-table :data="menuList" v-loading="tableLoading">
-                                <el-table-column type="selection">
-                                </el-table-column>
 
                                 <el-table-column label="ID" prop="id" width="60">
                                 </el-table-column>
@@ -70,7 +42,7 @@
 
                                 <el-table-column
                                         label="菜单"
-                                        width="60">
+                                        width="70">
                                     <template scope="scope">
                                         {{ scope.row.is_menu ? '是' : '否' }}
                                     </template>
@@ -78,7 +50,7 @@
 
                                 <el-table-column
                                         label="图标"
-                                        width="60"
+                                        width="70"
                                         class-name="hidden-xs">
                                     <template scope="scope">
                                         <i :class="['menu-icon', 'fa', scope.row.icon]"></i>
@@ -105,15 +77,6 @@
                             </el-table>
                         </div>
                         <!-- /.box-body -->
-                        <div class="box-footer clearfix">
-                            <!--<ul class="pagination pagination-sm no-margin pull-right">
-                                <li><a href="#">«</a></li>
-                                <li><a href="#">1</a></li>
-                                <li><a href="#">2</a></li>
-                                <li><a href="#">3</a></li>
-                                <li><a href="#">»</a></li>
-                            </ul>-->
-                        </div>
                     </div>
 
 
@@ -127,15 +90,6 @@
                 </div>
             </el-dialog>
 
-            <!--<Modal
-                    v-model="editModal"
-                    :title="modalTitle"
-                    :loading="modalLoading"
-                    @on-ok="saveMenu"
-            >
-                <form-dialog :info="info" :menuList="menuList" :errors="errors"></form-dialog>
-
-            </Modal>-->
         </div>
     </div>
 </template>
@@ -166,7 +120,6 @@
                 tableLoading: false,
                 buttonLoading: false,
                 menuList: [],
-                selection: [],
             }
         },
         computed: {
@@ -180,15 +133,10 @@
         watch: {
         },
         methods: {
-            getSelected (selection) {
-                this.selection = selection;
-            },
             getResults() {
-//                this.$loading.start();
                 this.tableLoading = true;
                 this.$http.get('/admin/system/menu/list').then(response => {
                     this.tableLoading = false;
-//                    this.$loading.close();
                     this.menuList = response.data;
                 });
 
