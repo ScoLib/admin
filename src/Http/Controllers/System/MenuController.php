@@ -8,10 +8,12 @@ use Sco\Admin\Models\Permission;
 
 /**
  * 菜单管理
- *
  */
 class MenuController extends BaseController
 {
+    /**
+     * @var Permission
+     */
     private $permissionModel;
 
     /**
@@ -39,11 +41,12 @@ class MenuController extends BaseController
         return response()->json(['message' => 'ok']);
     }
 
-
     /**
      * 删除菜单
      *
-     * @param integer $id
+     * @param int $id
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function delete($id)
     {

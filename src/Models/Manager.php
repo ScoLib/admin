@@ -6,6 +6,26 @@ namespace Sco\Admin\Models;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Zizaco\Entrust\Traits\EntrustUserTrait;
 
+/**
+ * Sco\Admin\Models\Manager
+ *
+ * @property int $id
+ * @property string $name 名称
+ * @property string $email 邮箱
+ * @property string $password 密码
+ * @property string $remember_token
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Sco\Admin\Models\Role[] $roles
+ * @method static \Illuminate\Database\Query\Builder|\Sco\Admin\Models\Manager whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\Sco\Admin\Models\Manager whereEmail($value)
+ * @method static \Illuminate\Database\Query\Builder|\Sco\Admin\Models\Manager whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\Sco\Admin\Models\Manager whereName($value)
+ * @method static \Illuminate\Database\Query\Builder|\Sco\Admin\Models\Manager wherePassword($value)
+ * @method static \Illuminate\Database\Query\Builder|\Sco\Admin\Models\Manager whereRememberToken($value)
+ * @method static \Illuminate\Database\Query\Builder|\Sco\Admin\Models\Manager whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
 class Manager extends Authenticatable
 {
     use EntrustUserTrait;
