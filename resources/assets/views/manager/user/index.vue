@@ -98,7 +98,7 @@
                                                 <i class="fa fa-pencil bigger-120"></i>
                                             </button>
                                             <button class="btn btn-xs btn-danger"
-                                                    @click.prevent="delete(scope.row.id)"
+                                                    @click.prevent="remove(scope.row.id)"
                                                     title="删除">
                                                 <i class="fa fa-trash-o bigger-120"></i>
                                             </button>
@@ -255,7 +255,7 @@
                 };
                 this.errors = {};
             },
-            delete (id) {
+            remove (id) {
                 this.$confirm('确定要删除此管理员吗？', '提示',{
                     type: 'warning'
                 }).then(() => {

@@ -159,20 +159,21 @@
             },
             removeMenu (id) {
                 this.$confirm('确定要删除此菜单及其所有子菜单吗？', '提示',{
-                    type: 'warning'
-                }).then(() => {
-                    this.$loading();
-                    this.$http.delete('/admin/system/menu/' + id)
-                        .then((response) => {
-                            this.$loading().close();
+                    type: 'warning',
+                    beforeClose: (action, instance, done) => {
+                        instance.confirmButtonLoading = true;
+                        instance.confirmButtonText = '执行中...';
+                        this.confirmClose = {
+                            done, instance
+                        };
+                        this.scoHttp('delete', '/admin/system/menu/' + id, (response) => {
+                            done();
+                            instance.confirmButtonLoading = false;
                             this.$message.success('删除成功');
                             this.getResults();
-                        }, (response) => {
-                            this.$loading().close();
-//                                console.log(response);
-                            this.$message.error(response.data);
                         });
-                }).catch(() => {});
+                    }
+                });
             },
             saveMenu () {
                 this.buttonLoading = true;

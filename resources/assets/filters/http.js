@@ -34,6 +34,13 @@ export default function (method, url, data, successCallback, errorCallback) {
                 if (typeof this.buttonLoading != 'undefined') {
                     this.buttonLoading = false;
                 }
+
+                // confirm 关闭回调
+                if (typeof this.confirmClose == 'object') {
+                    this.confirmClose.done();
+                    this.confirmClose.instance.confirmButtonLoading = false;
+                }
+
                 if (typeof this.errors != 'undefined' && typeof response.data == 'object') {
                     this.errors = response.data;
                 } else {
