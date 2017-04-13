@@ -135,11 +135,10 @@
         methods: {
             getResults() {
                 this.tableLoading = true;
-                this.$http.get('/admin/system/menu/list').then(response => {
+                this.scoHttp('/admin/system/menu/list', response => {
                     this.tableLoading = false;
                     this.menuList = response.data;
                 });
-
             },
             fetchData () {
                 this.$parent.setBreads(this.breads, this.title);
@@ -161,13 +160,12 @@
                 this.$confirm('确定要删除此菜单及其所有子菜单吗？', '提示',{
                     type: 'warning',
                     beforeClose: (action, instance, done) => {
+                        this.MessageBoxInstance = instance;
+
                         instance.confirmButtonLoading = true;
                         instance.confirmButtonText = '执行中...';
-                        this.confirmClose = {
-                            done, instance
-                        };
-                        this.scoHttp('delete', '/admin/system/menu/' + id, (response) => {
-                            done();
+                        this.scoHttp('delete', '/admin/system/menu/' + id, response => {
+                            instance.close();
                             instance.confirmButtonLoading = false;
                             this.$message.success('删除成功');
                             this.getResults();
@@ -177,24 +175,11 @@
             },
             saveMenu () {
                 this.buttonLoading = true;
-//                this.$loading.start();
-                this.$http.post('/admin/system/menu/save', this.info)
-                    .then((response) => {
-                        console.log(response);
-//                        this.$loading.close();
-                        this.editModal = false;
-                        this.buttonLoading = false;
-                        this.getResults();
-                    }, (response) => {
-//                        this.$loading.close();
-
-                        this.buttonLoading = false;
-                        if (typeof response.data == 'object') {
-                            this.errors = response.data;
-                        } else {
-                            this.$message.error(response.statusText);
-                        }
-                    });
+                this.scoHttp('post', '/admin/system/menu/save', this.info, response => {
+                    this.editModal = false;
+                    this.buttonLoading = false;
+                    this.getResults();
+                });
             }
         }
     }

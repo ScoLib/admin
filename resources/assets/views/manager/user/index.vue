@@ -228,7 +228,7 @@
             },
             getResults() {
                 this.tableLoading = true;
-                this.scoHttp('get', '/admin/manager/user/list', (response) => {
+                this.scoHttp('/admin/manager/user/list', response => {
                     this.tableLoading = false;
                     this.pageData = response.data;
                 });
@@ -237,7 +237,7 @@
                 this.$parent.setBreads(this.breads, this.title);
                 this.getResults();
 
-                this.scoHttp('get', '/admin/manager/role/list', (response) => {
+                this.scoHttp('/admin/manager/role/list', response => {
                     this.roleList = response.data;
                 });
             },
@@ -256,25 +256,25 @@
                 this.errors = {};
             },
             remove (id) {
-                this.$confirm('确定要删除此管理员吗？', '提示',{
-                    type: 'warning'
-                }).then(() => {
-                    this.$loading();
-                    this.$http.delete('/admin/manager/user/' + id)
-                        .then((response) => {
-                            this.$loading().close();
+                this.$confirm('确定要删除此管理员吗？', '提示', {
+                    type: 'warning',
+                    beforeClose: (action, instance, done) => {
+                        this.MessageBoxInstance = instance;
+
+                        instance.confirmButtonLoading = true;
+                        instance.confirmButtonText = '执行中...';
+                        this.scoHttp('delete', '/admin/manager/user/' + id, response => {
+                            instance.close();
+                            instance.confirmButtonLoading = false;
                             this.$message.success('删除成功');
                             this.getResults();
-                        }, (response) => {
-                            this.$loading().close();
-//                                console.log(response);
-                            this.$message.error(response.data);
                         });
-                }).catch(() => {});
+                    }
+                });
             },
             save () {
                 this.buttonLoading = true;
-                this.scoHttp('post', '/admin/manager/user/save', this.info, (response) => {
+                this.scoHttp('post', '/admin/manager/user/save', this.info, response => {
                     this.editModal = false;
                     this.buttonLoading = false;
                     this.getResults();
@@ -295,7 +295,7 @@
             },
             saveRole () {
                 this.buttonLoading = true;
-                this.scoHttp('post', '/admin/manager/user/save/role', this.roleData, (response) => {
+                this.scoHttp('post', '/admin/manager/user/save/role', this.roleData, response => {
                     this.setRoleModal = false;
                     this.buttonLoading = false;
                     this.getResults();

@@ -208,7 +208,7 @@ class Permission extends EntrustPermission
     {
         $info = $this->getInfoById($id);
         if (is_null($info)) {
-            throw new AdminHttpException(404, '菜单不存在');
+            throw new AdminHttpException('菜单不存在');
         }
 
         $childs = $this->getDescendants($id)->keys();

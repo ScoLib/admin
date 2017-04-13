@@ -53,7 +53,7 @@ Route::group([
             ->name('admin.manager.user.save.role');
 
         Route::delete('manager/user/{id}', 'Manager\UserController@delete')
-            ->name('admin.manager/user.delete');
+            ->name('admin.manager.user.delete');
 
         //角色管理
         Route::get('manager/role', 'BaseController@index')

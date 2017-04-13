@@ -84,7 +84,7 @@
         },
         created () {
             this.loading = true;
-            this.$http.get('/admin/menu').then(response => {
+            this.scoHttp('/admin/menu', response => {
                 this.loading = false;
                 this.menus = response.data;
             });

@@ -34,6 +34,13 @@ class UserController extends BaseController
         return response()->json(['message' => 'ok']);
     }
 
+    public function delete($id)
+    {
+        $model = Manager::findOrFail($id);
+        $model->delete();
+        return response()->json(['message' => 'ok']);
+    }
+
     public function saveRole(Request $request)
     {
         $user = Manager::findOrFail($request->input('id'));
