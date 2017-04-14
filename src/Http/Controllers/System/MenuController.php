@@ -2,6 +2,7 @@
 
 namespace Sco\Admin\Http\Controllers\System;
 
+use Illuminate\Http\Request;
 use Sco\Admin\Http\Controllers\BaseController;
 use Sco\Admin\Http\Requests\PermissionRequest;
 use Sco\Admin\Models\Permission;
@@ -15,6 +16,18 @@ class MenuController extends BaseController
      * @var Permission
      */
     private $permissionModel;
+
+    /**
+     * @return \Sco\Admin\Models\Permission
+     */
+    private function getPermissionModel()
+    {
+        if ($this->permissionModel) {
+            return $this->permissionModel;
+        }
+
+        return $this->permissionModel = new Permission();
+    }
 
     /**
      * 菜单列表
@@ -54,16 +67,17 @@ class MenuController extends BaseController
         return response()->json(['message' => 'ok']);
     }
 
-
     /**
-     * @return \Sco\Admin\Models\Permission
+     * 批量删除菜单
+     *
+     * @param \Illuminate\Http\Request $request
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
-    private function getPermissionModel()
+    public function batchDelete(Request $request)
     {
-        if ($this->permissionModel) {
-            return $this->permissionModel;
-        }
-
-        return $this->permissionModel = new Permission();
+        $this->getPermissionModel()->deleteMenu($request->input('ids'));
+        return response()->json(['message' => 'ok']);
     }
+
 }

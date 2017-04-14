@@ -15,32 +15,6 @@
                 <div class="tab-content">
                     <div class="box">
                         <div class="box-header clearfix">
-                            <div class="btn-group">
-                                <button data-toggle="dropdown" class="btn btn-primary btn-xs btn-white dropdown-toggle">
-                                    批量
-                                    <i class="ace-icon fa fa-angle-down icon-on-right"></i>
-                                </button>
-
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <a href="#">Action</a>
-                                    </li>
-
-                                    <li>
-                                        <a href="#">Another action</a>
-                                    </li>
-
-                                    <li>
-                                        <a href="#">Something else here</a>
-                                    </li>
-
-                                    <li class="divider"></li>
-
-                                    <li>
-                                        <a href="#">Separated link</a>
-                                    </li>
-                                </ul>
-                            </div>
                             <div class="btn-group pull-right">
                                 <button type="button" class="btn btn-success btn-xs" @click.prevent="add">
                                     <i class="fa fa-plus bigger-120"></i></button>
@@ -50,12 +24,7 @@
                         <div class="box-body table-responsive no-padding">
 
                             <el-table :data="pageData.data"
-                                      v-loading="tableLoading"
-                                      @selection-change="getSelected">
-                                <el-table-column
-                                        type="selection"
-                                        :selectable="selectable">
-                                </el-table-column>
+                                      v-loading="tableLoading">
 
                                 <el-table-column label="ID"
                                                  prop="id"
@@ -88,6 +57,7 @@
                                         <div class="hidden-xs btn-group">
                                             <button class="btn btn-xs btn-info"
                                                     @click.prevent="setRole(scope.$index)"
+                                                    :disabled="scope.row.id == 1"
                                                     title="角色">
                                                 <i class="fa fa-user-plus bigger-120"></i>
                                             </button>
@@ -99,6 +69,7 @@
                                             </button>
                                             <button class="btn btn-xs btn-danger"
                                                     @click.prevent="remove(scope.row.id)"
+                                                    :disabled="scope.row.id == 1"
                                                     title="删除">
                                                 <i class="fa fa-trash-o bigger-120"></i>
                                             </button>
@@ -143,7 +114,11 @@
                     <form-group name="role" title="角色">
                             <div v-for="role in roleList">
                                 <label>
-                                    <input name="role[]" :value="role.id" type="checkbox" class="ace" v-model="roleData.roles">
+                                    <input name="role[]"
+                                           :value="role.id"
+                                           type="checkbox"
+                                           class="ace"
+                                           v-model="roleData.roles">
                                     <span class="lbl"> {{ role.display_name }}</span>
                                 </label>
                             </div>
@@ -190,7 +165,6 @@
                 tableLoading: false,
                 pageData: {},
 
-                selection: [],
                 buttonLoading: false,
 
                 // 角色
@@ -219,13 +193,6 @@
         watch: {
         },
         methods: {
-            selectable (row, index) {
-                return row.id == 1 ? false : true;
-            },
-            getSelected (selection) {
-                console.log(selection);
-                this.selection = selection;
-            },
             getResults() {
                 this.tableLoading = true;
                 this.scoHttp('/admin/manager/user/list', response => {
@@ -259,18 +226,22 @@
                 this.$confirm('确定要删除此管理员吗？', '提示', {
                     type: 'warning',
                     beforeClose: (action, instance, done) => {
-                        this.MessageBoxInstance = instance;
+                        if (action == 'confirm') {
+                            this.MessageBoxInstance = instance;
 
-                        instance.confirmButtonLoading = true;
-                        instance.confirmButtonText = '执行中...';
-                        this.scoHttp('delete', '/admin/manager/user/' + id, response => {
-                            instance.close();
-                            instance.confirmButtonLoading = false;
-                            this.$message.success('删除成功');
-                            this.getResults();
-                        });
+                            instance.confirmButtonLoading = true;
+                            instance.confirmButtonText = '执行中...';
+                            this.scoHttp('delete', '/admin/manager/user/' + id, response => {
+                                instance.confirmButtonLoading = false;
+                                instance.close();
+                                this.$message.success('删除成功');
+                                this.getResults();
+                            });
+                        } else {
+                            done();
+                        }
                     }
-                });
+                }).then(action => {}).catch(action => {});
             },
             save () {
                 this.buttonLoading = true;

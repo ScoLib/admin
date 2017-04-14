@@ -92,7 +92,7 @@ class Permission extends EntrustPermission
      *
      * @return \Illuminate\Support\Collection
      */
-    public function getValidRouteList()
+    /*public function getValidRouteList()
     {
         if ($this->validList) {
             return $this->validList;
@@ -107,21 +107,21 @@ class Permission extends EntrustPermission
             }
         }
         return $this->validList;
-    }
+    }*/
 
     /**
      * 获取权限列表
      *
      * @return \Illuminate\Support\Collection|null
      */
-    public function getPermRouteList()
+    /*public function getPermRouteList()
     {
         if ($this->permList) {
             return $this->permList;
         }
 
         return $this->permList = $this->getLayerOfDescendants(0);
-    }
+    }*/
 
     public function getMenuList()
     {
@@ -141,7 +141,7 @@ class Permission extends EntrustPermission
         return $this->menuList = $this->getLayerOfDescendants(0);
     }
 
-    public function getInfoById($id)
+    /*public function getInfoById($id)
     {
         return $this->getSelf($id);
     }
@@ -153,9 +153,9 @@ class Permission extends EntrustPermission
             return $item->name == $name;
         });
         return $key === false ? false : $all->get($key);
-    }
+    }*/
 
-    public function getParentTree($id)
+    /*public function getParentTree($id)
     {
         return $this->getAncestors($id);
     }
@@ -180,7 +180,7 @@ class Permission extends EntrustPermission
             return $parent;
         }
         return false;
-    }
+    }*/
 
     public function saveMenu(Request $request)
     {
@@ -204,17 +204,30 @@ class Permission extends EntrustPermission
         return true;
     }
 
-    public function deleteMenu($id)
+    /**
+     * 删除菜单
+     *
+     * @param int|array $ids 菜单ID
+     *
+     * @return bool
+     */
+    public function deleteMenu($ids)
     {
-        $info = $this->getInfoById($id);
-        if (is_null($info)) {
+        if (!is_array($ids)) {
+            $ids = [intval($ids)];
+        }
+        $items = collect();
+        foreach ($ids as $id) {
+            $items->push($id);
+            $items = $items->merge($this->getDescendants($id)->keys());
+        }
+        $items = $items->unique();
+        if ($items->isEmpty()) {
             throw new AdminHttpException('菜单不存在');
         }
 
-        $childs = $this->getDescendants($id)->keys();
-        $childs->push($id);
-        DB::transaction(function () use ($childs) {
-            $this->destroy($childs->toArray());
+        DB::transaction(function () use ($items) {
+            $this->destroy($items->toArray());
         });
 
         $this->clearCache();

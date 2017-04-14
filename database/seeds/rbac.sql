@@ -59,7 +59,7 @@ INSERT INTO `sco_permissions` VALUES ('3', '0', '', '左侧菜单数据', 'admin
 INSERT INTO `sco_permissions` VALUES ('5', '2', 'fa-link', '后台菜单', 'admin.system.menu', '1', '1', '', '2016-08-05 16:50:19', '2016-08-05 16:50:19');
 INSERT INTO `sco_permissions` VALUES ('6', '5', '', '菜单列表数据', 'admin.system.menu.list', '0', '1', '', '2016-08-05 16:50:19', '2016-08-05 16:50:19');
 INSERT INTO `sco_permissions` VALUES ('7', '5', ' ', '保存菜单', 'admin.system.menu.save', '0', '1', '', '2016-08-05 16:50:19', '2016-08-05 16:50:19');
--- INSERT INTO `sco_permissions` VALUES ('8', '5', '', '编辑菜单', 'admin.system.menu.edit', '0', '1', '', '2016-08-05 16:50:19', '2016-08-05 16:50:19');
+INSERT INTO `sco_permissions` VALUES ('8', '5', '', '批量删除菜单', 'admin.system.menu.batch.delete', '0', '1', '', '2016-08-05 16:50:19', '2016-08-05 16:50:19');
 -- INSERT INTO `sco_permissions` VALUES ('9', '5', '', '保存编辑菜单', 'admin.system.menu.postEdit', '0', '1', '', '2016-08-05 16:50:19', '2016-08-05 16:50:19');
 INSERT INTO `sco_permissions` VALUES ('10', '5', '', '删除菜单', 'admin.system.menu.delete', '0', '0', '', '2016-08-18 15:22:22', '2016-08-18 15:22:22');
 INSERT INTO `sco_permissions` VALUES ('11', '0', '', '管理组', '#', '1', '1', '用户管理', '2016-08-05 16:50:19', '2016-08-05 16:50:19');

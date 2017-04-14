@@ -15,15 +15,36 @@
                 <div class="tab-content">
                     <div class="box">
                         <div class="box-header clearfix">
+                            <div class="btn-group">
+                                <button data-toggle="dropdown" class="btn btn-primary btn-xs btn-white dropdown-toggle">
+                                    批量
+                                    <i class="ace-icon fa fa-angle-down icon-on-right"></i>
+                                </button>
+
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a href="#" @click.prevent="batchRemove">
+                                            <i class="fa fa-trash-o bigger-120"></i> 删除
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+
                             <div class="btn-group pull-right">
-                                <button type="button" class="btn btn-success btn-xs" @click.prevent="addMenu">
+                                <button type="button" class="btn btn-success btn-xs" @click.prevent="add">
                                     <i class="fa fa-plus bigger-120"></i></button>
                             </div>
                         </div>
                         <!-- /.box-header -->
                         <div class="box-body table-responsive no-padding">
 
-                            <el-table :data="menuList" v-loading="tableLoading">
+                            <el-table :data="menuList"
+                                      v-loading="tableLoading"
+                                      @selection-change="getSelected">
+
+                                <el-table-column
+                                        type="selection">
+                                </el-table-column>
 
                                 <el-table-column label="ID" prop="id" width="60">
                                 </el-table-column>
@@ -64,10 +85,10 @@
                                         column-key="index">
                                     <template scope="scope">
                                         <div class=" btn-group">
-                                            <button class="btn btn-xs btn-info" @click.prevent="editMenu(scope.$index)">
+                                            <button class="btn btn-xs btn-info" @click.prevent="edit(scope.$index)">
                                                 <i class="fa fa-pencil bigger-120"></i>
                                             </button>
-                                            <button class="btn btn-xs btn-danger" @click.prevent="removeMenu(scope.row.id)">
+                                            <button class="btn btn-xs btn-danger" @click.prevent="remove(scope.row.id)">
                                                 <i class="fa fa-trash-o bigger-120"></i>
                                             </button>
                                         </div>
@@ -112,14 +133,19 @@
                     }
                 ],
 
+                // 编辑
                 editModal: false,
                 info: {},
                 modalLoading: true,
                 errors: {},
 
+                // 列表
                 tableLoading: false,
-                buttonLoading: false,
                 menuList: [],
+
+                selection: [],
+                buttonLoading: false,
+
             }
         },
         computed: {
@@ -133,6 +159,12 @@
         watch: {
         },
         methods: {
+            getSelected (selection) {
+                this.selection = [];
+                selection.forEach(row => {
+                    this.selection.push(row.id);
+                });
+            },
             getResults() {
                 this.tableLoading = true;
                 this.scoHttp('/admin/system/menu/list', response => {
@@ -144,34 +176,65 @@
                 this.$parent.setBreads(this.breads, this.title);
                 this.getResults();
             },
-            addMenu () {
+            add () {
                 this.editModal = true;
                 this.info = {pid: 0, is_menu: 1, sort: 255};
                 this.errors = {};
             },
-            editMenu (index) {
+            edit (index) {
 //                console.log(index);
 //                console.log(this.menuList[index]);
                 this.editModal = true;
                 this.info = this.menuList[index];
                 this.errors = {};
             },
-            removeMenu (id) {
+            remove (id) {
                 this.$confirm('确定要删除此菜单及其所有子菜单吗？', '提示',{
                     type: 'warning',
                     beforeClose: (action, instance, done) => {
-                        this.MessageBoxInstance = instance;
+                        if (action == 'confirm') {
+                            this.MessageBoxInstance = instance;
 
-                        instance.confirmButtonLoading = true;
-                        instance.confirmButtonText = '执行中...';
-                        this.scoHttp('delete', '/admin/system/menu/' + id, response => {
-                            instance.close();
-                            instance.confirmButtonLoading = false;
-                            this.$message.success('删除成功');
-                            this.getResults();
-                        });
+                            instance.confirmButtonLoading = true;
+                            instance.confirmButtonText = '执行中...';
+                            this.scoHttp('delete', '/admin/system/menu/' + id, response => {
+                                instance.confirmButtonLoading = false;
+                                instance.close();
+                                this.$message.success('删除成功');
+                                this.getResults();
+                            });
+                        } else {
+                            done();
+                        }
                     }
-                });
+                }).then(action => {}).catch(action => {});
+            },
+            batchRemove () {
+                if (this.selection.length == 0) {
+                    this.$message.error('请选择操作对象');
+                    return false;
+                }
+
+                this.$confirm('确定要删除此菜单及其所有子菜单吗？', '提示',{
+                    type: 'warning',
+                    beforeClose: (action, instance, done) => {
+                        if (action == 'confirm') {
+                            this.MessageBoxInstance = instance;
+
+                            instance.confirmButtonLoading = true;
+                            instance.confirmButtonText = '执行中...';
+
+                            this.scoHttp('post', '/admin/system/menu/batch/delete', {'ids': this.selection}, response => {
+                                instance.confirmButtonLoading = false;
+                                instance.close();
+                                this.$message.success('删除成功');
+                                this.getResults();
+                            });
+                        } else {
+                            done();
+                        }
+                    }
+                }).then(action => {}).catch(action => {});
             },
             saveMenu () {
                 this.buttonLoading = true;

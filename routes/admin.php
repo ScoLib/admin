@@ -39,6 +39,10 @@ Route::group([
         Route::delete('system/menu/{id}', 'System\MenuController@delete')
             ->name('admin.system.menu.delete');
 
+        // 批量删除菜单
+        Route::post('system/menu/batch/delete', 'System\MenuController@batchDelete')
+            ->name('admin.system.menu.batch.delete');
+
         Route::get('manager/user', 'BaseController@index')
             ->name('admin.manager.user');
 
