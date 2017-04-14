@@ -32,8 +32,7 @@
             "Sco\\Admin\\": "src"
         },
         "classmap": [
-            "database/seeds/AdminTableSeeder.php",
-            "database/seeds/RbacTableSeeder.php"
+            "database"
         ]
     },
     "autoload-dev": {
