@@ -84,6 +84,7 @@
                             <el-pagination
                                     layout="total, prev, pager, next"
                                     :page-size="pageData.per_page"
+                                    @current-change="getResults"
                                     :total="pageData.total">
                             </el-pagination>
                         </div>
@@ -193,9 +194,13 @@
         watch: {
         },
         methods: {
-            getResults() {
+            getResults(page) {
+                if (typeof page === 'undefined') {
+                    page = 1;
+                }
+
                 this.tableLoading = true;
-                this.scoHttp('/admin/manager/user/list', response => {
+                this.scoHttp('/admin/manager/user/list', {'page': page}, response => {
                     this.tableLoading = false;
                     this.pageData = response.data;
                 });

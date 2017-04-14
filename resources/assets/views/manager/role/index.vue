@@ -15,32 +15,6 @@
                 <div class="tab-content">
                     <div class="box">
                         <div class="box-header clearfix">
-                            <div class="btn-group">
-                                <button data-toggle="dropdown" class="btn btn-primary btn-xs btn-white dropdown-toggle">
-                                    批量
-                                    <i class="ace-icon fa fa-angle-down icon-on-right"></i>
-                                </button>
-
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <a href="#">Action</a>
-                                    </li>
-
-                                    <li>
-                                        <a href="#">Another action</a>
-                                    </li>
-
-                                    <li>
-                                        <a href="#">Something else here</a>
-                                    </li>
-
-                                    <li class="divider"></li>
-
-                                    <li>
-                                        <a href="#">Separated link</a>
-                                    </li>
-                                </ul>
-                            </div>
                             <div class="btn-group pull-right">
                                 <button type="button" class="btn btn-success btn-xs" @click.prevent="add">
                                     <i class="fa fa-plus bigger-120"></i></button>
@@ -49,28 +23,27 @@
                         <!-- /.box-header -->
                         <div class="box-body table-responsive no-padding">
 
-                            <el-table :data="pageData.data" v-loading="tableLoading">
-                                <el-table-column type="selection">
+                            <el-table :data="pageData.data"
+                                      v-loading="tableLoading"
+                                      @selection-change="getSelected">
+
+                                <el-table-column
+                                        type="selection"
+                                        :selectable="selectable">
                                 </el-table-column>
 
-                                <el-table-column label="ID" prop="id" width="60">
+                                <el-table-column label="ID"
+                                                 prop="id"
+                                                 width="60">
                                 </el-table-column>
 
                                 <el-table-column label="名称" prop="name">
                                 </el-table-column>
 
-                                <el-table-column label="邮箱" prop="email">
+                                <el-table-column label="显示名称" prop="display_name">
                                 </el-table-column>
 
                                 <el-table-column label="创建时间" prop="created_at">
-                                </el-table-column>
-
-                                <el-table-column label="管理组">
-                                    <template scope="scope">
-                                        <template v-for="role in scope.row.roles">
-                                            {{ role.name }}
-                                        </template>
-                                    </template>
                                 </el-table-column>
 
                                 <el-table-column
@@ -82,6 +55,7 @@
                                         <div class="hidden-xs btn-group">
                                             <button class="btn btn-xs btn-info"
                                                     @click.prevent="authorize(scope.$index)"
+                                                    :disabled="scope.row.id == 1"
                                                     title="授权">
                                                 <i class="fa fa-user-plus bigger-120"></i>
                                             </button>
@@ -92,7 +66,8 @@
                                                 <i class="fa fa-pencil bigger-120"></i>
                                             </button>
                                             <button class="btn btn-xs btn-danger"
-                                                    @click.prevent="delete(scope.row.id)"
+                                                    @click.prevent="remove(scope.row.id)"
+                                                    :disabled="scope.row.id == 1"
                                                     title="删除">
                                                 <i class="fa fa-trash-o bigger-120"></i>
                                             </button>
@@ -104,16 +79,10 @@
                         </div>
                         <!-- /.box-body -->
                         <div class="box-footer clearfix">
-                            <!--<ul class="pagination pagination-sm no-margin pull-right">
-                                <li><a href="#">«</a></li>
-                                <li><a href="#">1</a></li>
-                                <li><a href="#">2</a></li>
-                                <li><a href="#">3</a></li>
-                                <li><a href="#">»</a></li>
-                            </ul>-->
                             <el-pagination
                                     layout="total, prev, pager, next"
                                     :page-size="pageData.per_page"
+                                    @current-change="getResults"
                                     :total="pageData.total">
                             </el-pagination>
                         </div>
@@ -127,6 +96,39 @@
                 <div slot="footer" class="dialog-footer">
                     <el-button @click="editModal = false">取 消</el-button>
                     <el-button type="primary" @click="save" :loading="buttonLoading">确 定</el-button>
+                </div>
+            </el-dialog>
+
+            <el-dialog title="设置角色" v-model="setRoleModal">
+                <div class="form-horizontal">
+
+                    <form-group name="name" title="管理员名称">
+                        <input type="text"
+                               class="col-xs-12 col-sm-9"
+                               :value="roleData.name" disabled>
+                    </form-group>
+
+                    <div class="space-2"></div>
+
+                    <form-group name="role" title="角色">
+                        <div v-for="role in roleList">
+                            <label>
+                                <input name="role[]"
+                                       :value="role.id"
+                                       type="checkbox"
+                                       class="ace"
+                                       v-model="roleData.roles">
+                                <span class="lbl"> {{ role.display_name }}</span>
+                            </label>
+                        </div>
+                    </form-group>
+
+                    <input type="hidden" name="id" v-model="roleData.id">
+                </div>
+
+                <div slot="footer" class="dialog-footer">
+                    <el-button @click="setRoleModal = false">取 消</el-button>
+                    <el-button type="primary" @click="saveRole" :loading="buttonLoading">确 定</el-button>
                 </div>
             </el-dialog>
 
@@ -144,7 +146,7 @@
         },
         data() {
             return {
-                title: '管理员',
+                title: '角色管理',
                 breads: [
                     {
                         'url': '',
@@ -152,21 +154,29 @@
                     }
                 ],
 
+                // 编辑
                 editModal: false,
                 info: {},
                 modalLoading: true,
                 errors: {},
 
+                // 列表
                 tableLoading: false,
-                buttonLoading: false,
                 pageData: {},
+
                 selection: [],
+                buttonLoading: false,
+
+                // 角色
+                setRoleModal: false,
+                roleData: {},
+                roleList: {},
             }
         },
         computed: {
-            modalTitle: function () {
-                return this.info.id ? '编辑管理员' : '新建管理员';
-            },
+            modalTitle () {
+                return this.info.id ? '编辑角色' : '新建角色';
+            }
         },
         created () {
             this.fetchData();
@@ -174,23 +184,25 @@
         watch: {
         },
         methods: {
-            getSelected (selection) {
-                this.selection = selection;
+            selectable (row, index) {
+                return row.id == 1 ? false : true;
             },
-            getResults() {
+            getSelected (selection) {
+                this.selection = [];
+                selection.forEach(row => {
+                    this.selection.push(row.id);
+                });
+            },
+            getResults(page) {
+                if (typeof page === 'undefined') {
+                    page = 1;
+                }
+
                 this.tableLoading = true;
-                var _this = this;
-                this.scoHttp('get', '/admin/manager/user/list', {}, function (response) {
+                this.scoHttp('/admin/manager/role/list', {'page': page}, response => {
                     this.tableLoading = false;
                     this.pageData = response.data;
                 });
-                /*this.scoHttp({
-                    url: '/admin/manager/user/list',
-                    method: 'get',
-                }, function (response) {
-                    this.tableLoading = false;
-                    this.pageData = response.data;
-                });*/
             },
             fetchData () {
                 this.$parent.setBreads(this.breads, this.title);
@@ -202,8 +214,6 @@
                 this.errors = {};
             },
             edit (index) {
-//                console.log(index);
-//                console.log(this.userList[index]);
                 this.editModal = true;
                 this.info = {
                     id: this.pageData.data[index].id,
@@ -212,34 +222,54 @@
                 };
                 this.errors = {};
             },
-            delete (id) {
-                this.$confirm('确定要删除此管理员吗？', '提示',{
-                    type: 'warning'
-                }).then(() => {
-                    this.$loading();
-                    this.$http.delete('/admin/manager/user/' + id)
-                        .then((response) => {
-                            this.$loading().close();
-                            this.$message.success('删除成功');
-                            this.getResults();
-                        }, (response) => {
-                            this.$loading().close();
-//                                console.log(response);
-                            this.$message.error(response.data);
-                        });
-                }).catch(() => {});
+            remove (id) {
+                this.$confirm('确定要删除此管理员吗？', '提示', {
+                    type: 'warning',
+                    beforeClose: (action, instance, done) => {
+                        if (action == 'confirm') {
+                            this.MessageBoxInstance = instance;
+
+                            instance.confirmButtonLoading = true;
+                            instance.confirmButtonText = '执行中...';
+                            this.scoHttp('delete', '/admin/manager/user/' + id, response => {
+                                instance.confirmButtonLoading = false;
+                                instance.close();
+                                this.$message.success('删除成功');
+                                this.getResults();
+                            });
+                        } else {
+                            done();
+                        }
+                    }
+                }).then(action => {}).catch(action => {});
             },
             save () {
                 this.buttonLoading = true;
-                this.scoHttp('post', '/admin/manager/user/save', this.info, (response) => {
+                this.scoHttp('post', '/admin/manager/user/save', this.info, response => {
                     this.editModal = false;
                     this.buttonLoading = false;
                     this.getResults();
                 });
             },
-            authorize () {
-                this.scoHttp('get', '/admin/manager/user/authorize', {}, (response) => {
+            authorize (index) {
+                this.setRoleModal = true;
+                this.buttonLoading = false;
+                this.roleData = {
+                    id: this.pageData.data[index].id,
+                    name: this.pageData.data[index].name,
+                    roles: [],
+                };
 
+                this.pageData.data[index].roles.forEach(role => {
+                    this.roleData.roles.push(role.id);
+                });
+            },
+            saveRole () {
+                this.buttonLoading = true;
+                this.scoHttp('post', '/admin/manager/user/save/role', this.roleData, response => {
+                    this.setRoleModal = false;
+                    this.buttonLoading = false;
+                    this.getResults();
                 });
             }
         }

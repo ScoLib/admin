@@ -10,7 +10,7 @@ class RoleController extends BaseController
 {
     public function getList()
     {
-        $roles = Role::all();
+        $roles = Role::paginate();
         return response()->json($roles);
     }
 
