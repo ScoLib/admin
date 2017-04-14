@@ -16,6 +16,5 @@ class RoleController extends BaseController
 
     public function authorize()
     {
-
     }
 }

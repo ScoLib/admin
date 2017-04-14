@@ -79,5 +79,4 @@ class MenuController extends BaseController
         $this->getPermissionModel()->deleteMenu($request->input('ids'));
         return response()->json(['message' => 'ok']);
     }
-
 }
