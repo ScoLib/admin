@@ -18,6 +18,7 @@ NPM
     "bootstrap": "^3.3.7",
     "font-awesome": "^4.7.0",
     "jquery": "^2.2.4",
+    "vue-i18n": "^5.0.3",
     "vue-resource": "^1.2.1",
     "vue-router": "^2.3.0",
     "element-ui": "^1.2.7"

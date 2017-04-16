@@ -15,9 +15,26 @@
                 <div class="tab-content">
                     <div class="box">
                         <div class="box-header clearfix">
+                            <div class="btn-group">
+                                <button data-toggle="dropdown" class="btn btn-primary btn-xs btn-white dropdown-toggle">
+                                    批量
+                                    <i class="ace-icon fa fa-angle-down icon-on-right"></i>
+                                </button>
+
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a href="#" @click.prevent="batchRemove">
+                                            <i class="fa fa-trash-o bigger-120"></i> 删除
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+
+
                             <div class="btn-group pull-right">
-                                <button type="button" class="btn btn-success btn-xs" @click.prevent="add">
-                                    <i class="fa fa-plus bigger-120"></i></button>
+                                <router-link class="btn btn-success btn-xs" to="/admin/manager/role/create">
+                                    <i class="fa fa-plus bigger-120"></i>
+                                </router-link>
                             </div>
                         </div>
                         <!-- /.box-header -->
@@ -32,12 +49,12 @@
                                         :selectable="selectable">
                                 </el-table-column>
 
-                                <el-table-column label="ID"
+                                <el-table-column :label="$t('table.id')"
                                                  prop="id"
                                                  width="60">
                                 </el-table-column>
 
-                                <el-table-column label="名称" prop="name">
+                                <el-table-column :label="$t('table.name')" prop="name">
                                 </el-table-column>
 
                                 <el-table-column label="显示名称" prop="display_name">
@@ -53,13 +70,6 @@
                                         column-key="index">
                                     <template scope="scope">
                                         <div class="hidden-xs btn-group">
-                                            <button class="btn btn-xs btn-info"
-                                                    @click.prevent="authorize(scope.$index)"
-                                                    :disabled="scope.row.id == 1"
-                                                    title="授权">
-                                                <i class="fa fa-user-plus bigger-120"></i>
-                                            </button>
-
                                             <button class="btn btn-xs btn-info"
                                                     @click.prevent="edit(scope.$index)"
                                                     title="编辑">
@@ -99,38 +109,7 @@
                 </div>
             </el-dialog>
 
-            <el-dialog title="设置角色" v-model="setRoleModal">
-                <div class="form-horizontal">
 
-                    <form-group name="name" title="管理员名称">
-                        <input type="text"
-                               class="col-xs-12 col-sm-9"
-                               :value="roleData.name" disabled>
-                    </form-group>
-
-                    <div class="space-2"></div>
-
-                    <form-group name="role" title="角色">
-                        <div v-for="role in roleList">
-                            <label>
-                                <input name="role[]"
-                                       :value="role.id"
-                                       type="checkbox"
-                                       class="ace"
-                                       v-model="roleData.roles">
-                                <span class="lbl"> {{ role.display_name }}</span>
-                            </label>
-                        </div>
-                    </form-group>
-
-                    <input type="hidden" name="id" v-model="roleData.id">
-                </div>
-
-                <div slot="footer" class="dialog-footer">
-                    <el-button @click="setRoleModal = false">取 消</el-button>
-                    <el-button type="primary" @click="saveRole" :loading="buttonLoading">确 定</el-button>
-                </div>
-            </el-dialog>
 
         </div>
     </div>
@@ -146,14 +125,6 @@
         },
         data() {
             return {
-                title: '角色管理',
-                breads: [
-                    {
-                        'url': '',
-                        'title': '管理组',
-                    }
-                ],
-
                 // 编辑
                 editModal: false,
                 info: {},
@@ -175,11 +146,11 @@
         },
         computed: {
             modalTitle () {
-                return this.info.id ? '编辑角色' : '新建角色';
+                return this.info.id ? this.$t('form.edit_role') : this.$t('form.create_role');
             }
         },
         created () {
-            this.fetchData();
+            this.getResults();
         },
         watch: {
         },
@@ -204,10 +175,6 @@
                     this.pageData = response.data;
                 });
             },
-            fetchData () {
-                this.$parent.setBreads(this.breads, this.title);
-                this.getResults();
-            },
             add () {
                 this.editModal = true;
                 this.info = {};
@@ -230,7 +197,6 @@
                             this.MessageBoxInstance = instance;
 
                             instance.confirmButtonLoading = true;
-                            instance.confirmButtonText = '执行中...';
                             this.scoHttp('delete', '/admin/manager/user/' + id, response => {
                                 instance.confirmButtonLoading = false;
                                 instance.close();
@@ -271,7 +237,34 @@
                     this.buttonLoading = false;
                     this.getResults();
                 });
-            }
+            },
+            batchRemove () {
+                if (this.selection.length == 0) {
+                    this.$message.error('请选择操作对象');
+                    return false;
+                }
+
+                this.$confirm('确定要执行删除角色操作吗？', '提示',{
+                    type: 'warning',
+                    beforeClose: (action, instance, done) => {
+                        if (action == 'confirm') {
+                            this.MessageBoxInstance = instance;
+
+                            instance.confirmButtonLoading = true;
+                            instance.confirmButtonText = '执行中...';
+
+                            this.scoHttp('post', '/admin/system/menu/batch/delete', {'ids': this.selection}, response => {
+                                instance.confirmButtonLoading = false;
+                                instance.close();
+                                this.$message.success('删除成功');
+                                this.getResults();
+                            });
+                        } else {
+                            done();
+                        }
+                    }
+                }).then(action => {}).catch(action => {});
+            },
         }
     }
 </script>

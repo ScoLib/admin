@@ -173,7 +173,6 @@
                 });
             },
             fetchData () {
-                this.$parent.setBreads(this.breads, this.title);
                 this.getResults();
             },
             add () {

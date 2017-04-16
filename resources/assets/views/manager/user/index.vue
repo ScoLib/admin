@@ -206,7 +206,6 @@
                 });
             },
             fetchData () {
-                this.$parent.setBreads(this.breads, this.title);
                 this.getResults();
 
                 this.scoHttp('/admin/manager/role/list', response => {

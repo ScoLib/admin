@@ -9,3 +9,6 @@
 <link rel="stylesheet" href="{{ mix('css/admin.css') }}">
 @yield('css')
 
+<script>
+    window.Lang = "{{ config('app.locale') }}"
+</script>

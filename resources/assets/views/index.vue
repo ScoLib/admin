@@ -8,8 +8,6 @@
     export default {
         data() {
             return {
-                title: '控制台',
-                breads: []
             }
         },
 /*        beforeRouteEnter (to, from, next) {
@@ -23,7 +21,6 @@
         },
         methods: {
             fetchData () {
-                this.$parent.setBreads(this.breads, this.title);
 //                this.$Message.info('这是一个消息', 200);
             }
         }

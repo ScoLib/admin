@@ -11,11 +11,8 @@
                     <!-- #section:basics/content.breadcrumbs -->
                     <div class="breadcrumbs ace-save-state" id="breadcrumbs">
                         <ul class="breadcrumb">
-                            <li>
-                                <i class="ace-icon fa fa-home home-icon"></i>
-                                <a href="/admin">首页</a>
-                            </li>
-                            <li v-for="entry in breads">
+                            <li v-for="(entry, key) in breads">
+                                <i class="ace-icon fa fa-home home-icon" v-if="key == 0"></i>
 
                                 <a href="#" v-if="entry.url == ''">{{ entry.title }}</a>
                                 <router-link :to="entry.url" v-if="entry.url != ''">{{ entry.title }}</router-link>
@@ -77,29 +74,32 @@
     import Navbar from './layouts/Navbar.vue';
     import Sidebar from './layouts/Sidebar.vue';
 
-    import bTable from  './Table.vue';
-    import bPagination from './Pagination.vue';
-
-    Vue.component('bTable', bTable);
-    Vue.component('bPagination', bPagination);
-
     export default {
         data () {
             return {
-                title: '',
-                breads: [],
             }
         },
         components: {
             Navbar,
             Sidebar,
         },
-        methods: {
-            setBreads (breads, title) {
-                this.title = title;
-                this.breads = breads;
-                document.title = title + ' - Sco Admin';
+        computed: {
+            title () {
+                return this.$route.meta.title;
+            },
+            breads () {
+                let breads = [];
+                this.$route.matched.forEach(route => {
+                    if (typeof route.parent === 'object') {
+                        let parent = route.parent;
+                        breads.push({url: parent.path, title: parent.meta.title});
+
+                    }
+                });
+                return breads;
             }
+        },
+        methods: {
         }
     }
 </script>
