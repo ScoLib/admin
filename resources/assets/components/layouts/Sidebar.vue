@@ -40,7 +40,7 @@
                              v-for="(menu, menu_key) in menus"
                              :to="menu.name == '#' ? notUrl : {name: menu.name}"
                              :key="menu_key"
-                             :active-class="Object.keys(menu.child).length > 0 ? 'active open' : 'active'"
+                             :class="openClass(menu.child)"
                              exact
                 >
                     <a :class="{ 'dropdown-toggle' : Object.keys(menu.child).length > 0 }">
@@ -88,10 +88,25 @@
                 this.loading = false;
                 this.menus = response.data;
             });
+
         },
         computed: {
             notUrl () {
                 return '/#';
+            }
+        },
+        methods: {
+            openClass (child) {
+                var activeClass = '';
+                if (Object.keys(child).length > 0) {
+                    var _this = this;
+                    Object.keys(child).forEach(index => {
+                        if (child[index].name == _this.$route.name) {
+                            activeClass = 'open';
+                        }
+                    });
+                }
+                return activeClass;
             }
         }
     }

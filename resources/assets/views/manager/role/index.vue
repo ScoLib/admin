@@ -40,7 +40,7 @@
                         <!-- /.box-header -->
                         <div class="box-body table-responsive no-padding">
 
-                            <el-table :data="pageData.data"
+                            <el-table :data="roleList"
                                       v-loading="tableLoading"
                                       @selection-change="getSelected">
 
@@ -89,12 +89,6 @@
                         </div>
                         <!-- /.box-body -->
                         <div class="box-footer clearfix">
-                            <el-pagination
-                                    layout="total, prev, pager, next"
-                                    :page-size="pageData.per_page"
-                                    @current-change="getResults"
-                                    :total="pageData.total">
-                            </el-pagination>
                         </div>
                     </div>
 
@@ -133,7 +127,7 @@
 
                 // 列表
                 tableLoading: false,
-                pageData: {},
+                roleList: [],
 
                 selection: [],
                 buttonLoading: false,
@@ -141,7 +135,6 @@
                 // 角色
                 setRoleModal: false,
                 roleData: {},
-                roleList: {},
             }
         },
         computed: {
@@ -164,15 +157,11 @@
                     this.selection.push(row.id);
                 });
             },
-            getResults(page) {
-                if (typeof page === 'undefined') {
-                    page = 1;
-                }
-
+            getResults() {
                 this.tableLoading = true;
-                this.scoHttp('/admin/manager/role/list', {'page': page}, response => {
+                this.scoHttp('/admin/manager/role/list', response => {
                     this.tableLoading = false;
-                    this.pageData = response.data;
+                    this.roleList = response.data;
                 });
             },
             add () {
@@ -183,9 +172,9 @@
             edit (index) {
                 this.editModal = true;
                 this.info = {
-                    id: this.pageData.data[index].id,
-                    name: this.pageData.data[index].name,
-                    email: this.pageData.data[index].email,
+                    id: this.roleList[index].id,
+                    name: this.roleList[index].name,
+                    email: this.roleList[index].email,
                 };
                 this.errors = {};
             },
@@ -221,12 +210,12 @@
                 this.setRoleModal = true;
                 this.buttonLoading = false;
                 this.roleData = {
-                    id: this.pageData.data[index].id,
-                    name: this.pageData.data[index].name,
+                    id: this.roleList[index].id,
+                    name: this.roleList[index].name,
                     roles: [],
                 };
 
-                this.pageData.data[index].roles.forEach(role => {
+                this.roleList[index].roles.forEach(role => {
                     this.roleData.roles.push(role.id);
                 });
             },
