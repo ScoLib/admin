@@ -1,11 +1,13 @@
 <template>
     <div class="form-horizontal box-body">
         <div :class="['form-group', errors[field.name] ? 'has-error' : '']" v-for="field in fields">
-            <label for="inputEmail3" class="col-sm-2 control-label">Email</label>
+            <label for="inputEmail3" class="col-sm-2 control-label">{{ field.title }}</label>
 
             <div class="col-sm-10">
                 <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
-                <span class="help-block">Help block with success</span>
+                <span class="help-block" v-if="errors[field.name]">
+                    <template v-for="e in errors[field.name]"> {{ e }} </template>
+                </span>
             </div>
         </div>
 

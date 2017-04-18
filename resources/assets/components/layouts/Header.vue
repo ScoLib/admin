@@ -31,7 +31,7 @@
                                 <img src="../../img/user2-160x160.jpg" class="img-circle" alt="User Image">
 
                                 <p>
-                                    Alexander Pierce - Web Developer
+                                    Admin - 管理员
                                     <small>Member since Nov. 2012</small>
                                 </p>
                             </li>
@@ -56,7 +56,7 @@
                                     <a href="#" class="btn btn-default btn-flat">Profile</a>
                                 </div>
                                 <div class="pull-right">
-                                    <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                                    <a href="/admin/logout" class="btn btn-default btn-flat">退出</a>
                                 </div>
                             </li>
                         </ul>

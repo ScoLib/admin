@@ -8,7 +8,7 @@ Route::group([
     //登录页
     Route::get('login', 'Auth\LoginController@showLoginForm')->name('admin.login');
     //登录提交
-    Route::post('postLogin', 'Auth\LoginController@login')->name('admin.postLogin');
+    Route::post('login', 'Auth\LoginController@login')->name('admin.login.submit');
     //退出
     Route::get('logout', 'Auth\LoginController@logout')->name('admin.logout');
 
