@@ -1,15 +1,22 @@
 <template>
-    <ul class="submenu">
-        <router-link tag="li"
-                     v-for="child in childs"
-                     :to="child.name == '#' ? notUrl : {name: child.name}"
-                     exact
-        >
-            <a :class="{ 'dropdown-toggle' : Object.keys(child.child).length > 0 }">
-                <i :class="['menu-icon', 'fa', child.icon ? child.icon : 'fa-caret-right']"></i>
-                <span class="menu-text"> {{ child.display_name }} </span>
+    <ul :class="ulClass">
+        <li class="header" v-if="isTop">MAIN NAVIGATION</li>
+
+        <router-link
+                tag="li"
+                v-for="child in childs"
+                :to="child.name == '#' ? notUrl : {name: child.name}"
+                :class="activeClass(child.child)"
+                exact>
+            <a>
+                <i :class="['fa', child.icon ? child.icon : 'fa-circle-o']"></i>
+                <span v-if="isTop"> {{ child.display_name }} </span>
+                <template v-else>{{ child.display_name }}</template>
+
+                <span class="pull-right-container" v-if="Object.keys(child.child).length > 0">
+                    <i class="fa fa-angle-left pull-right"></i>
+                </span>
             </a>
-            <b class="arrow"></b>
             <Submenu v-if="Object.keys(child.child).length > 0" :childs="child.child"></Submenu>
         </router-link>
     </ul>
@@ -17,11 +24,44 @@
 </template>
 
 <script>
+
     export default {
-        props: ['childs'],
+        name: 'Submenu',
+        props: {
+            childs: {
+                type: Object,
+                default () {
+                    return {};
+                }
+            },
+            isTop: {
+                type: Boolean,
+                default: false,
+            },
+            ulClass: {
+                type: String,
+                default () {
+                    return 'treeview-menu';
+                }
+            }
+        },
         computed: {
             notUrl () {
                 return '/#';
+            }
+        },
+        methods: {
+            activeClass (child) {
+                var activeClass = [];
+                if (Object.keys(child).length > 0) {
+                    var _this = this;
+                    Object.keys(child).forEach(index => {
+                        if (child[index].name == _this.$route.name) {
+                            activeClass = ['treeview', 'active'];
+                        }
+                    });
+                }
+                return activeClass;
             }
         }
     }

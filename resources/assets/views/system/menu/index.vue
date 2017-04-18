@@ -1,108 +1,105 @@
 <template>
     <div class="row">
         <div class="col-xs-12">
-            <div class="tabbable">
-                <ul class="nav nav-tabs">
-                    <li class="active">
-                        <a data-toggle="tab" href="#">
-                            列表
-                        </a>
-                    </li>
+            <div class="box">
+                <div class="box-header">
+                    <h3 class="box-title">列表</h3>
 
-
-                </ul>
-
-                <div class="tab-content">
-                    <div class="box">
-                        <div class="box-header clearfix">
-                            <div class="btn-group">
-                                <button data-toggle="dropdown" class="btn btn-primary btn-xs btn-white dropdown-toggle">
-                                    批量
-                                    <i class="ace-icon fa fa-angle-down icon-on-right"></i>
-                                </button>
-
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <a href="#" @click.prevent="batchRemove">
-                                            <i class="fa fa-trash-o bigger-120"></i> 删除
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <div class="btn-group pull-right">
-                                <button type="button" class="btn btn-success btn-xs" @click.prevent="add">
-                                    <i class="fa fa-plus bigger-120"></i></button>
-                            </div>
-                        </div>
-                        <!-- /.box-header -->
-                        <div class="box-body table-responsive no-padding">
-
-                            <el-table :data="menuList"
-                                      v-loading="tableLoading"
-                                      @selection-change="getSelected">
-
-                                <el-table-column
-                                        type="selection">
-                                </el-table-column>
-
-                                <el-table-column label="ID" prop="id" width="60">
-                                </el-table-column>
-
-                                <el-table-column label="显示名称">
-                                    <template scope="scope">
-                                        <span v-html="scope.row.spacer"></span> {{ scope.row.display_name }}
-                                    </template>
-                                </el-table-column>
-
-                                <el-table-column
-                                        label="名称"
-                                        prop="name"
-                                        class-name="hidden-xs">
-                                </el-table-column>
-
-                                <el-table-column
-                                        label="菜单"
-                                        width="70">
-                                    <template scope="scope">
-                                        {{ scope.row.is_menu ? '是' : '否' }}
-                                    </template>
-                                </el-table-column>
-
-                                <el-table-column
-                                        label="图标"
-                                        width="70"
-                                        class-name="hidden-xs">
-                                    <template scope="scope">
-                                        <i :class="['menu-icon', 'fa', scope.row.icon]"></i>
-                                    </template>
-                                </el-table-column>
-
-                                <el-table-column
-                                        label="操作"
-                                        width="120"
-                                        align="center"
-                                        column-key="index">
-                                    <template scope="scope">
-                                        <div class=" btn-group">
-                                            <button class="btn btn-xs btn-info" @click.prevent="edit(scope.$index)">
-                                                <i class="fa fa-pencil bigger-120"></i>
-                                            </button>
-                                            <button class="btn btn-xs btn-danger" @click.prevent="remove(scope.row.id)">
-                                                <i class="fa fa-trash-o bigger-120"></i>
-                                            </button>
-                                        </div>
-                                    </template>
-                                </el-table-column>
-
-                            </el-table>
-                        </div>
-                        <!-- /.box-body -->
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default btn-sm">批量操作</button>
+                        <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+                            <span class="caret"></span>
+                            <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li>
+                                <a href="#" @click.prevent="batchRemove">
+                                    <i class="fa fa-trash-o bigger-120"></i> 删除
+                                </a>
+                            </li>
+                        </ul>
                     </div>
 
+                    <div class="box-tools">
+                        <div class="input-group input-group-sm pull-right" style="width: 150px;">
+                            <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
 
+                            <div class="input-group-btn">
+                                <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                            </div>
+                        </div>
+                        <div class="btn-group btn-group-sm pull-right margin-r-5">
+                            <button type="button" class="btn btn-default" @click.prevent="add">
+                                <i class="fa fa-plus bigger-120"></i>
+                            </button>
+                        </div>
+
+                    </div>
                 </div>
+                <!-- /.box-header -->
+                <div class="box-body table-responsive no-padding">
+                    <el-table :data="menuList"
+                              v-loading="tableLoading"
+                              @selection-change="getSelected">
+
+                        <el-table-column
+                                type="selection">
+                        </el-table-column>
+
+                        <el-table-column label="ID" prop="id" width="60">
+                        </el-table-column>
+
+                        <el-table-column label="显示名称">
+                            <template scope="scope">
+                                <span v-html="scope.row.spacer"></span> {{ scope.row.display_name }}
+                            </template>
+                        </el-table-column>
+
+                        <el-table-column
+                                label="名称"
+                                prop="name"
+                                class-name="hidden-xs">
+                        </el-table-column>
+
+                        <el-table-column
+                                label="菜单"
+                                width="70">
+                            <template scope="scope">
+                                {{ scope.row.is_menu ? '是' : '否' }}
+                            </template>
+                        </el-table-column>
+
+                        <el-table-column
+                                label="图标"
+                                width="70"
+                                class-name="hidden-xs">
+                            <template scope="scope">
+                                <i :class="['menu-icon', 'fa', scope.row.icon]"></i>
+                            </template>
+                        </el-table-column>
+
+                        <el-table-column
+                                label="操作"
+                                width="120"
+                                align="center"
+                                column-key="index">
+                            <template scope="scope">
+                                <div class=" btn-group">
+                                    <button class="btn btn-xs btn-info" @click.prevent="edit(scope.$index)">
+                                        <i class="fa fa-pencil bigger-120"></i>
+                                    </button>
+                                    <button class="btn btn-xs btn-danger" @click.prevent="remove(scope.row.id)">
+                                        <i class="fa fa-trash-o bigger-120"></i>
+                                    </button>
+                                </div>
+                            </template>
+                        </el-table-column>
+
+                    </el-table>
+                </div>
+                <!-- /.box-body -->
             </div>
+
             <el-dialog :title="modalTitle" v-model="editModal">
                 <form-dialog :info="info" :menuList="menuList" :errors="errors"></form-dialog>
                 <div slot="footer" class="dialog-footer">

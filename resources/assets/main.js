@@ -1,6 +1,6 @@
 require('jquery');
 require('bootstrap');
-require('./ace/script');
+require('./js/');
 
 import Vue from 'vue';
 import VueRouter from 'vue-router';

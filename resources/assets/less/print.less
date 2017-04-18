@@ -1,76 +1,54 @@
+/*
+ * Misc: print
+ * -----------
+ */
 @media print {
- .navbar {
-	display: none !important;
-	/**
-	background: transparent none !important;
-	border-bottom: 1px solid #DDD;
-	
-	.navbar-brand {
-		color: @text-color !important;
-	}
+  //Add to elements that you do not want to show when printing
+  .no-print {
+    display: none !important;
+  }
 
-	.ace-nav {
-		display: none !important;
-	}
-	*/
- }
- 
- .sidebar {
-	display: none !important;
- }
- .main-content {
-	margin-left: 0 !important;
-	margin-right: 0 !important;
-	
-	.nav-search {
-		display: none !important;
-	}
-	
-	.breadcrumbs {
-		float: right;
-		border-width:  0 !important;
-		
-		.breadcrumb > li + li:before {
-			content: "/";
-		}
-		.breadcrumb .home-icon {
-			display: none;
-		}
-	}
- }
- .ace-settings-container {
-	display: none !important;
- }
- 
- 
+  //Elements that we want to hide when printing
+  .main-sidebar,
+  .left-side,
+  .main-header,
+  .content-header {
+    &:extend(.no-print);
+  }
 
- .footer {
-   width: 100%;
-   height: auto;
-   position: relative;
- }
- .footer .footer-inner, .footer .footer-inner .footer-content {
-	width: 100%;
- }
- 
+  //This is the only element that should appear, so let's remove the margins
+  .content-wrapper,
+  .right-side,
+  .main-footer {
+    margin-left: 0 !important;
+    min-height: 0 !important;
+    .translate(0, 0) !important;
+  }
 
- .btn-scroll-up {
-   display: none !important;
- }
+  .fixed .content-wrapper,
+  .fixed .right-side {
+    padding-top: 0 !important;
+  }
 
+  //Invoice printing
+  .invoice {
+    width: 100%;
+    border: 0;
+    margin: 0;
+    padding: 0;
+  }
 
+  .invoice-col {
+    float: left;
+    width: 33.3333333%;
+  }
 
- .btn, .btn.btn-app {
-	background: transparent none !important;
-	border-width: 1px !important;
-	border-radius: 0 !important;
-	color: #555 !important;
- }
- .label {
-	border: 1px solid #666 !important;
- }
- .label[class*=arrowed]:before, .label[class*=arrowed]:after {
-	display: none !important;
- }
- 
+  //Make sure table content displays properly
+  .table-responsive {
+    overflow: auto;
+    > .table tr th,
+    > .table tr td {
+      white-space: normal !important;
+    }
+  }
 }

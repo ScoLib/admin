@@ -13,22 +13,22 @@
 
   // Box color variations
   &.box-primary {
-    border-top-color: @label-primary;
+    border-top-color: @light-blue;
   }
   &.box-info {
-    border-top-color: @label-info;
+    border-top-color: @aqua;
   }
   &.box-danger {
-    border-top-color: @label-danger;
+    border-top-color: @red;
   }
   &.box-warning {
-    border-top-color: @label-warning;
+    border-top-color: @yellow;
   }
   &.box-success {
-    border-top-color: @label-success;
+    border-top-color: @green;
   }
   &.box-default {
-    border-top-color: @label-default;
+    border-top-color: @gray-lte;
   }
 
   // collapsed mode
@@ -84,22 +84,22 @@
 
     // Box color variations
     &.box-default {
-      .box-solid-variant(@label-default, #444);
+      .box-solid-variant(@gray-lte, #444);
     }
     &.box-primary {
-      .box-solid-variant(@label-primary);
+      .box-solid-variant(@light-blue);
     }
     &.box-info {
-      .box-solid-variant(@label-info);
+      .box-solid-variant(@aqua);
     }
     &.box-danger {
-      .box-solid-variant(@label-danger);
+      .box-solid-variant(@red);
     }
     &.box-warning {
-      .box-solid-variant(@label-warning);
+      .box-solid-variant(@yellow);
     }
     &.box-success {
-      .box-solid-variant(@label-success);
+      .box-solid-variant(@green);
     }
 
     > .box-header > .box-tools .btn {
@@ -321,6 +321,159 @@
     font-size: 12px;
   }
 }
+
+//Widgets
+//-----------
+
+/* Widget: TODO LIST */
+
+.todo-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow: auto;
+  // Todo list element
+  > li {
+    .border-radius(2px);
+    padding: 10px;
+    background: #f4f4f4;
+    margin-bottom: 2px;
+    border-left: 2px solid #e6e7e8;
+    color: #444;
+    &:last-of-type {
+      margin-bottom: 0;
+    }
+
+    > input[type='checkbox'] {
+      margin: 0 10px 0 5px;
+    }
+
+    .text {
+      display: inline-block;
+      margin-left: 5px;
+      font-weight: 600;
+    }
+
+    // Time labels
+    .label {
+      margin-left: 10px;
+      font-size: 9px;
+    }
+
+    // Tools and options box
+    .tools {
+      display: none;
+      float: right;
+      color: @red;
+      // icons
+      > .fa, > .glyphicon, > .ion {
+        margin-right: 5px;
+        cursor: pointer;
+      }
+
+    }
+    &:hover .tools {
+      display: inline-block;
+    }
+
+    &.done {
+      color: #999;
+      .text {
+        text-decoration: line-through;
+        font-weight: 500;
+      }
+
+      .label {
+        background: @gray-lte !important;
+      }
+    }
+  }
+
+  // Color varaity
+  .danger {
+    border-left-color: @red;
+  }
+  .warning {
+    border-left-color: @yellow;
+  }
+  .info {
+    border-left-color: @aqua;
+  }
+  .success {
+    border-left-color: @green;
+  }
+  .primary {
+    border-left-color: @light-blue;
+  }
+
+  .handle {
+    display: inline-block;
+    cursor: move;
+    margin: 0 5px;
+  }
+
+}
+
+// END TODO WIDGET
+
+/* Chat widget (DEPRECATED - this will be removed in the next major release. Use Direct Chat instead)*/
+.chat {
+  padding: 5px 20px 5px 10px;
+
+  .item {
+    .clearfix();
+    margin-bottom: 10px;
+    // The image
+    > img {
+      width: 40px;
+      height: 40px;
+      border: 2px solid transparent;
+      .border-radius(50%);
+    }
+
+    > .online {
+      border: 2px solid @green;
+    }
+    > .offline {
+      border: 2px solid @red;
+    }
+
+    // The message body
+    > .message {
+      margin-left: 55px;
+      margin-top: -40px;
+      > .name {
+        display: block;
+        font-weight: 600;
+      }
+    }
+
+    // The attachment
+    > .attachment {
+      .border-radius(@attachment-border-radius);
+      background: #f4f4f4;
+      margin-left: 65px;
+      margin-right: 15px;
+      padding: 10px;
+      > h4 {
+        margin: 0 0 5px 0;
+        font-weight: 600;
+        font-size: 14px;
+      }
+      > p, > .filename {
+        font-weight: 600;
+        font-size: 13px;
+        font-style: italic;
+        margin: 0;
+
+      }
+      .clearfix();
+    }
+  }
+
+}
+
+//END CHAT WIDGET
 
 //Input in box
 .box-input {

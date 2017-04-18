@@ -1,69 +1,41 @@
 <template>
-    <div id="sidebar" class="sidebar responsive ace-save-state sidebar-fixed display">
-
-        <aside v-loading="loading">
-            <div class="sidebar-shortcuts" id="sidebar-shortcuts">
-                <div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
-                    <button class="btn btn-success">
-                        <i class="ace-icon fa fa-signal"></i>
-                    </button>
-
-                    <button class="btn btn-info">
-                        <i class="ace-icon fa fa-pencil"></i>
-                    </button>
-
-                    <!-- #section:basics/sidebar.layout.shortcuts -->
-                    <button class="btn btn-warning">
-                        <i class="ace-icon fa fa-users"></i>
-                    </button>
-
-                    <button class="btn btn-danger">
-                        <i class="ace-icon fa fa-cogs"></i>
-                    </button>
-
-                    <!-- /section:basics/sidebar.layout.shortcuts -->
+    <!-- Left side column. contains the sidebar -->
+    <aside class="main-sidebar">
+        <!-- sidebar: style can be found in sidebar.less -->
+        <section class="sidebar">
+            <!-- Sidebar user panel -->
+            <div class="user-panel">
+                <div class="pull-left image">
+                    <img src="../../img/user2-160x160.jpg" class="img-circle" alt="User Image">
                 </div>
-
-                <div class="sidebar-shortcuts-mini" id="sidebar-shortcuts-mini">
-                    <span class="btn btn-success"></span>
-
-                    <span class="btn btn-info"></span>
-
-                    <span class="btn btn-warning"></span>
-
-                    <span class="btn btn-danger"></span>
+                <div class="pull-left info">
+                    <p>Alexander Pierce</p>
+                    <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
                 </div>
-            </div><!-- /.sidebar-shortcuts -->
-
-            <transition-group name="fade" class="nav nav-list" tag="ul">
-                <router-link tag="li"
-                             v-for="(menu, menu_key) in menus"
-                             :to="menu.name == '#' ? notUrl : {name: menu.name}"
-                             :key="menu_key"
-                             :class="openClass(menu.child)"
-                             exact
-                >
-                    <a :class="{ 'dropdown-toggle' : Object.keys(menu.child).length > 0 }">
-                        <i :class="['menu-icon', 'fa', menu.icon ? menu.icon : 'fa-file-o']"></i>
-                        <span class="menu-text"> {{ menu.display_name }} </span>
-
-                        <b v-if="Object.keys(menu.child).length > 0" class="arrow fa fa-angle-down"></b>
-                    </a>
-                    <b class="arrow"></b>
-                    <Submenu v-if="Object.keys(menu.child).length > 0" :childs="menu.child"></Submenu>
-                </router-link>
-            </transition-group><!-- /.nav-list -->
-        </aside>
-
-        <!-- #section:basics/sidebar.layout.minimize -->
-        <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
-            <i id="sidebar-toggle-icon" class="ace-icon fa fa-angle-double-left ace-save-state"
-               data-icon1="ace-icon fa fa-angle-double-left"
-               data-icon2="ace-icon fa fa-angle-double-right"></i>
-        </div>
-
-        <!-- /section:basics/sidebar.layout.minimize -->
-    </div>
+            </div>
+            <!-- search form -->
+            <form action="#" method="get" class="sidebar-form">
+                <div class="input-group">
+                    <input type="text" name="q" class="form-control" placeholder="Search...">
+                    <span class="input-group-btn">
+                <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
+                </button>
+              </span>
+                </div>
+            </form>
+            <!-- /.search form -->
+            <!-- sidebar menu: : style can be found in sidebar.less -->
+            <transition name="fade">
+                <Submenu
+                        :childs="menus"
+                        :is-top="true"
+                        ul-class="sidebar-menu"
+                        v-loading="loading">
+                </Submenu>
+            </transition>
+        </section>
+        <!-- /.sidebar -->
+    </aside>
 </template>
 
 
@@ -73,6 +45,7 @@
     import Submenu from './Submenu.vue';
 
     export default {
+        name: 'AppSidebar',
         data () {
             return {
                 menus: {},
@@ -96,13 +69,13 @@
             }
         },
         methods: {
-            openClass (child) {
-                var activeClass = '';
+            activeClass (child) {
+                var activeClass = [];
                 if (Object.keys(child).length > 0) {
                     var _this = this;
                     Object.keys(child).forEach(index => {
                         if (child[index].name == _this.$route.name) {
-                            activeClass = 'open';
+                            activeClass = ['treeview', 'active'];
                         }
                     });
                 }
