@@ -41,7 +41,7 @@
                         </label>
                     </div>
 
-                    <template v-else-if="typeof field.type === 'undefined' || ['text', 'textarea', 'number', 'email'].indexOf(field.type) > -1">
+                    <template v-else-if="typeof field.type === 'undefined' || ['text', 'textarea', 'number', 'email', 'password'].indexOf(field.type) > -1">
                         <b-input
                                 :custom-class="field.class"
                                 :type="field.type"

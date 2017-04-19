@@ -28,16 +28,17 @@ class ManagerRequest extends BaseFormRequest
             'name'     => [
                 'bail',
                 'required',
-                'regex:/^[\w]+$/',
-                Rule::unique('managers')->ignore($this->input('id'))
+                'alpha_num',
+                'between:4,20',
+                Rule::unique('managers')->ignore($this->input('id')),
             ],
             'email'    => [
                 'bail',
                 'email',
                 'required',
-                Rule::unique('managers')->ignore($this->input('id'))
+                Rule::unique('managers')->ignore($this->input('id')),
             ],
-            'password' => 'bail|required_without:id',
+            'password' => 'bail|required_without:id|min:6',
             //'sort'     => 'integer|between:0,255',
         ];
     }
@@ -46,6 +47,8 @@ class ManagerRequest extends BaseFormRequest
     {
         return [
             'required_without' => '密码不能为空',
+            'between'          => trans('admin::validation.between.string'),
+            'min'              => trans('admin::validation.min.string'),
         ];
     }
 

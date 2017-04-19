@@ -1,100 +1,90 @@
 <template>
     <div class="row">
         <div class="col-xs-12">
-            <div class="tabbable">
-                <ul class="nav nav-tabs">
-                    <li class="active">
-                        <a data-toggle="tab" href="#">
-                            列表
-                        </a>
-                    </li>
-
-
-                </ul>
-
-                <div class="tab-content">
-                    <div class="box">
-                        <div class="box-header clearfix">
-                            <div class="btn-group pull-right">
-                                <button type="button" class="btn btn-success btn-xs" @click.prevent="add">
-                                    <i class="fa fa-plus bigger-120"></i></button>
-                            </div>
-                        </div>
-                        <!-- /.box-header -->
-                        <div class="box-body table-responsive no-padding">
-
-                            <el-table :data="pageData.data"
-                                      v-loading="tableLoading">
-
-                                <el-table-column label="ID"
-                                                 prop="id"
-                                                 width="60">
-                                </el-table-column>
-
-                                <el-table-column label="名称" prop="name">
-                                </el-table-column>
-
-                                <el-table-column label="邮箱" prop="email">
-                                </el-table-column>
-
-                                <el-table-column label="创建时间" prop="created_at">
-                                </el-table-column>
-
-                                <el-table-column label="管理组">
-                                    <template scope="scope">
-                                        <template v-for="role in scope.row.roles">
-                                            {{ role.display_name }}[{{ role.name }}]<br>
-                                        </template>
-                                    </template>
-                                </el-table-column>
-
-                                <el-table-column
-                                        label="操作"
-                                        width="120"
-                                        align="center"
-                                        column-key="index">
-                                    <template scope="scope">
-                                        <div class="hidden-xs btn-group">
-                                            <button class="btn btn-xs btn-info"
-                                                    @click.prevent="setRole(scope.$index)"
-                                                    :disabled="scope.row.id == 1"
-                                                    title="角色">
-                                                <i class="fa fa-user-plus bigger-120"></i>
-                                            </button>
-
-                                            <button class="btn btn-xs btn-info"
-                                                    @click.prevent="edit(scope.$index)"
-                                                    title="编辑">
-                                                <i class="fa fa-pencil bigger-120"></i>
-                                            </button>
-                                            <button class="btn btn-xs btn-danger"
-                                                    @click.prevent="remove(scope.row.id)"
-                                                    :disabled="scope.row.id == 1"
-                                                    title="删除">
-                                                <i class="fa fa-trash-o bigger-120"></i>
-                                            </button>
-                                        </div>
-                                    </template>
-                                </el-table-column>
-
-                            </el-table>
-                        </div>
-                        <!-- /.box-body -->
-                        <div class="box-footer clearfix">
-                            <el-pagination
-                                    layout="total, prev, pager, next"
-                                    :page-size="pageData.per_page"
-                                    @current-change="getResults"
-                                    :total="pageData.total">
-                            </el-pagination>
-                        </div>
+            <div class="box">
+                <div class="box-header">
+                    <div class="btn-group btn-group-sm pull-right margin-r-5">
+                        <button type="button" class="btn btn-default" @click.prevent="add">
+                            <i class="fa fa-plus bigger-120"></i>
+                        </button>
                     </div>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body table-responsive no-padding">
 
+                    <el-table :data="pageData.data"
+                              v-loading="tableLoading">
 
+                        <el-table-column label="ID"
+                                         prop="id"
+                                         width="60">
+                        </el-table-column>
+
+                        <el-table-column label="名称" prop="name">
+                        </el-table-column>
+
+                        <el-table-column label="邮箱" prop="email">
+                        </el-table-column>
+
+                        <el-table-column label="创建时间" prop="created_at">
+                        </el-table-column>
+
+                        <el-table-column label="管理组">
+                            <template scope="scope">
+                                <template v-for="role in scope.row.roles">
+                                    {{ role.display_name }}[{{ role.name }}]<br>
+                                </template>
+                            </template>
+                        </el-table-column>
+
+                        <el-table-column
+                                label="操作"
+                                width="120"
+                                align="center"
+                                column-key="index">
+                            <template scope="scope">
+                                <div class="hidden-xs btn-group">
+                                    <button class="btn btn-xs btn-info"
+                                            @click.prevent="setRole(scope.$index)"
+                                            :disabled="scope.row.id == 1"
+                                            title="角色">
+                                        <i class="fa fa-user-plus bigger-120"></i>
+                                    </button>
+
+                                    <button class="btn btn-xs btn-info"
+                                            @click.prevent="edit(scope.$index)"
+                                            title="编辑">
+                                        <i class="fa fa-pencil bigger-120"></i>
+                                    </button>
+                                    <button class="btn btn-xs btn-danger"
+                                            @click.prevent="remove(scope.row.id)"
+                                            :disabled="scope.row.id == 1"
+                                            title="删除">
+                                        <i class="fa fa-trash-o bigger-120"></i>
+                                    </button>
+                                </div>
+                            </template>
+                        </el-table-column>
+
+                    </el-table>
+                </div>
+                <!-- /.box-body -->
+                <div class="box-footer clearfix">
+                    <el-pagination
+                            layout="total, prev, pager, next"
+                            :page-size="pageData.per_page"
+                            @current-change="getResults"
+                            :total="pageData.total">
+                    </el-pagination>
                 </div>
             </div>
             <el-dialog :title="modalTitle" v-model="editModal">
-                <form-dialog :info="info" :errors="errors"></form-dialog>
+                <b-form
+                        :fields="editFields"
+                        :info="info"
+                        :errors="errors">
+                </b-form>
+
                 <div slot="footer" class="dialog-footer">
                     <el-button @click="editModal = false">取 消</el-button>
                     <el-button type="primary" @click="save" :loading="buttonLoading">确 定</el-button>
@@ -102,31 +92,30 @@
             </el-dialog>
 
             <el-dialog title="设置角色" v-model="setRoleModal">
-                <div class="form-horizontal">
 
-                    <form-group name="name" title="管理员名称">
-                        <input type="text"
-                               class="col-xs-12 col-sm-9"
-                               :value="roleData.name" disabled>
-                    </form-group>
+                <b-form
+                        :fields="roleFields"
+                        :info="roleData"
+                        :errors="errors">
+                    <input type="text"
+                           class="form-control"
+                           :value="roleData.name"
+                           disabled
+                           slot="name">
 
-                    <div class="space-2"></div>
+                    <div class="checkbox" v-for="role in roleList" slot="role">
+                        <label>
+                            <input
+                                   :value="role.id"
+                                   type="checkbox"
+                                   v-model="roleData.roles">
+                            {{ role.display_name }}
+                        </label>
+                    </div>
 
-                    <form-group name="role" title="角色">
-                            <div v-for="role in roleList">
-                                <label>
-                                    <input name="role[]"
-                                           :value="role.id"
-                                           type="checkbox"
-                                           class="ace"
-                                           v-model="roleData.roles">
-                                    <span class="lbl"> {{ role.display_name }}</span>
-                                </label>
-                            </div>
-                    </form-group>
+                </b-form>
 
-                    <input type="hidden" name="id" v-model="roleData.id">
-                </div>
+
 
                 <div slot="footer" class="dialog-footer">
                     <el-button @click="setRoleModal = false">取 消</el-button>
@@ -148,11 +137,31 @@
         },
         data() {
             return {
-                title: '管理员',
-                breads: [
+                editFields: [
                     {
-                        'url': '',
-                        'title': '管理组',
+                        key: 'name',
+                        title: '管理员名称',
+                    },
+                    {
+                        key: 'email',
+                        title: 'Email',
+                    },
+                    {
+                        key: 'password',
+                        title: '密码',
+                        type: 'password',
+                    },
+                ],
+
+                roleFields: [
+                    {
+                        key: 'name',
+                        title: '管理员名称',
+                    },
+                    {
+                        key: 'role',
+                        title: '角色',
+                        type: 'checkbox',
                     }
                 ],
 
@@ -171,22 +180,13 @@
                 // 角色
                 setRoleModal: false,
                 roleData: {},
-                roleList: {},
+                roleList: [],
             }
         },
         computed: {
             modalTitle () {
                 return this.info.id ? '编辑管理员' : '新建管理员';
             },
-            roles () {
-                let roles = [];
-                if (typeof this.info.roles != 'undefined') {
-                    this.info.roles.forEach(role => {
-                        roles.push(role.id);
-                    });
-                }
-                return roles;
-            }
         },
         created () {
             this.fetchData();

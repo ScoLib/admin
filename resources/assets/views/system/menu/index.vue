@@ -3,8 +3,6 @@
         <div class="col-xs-12">
             <div class="box">
                 <div class="box-header">
-                    <h3 class="box-title">列表</h3>
-
                     <div class="btn-group">
                         <button type="button" class="btn btn-default btn-sm">批量操作</button>
                         <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
@@ -20,20 +18,17 @@
                         </ul>
                     </div>
 
-                    <div class="box-tools">
-                        <div class="input-group input-group-sm pull-right" style="width: 150px;">
-                            <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
+                    <div class="input-group input-group-sm pull-right" style="width: 150px;">
+                        <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
 
-                            <div class="input-group-btn">
-                                <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
-                            </div>
+                        <div class="input-group-btn">
+                            <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
                         </div>
-                        <div class="btn-group btn-group-sm pull-right margin-r-5">
-                            <button type="button" class="btn btn-default" @click.prevent="add">
-                                <i class="fa fa-plus bigger-120"></i>
-                            </button>
-                        </div>
-
+                    </div>
+                    <div class="btn-group btn-group-sm pull-right margin-r-5">
+                        <button type="button" class="btn btn-default" @click.prevent="add">
+                            <i class="fa fa-plus bigger-120"></i>
+                        </button>
                     </div>
                 </div>
                 <!-- /.box-header -->
@@ -101,7 +96,6 @@
             </div>
 
             <el-dialog :title="modalTitle" v-model="editModal">
-                <!--<form-dialog :info="info" :menuList="menuList" :errors="errors"></form-dialog>-->
                 <b-form
                         :fields="formFields"
                         :info="info"
@@ -140,11 +134,8 @@
 
 <script>
 
-    import FormDialog from './dialog.vue';
-
     export default {
         components: {
-            FormDialog
         },
         data: function () {
             return {

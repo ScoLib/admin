@@ -1,100 +1,85 @@
 <template>
     <div class="row">
         <div class="col-xs-12">
-            <div class="tabbable">
-                <ul class="nav nav-tabs">
-                    <li class="active">
-                        <a data-toggle="tab" href="#">
-                            列表
-                        </a>
-                    </li>
-
-
-                </ul>
-
-                <div class="tab-content">
-                    <div class="box">
-                        <div class="box-header clearfix">
-                            <div class="btn-group">
-                                <button data-toggle="dropdown" class="btn btn-primary btn-xs btn-white dropdown-toggle">
-                                    批量
-                                    <i class="ace-icon fa fa-angle-down icon-on-right"></i>
-                                </button>
-
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <a href="#" @click.prevent="batchRemove">
-                                            <i class="fa fa-trash-o bigger-120"></i> 删除
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-
-
-                            <div class="btn-group pull-right">
-                                <router-link class="btn btn-success btn-xs" to="/admin/manager/role/create">
-                                    <i class="fa fa-plus bigger-120"></i>
-                                </router-link>
-                            </div>
-                        </div>
-                        <!-- /.box-header -->
-                        <div class="box-body table-responsive no-padding">
-
-                            <el-table :data="roleList"
-                                      v-loading="tableLoading"
-                                      @selection-change="getSelected">
-
-                                <el-table-column
-                                        type="selection"
-                                        :selectable="selectable">
-                                </el-table-column>
-
-                                <el-table-column :label="$t('table.id')"
-                                                 prop="id"
-                                                 width="60">
-                                </el-table-column>
-
-                                <el-table-column :label="$t('table.name')" prop="name">
-                                </el-table-column>
-
-                                <el-table-column label="显示名称" prop="display_name">
-                                </el-table-column>
-
-                                <el-table-column label="创建时间" prop="created_at">
-                                </el-table-column>
-
-                                <el-table-column
-                                        label="操作"
-                                        width="120"
-                                        align="center"
-                                        column-key="index">
-                                    <template scope="scope">
-                                        <div class="hidden-xs btn-group">
-                                            <button class="btn btn-xs btn-info"
-                                                    @click.prevent="edit(scope.$index)"
-                                                    title="编辑">
-                                                <i class="fa fa-pencil bigger-120"></i>
-                                            </button>
-                                            <button class="btn btn-xs btn-danger"
-                                                    @click.prevent="remove(scope.row.id)"
-                                                    :disabled="scope.row.id == 1"
-                                                    title="删除">
-                                                <i class="fa fa-trash-o bigger-120"></i>
-                                            </button>
-                                        </div>
-                                    </template>
-                                </el-table-column>
-
-                            </el-table>
-                        </div>
-                        <!-- /.box-body -->
-                        <div class="box-footer clearfix">
-                        </div>
+            <div class="box">
+                <div class="box-header clearfix">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default btn-sm">批量操作</button>
+                        <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+                            <span class="caret"></span>
+                            <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="#" @click.prevent="batchRemove">
+                                    <i class="fa fa-trash-o bigger-120"></i> 删除
+                                </a>
+                            </li>
+                        </ul>
                     </div>
 
 
+                    <div class="btn-group btn-group-sm pull-right margin-r-5">
+                        <router-link class="btn btn-default" to="/admin/manager/role/create">
+                            <i class="fa fa-plus bigger-120"></i>
+                        </router-link>
+                    </div>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body table-responsive no-padding">
+
+                    <el-table :data="roleList"
+                              v-loading="tableLoading"
+                              @selection-change="getSelected">
+
+                        <el-table-column
+                                type="selection"
+                                :selectable="selectable">
+                        </el-table-column>
+
+                        <el-table-column :label="$t('table.id')"
+                                         prop="id"
+                                         width="60">
+                        </el-table-column>
+
+                        <el-table-column :label="$t('table.name')" prop="name">
+                        </el-table-column>
+
+                        <el-table-column label="显示名称" prop="display_name">
+                        </el-table-column>
+
+                        <el-table-column label="创建时间" prop="created_at">
+                        </el-table-column>
+
+                        <el-table-column
+                                label="操作"
+                                width="120"
+                                align="center"
+                                column-key="index">
+                            <template scope="scope">
+                                <div class="hidden-xs btn-group">
+                                    <button class="btn btn-xs btn-info"
+                                            @click.prevent="edit(scope.$index)"
+                                            title="编辑">
+                                        <i class="fa fa-pencil bigger-120"></i>
+                                    </button>
+                                    <button class="btn btn-xs btn-danger"
+                                            @click.prevent="remove(scope.row.id)"
+                                            :disabled="scope.row.id == 1"
+                                            title="删除">
+                                        <i class="fa fa-trash-o bigger-120"></i>
+                                    </button>
+                                </div>
+                            </template>
+                        </el-table-column>
+
+                    </el-table>
+                </div>
+                <!-- /.box-body -->
+                <div class="box-footer clearfix">
                 </div>
             </div>
+
             <el-dialog :title="modalTitle" v-model="editModal">
                 <form-dialog :info="info" :errors="errors"></form-dialog>
                 <div slot="footer" class="dialog-footer">
