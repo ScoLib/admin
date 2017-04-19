@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="{{ config('app.locale') }}">
 <head>
-    @include('admin::layouts.partials.head')
+    @include('admin::partials.head')
 </head>
 
 <!-- ADD THE CLASS fixed TO GET A FIXED HEADER AND SIDEBAR LAYOUT -->
@@ -9,7 +9,7 @@
 <body class="hold-transition skin-blue fixed sidebar-mini">
 <div id="app"></div>
 
-@include('admin::layouts.partials.script')
+@include('admin::partials.script')
 
 </body>
 </html>

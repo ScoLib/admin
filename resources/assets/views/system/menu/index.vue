@@ -101,7 +101,33 @@
             </div>
 
             <el-dialog :title="modalTitle" v-model="editModal">
-                <form-dialog :info="info" :menuList="menuList" :errors="errors"></form-dialog>
+                <!--<form-dialog :info="info" :menuList="menuList" :errors="errors"></form-dialog>-->
+                <b-form
+                        :fields="formFields"
+                        :info="info"
+                        :errors="errors">
+                    <select
+                            class="form-control"
+                            name="pid"
+                            slot="pid"
+                            v-model="info.pid">
+                        <option value="0">顶级菜单</option>
+                        <option
+                                :value="menu.id"
+                                v-for="menu in menuList">
+                            <i v-html="menu.spacer"></i>{{menu.display_name}}
+                        </option>
+
+
+                    </select>
+
+                    <input type="text" data-toggle="tooltip"
+                           data-original-title="必须是路由的别名，如不是链接，则填“#”"
+                            name="name" class="form-control"
+                           placeholder="admin.system.menu"
+                           slot="name"
+                           v-model="info.name">
+                </b-form>
                 <div slot="footer" class="dialog-footer">
                     <el-button @click="editModal = false">取 消</el-button>
                     <el-button type="primary" @click="saveMenu" :loading="buttonLoading">确 定</el-button>
@@ -120,16 +146,8 @@
         components: {
             FormDialog
         },
-        data() {
+        data: function () {
             return {
-                title: '菜单管理',
-                breads: [
-                    {
-                        'url': '',
-                        'title': '系统管理',
-                    }
-                ],
-
                 // 编辑
                 editModal: false,
                 info: {},
@@ -146,9 +164,58 @@
             }
         },
         computed: {
-            modalTitle: function () {
+            modalTitle () {
                 return this.info.id ? '编辑菜单' : '新建菜单';
             },
+            formFields () {
+                return [
+                    {
+                        key: 'pid',
+                        title: '父级菜单',
+                        type: 'select',
+                    },
+                    {
+                        key: 'display_name',
+                        title: '显示名称',
+                    },
+                    {
+                        key: 'name',
+                        title: '菜单标识',
+                        type: 'text',
+                    },
+                    {
+                        key: 'icon',
+                        title: '菜单图标',
+                        type: 'text',
+                    },
+                    {
+                        key: 'is_menu',
+                        title: '显示菜单',
+                        type: 'radio',
+                        options: [
+                            {
+                                value: 1,
+                                label: '是',
+                            },
+                            {
+                                value: 0,
+                                label: '否',
+                            }
+                        ],
+                    },
+                    {
+                        key: 'sort',
+                        title: '排序',
+                        type: 'number',
+                    },
+                    {
+                        key: 'description',
+                        title: '描述',
+                        type: 'textarea',
+                        rows: 3
+                    },
+                ];
+            }
         },
         created () {
             this.fetchData();
@@ -192,7 +259,7 @@
                             this.MessageBoxInstance = instance;
 
                             instance.confirmButtonLoading = true;
-                            instance.confirmButtonText = '执行中...';
+//                            instance.confirmButtonText = '执行中...';
                             this.scoHttp('delete', '/admin/system/menu/' + id, response => {
                                 instance.confirmButtonLoading = false;
                                 instance.close();
@@ -218,7 +285,7 @@
                             this.MessageBoxInstance = instance;
 
                             instance.confirmButtonLoading = true;
-                            instance.confirmButtonText = '执行中...';
+//                            instance.confirmButtonText = '执行中...';
 
                             this.scoHttp('post', '/admin/system/menu/batch/delete', {'ids': this.selection}, response => {
                                 instance.confirmButtonLoading = false;
@@ -233,6 +300,8 @@
                 }).then(action => {}).catch(action => {});
             },
             saveMenu () {
+//                console.log(this.info);
+//                return false;
                 this.buttonLoading = true;
                 this.scoHttp('post', '/admin/system/menu/save', this.info, response => {
                     this.editModal = false;

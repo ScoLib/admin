@@ -45,14 +45,15 @@ export default function (method, url, data, successCallback, errorCallback) {
                 }
 
                 // confirm 关闭回调
-                console.log(this.MessageBoxInstance);
-                // if (typeof this.MessageBoxInstance == 'object') {
-                //     this.confirmClose.done();
-                //     this.confirmClose.instance.confirmButtonLoading = false;
-                // }
+                // console.log(this.MessageBoxInstance);
+                if (typeof this.MessageBoxInstance == 'object') {
+                    this.MessageBoxInstance.close();
+                    this.MessageBoxInstance.confirmButtonLoading = false;
+                }
 
                 if (typeof this.errors != 'undefined' && typeof response.data == 'object') {
                     this.errors = response.data;
+                    // console.log(this.errors);
                 } else {
                     if (response.status == 401) {
                         this.$message.error(response.statusText);

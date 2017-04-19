@@ -24,7 +24,7 @@ class ManagerRequest extends BaseFormRequest
     public function rules()
     {
         return [
-            //'id'       => 'integer',
+            'id'       => 'integer',
             'name'     => [
                 'bail',
                 'required',

@@ -21,8 +21,14 @@ class PermissionRequest extends BaseFormRequest
      */
     public function rules()
     {
+        $pid = ['integer'];
+        if (!empty($this->input('id'))) {
+            $pid[] = 'different:id';
+        }
+
         return [
-            'pid'          => 'integer',
+            'id'           => 'integer',
+            'pid'          => $pid,
             'display_name' => 'required|max:50',
             'name'         => ['bail', 'required', 'regex:/^[\w\.#]+$/'],
             'is_menu'      => 'in:0,1',
@@ -36,7 +42,8 @@ class PermissionRequest extends BaseFormRequest
             'required' => trans('admin::validation.required'),
             'max'      => trans('admin::validation.max.numeric'),
             'regex'    => trans('admin::validation.regex'),
-            'between'     => trans('admin::validation.between.numeric'),
+            'between'  => trans('admin::validation.between.numeric'),
+            'different' => '所属父级不能是自己',
         ];
     }
 
