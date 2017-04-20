@@ -42,7 +42,45 @@ class LoginController extends Controller
 
     public function showLoginForm()
     {
-        return view('admin::login');
+        return view('admin::app');
+    }
+
+    protected function validateLogin(Request $request)
+    {
+        $this->validate($request, [
+            $this->username() => 'required|string',
+            'password' => 'required|string',
+        ], trans('admin::validation'), trans('admin::validation.attributes'));
+    }
+
+    protected function sendFailedLoginResponse(Request $request)
+    {
+        $errors = [$this->username() => [trans('admin::auth.failed')]];
+
+        if ($request->expectsJson()) {
+            return response()->json($errors, 422);
+        }
+
+        return redirect()->back()
+            ->withInput($request->only($this->username(), 'remember'))
+            ->withErrors($errors);
+    }
+
+    /**
+     * The user has been authenticated.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Sco\Admin\Models\Manager  $user
+     * @return mixed
+     */
+    protected function authenticated(Request $request, $user)
+    {
+        $role = $user->roles->first();
+        return [
+            'id' => $user->id,
+            'name' => $user->name,
+            'role' => $role->display_name,
+        ];
     }
 
     /**

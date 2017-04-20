@@ -1,16 +1,16 @@
 require('jquery');
 require('bootstrap');
-require('./js/');
+require('./js');
 
 import Vue from 'vue';
 import VueResource from 'vue-resource';
 import ElementUI from 'element-ui';
 
-import router from './router/';
-import locales from './lang/';
+import router from './router';
+import locales from './lang';
 import App from './components/App.vue';
-import store from './store/';
-import filters from './filters/';
+import store from './store';
+import filters from './filters';
 
 Vue.use(VueResource);
 Vue.use(ElementUI);

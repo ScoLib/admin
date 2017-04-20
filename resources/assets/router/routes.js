@@ -1,46 +1,17 @@
 import Parent from '../views/parent.vue'
-
-const routes = [
-    {
-        path: '/admin',
-        component (resolve) {
-            require(['../views/index.vue'], resolve);
-        },
-        name: 'admin.index'
-    },
-    {
-        path: '/admin/system/menu',
-        component (resolve) {
-            require(['../views/system/menu/index.vue'], resolve);
-        },
-        name: 'admin.system.menu'
-    },
-    {
-        path: '/admin/manager/user',
-        component (resolve) {
-            require(['../views/manager/user/index.vue'], resolve);
-        },
-        name: 'admin.manager.user'
-    },
-    {
-        path: '/admin/manager/role',
-        component (resolve) {
-            require(['../views/manager/role/index.vue'], resolve);
-        },
-        name: 'admin.manager.role',
-        title: '角色管理',
-    },
-    {
-        path: '/admin/manager/role/create',
-        component (resolve) {
-            require(['../views/manager/role/create.vue'], resolve);
-        },
-        name: 'admin.manager.role.create'
-    }
-];
-// export default routes;
+import Blank from '../views/blank.vue'
 
 export default [
+    {
+        path: '/admin/login',
+        component (resolve) {
+            require(['../views/login.vue'], resolve);
+        },
+        name: 'admin.login',
+        meta: {
+            title: '登录'
+        }
+    },
     {
         path: '/admin',
         component: Parent,
@@ -58,9 +29,10 @@ export default [
                     title: '控制台'
                 }
             },
+
             {
                 path: 'system',
-                component: Parent,
+                component: Blank,
                 meta: {
                     title: '系统管理'
                 },
@@ -79,7 +51,7 @@ export default [
             },
             {
                 path: 'manager',
-                component: Parent,
+                component: Blank,
                 meta: {
                     title: '管理组'
                 },
