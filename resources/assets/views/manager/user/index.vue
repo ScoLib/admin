@@ -208,7 +208,7 @@
             fetchData () {
                 this.getResults();
 
-                this.scoHttp('/admin/manager/role/list', response => {
+                this.scoHttp('/admin/manager/role/all', response => {
                     this.roleList = response.data;
                 });
             },
@@ -234,7 +234,7 @@
                             this.MessageBoxInstance = instance;
 
                             instance.confirmButtonLoading = true;
-                            instance.confirmButtonText = '执行中...';
+//                            instance.confirmButtonText = '执行中...';
                             this.scoHttp('delete', '/admin/manager/user/' + id, response => {
                                 instance.confirmButtonLoading = false;
                                 instance.close();

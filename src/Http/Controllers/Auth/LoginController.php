@@ -75,11 +75,10 @@ class LoginController extends Controller
      */
     protected function authenticated(Request $request, $user)
     {
-        $role = $user->roles->first();
         return [
             'id' => $user->id,
             'name' => $user->name,
-            'role' => $role->display_name,
+            'role' => $user->roles->first()->display_name,
         ];
     }
 

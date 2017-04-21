@@ -4,6 +4,7 @@
 namespace Sco\Admin\Http\Controllers\Manager;
 
 use Illuminate\Http\Request;
+use Sco\Admin\Exceptions\AdminHttpException;
 use Sco\Admin\Http\Controllers\BaseController;
 use Sco\Admin\Http\Requests\ManagerRequest;
 use Sco\Admin\Models\Manager;
@@ -36,6 +37,10 @@ class UserController extends BaseController
 
     public function delete($id)
     {
+        if ($id == 1) {
+            throw new AdminHttpException('超级管理员不能删除');
+        }
+
         $model = Manager::findOrFail($id);
         $model->delete();
         return response()->json(['message' => 'ok']);

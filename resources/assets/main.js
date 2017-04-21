@@ -6,10 +6,10 @@ import Vue from 'vue';
 import VueResource from 'vue-resource';
 import ElementUI from 'element-ui';
 
+import store from './store';
 import router from './router';
 import locales from './lang';
 import App from './components/App.vue';
-import store from './store';
 import filters from './filters';
 
 Vue.use(VueResource);

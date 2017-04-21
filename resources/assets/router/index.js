@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import routes from './routes';
+import store from '../store';
 
 Vue.use(VueRouter);
 
@@ -17,6 +18,9 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
     // console.log(to);
     // console.log(from);
+    if (typeof window.LoggedUser != 'undefined') {
+        store.commit('setUser', window.LoggedUser);
+    }
 
     if (to.fullPath != '/#') {
         let title = 'Sco Admin';

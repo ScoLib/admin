@@ -11,4 +11,12 @@
 
 <script>
     window.Lang = "{{ config('app.locale') }}"
+
+@if (Auth::user())
+    window.LoggedUser = {
+        id: '{{Auth::user()->id}}',
+        name: '{{Auth::user()->name}}',
+        role: '{{Auth::user()->roles->first()->display_name}}'
+    }
+@endif
 </script>

@@ -72,7 +72,7 @@ INSERT INTO `sco_permissions` VALUES ('17', '12', '', '删除管理员', 'admin.
 INSERT INTO `sco_permissions` VALUES ('18', '11', 'fa-users', '角色管理', 'admin.manager.role', '1', '1', '用户列表', '2016-08-05 16:50:19', '2016-08-05 16:50:19');
 INSERT INTO `sco_permissions` VALUES ('19', '18', '', '角色列表数据', 'admin.manager.role.list', '0', '0', '', '2016-08-19 17:20:39', '2016-08-19 17:20:39');
 INSERT INTO `sco_permissions` VALUES ('20', '18', '', '保存角色', 'admin.manager.role.save', '0', '0', '', '2016-08-19 17:20:39', '2016-08-19 17:20:39');
--- INSERT INTO `sco_permissions` VALUES ('21', '18', '', '编辑角色', 'admin.manager.role.edit', '0', '0', '', '2016-08-19 17:20:39', '2016-08-19 17:20:39');
+INSERT INTO `sco_permissions` VALUES ('21', '18', '', '获取所有角色', 'admin.manager.role.all', '0', '0', '', '2016-08-19 17:20:39', '2016-08-19 17:20:39');
 -- INSERT INTO `sco_permissions` VALUES ('22', '18', '', '保存编辑角色', 'admin.manager.role.postEdit', '0', '0', '', '2016-08-19 17:20:39', '2016-08-19 17:20:39');
 INSERT INTO `sco_permissions` VALUES ('23', '18', '', '角色授权', 'admin.manager.role.authorize', '0', '0', '', '2016-08-19 17:20:39', '2016-08-19 17:20:39');
 INSERT INTO `sco_permissions` VALUES ('24', '18', '', '删除角色', 'admin.manager.role.delete', '0', '0', '', '2016-08-19 17:20:39', '2016-08-19 17:20:39');

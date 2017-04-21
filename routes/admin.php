@@ -37,7 +37,8 @@ Route::group([
 
         // 删除菜单
         Route::delete('system/menu/{id}', 'System\MenuController@delete')
-            ->name('admin.system.menu.delete');
+            ->name('admin.system.menu.delete')
+            ->where('id', '[0-9]+');
 
         // 批量删除菜单
         Route::post('system/menu/batch/delete', 'System\MenuController@batchDelete')
@@ -57,7 +58,8 @@ Route::group([
             ->name('admin.manager.user.save.role');
 
         Route::delete('manager/user/{id}', 'Manager\UserController@delete')
-            ->name('admin.manager.user.delete');
+            ->name('admin.manager.user.delete')
+            ->where('id', '[0-9]+');
 
         //角色管理
         Route::get('manager/role', 'BaseController@index')
