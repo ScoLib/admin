@@ -5,13 +5,16 @@ namespace Sco\Admin\Http\Controllers\Manager;
 
 use Sco\Admin\Exceptions\AdminHttpException;
 use Sco\Admin\Http\Controllers\BaseController;
+use Sco\Admin\Models\Permission;
 use Sco\Admin\Models\Role;
 
 class RoleController extends BaseController
 {
     public function getList()
     {
-        $roles = Role::paginate();
+        $roles = Role::with(['perms' => function ($query) {
+            $query->select('id');
+        }])->paginate();
         return response()->json($roles);
     }
 
@@ -19,6 +22,12 @@ class RoleController extends BaseController
     {
         $roles = Role::all();
         return response()->json($roles);
+    }
+
+    public function getPermissionList()
+    {
+        $perms = (new Permission())->getPermRouteList();
+        return response()->json($perms, 200, [], JSON_FORCE_OBJECT);
     }
 
     public function delete($id)
@@ -30,7 +39,7 @@ class RoleController extends BaseController
 
     }
 
-    public function authorize()
+    public function save()
     {
     }
 }

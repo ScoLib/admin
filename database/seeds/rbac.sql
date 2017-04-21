@@ -73,7 +73,7 @@ INSERT INTO `sco_permissions` VALUES ('18', '11', 'fa-users', '角色管理', 'a
 INSERT INTO `sco_permissions` VALUES ('19', '18', '', '角色列表数据', 'admin.manager.role.list', '0', '0', '', '2016-08-19 17:20:39', '2016-08-19 17:20:39');
 INSERT INTO `sco_permissions` VALUES ('20', '18', '', '保存角色', 'admin.manager.role.save', '0', '0', '', '2016-08-19 17:20:39', '2016-08-19 17:20:39');
 INSERT INTO `sco_permissions` VALUES ('21', '18', '', '获取所有角色', 'admin.manager.role.all', '0', '0', '', '2016-08-19 17:20:39', '2016-08-19 17:20:39');
--- INSERT INTO `sco_permissions` VALUES ('22', '18', '', '保存编辑角色', 'admin.manager.role.postEdit', '0', '0', '', '2016-08-19 17:20:39', '2016-08-19 17:20:39');
-INSERT INTO `sco_permissions` VALUES ('23', '18', '', '角色授权', 'admin.manager.role.authorize', '0', '0', '', '2016-08-19 17:20:39', '2016-08-19 17:20:39');
+INSERT INTO `sco_permissions` VALUES ('22', '18', '', 'ajax获取权限列表', 'admin.manager.role.perms.list', '0', '0', '', '2016-08-19 17:20:39', '2016-08-19 17:20:39');
+-- INSERT INTO `sco_permissions` VALUES ('23', '18', '', '角色授权', 'admin.manager.role.authorize', '0', '0', '', '2016-08-19 17:20:39', '2016-08-19 17:20:39');
 INSERT INTO `sco_permissions` VALUES ('24', '18', '', '删除角色', 'admin.manager.role.delete', '0', '0', '', '2016-08-19 17:20:39', '2016-08-19 17:20:39');
 -- INSERT INTO `sco_permissions` VALUES ('25', '18', '', '保存角色授权', 'admin.manager.role.postAuthorize', '0', '0', '', '2016-08-23 11:18:46', '2016-08-23 11:18:49');

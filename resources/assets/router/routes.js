@@ -74,20 +74,8 @@ export default [
                         name: 'admin.manager.role',
                         meta: {
                             title: '角色管理'
-                        },
-                        children: [
-                            {
-                                path: 'create',
-                                component (resolve) {
-                                    require(['../views/manager/role/create.vue'], resolve);
-                                },
-                                name: 'admin.manager.role.create',
-                                meta: {
-                                    title: '创建角色'
-                                },
-                            }
-                        ],
-                    }
+                        }
+                    },
                 ],
             },
         ],

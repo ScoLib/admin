@@ -114,14 +114,14 @@ class Permission extends EntrustPermission
      *
      * @return \Illuminate\Support\Collection|null
      */
-    /*public function getPermRouteList()
+    public function getPermRouteList()
     {
         if ($this->permList) {
             return $this->permList;
         }
 
         return $this->permList = $this->getLayerOfDescendants(0);
-    }*/
+    }
 
     public function getMenuList()
     {

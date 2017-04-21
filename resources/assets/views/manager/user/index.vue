@@ -115,11 +115,9 @@
 
                 </b-form>
 
-
-
                 <div slot="footer" class="dialog-footer">
-                    <el-button @click="setRoleModal = false">取 消</el-button>
                     <el-button type="primary" @click="saveRole" :loading="buttonLoading">确 定</el-button>
+                    <el-button @click="setRoleModal = false">取 消</el-button>
                 </div>
             </el-dialog>
 
@@ -129,11 +127,8 @@
 
 <script>
 
-    import FormDialog from './dialog.vue';
-
     export default {
         components: {
-            FormDialog
         },
         data() {
             return {
@@ -168,7 +163,6 @@
                 // 编辑
                 editModal: false,
                 info: {},
-                modalLoading: true,
                 errors: {},
 
                 // 列表
@@ -267,6 +261,9 @@
                 this.pageData.data[index].roles.forEach(role => {
                     this.roleData.roles.push(role.id);
                 });
+
+                this.errors = {};
+
             },
             saveRole () {
                 this.buttonLoading = true;

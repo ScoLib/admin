@@ -6,9 +6,9 @@ import Vue from 'vue';
 import VueResource from 'vue-resource';
 import ElementUI from 'element-ui';
 
+import locales from './lang';
 import store from './store';
 import router from './router';
-import locales from './lang';
 import App from './components/App.vue';
 import filters from './filters';
 

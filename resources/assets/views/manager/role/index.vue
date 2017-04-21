@@ -20,15 +20,15 @@
 
 
                     <div class="btn-group btn-group-sm pull-right margin-r-5">
-                        <router-link class="btn btn-default" to="/admin/manager/role/create">
+                        <button type="button" class="btn btn-default" @click.prevent="add">
                             <i class="fa fa-plus bigger-120"></i>
-                        </router-link>
+                        </button>
                     </div>
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body table-responsive no-padding">
 
-                    <el-table :data="roleList"
+                    <el-table :data="pageData.data"
                               v-loading="tableLoading"
                               @selection-change="getSelected">
 
@@ -58,9 +58,7 @@
                                 column-key="index">
                             <template scope="scope">
                                 <div class="hidden-xs btn-group">
-                                    <button class="btn btn-xs btn-info"
-                                            @click.prevent="edit(scope.$index)"
-                                            title="编辑">
+                                    <button class="btn btn-xs btn-info" @click.prevent="edit(scope.$index)">
                                         <i class="fa fa-pencil bigger-120"></i>
                                     </button>
                                     <button class="btn btn-xs btn-danger"
@@ -77,55 +75,85 @@
                 </div>
                 <!-- /.box-body -->
                 <div class="box-footer clearfix">
+                    <el-pagination
+                            layout="total, prev, pager, next"
+                            :page-size="pageData.per_page"
+                            @current-change="getResults"
+                            :total="pageData.total">
+                    </el-pagination>
                 </div>
             </div>
 
-            <el-dialog :title="modalTitle" v-model="editModal">
-                <form-dialog :info="info" :errors="errors"></form-dialog>
+            <el-dialog :title="modalTitle" v-model="editModal" @open="handleOpen()">
+                <b-form
+                        :fields="fields"
+                        :info="info"
+                        :errors="errors">
+                    <el-tree
+                            :data="PermissionList"
+                            show-checkbox
+                            node-key="id"
+                            ref="tree"
+                            slot="perms">
+                    </el-tree>
+                </b-form>
+
                 <div slot="footer" class="dialog-footer">
-                    <el-button @click="editModal = false">取 消</el-button>
                     <el-button type="primary" @click="save" :loading="buttonLoading">确 定</el-button>
+                    <el-button @click="editModal = false">取 消</el-button>
                 </div>
             </el-dialog>
-
-
-
         </div>
     </div>
 </template>
 
 <script>
 
-    import FormDialog from './dialog.vue';
 
     export default {
         components: {
-            FormDialog
         },
         data() {
             return {
                 // 编辑
                 editModal: false,
                 info: {},
-                modalLoading: true,
                 errors: {},
 
                 // 列表
                 tableLoading: false,
-                roleList: [],
+                pageData: {},
 
                 selection: [],
                 buttonLoading: false,
 
                 // 角色
-                setRoleModal: false,
-                roleData: {},
+                PermissionList: [],
+
+                // el-tree
+
             }
         },
         computed: {
             modalTitle () {
                 return this.info.id ? this.$t('form.edit_role') : this.$t('form.create_role');
-            }
+            },
+            fields() {
+                return [
+                    {
+                        key: 'name',
+                        title: this.$t('table.name'),
+                    },
+                    {
+                        key: 'display_name',
+                        title: this.$t('table.display_name'),
+                    },
+                    {
+                        key: 'perms',
+                        title: '授权',
+                    }
+                ];
+            },
         },
         created () {
             this.getResults();
@@ -133,10 +161,15 @@
         watch: {
         },
         methods: {
-            selectable (row, index) {
+            handleOpen() {
+                this.$nextTick(() => {
+                    this.$refs.tree.setCheckedKeys(this.info.perms);
+                });
+            },
+            selectable(row, index) {
                 return row.id == 1 ? false : true;
             },
-            getSelected (selection) {
+            getSelected(selection) {
                 this.selection = [];
                 selection.forEach(row => {
                     this.selection.push(row.id);
@@ -144,23 +177,56 @@
             },
             getResults() {
                 this.tableLoading = true;
+
+                this.getPermissionList();
+
                 this.scoHttp('/admin/manager/role/list', response => {
                     this.tableLoading = false;
-                    this.roleList = response.data;
+                    this.pageData = response.data;
+                });
+
+            },
+            getPermissionList() {
+                this.scoHttp('/admin/manager/role/perms/list', response => {
+                    this.PermissionList = this.parsePermissionTree(response.data);
                 });
             },
-            add () {
-                this.editModal = true;
-                this.info = {};
-                this.errors = {};
+            parsePermissionTree(perms) {
+                let list = [];
+                Object.keys(perms).forEach(index => {
+                    let children = [];
+                    if (Object.keys(perms[index].child).length > 0) {
+                        children = this.parsePermissionTree(perms[index].child);
+                    }
+                    list.push({
+                        id: perms[index].id,
+                        label: perms[index].display_name,
+                        children: children,
+                    });
+                });
+                return list;
             },
-            edit (index) {
+            add() {
                 this.editModal = true;
                 this.info = {
-                    id: this.roleList[index].id,
-                    name: this.roleList[index].name,
-                    email: this.roleList[index].email,
+                    perms: []
                 };
+                this.errors = {};
+            },
+            edit(index) {
+                this.editModal = true;
+                this.info = {
+                    id: this.pageData.data[index].id,
+                    name: this.pageData.data[index].name,
+                    display_name: this.pageData.data[index].display_name,
+                    perms: [],
+                };
+
+                this.pageData.data[index].perms.forEach(perm => {
+                    this.info.perms.push(perm.id);
+                });
+                this.$refs.tree.setCheckedKeys(this.info.perms);
+
                 this.errors = {};
             },
             remove (id) {
@@ -171,7 +237,7 @@
                             this.MessageBoxInstance = instance;
 
                             instance.confirmButtonLoading = true;
-                            this.scoHttp('delete', '/admin/manager/user/' + id, response => {
+                            this.scoHttp('delete', '/admin/manager/role/' + id, response => {
                                 instance.confirmButtonLoading = false;
                                 instance.close();
                                 this.$message.success('删除成功');
@@ -185,29 +251,8 @@
             },
             save () {
                 this.buttonLoading = true;
-                this.scoHttp('post', '/admin/manager/user/save', this.info, response => {
+                this.scoHttp('post', '/admin/manager/role/save', this.info, response => {
                     this.editModal = false;
-                    this.buttonLoading = false;
-                    this.getResults();
-                });
-            },
-            authorize (index) {
-                this.setRoleModal = true;
-                this.buttonLoading = false;
-                this.roleData = {
-                    id: this.roleList[index].id,
-                    name: this.roleList[index].name,
-                    roles: [],
-                };
-
-                this.roleList[index].roles.forEach(role => {
-                    this.roleData.roles.push(role.id);
-                });
-            },
-            saveRole () {
-                this.buttonLoading = true;
-                this.scoHttp('post', '/admin/manager/user/save/role', this.roleData, response => {
-                    this.setRoleModal = false;
                     this.buttonLoading = false;
                     this.getResults();
                 });
@@ -225,9 +270,9 @@
                             this.MessageBoxInstance = instance;
 
                             instance.confirmButtonLoading = true;
-                            instance.confirmButtonText = '执行中...';
+//                            instance.confirmButtonText = '执行中...';
 
-                            this.scoHttp('post', '/admin/system/menu/batch/delete', {'ids': this.selection}, response => {
+                            this.scoHttp('post', '/admin/manager/role/batch/delete', {'ids': this.selection}, response => {
                                 instance.confirmButtonLoading = false;
                                 instance.close();
                                 this.$message.success('删除成功');

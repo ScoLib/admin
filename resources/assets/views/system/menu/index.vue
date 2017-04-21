@@ -123,8 +123,8 @@
                            v-model="info.name">
                 </b-form>
                 <div slot="footer" class="dialog-footer">
-                    <el-button @click="editModal = false">取 消</el-button>
                     <el-button type="primary" @click="saveMenu" :loading="buttonLoading">确 定</el-button>
+                    <el-button @click="editModal = false">取 消</el-button>
                 </div>
             </el-dialog>
 
@@ -142,7 +142,6 @@
                 // 编辑
                 editModal: false,
                 info: {},
-                modalLoading: true,
                 errors: {},
 
                 // 列表
