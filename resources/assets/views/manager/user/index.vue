@@ -3,8 +3,8 @@
         <div class="col-xs-12">
             <div class="box">
                 <div class="box-header">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-primary btn-sm" @click.prevent="fetchData">
+                    <div class="btn-group btn-group-sm">
+                        <button type="button" class="btn btn-primary" @click.prevent="fetchData">
                             <i class="fa fa-refresh"></i>
                             刷新
                         </button>
@@ -13,6 +13,7 @@
                     <div class="btn-group btn-group-sm pull-right margin-r-5">
                         <button type="button" class="btn btn-default" @click.prevent="add">
                             <i class="fa fa-plus bigger-120"></i>
+                            创建管理员
                         </button>
                     </div>
                 </div>
@@ -54,19 +55,19 @@
                                     <button class="btn btn-xs btn-info"
                                             @click.prevent="setRole(scope.$index)"
                                             :disabled="scope.row.id == 1"
-                                            title="角色">
+                                            title="设置角色">
                                         <i class="fa fa-user-plus bigger-120"></i>
                                     </button>
 
                                     <button class="btn btn-xs btn-info"
                                             @click.prevent="edit(scope.$index)"
-                                            title="编辑">
+                                            title="编辑管理员">
                                         <i class="fa fa-pencil bigger-120"></i>
                                     </button>
                                     <button class="btn btn-xs btn-danger"
                                             @click.prevent="remove(scope.row.id)"
                                             :disabled="scope.row.id == 1"
-                                            title="删除">
+                                            title="删除管理员">
                                         <i class="fa fa-trash-o bigger-120"></i>
                                     </button>
                                 </div>

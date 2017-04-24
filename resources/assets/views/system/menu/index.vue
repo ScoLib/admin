@@ -3,9 +3,9 @@
         <div class="col-xs-12">
             <div class="box">
                 <div class="box-header">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-default btn-sm">批量操作</button>
-                        <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
+                    <div class="btn-group btn-group-sm">
+                        <button type="button" class="btn btn-default">批量操作</button>
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                             <span class="caret"></span>
                             <span class="sr-only">Toggle Dropdown</span>
                         </button>
@@ -18,8 +18,8 @@
                         </ul>
                     </div>
 
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-primary btn-sm" @click.prevent="fetchData">
+                    <div class="btn-group btn-group-sm">
+                        <button type="button" class="btn btn-primary" @click.prevent="fetchData">
                             <i class="fa fa-refresh"></i>
                             刷新
                         </button>
@@ -35,6 +35,7 @@
                     <div class="btn-group btn-group-sm pull-right margin-r-5">
                         <button type="button" class="btn btn-default" @click.prevent="add">
                             <i class="fa fa-plus bigger-120"></i>
+                            创建菜单
                         </button>
                     </div>
                 </div>
@@ -87,10 +88,16 @@
                                 column-key="index">
                             <template scope="scope">
                                 <div class=" btn-group">
-                                    <button class="btn btn-xs btn-info" @click.prevent="edit(scope.$index)">
+                                    <button
+                                            class="btn btn-xs btn-info"
+                                            title="编辑菜单"
+                                            @click.prevent="edit(scope.$index)">
                                         <i class="fa fa-pencil bigger-120"></i>
                                     </button>
-                                    <button class="btn btn-xs btn-danger" @click.prevent="remove(scope.row.id)">
+                                    <button
+                                            class="btn btn-xs btn-danger"
+                                            title="删除菜单"
+                                            @click.prevent="remove(scope.row.id)">
                                         <i class="fa fa-trash-o bigger-120"></i>
                                     </button>
                                 </div>
