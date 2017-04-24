@@ -76,6 +76,10 @@ class MenuController extends BaseController
      */
     public function batchDelete(Request $request)
     {
+        if (!is_array($request->input('ids'))) {
+            throw new AdminHttpException('参数错误');
+        }
+
         $this->getPermissionModel()->deleteMenu($request->input('ids'));
         return response()->json(['message' => 'ok']);
     }

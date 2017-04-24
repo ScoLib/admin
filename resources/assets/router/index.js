@@ -35,7 +35,6 @@ router.beforeEach((to, from, next) => {
 
 //路由完成后
 router.afterEach(route => {
-
 });
 
 export default router;

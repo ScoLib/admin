@@ -82,6 +82,9 @@ Route::group([
         Route::get('manager/role/perms/list', 'Manager\RoleController@getPermissionList')
             ->name('admin.manager.role.perms.list');
 
+        Route::post('manager/role/batch/delete', 'Manager\RoleController@batchDelete')
+            ->name('admin.manager.role.batch.delete');
+
         //用户管理
         /*Route::group(['prefix' => 'users', 'namespace' => 'Users'], function () {
             //用户列表

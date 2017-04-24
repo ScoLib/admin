@@ -3,6 +3,13 @@
         <div class="col-xs-12">
             <div class="box">
                 <div class="box-header">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary btn-sm" @click.prevent="fetchData">
+                            <i class="fa fa-refresh"></i>
+                            刷新
+                        </button>
+                    </div>
+
                     <div class="btn-group btn-group-sm pull-right margin-r-5">
                         <button type="button" class="btn btn-default" @click.prevent="add">
                             <i class="fa fa-plus bigger-120"></i>
@@ -116,8 +123,8 @@
                 </b-form>
 
                 <div slot="footer" class="dialog-footer">
-                    <el-button type="primary" @click="saveRole" :loading="buttonLoading">确 定</el-button>
                     <el-button @click="setRoleModal = false">取 消</el-button>
+                    <el-button type="primary" @click="saveRole" :loading="buttonLoading">确 定</el-button>
                 </div>
             </el-dialog>
 

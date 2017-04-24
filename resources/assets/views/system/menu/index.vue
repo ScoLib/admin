@@ -18,6 +18,13 @@
                         </ul>
                     </div>
 
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary btn-sm" @click.prevent="fetchData">
+                            <i class="fa fa-refresh"></i>
+                            刷新
+                        </button>
+                    </div>
+
                     <div class="input-group input-group-sm pull-right" style="width: 150px;">
                         <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
 
@@ -123,8 +130,8 @@
                            v-model="info.name">
                 </b-form>
                 <div slot="footer" class="dialog-footer">
-                    <el-button type="primary" @click="saveMenu" :loading="buttonLoading">确 定</el-button>
                     <el-button @click="editModal = false">取 消</el-button>
+                    <el-button type="primary" @click="saveMenu" :loading="buttonLoading">确 定</el-button>
                 </div>
             </el-dialog>
 

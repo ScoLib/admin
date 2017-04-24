@@ -16,7 +16,7 @@ export default [
         path: '/admin',
         component: Parent,
         meta: {
-            title: '首页'
+            title: '首页',
         },
         children: [
             {

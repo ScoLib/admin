@@ -4,7 +4,7 @@ namespace Sco\Admin\Http\Requests;
 
 use Illuminate\Validation\Rule;
 
-class ManagerRequest extends BaseFormRequest
+class RoleRequest extends BaseFormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,39 +24,34 @@ class ManagerRequest extends BaseFormRequest
     public function rules()
     {
         return [
-            'id'       => 'integer',
-            'name'     => [
+            'id'           => 'integer',
+            'name'         => [
                 'bail',
                 'required',
                 'regex:/^[a-z0-9]+$/i',
-                'between:4,20',
-                Rule::unique('managers')->ignore($this->input('id')),
+                'max: 50',
+                Rule::unique('roles')->ignore($this->input('id')),
             ],
-            'email'    => [
+            'display_name' => [
                 'bail',
-                'email',
                 'required',
-                Rule::unique('managers')->ignore($this->input('id')),
+                'alpha_num',
             ],
-            'password' => 'bail|required_without:id|min:6',
-            //'sort'     => 'integer|between:0,255',
         ];
     }
 
     protected function getMessages()
     {
         return [
-            'regex'            => '字母数字',
-            'required_without' => '密码不能为空',
-            'between'          => trans('admin::validation.between.string'),
-            'min'              => trans('admin::validation.min.string'),
+            'max' => trans('admin::validation.max.string'),
+            'regex' => '字母数字',
         ];
     }
 
     protected function getAttributes()
     {
         return [
-            'name' => '管理员名称',
+            'name' => '标识',
         ];
     }
 }

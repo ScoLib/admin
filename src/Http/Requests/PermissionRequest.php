@@ -39,9 +39,7 @@ class PermissionRequest extends BaseFormRequest
     protected function getMessages()
     {
         return [
-            'required' => trans('admin::validation.required'),
             'max'      => trans('admin::validation.max.numeric'),
-            'regex'    => trans('admin::validation.regex'),
             'between'  => trans('admin::validation.between.numeric'),
             'different' => '所属父级不能是自己',
         ];

@@ -18,6 +18,13 @@
                         </ul>
                     </div>
 
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-primary btn-sm" @click.prevent="fetchData">
+                            <i class="fa fa-refresh"></i>
+                            刷新
+                        </button>
+                    </div>
+
 
                     <div class="btn-group btn-group-sm pull-right margin-r-5">
                         <button type="button" class="btn btn-default" @click.prevent="add">
@@ -90,7 +97,7 @@
                         :info="info"
                         :errors="errors">
                     <el-tree
-                            :data="PermissionList"
+                            :data="permissionList"
                             show-checkbox
                             node-key="id"
                             ref="tree"
@@ -99,8 +106,8 @@
                 </b-form>
 
                 <div slot="footer" class="dialog-footer">
-                    <el-button type="primary" @click="save" :loading="buttonLoading">确 定</el-button>
                     <el-button @click="editModal = false">取 消</el-button>
+                    <el-button type="primary" @click="save" :loading="buttonLoading">确 定</el-button>
                 </div>
             </el-dialog>
         </div>
@@ -128,7 +135,7 @@
                 buttonLoading: false,
 
                 // 角色
-                PermissionList: [],
+                permissionList: [],
 
                 // el-tree
 
@@ -156,15 +163,36 @@
             },
         },
         created () {
-            this.getResults();
+            this.fetchData();
         },
         watch: {
         },
         methods: {
+            fetchData () {
+                this.getResults();
+            },
             handleOpen() {
                 this.$nextTick(() => {
-                    this.$refs.tree.setCheckedKeys(this.info.perms);
+                    let keys = [];
+                    if (this.info.perms.length > 0) {
+                        keys = this.parseCheckedPermission(this.permissionList);
+                    }
+                    this.$refs.tree.setCheckedKeys(keys);
                 });
+            },
+            // 处理需要设置为选中的节点（移除半选中节点，只保留最深层的）
+            parseCheckedPermission(perms) {
+                let list = [];
+                Object.keys(perms).forEach(index => {
+                    if (this.info.perms.indexOf(perms[index].id) > -1) {
+                        if (Object.keys(perms[index].children).length > 0) {
+                            list = list.concat(this.parseCheckedPermission(perms[index].children));
+                        } else {
+                            list.push(perms[index].id);
+                        }
+                    }
+                });
+                return list;
             },
             selectable(row, index) {
                 return row.id == 1 ? false : true;
@@ -188,7 +216,7 @@
             },
             getPermissionList() {
                 this.scoHttp('/admin/manager/role/perms/list', response => {
-                    this.PermissionList = this.parsePermissionTree(response.data);
+                    this.permissionList = this.parsePermissionTree(response.data);
                 });
             },
             parsePermissionTree(perms) {
@@ -225,12 +253,11 @@
                 this.pageData.data[index].perms.forEach(perm => {
                     this.info.perms.push(perm.id);
                 });
-                this.$refs.tree.setCheckedKeys(this.info.perms);
 
                 this.errors = {};
             },
             remove (id) {
-                this.$confirm('确定要删除此管理员吗？', '提示', {
+                this.$confirm('确定要删除此角色吗？', '提示', {
                     type: 'warning',
                     beforeClose: (action, instance, done) => {
                         if (action == 'confirm') {
@@ -249,13 +276,25 @@
                     }
                 }).then(action => {}).catch(action => {});
             },
-            save () {
+            save() {
+                this.info.perms = this.getCheckedPermission();
+
                 this.buttonLoading = true;
                 this.scoHttp('post', '/admin/manager/role/save', this.info, response => {
                     this.editModal = false;
                     this.buttonLoading = false;
                     this.getResults();
                 });
+            },
+            // 获取选中的节点（包括半选中节点）
+            getCheckedPermission() {
+                let keys = this.$refs.tree.getCheckedKeys();
+                let nodesDOM = this.$refs.tree.$el.querySelectorAll('.el-tree-node');
+                let nodesVue = [].map.call(nodesDOM, node => node.__vue__);
+                nodesVue.filter(item => item.indeterminate === true).forEach(_vue => {
+                    keys.push(_vue.node.data.id);
+                });
+                return keys;
             },
             batchRemove () {
                 if (this.selection.length == 0) {
