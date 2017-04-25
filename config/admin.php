@@ -4,5 +4,10 @@ return [
     /**
      * Admin Authentication Guard Name
      */
-    'guard'      => 'admin',
+    'guard' => 'admin',
+
+    /**
+     * Manage User Table Name
+     */
+    'manager_table' => 'managers',
 ];

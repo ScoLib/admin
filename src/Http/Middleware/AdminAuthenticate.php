@@ -15,11 +15,10 @@ class AdminAuthenticate
      *
      * @param \Illuminate\Http\Request $request
      * @param \Closure                 $next
-     * @param string|null              $guard
      *
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|mixed|\Symfony\Component\HttpFoundation\Response
      */
-    public function handle(Request $request, Closure $next, $guard = null)
+    public function handle(Request $request, Closure $next)
     {
         $guard = config('admin.guard');
         if (Auth::guard($guard)->guest()) {
@@ -41,7 +40,8 @@ class AdminAuthenticate
             } else {
                 $previousUrl = URL::previous();
 
-                return response()->view('admin::errors.403', compact('previousUrl'));
+                return response()->view('admin::errors.403',
+                    compact('previousUrl'));
             }
         }
 

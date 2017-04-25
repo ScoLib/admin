@@ -34,6 +34,13 @@ class Manager extends Authenticatable
 
     protected $guarded = ['created_at', 'updated_at'];
 
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+
+        $this->table = config('admin.manager_table');
+    }
+
     public function setPasswordAttribute($value)
     {
         $this->attributes['password'] = bcrypt($value);
