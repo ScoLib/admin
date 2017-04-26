@@ -2,6 +2,8 @@
 
 namespace Sco\Admin\Http\Requests;
 
+use Illuminate\Contracts\Validation\Validator;
+
 class PermissionRequest extends BaseFormRequest
 {
     /**
@@ -21,14 +23,9 @@ class PermissionRequest extends BaseFormRequest
      */
     public function rules()
     {
-        $pid = ['integer'];
-        if (!empty($this->input('id'))) {
-            $pid[] = 'different:id';
-        }
-
         return [
             'id'           => 'integer',
-            'pid'          => $pid,
+            'pid'          => 'integer',
             'display_name' => 'required|max:50',
             'name'         => ['bail', 'required', 'regex:/^[\w\.#]+$/'],
             'is_menu'      => 'in:0,1',
@@ -50,5 +47,12 @@ class PermissionRequest extends BaseFormRequest
         return [
             'name' => '菜单名称',
         ];
+    }
+
+    protected function withValidator(Validator $validator)
+    {
+        $validator->sometimes('pid', 'different:id', function () {
+            return !empty($this->input('id'));
+        });
     }
 }

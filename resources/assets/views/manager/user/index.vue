@@ -225,6 +225,7 @@
                     id: this.pageData.data[index].id,
                     name: this.pageData.data[index].name,
                     email: this.pageData.data[index].email,
+                    password: '',
                 };
                 this.errors = {};
             },

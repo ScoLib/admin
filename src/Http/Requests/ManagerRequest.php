@@ -2,6 +2,7 @@
 
 namespace Sco\Admin\Http\Requests;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Validation\Rule;
 
 class ManagerRequest extends BaseFormRequest
@@ -38,7 +39,7 @@ class ManagerRequest extends BaseFormRequest
                 'required',
                 Rule::unique('managers')->ignore($this->input('id')),
             ],
-            'password' => 'bail|required_without:id|min:6',
+            'password' => 'bail|required_without:id',
             //'sort'     => 'integer|between:0,255',
         ];
     }
@@ -58,5 +59,12 @@ class ManagerRequest extends BaseFormRequest
         return [
             'name' => '管理员名称',
         ];
+    }
+
+    protected function withValidator(Validator $validator)
+    {
+        $validator->sometimes('password', 'min:6', function () {
+            return !empty($this->input('password'));
+        });
     }
 }
