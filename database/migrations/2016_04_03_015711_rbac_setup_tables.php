@@ -36,12 +36,10 @@ class RbacSetupTables extends Migration
                     ->comment('名称');
 
                 $table->string('email')
-                    ->nullable()
                     ->unique()
                     ->comment('邮箱');
 
                 $table->string('password')
-                    ->nullable()
                     ->comment('密码');
 
                 $table->rememberToken();
@@ -59,7 +57,6 @@ class RbacSetupTables extends Migration
                 ->comment('名称');
 
             $table->string('display_name')
-                ->nullable()
                 ->comment('显示名');
 
             $table->string('description')
@@ -75,6 +72,7 @@ class RbacSetupTables extends Migration
             $table->integer($this->managerForeignKey)
                 ->unsigned()
                 ->comment('管理员ID');
+
             $table->integer('role_id')
                 ->unsigned()
                 ->comment('角色ID');
@@ -85,7 +83,9 @@ class RbacSetupTables extends Migration
         // Create table for storing permissions
         Schema::create('permissions', function (Blueprint $table) {
             $table->engine = "InnoDB COMMENT='权限（即菜单）表'";
-            $table->increments('id')->comment('主键');
+
+            $table->increments('id')
+                ->comment('主键');
 
             $table->integer('pid')
                 ->comment('父ID');

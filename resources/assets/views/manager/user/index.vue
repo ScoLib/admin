@@ -216,7 +216,11 @@
             },
             add () {
                 this.editModal = true;
-                this.info = {};
+                this.info = {
+                    name: '',
+                    email: '',
+                    password: '',
+                };
                 this.errors = {};
             },
             edit (index) {
