@@ -38,6 +38,16 @@ export default [
                 },
                 children: [
                     {
+                        path: 'log',
+                        component (resolve) {
+                            require(['../views/system/log/index.vue'], resolve);
+                        },
+                        name: 'admin.system.log',
+                        meta: {
+                            title: '操作日志'
+                        },
+                    },
+                    {
                         path: 'menu',
                         component (resolve) {
                             require(['../views/system/menu/index.vue'], resolve);

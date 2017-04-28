@@ -20,8 +20,7 @@ Route::group([
         Route::get('menu', function () {
             $menus = request()->get('admin.menu');
             return response()->json($menus);
-        })->name('admin.menu')
-            ->middleware('admin.menu');
+        })->name('admin.menu')->middleware('admin.menu');
 
         // 菜单管理
         Route::get('system/menu', 'BaseController@index')
@@ -43,6 +42,14 @@ Route::group([
         // 批量删除菜单
         Route::post('system/menu/batch/delete', 'System\MenuController@batchDelete')
             ->name('admin.system.menu.batch.delete');
+
+
+        Route::get('system/log', 'BaseController@index')
+            ->name('admin.system.log');
+
+        Route::get('system/log/list', 'System\ActionLogController@getList')
+            ->name('admin.system.log.list');
+
 
         Route::get('manager/user', 'BaseController@index')
             ->name('admin.manager.user');
