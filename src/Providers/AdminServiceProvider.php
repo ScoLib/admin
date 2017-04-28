@@ -86,16 +86,19 @@ class AdminServiceProvider extends ServiceProvider
             'admin'
         );
 
-        $this->registerEntrust();
+        $this->registerProviders();
     }
 
-    protected function registerEntrust()
+    protected function registerProviders()
     {
         $this->app->register(\Zizaco\Entrust\EntrustServiceProvider::class);
+        $this->app->register(\Sco\ActionLog\LaravelServiceProvider::class);
 
-        AliasLoader::getInstance()->alias('Entrust', \Zizaco\Entrust\EntrustFacade::class);
+        AliasLoader::getInstance([
+            'Entrust'   => \Zizaco\Entrust\EntrustFacade::class,
+            'ActionLog' => \Sco\ActionLog\Facade::class,
+        ])->register();
     }
-
 
     protected function publishAdmin()
     {
