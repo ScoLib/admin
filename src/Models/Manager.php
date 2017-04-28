@@ -34,6 +34,12 @@ class Manager extends Authenticatable
 
     protected $guarded = ['created_at', 'updated_at'];
 
+    protected $events = [
+        'created'  => \Sco\ActionLog\Events\ModelWasCreated::class,
+        'updated'  => \Sco\ActionLog\Events\ModelWasUpdated::class,
+        'deleted'  => \Sco\ActionLog\Events\ModelWasDeleted::class,
+    ];
+
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);

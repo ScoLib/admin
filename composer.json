@@ -21,6 +21,7 @@
         "illuminate/support": "~5.4",
         "league/fractal": "~0.15.0",
         "scolib/entrust": "~2.0",
+        "scolib/laravel-action-log": "1.0.*@beta",
         "scolib/tree": "~1.0"
     },
     "require-dev": {
