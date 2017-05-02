@@ -13,15 +13,15 @@ class ActionLogController extends BaseController
     {
         $ActionLog = app('ActionLog');
         if ($request->has('user_id')) {
-            $ActionLog = $ActionLog->where('user_id', intval($request->input('user_id')));
+            $ActionLog = $ActionLog->whereUserId(intval($request->input('user_id')));
         }
 
         if ($request->has('client_ip')) {
-            $ActionLog = $ActionLog->where('client_ip', $request->input('client_ip'));
+            $ActionLog = $ActionLog->whereClientIp($request->input('client_ip'));
         }
 
         if ($request->has('type')) {
-            $ActionLog = $ActionLog->where('type', $request->input('type'));
+            $ActionLog = $ActionLog->whereType($request->input('type'));
         }
 
         $list = $ActionLog->paginate();

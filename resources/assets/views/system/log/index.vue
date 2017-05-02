@@ -35,7 +35,17 @@
                         </div>
                         <div class="col-sm-3 input-group input-group-sm pull-right margin-r-5">
                             <select name="type" class="form-control" v-model="searchParams.type">
-                                <option value="">类型</option>
+                                <option value="">选择类型</option>
+                                <option value="created">created</option>
+                                <option value="deleted">deleted</option>
+                                <option value="restored">restored</option>
+                                <option value="saved">saved</option>
+                                <option value="updated">updated</option>
+                                <option value="creating">creating</option>
+                                <option value="deleting">deleting</option>
+                                <option value="restoring">restoring</option>
+                                <option value="saving">saving</option>
+                                <option value="updating">updating</option>
                             </select>
                         </div>
                     </div>
@@ -115,14 +125,12 @@
                 page: 1,
 
                 searchParams: {
-                    page: 1
+                    page: 1,
+                    type: '',
                 },
             }
         },
         computed: {
-            modalTitle () {
-                return this.info.id ? '编辑管理员' : '新建管理员';
-            },
         },
         created () {
             this.fetchData();
