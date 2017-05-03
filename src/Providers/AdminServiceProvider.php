@@ -96,7 +96,6 @@ class AdminServiceProvider extends ServiceProvider
 
         AliasLoader::getInstance([
             'Entrust'   => \Zizaco\Entrust\EntrustFacade::class,
-            'ActionLog' => \Sco\ActionLog\Facade::class,
         ])->register();
     }
 
@@ -119,8 +118,7 @@ class AdminServiceProvider extends ServiceProvider
     protected function publishConfig()
     {
         $this->publishes([
-            $this->getBasePath() . '/config/admin.php'   => config_path('admin.php'),
-            $this->getBasePath() . '/config/entrust.php' => config_path('entrust.php'),
+            $this->getBasePath() . '/config/'   => config_path(),
         ], 'config');
     }
 

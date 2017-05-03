@@ -24,7 +24,7 @@ class ActionLogController extends BaseController
             $ActionLog = $ActionLog->whereType($request->input('type'));
         }
 
-        $list = $ActionLog->paginate();
+        $list = $ActionLog->with('user')->paginate();
 
         return response()->json($list);
     }

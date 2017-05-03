@@ -64,20 +64,17 @@
 
                         <el-table-column
                                 label="用户"
-                                prop="user_id"
                                 width="100">
+                            <template scope="scope">
+                                {{ scope.row.user == null ? 'guest' : scope.row.user.name }} / {{ scope.row.user_id }}
+                            </template>
+
                         </el-table-column>
 
                         <el-table-column
                                 label="类型"
                                 prop="type"
                                 width="90">
-                        </el-table-column>
-
-                        <el-table-column
-                                label="相关数据表"
-                                prop="table_name"
-                                width="150">
                         </el-table-column>
 
                         <el-table-column label="内容" prop="content">
@@ -87,6 +84,12 @@
                                 label="IP"
                                 prop="client_ip"
                                 width="120">
+                        </el-table-column>
+
+                        <el-table-column
+                                label="客户端信息"
+                                prop="client"
+                                width="150">
                         </el-table-column>
 
                         <el-table-column
