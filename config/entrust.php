@@ -35,6 +35,39 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Entrust role foreign key
+    |--------------------------------------------------------------------------
+    |
+    | This is the role foreign key used by Entrust to make a proper
+    | relation between permissions and roles & roles and users
+    |
+    */
+    'role_foreign_key' => 'role_id',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Entrust role_user Table
+    |--------------------------------------------------------------------------
+    |
+    | This is the role_user table used by Entrust to save assigned roles to the
+    | database.
+    |
+    */
+    'role_user_table' => 'role_user',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Entrust user foreign key
+    |--------------------------------------------------------------------------
+    |
+    | This is the user foreign key used by Entrust to make a proper
+    | relation between roles and users
+    |
+    */
+    'user_foreign_key' => 'user_id',
+
+    /*
+    |--------------------------------------------------------------------------
     | Entrust Permission Model
     |--------------------------------------------------------------------------
     |
@@ -68,20 +101,12 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Entrust role_user Table
+    | Entrust permission foreign key
     |--------------------------------------------------------------------------
     |
-    | This is the role_user table used by Entrust to save assigned roles to the
-    | database.
+    | This is the permission foreign key used by Entrust to make a proper
+    | relation between permissions and roles
     |
     */
-    'role_user_table' => 'role_user',
-
-    /*
-    |--------------------------------------------------------------------------
-    | Role Foreign key on Entrust's role_user Table (Pivot)
-    |--------------------------------------------------------------------------
-    */
-    'role_foreign_key' => 'role_id',
-
+    'permission_foreign_key' => 'permission_id',
 ];
