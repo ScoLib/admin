@@ -64,7 +64,7 @@ return [
     | relation between roles and users
     |
     */
-    'user_foreign_key' => 'user_id',
+    'user_foreign_key' => 'manager_id',
 
     /*
     |--------------------------------------------------------------------------

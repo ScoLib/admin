@@ -5,7 +5,6 @@ use Carbon\Carbon;
 
 class RbacTableSeeder extends Seeder
 {
-
     private $managerModel;
 
     public function __construct()

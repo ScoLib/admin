@@ -3,15 +3,15 @@
 
 namespace Sco\Admin\Http\Controllers\System;
 
-
 use Illuminate\Http\Request;
+use Sco\ActionLog\Factory;
 use Sco\Admin\Http\Controllers\BaseController;
 
 class ActionLogController extends BaseController
 {
     public function getList(Request $request)
     {
-        $ActionLog = app('ActionLog');
+        $ActionLog = new Factory();
         if ($request->has('user_id')) {
             $ActionLog = $ActionLog->whereUserId(intval($request->input('user_id')));
         }
