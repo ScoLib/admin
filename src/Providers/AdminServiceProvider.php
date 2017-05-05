@@ -2,8 +2,10 @@
 
 namespace Sco\Admin\Providers;
 
+use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\ServiceProvider;
+use Sco\Admin\Exceptions\Handler;
 
 /**
  *
@@ -52,6 +54,19 @@ class AdminServiceProvider extends ServiceProvider
             $this->loadMigrationsFrom($this->getBasePath() . '/database/migrations');
             $this->publishAdmin();
         }
+
+        $this->registerExceptionHandler();
+    }
+
+    protected function registerExceptionHandler()
+    {
+        $exceptHandler = app(ExceptionHandler::class);
+        $this->app->singleton(
+            ExceptionHandler::class,
+            function () use ($exceptHandler) {
+                return new Handler($exceptHandler);
+            }
+        );
     }
 
     protected function registerMiddleware()

@@ -15,13 +15,13 @@ class BaseController extends Controller
 {
     public function __construct()
     {
-        $ehandler = app(\Illuminate\Contracts\Debug\ExceptionHandler::class);
+        /*$ehandler = app(\Illuminate\Contracts\Debug\ExceptionHandler::class);
         App::singleton(
             \Illuminate\Contracts\Debug\ExceptionHandler::class,
             function () use ($ehandler) {
                 return new Handler($ehandler);
             }
-        );
+        );*/
     }
 
     /**

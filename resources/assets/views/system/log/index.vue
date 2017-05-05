@@ -89,13 +89,13 @@
                         <el-table-column
                                 label="客户端信息"
                                 prop="client"
-                                width="150">
+                                width="170">
                         </el-table-column>
 
                         <el-table-column
                                 label="创建时间"
                                 prop="created_at"
-                                width="150">
+                                width="160">
                         </el-table-column>
 
                     </el-table>
