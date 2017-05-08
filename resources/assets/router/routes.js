@@ -16,20 +16,19 @@ export default [
         path: '/admin',
         component: Parent,
         meta: {
-            title: '首页',
+            title: '首页'
         },
         children: [
             {
                 path: '/',
                 component (resolve) {
-                    require(['../views/index.vue'], resolve);
+                    require(['../views/dashboard.vue'], resolve);
                 },
-                name: 'admin.index',
+                name: 'admin.dashboard',
                 meta: {
                     title: '控制台'
                 }
             },
-
             {
                 path: 'system',
                 component: Blank,
@@ -84,9 +83,35 @@ export default [
                         name: 'admin.manager.role',
                         meta: {
                             title: '角色管理'
+                        },
+                    },
+                    {
+                        path: 'role/create',
+                        component (resolve) {
+                            require(['../views/manager/role/form.vue'], resolve);
+                        },
+                        name: 'admin.manager.role.create',
+                        meta: {
+                            title: '创建角色'
                         }
                     },
+                    {
+                        path: 'role/:id/edit',
+                        component (resolve) {
+                            require(['../views/manager/role/form.vue'], resolve);
+                        },
+                        name: 'admin.manager.role.edit',
+                        meta: {
+                            title: '编辑角色'
+                        },
+                    },
                 ],
+            },
+            {
+                path: '*',
+                redirect: {
+                    name: 'admin.dashboard'
+                },
             },
         ],
     }

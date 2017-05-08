@@ -51,7 +51,7 @@ INSERT INTO `sco_permission_role` VALUES ('34', '1');
 -- ----------------------------
 -- Records of sco_permissions
 -- ----------------------------
-INSERT INTO `sco_permissions` VALUES ('1', '0', 'fa-dashboard', '控制台', 'admin.index', '1', '1', '控制台', '2016-08-05 16:50:19', '2016-08-05 16:50:19');
+INSERT INTO `sco_permissions` VALUES ('1', '0', 'fa-dashboard', '控制台', 'admin.dashboard', '1', '1', '控制台', '2016-08-05 16:50:19', '2016-08-05 16:50:19');
 INSERT INTO `sco_permissions` VALUES ('2', '1', '', '左侧菜单数据', 'admin.menu', '0', '1', '', '2016-08-05 16:50:19', '2016-08-05 16:50:19');
 INSERT INTO `sco_permissions` VALUES ('3', '0', 'fa-edit', '系统管理', '#', '1', '1', '系统管理', '2016-08-05 16:50:19', '2016-08-05 16:50:19');
 INSERT INTO `sco_permissions` VALUES ('4', '3', '', '操作日志', 'admin.system.log', '1', '1', '', '2016-08-05 16:50:19', '2016-08-05 16:50:19');
@@ -76,4 +76,6 @@ INSERT INTO `sco_permissions` VALUES ('21', '18', '', '获取所有角色', 'adm
 INSERT INTO `sco_permissions` VALUES ('22', '18', '', 'ajax获取权限列表', 'admin.manager.role.perms.list', '0', '0', '', '2016-08-19 17:20:39', '2016-08-19 17:20:39');
 INSERT INTO `sco_permissions` VALUES ('23', '18', '', '删除角色', 'admin.manager.role.delete', '0', '0', '', '2016-08-19 17:20:39', '2016-08-19 17:20:39');
 INSERT INTO `sco_permissions` VALUES ('24', '18', '', '批量删除角色', 'admin.manager.role.batch.delete', '0', '0', '', '2016-08-19 17:20:39', '2016-08-19 17:20:39');
--- INSERT INTO `sco_permissions` VALUES ('25', '18', '', '保存角色授权', 'admin.manager.role.postAuthorize', '0', '0', '', '2016-08-23 11:18:46', '2016-08-23 11:18:49');
+INSERT INTO `sco_permissions` VALUES ('25', '18', '', '创建角色', 'admin.manager.role.create', '0', '0', '', '2016-08-23 11:18:46', '2016-08-23 11:18:49');
+INSERT INTO `sco_permissions` VALUES ('26', '18', '', '编辑角色', 'admin.manager.role.edit', '0', '0', '', '2016-08-23 11:18:46', '2016-08-23 11:18:49');
+INSERT INTO `sco_permissions` VALUES ('27', '18', '', '获取角色信息', 'admin.manager.role.get', '0', '0', '', '2016-08-23 11:18:46', '2016-08-23 11:18:49');

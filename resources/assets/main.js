@@ -17,11 +17,6 @@ Vue.use(ElementUI);
 Vue.use(filters);
 
 Vue.component(
-    'FormGroup',
-    require('./components/FormGroup.vue')
-);
-
-Vue.component(
     'bForm',
     require('./components/Form.vue')
 );

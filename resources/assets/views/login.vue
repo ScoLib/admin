@@ -78,7 +78,7 @@
                 this.scoHttp('post', '/admin/login', this.info, response => {
                     this.buttonLoading = false;
                     this.$store.commit('setUser', response.data);
-                    this.$router.push({name: 'admin.index'});
+                    this.$router.push({name: 'admin.dashboard'});
                 });
             }
         }

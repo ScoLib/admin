@@ -13,6 +13,11 @@ use Sco\Admin\Models\Role;
 
 class RoleController extends Controller
 {
+    public function get($id)
+    {
+        return Role::findOrFail($id);
+    }
+
     public function getList()
     {
         $roles = Role::with([

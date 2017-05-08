@@ -18,7 +18,7 @@ Route::group([
 
         $spaRoutes = [
             // 控制台
-            'admin.index'        => '/',
+            'admin.dashboard'    => '/',
             // 操作日志
             'admin.system.log'   => 'system/log',
             // 菜单管理
@@ -27,6 +27,9 @@ Route::group([
             'admin.manager.user' => 'manager/user',
             // 角色管理
             'admin.manager.role' => 'manager/role',
+
+            'admin.manager.role.create' => 'manager/role/create',
+            'admin.manager.role.edit' => 'manager/role/{id}/edit',
 
         ];
 
@@ -79,6 +82,10 @@ Route::group([
 
         Route::post('manager/role/save', 'Manager\RoleController@save')
             ->name('admin.manager.role.save');
+
+        Route::get('manager/role/{id}', 'Manager\RoleController@get')
+            ->name('admin.manager.role.get')
+            ->where('id', '[0-9]+');
 
         Route::delete('manager/role/{id}', 'Manager\RoleController@delete')
             ->name('admin.manager.role.delete')

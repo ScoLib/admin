@@ -27,10 +27,10 @@
 
 
                     <div class="btn-group btn-group-sm pull-right margin-r-5">
-                        <button type="button" class="btn btn-default" @click.prevent="add">
+                        <router-link :to="{ name: 'admin.manager.role.create' }" class="btn btn-default">
                             <i class="fa fa-plus bigger-120"></i>
                             创建角色
-                        </button>
+                        </router-link>
                     </div>
                 </div>
                 <!-- /.box-header -->
@@ -66,9 +66,11 @@
                                 column-key="index">
                             <template scope="scope">
                                 <div class="hidden-xs btn-group">
-                                    <button class="btn btn-xs btn-info" @click.prevent="edit(scope.$index)">
+                                    <router-link
+                                            class="btn btn-xs btn-info"
+                                            :to="{name:'admin.manager.role.edit', params: {id: scope.row.id}}">
                                         <i class="fa fa-pencil bigger-120"></i>
-                                    </button>
+                                    </router-link>
                                     <button class="btn btn-xs btn-danger"
                                             @click.prevent="remove(scope.row.id)"
                                             :disabled="scope.row.id == 1"

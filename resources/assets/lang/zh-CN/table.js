@@ -5,6 +5,7 @@ export default {
     created_at: '创建时间',
     updated_at: '更新时间',
     action: '操作',
+    refresh: '刷新',
 
     edit: '编辑',
     create: '创建',
