@@ -15,7 +15,9 @@ class RoleController extends Controller
 {
     public function get($id)
     {
-        return Role::findOrFail($id);
+        return Role::with(['perms' => function ($query) {
+            return $query->select('id');
+        }])->findOrFail($id);
     }
 
     public function getList()

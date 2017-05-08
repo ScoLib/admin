@@ -74,19 +74,44 @@
             this.fetchData();
         },
         methods: {
-            fetchData () {
+            fetchData() {
+                this.getPermissionList();
+                this.setInfo();
+            },
+            setInfo() {
                 if (this.$route.name == 'admin.manager.role.edit' && this.$route.params.id) {
                     this.scoHttp('/admin/manager/role/'+ this.$route.params.id, response => {
                         this.info = {
                             id: response.data.id,
                             name: response.data.name,
                             display_name: response.data.display_name,
-
+                            perms: [],
                         };
+                        if (response.data.perms.length > 0) {
+                            response.data.perms.forEach(perm => {
+                                this.info.perms.push(perm.id);
+                            });
+                            keys = this.parseCheckedPermission();
+                        }
+
                     });
                 }
-                this.getPermissionList();
             },
+            // 处理需要设置为选中的节点（移除半选中节点，只保留最深层的）
+            parseCheckedPermission(perms) {
+                let list = [];
+                Object.keys(perms).forEach(index => {
+                    if (this.info.perms.indexOf(perms[index].id) > -1) {
+                        if (Object.keys(perms[index].children).length > 0) {
+                            list = list.concat(this.parseCheckedPermission(perms[index].children));
+                        } else {
+                            list.push(perms[index].id);
+                        }
+                    }
+                });
+                return list;
+            },
+
             getPermissionList() {
                 this.scoHttp('/admin/manager/role/perms/list', response => {
                     this.permissionList = this.parsePermissionTree(response.data);
