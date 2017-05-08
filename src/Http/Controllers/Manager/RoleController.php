@@ -5,13 +5,13 @@ namespace Sco\Admin\Http\Controllers\Manager;
 
 use DB;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 use Sco\Admin\Exceptions\AdminHttpException;
-use Sco\Admin\Http\Controllers\BaseController;
 use Sco\Admin\Http\Requests\RoleRequest;
 use Sco\Admin\Models\Permission;
 use Sco\Admin\Models\Role;
 
-class RoleController extends BaseController
+class RoleController extends Controller
 {
     public function getList()
     {

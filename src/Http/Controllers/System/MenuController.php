@@ -3,14 +3,14 @@
 namespace Sco\Admin\Http\Controllers\System;
 
 use Illuminate\Http\Request;
-use Sco\Admin\Http\Controllers\BaseController;
+use Illuminate\Routing\Controller;
 use Sco\Admin\Http\Requests\PermissionRequest;
 use Sco\Admin\Models\Permission;
 
 /**
  * 菜单管理
  */
-class MenuController extends BaseController
+class MenuController extends Controller
 {
     /**
      * @var Permission

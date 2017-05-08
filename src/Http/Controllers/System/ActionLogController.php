@@ -4,10 +4,10 @@
 namespace Sco\Admin\Http\Controllers\System;
 
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 use Sco\ActionLog\Factory;
-use Sco\Admin\Http\Controllers\BaseController;
 
-class ActionLogController extends BaseController
+class ActionLogController extends Controller
 {
     public function getList(Request $request)
     {

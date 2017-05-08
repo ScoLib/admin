@@ -4,12 +4,12 @@
 namespace Sco\Admin\Http\Controllers\Manager;
 
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 use Sco\Admin\Exceptions\AdminHttpException;
-use Sco\Admin\Http\Controllers\BaseController;
 use Sco\Admin\Http\Requests\ManagerRequest;
 use Sco\Admin\Models\Manager;
 
-class UserController extends BaseController
+class UserController extends Controller
 {
     public function getList()
     {

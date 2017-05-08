@@ -1,30 +1,45 @@
 <?php
 
 Route::group([
-    'prefix' => 'admin',
+    'prefix'     => 'admin',
     'middleware' => 'web',
-    'namespace' => 'Sco\Admin\Http\Controllers',
+    'namespace'  => 'Sco\Admin\Http\Controllers',
 ], function () {
     //登录页
-    Route::get('login', 'Auth\LoginController@showLoginForm')->name('admin.login');
+    Route::get('login',
+        'Auth\LoginController@showLoginForm')->name('admin.login');
     //登录提交
-    Route::post('login', 'Auth\LoginController@login')->name('admin.login.submit');
+    Route::post('login',
+        'Auth\LoginController@login')->name('admin.login.submit');
     //退出
     Route::get('logout', 'Auth\LoginController@logout')->name('admin.logout');
 
     Route::group(['middleware' => 'auth.admin'], function () {
-        // 控制台
-        Route::get('/', 'BaseController@index')
-            ->name('admin.index');
+
+        $spaRoutes = [
+            // 控制台
+            'admin.index'        => '/',
+            // 操作日志
+            'admin.system.log'   => 'system/log',
+            // 菜单管理
+            'admin.system.menu'  => 'system/menu',
+            // 管理员
+            'admin.manager.user' => 'manager/user',
+            // 角色管理
+            'admin.manager.role' => 'manager/role',
+
+        ];
+
+        foreach ($spaRoutes as $name => $route) {
+            Route::get($route, function () {
+                return view('admin::app');
+            })->name($name);
+        }
 
         Route::get('menu', function () {
             $menus = request()->get('admin.menu');
             return response()->json($menus);
         })->name('admin.menu')->middleware('admin.menu');
-
-        // 菜单管理
-        Route::get('system/menu', 'BaseController@index')
-            ->name('admin.system.menu');
 
         // 菜单列表数据
         Route::get('system/menu/list', 'System\MenuController@getList')
@@ -40,19 +55,12 @@ Route::group([
             ->where('id', '[0-9]+');
 
         // 批量删除菜单
-        Route::post('system/menu/batch/delete', 'System\MenuController@batchDelete')
+        Route::post('system/menu/batch/delete',
+            'System\MenuController@batchDelete')
             ->name('admin.system.menu.batch.delete');
-
-
-        Route::get('system/log', 'BaseController@index')
-            ->name('admin.system.log');
 
         Route::get('system/log/list', 'System\ActionLogController@getList')
             ->name('admin.system.log.list');
-
-
-        Route::get('manager/user', 'BaseController@index')
-            ->name('admin.manager.user');
 
         // 管理员列表数据
         Route::get('manager/user/list', 'Manager\UserController@getList')
@@ -68,9 +76,6 @@ Route::group([
             ->name('admin.manager.user.delete')
             ->where('id', '[0-9]+');
 
-        //角色管理
-        Route::get('manager/role', 'BaseController@index')
-            ->name('admin.manager.role');
 
         Route::post('manager/role/save', 'Manager\RoleController@save')
             ->name('admin.manager.role.save');
@@ -86,10 +91,12 @@ Route::group([
         Route::get('manager/role/all', 'Manager\RoleController@getAll')
             ->name('admin.manager.role.all');
 
-        Route::get('manager/role/perms/list', 'Manager\RoleController@getPermissionList')
+        Route::get('manager/role/perms/list',
+            'Manager\RoleController@getPermissionList')
             ->name('admin.manager.role.perms.list');
 
-        Route::post('manager/role/batch/delete', 'Manager\RoleController@batchDelete')
+        Route::post('manager/role/batch/delete',
+            'Manager\RoleController@batchDelete')
             ->name('admin.manager.role.batch.delete');
 
         //用户管理
