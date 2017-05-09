@@ -3,7 +3,7 @@ require('bootstrap');
 require('./js');
 
 import Vue from 'vue';
-import VueResource from 'vue-resource';
+// import VueResource from 'vue-resource';
 import ElementUI from 'element-ui';
 
 import locales from './lang';
@@ -12,7 +12,7 @@ import router from './router';
 import App from './components/App.vue';
 import filters from './filters';
 
-Vue.use(VueResource);
+// Vue.use(VueResource);
 Vue.use(ElementUI);
 Vue.use(filters);
 

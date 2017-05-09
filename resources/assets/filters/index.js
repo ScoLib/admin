@@ -1,11 +1,26 @@
-import scoHttp from './http.js'
+// import scoHttp from './http.js'
+import axios from './axios'
 
 const install = function (Vue) {
-    Vue.prototype.scoHttp = scoHttp;
+    Vue.axios = axios
+    Object.defineProperties(Vue.prototype, {
+        axios: {
+            get() {
+                return axios
+            }
+        },
+        $http: {
+            get() {
+                return axios
+            }
+        }
+    })
 }
+
 if (typeof window !== 'undefined' && window.Vue) {
     install(window.Vue);
-};
+}
+
 export default {
     install
-};
+}

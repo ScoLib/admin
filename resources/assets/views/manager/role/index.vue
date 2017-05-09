@@ -94,25 +94,6 @@
                 </div>
             </div>
 
-            <el-dialog :title="modalTitle" v-model="editModal" @open="handleOpen()">
-                <b-form
-                        :fields="fields"
-                        :info="info"
-                        :errors="errors">
-                    <el-tree
-                            :data="permissionList"
-                            show-checkbox
-                            node-key="id"
-                            ref="tree"
-                            slot="perms">
-                    </el-tree>
-                </b-form>
-
-                <div slot="footer" class="dialog-footer">
-                    <el-button @click="editModal = false">取 消</el-button>
-                    <el-button type="primary" @click="save" :loading="buttonLoading">确 定</el-button>
-                </div>
-            </el-dialog>
         </div>
     </div>
 </template>
@@ -125,10 +106,6 @@
         },
         data() {
             return {
-                // 编辑
-                editModal: false,
-                info: {},
-                errors: {},
 
                 // 列表
                 tableLoading: false,
@@ -137,33 +114,10 @@
                 selection: [],
                 buttonLoading: false,
 
-                // 角色
-                permissionList: [],
-
-                // el-tree
-
             }
         },
         computed: {
-            modalTitle () {
-                return this.info.id ? this.$t('form.edit_role') : this.$t('form.create_role');
-            },
-            fields() {
-                return [
-                    {
-                        key: 'name',
-                        title: this.$t('table.name'),
-                    },
-                    {
-                        key: 'display_name',
-                        title: this.$t('table.display_name'),
-                    },
-                    {
-                        key: 'perms',
-                        title: '授权',
-                    }
-                ];
-            },
+
         },
         created () {
             this.fetchData();
@@ -173,29 +127,6 @@
         methods: {
             fetchData () {
                 this.getResults();
-            },
-            handleOpen() {
-                this.$nextTick(() => {
-                    let keys = [];
-                    if (this.info.perms.length > 0) {
-                        keys = this.parseCheckedPermission(this.permissionList);
-                    }
-                    this.$refs.tree.setCheckedKeys(keys);
-                });
-            },
-            // 处理需要设置为选中的节点（移除半选中节点，只保留最深层的）
-            parseCheckedPermission(perms) {
-                let list = [];
-                Object.keys(perms).forEach(index => {
-                    if (this.info.perms.indexOf(perms[index].id) > -1) {
-                        if (Object.keys(perms[index].children).length > 0) {
-                            list = list.concat(this.parseCheckedPermission(perms[index].children));
-                        } else {
-                            list.push(perms[index].id);
-                        }
-                    }
-                });
-                return list;
             },
             selectable(row, index) {
                 return row.id == 1 ? false : true;
@@ -208,56 +139,10 @@
             },
             getResults() {
                 this.tableLoading = true;
-
-                this.getPermissionList();
-
-                this.scoHttp('/admin/manager/role/list', response => {
+                this.$http.get('/admin/manager/role/list').then(response => {
                     this.tableLoading = false;
                     this.pageData = response.data;
-                });
-
-            },
-            getPermissionList() {
-                this.scoHttp('/admin/manager/role/perms/list', response => {
-                    this.permissionList = this.parsePermissionTree(response.data);
-                });
-            },
-            parsePermissionTree(perms) {
-                let list = [];
-                Object.keys(perms).forEach(index => {
-                    let children = [];
-                    if (Object.keys(perms[index].child).length > 0) {
-                        children = this.parsePermissionTree(perms[index].child);
-                    }
-                    list.push({
-                        id: perms[index].id,
-                        label: perms[index].display_name,
-                        children: children,
-                    });
-                });
-                return list;
-            },
-            add() {
-                this.editModal = true;
-                this.info = {
-                    perms: []
-                };
-                this.errors = {};
-            },
-            edit(index) {
-                this.editModal = true;
-                this.info = {
-                    id: this.pageData.data[index].id,
-                    name: this.pageData.data[index].name,
-                    display_name: this.pageData.data[index].display_name,
-                    perms: [],
-                };
-
-                this.pageData.data[index].perms.forEach(perm => {
-                    this.info.perms.push(perm.id);
-                });
-
-                this.errors = {};
+                }).catch(error => {})
             },
             remove (id) {
                 this.$confirm('确定要删除此角色吗？', '提示', {
@@ -278,26 +163,6 @@
                         }
                     }
                 }).then(action => {}).catch(action => {});
-            },
-            save() {
-                this.info.perms = this.getCheckedPermission();
-
-                this.buttonLoading = true;
-                this.scoHttp('post', '/admin/manager/role/save', this.info, response => {
-                    this.editModal = false;
-                    this.buttonLoading = false;
-                    this.getResults();
-                });
-            },
-            // 获取选中的节点（包括半选中节点）
-            getCheckedPermission() {
-                let keys = this.$refs.tree.getCheckedKeys();
-                let nodesDOM = this.$refs.tree.$el.querySelectorAll('.el-tree-node');
-                let nodesVue = [].map.call(nodesDOM, node => node.__vue__);
-                nodesVue.filter(item => item.indeterminate === true).forEach(_vue => {
-                    keys.push(_vue.node.data.id);
-                });
-                return keys;
             },
             batchRemove () {
                 if (this.selection.length == 0) {

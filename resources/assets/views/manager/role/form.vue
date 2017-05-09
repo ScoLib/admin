@@ -28,7 +28,7 @@
                 </b-form>
                 <!-- /.box-body -->
                 <div class="box-footer">
-                    <button type="submit" class="btn btn-primary">{{ $t('form.ok') }}</button>
+                    <el-button type="primary" @click="save" :loading="buttonLoading">{{ $t('form.ok') }}</el-button>
                 </div>
                 <!-- /.box-footer -->
             </div>
@@ -45,6 +45,8 @@
                 info: {},
                 errors: {},
                 permissionList: [],
+
+                buttonLoading: false,
             }
         },
         computed: {
@@ -75,27 +77,49 @@
         },
         methods: {
             fetchData() {
-                this.getPermissionList();
-                this.setInfo();
-            },
-            setInfo() {
                 if (this.$route.name == 'admin.manager.role.edit' && this.$route.params.id) {
-                    this.scoHttp('/admin/manager/role/'+ this.$route.params.id, response => {
-                        this.info = {
-                            id: response.data.id,
-                            name: response.data.name,
-                            display_name: response.data.display_name,
-                            perms: [],
-                        };
-                        if (response.data.perms.length > 0) {
-                            response.data.perms.forEach(perm => {
-                                this.info.perms.push(perm.id);
-                            });
-                            keys = this.parseCheckedPermission();
-                        }
-
-                    });
+                    var _this = this;
+                    this.$http.all([this.getInfo(), this.getPermissionList()])
+                        .then(this.$http.spread(function (infoRes, permsRes) {
+//                            console.log('perms', permsRes);
+//                            console.log(this);
+                            _this.permissionList = _this.parsePermissionTree(permsRes.data)
+                            _this.info = {
+                                id: infoRes.data.id,
+                                name: infoRes.data.name,
+                                display_name: infoRes.data.display_name,
+                                perms: [],
+                            }
+                            if (infoRes.data.perms.length > 0) {
+                                infoRes.data.perms.forEach(perm => {
+                                    _this.info.perms.push(perm.id);
+                                });
+                                let keys = _this.parseCheckedPermission(_this.permissionList);
+                                _this.$refs.tree.setCheckedKeys(keys);
+                            }
+                            _this.loading = false;
+                        })).catch(error => {
+                            /*if (error.response) {
+                                console.log('form response', error.response);
+                            } else if (error.request) {
+                                // The request was made but no response was received
+                                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                                // http.ClientRequest in node.js
+                                console.log('form request', error.request);
+                            } else {
+                                console.log('form message', error.message);
+                                // Something happened in setting up the request that triggered an Error
+                            }*/
+                        });
+                } else {
+                    this.getPermissionList().then(response => {
+                        this.permissionList = this.parsePermissionTree(response.data);
+                        this.loading = false;
+                    }).catch(error => {});
                 }
+            },
+            getInfo() {
+                return this.$http.get('/admin/manager/role/'+ this.$route.params.id);
             },
             // 处理需要设置为选中的节点（移除半选中节点，只保留最深层的）
             parseCheckedPermission(perms) {
@@ -111,12 +135,8 @@
                 });
                 return list;
             },
-
             getPermissionList() {
-                this.scoHttp('/admin/manager/role/perms/list', response => {
-                    this.permissionList = this.parsePermissionTree(response.data);
-                    this.loading = false;
-                });
+                return this.$http.get('/admin/manager/role/perms/list');
             },
             parsePermissionTree(perms) {
                 let list = [];
@@ -132,6 +152,35 @@
                     });
                 });
                 return list;
+            },
+            save() {
+                this.info.perms = this.getCheckedPermission();
+
+//                this.buttonLoading = true;
+                /*this.scoHttp('post', '/admin/manager/role/save', this.info, response => {
+                    this.editModal = false;
+                    this.buttonLoading = false;
+                    this.getResults();
+                });*/
+                this.$http.post('/admin/manager/role/save', this.info).then(response => {
+                    this.buttonLoading = false;
+                    this.$message.success('操作成功')
+                    this.$router.replace({name: 'admin.manager.role'})
+                }).catch(error => {
+                    this.errors = error.response.data;
+                    this.buttonLoading = false;
+                })
+                console.log(this.info);
+            },
+            // 获取选中的节点（包括半选中节点）
+            getCheckedPermission() {
+                let keys = this.$refs.tree.getCheckedKeys();
+                let nodesDOM = this.$refs.tree.$el.querySelectorAll('.el-tree-node');
+                let nodesVue = [].map.call(nodesDOM, node => node.__vue__);
+                nodesVue.filter(item => item.indeterminate === true).forEach(_vue => {
+                    keys.push(_vue.node.data.id);
+                });
+                return keys;
             },
         }
 

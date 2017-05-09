@@ -57,10 +57,20 @@
         },
         created () {
             this.loading = true;
-            this.scoHttp('/admin/menu', response => {
+            this.$http.get('/admin/menu').then(response => {
                 this.loading = false;
                 this.menus = response.data;
+            }).catch(response => {
+                if (response.status == 401) {
+                    this.$message.error(response.statusText);
+                } else {
+                    this.$message.error(response.data);
+                }
             });
+            /*this.scoHttp('/admin/menu', response => {
+                this.loading = false;
+                this.menus = response.data;
+            });*/
 
         },
         computed: {

@@ -15,21 +15,21 @@ Route::group([
     Route::get('logout', 'Auth\LoginController@logout')->name('admin.logout');
 
     Route::group(['middleware' => 'auth.admin'], function () {
-
         $spaRoutes = [
             // 控制台
-            'admin.dashboard'    => '/',
+            'admin.dashboard'           => '/',
             // 操作日志
-            'admin.system.log'   => 'system/log',
+            'admin.system.log'          => 'system/log',
             // 菜单管理
-            'admin.system.menu'  => 'system/menu',
+            'admin.system.menu'         => 'system/menu',
             // 管理员
-            'admin.manager.user' => 'manager/user',
+            'admin.manager.user'        => 'manager/user',
             // 角色管理
-            'admin.manager.role' => 'manager/role',
-
+            'admin.manager.role'        => 'manager/role',
+            // 创建角色
             'admin.manager.role.create' => 'manager/role/create',
-            'admin.manager.role.edit' => 'manager/role/{id}/edit',
+            // 编辑角色
+            'admin.manager.role.edit'   => 'manager/role/{id}/edit',
 
         ];
 
