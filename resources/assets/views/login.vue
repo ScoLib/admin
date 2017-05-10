@@ -75,11 +75,14 @@
         methods: {
             login () {
                 this.buttonLoading = true;
-                this.scoHttp('post', '/admin/login', this.info, response => {
+                this.$http.post('/admin/login', this.info).then(response => {
                     this.buttonLoading = false;
                     this.$store.commit('setUser', response.data);
                     this.$router.push({name: 'admin.dashboard'});
-                });
+                }).catch(error => {
+                    this.buttonLoading = false;
+                    this.errors = error.response.data;
+                })
             }
         }
     }

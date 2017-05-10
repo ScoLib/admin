@@ -7,6 +7,7 @@
                 v-for="child in childs"
                 :to="child.name == '#' ? notUrl : {name: child.name}"
                 :class="activeClass(child.child)"
+                :key="child.id"
                 exact>
             <a>
                 <i :class="['fa', child.icon ? child.icon : 'fa-circle-o']"></i>

@@ -20,7 +20,7 @@
                                     v-model="searchParams.client_id">
 
                             <div class="input-group-btn">
-                                <button type="button" class="btn btn-default" @click.prevent="getResults">
+                                <button type="button" class="btn btn-default" @click.prevent="changePage(1)">
                                     <i class="fa fa-search"></i>
                                 </button>
                             </div>
@@ -106,6 +106,7 @@
                             layout="total, prev, pager, next"
                             :page-size="pageData.per_page"
                             @current-change="changePage"
+                            :current-page.sync="searchParams.page"
                             :total="pageData.total">
                     </el-pagination>
                 </div>
@@ -147,86 +148,15 @@
             },
             getResults() {
                 this.tableLoading = true;
-                this.scoHttp('/admin/system/log/list', this.searchParams, response => {
-                    this.tableLoading = false;
-                    this.pageData = response.data;
-                });
+                this.$http.get('/admin/system/log/list', {params: this.searchParams})
+                    .then(response => {
+                        this.tableLoading = false;
+                        this.pageData = response.data;
+                    }).catch(error => {})
             },
             fetchData () {
                 this.getResults();
             },
-            add () {
-                this.editModal = true;
-                this.info = {
-                    name: '',
-                    email: '',
-                    password: '',
-                };
-                this.errors = {};
-            },
-            edit (index) {
-                this.editModal = true;
-                this.info = {
-                    id: this.pageData.data[index].id,
-                    name: this.pageData.data[index].name,
-                    email: this.pageData.data[index].email,
-                    password: '',
-                };
-                this.errors = {};
-            },
-            remove (id) {
-                this.$confirm('确定要删除此管理员吗？', '提示', {
-                    type: 'warning',
-                    beforeClose: (action, instance, done) => {
-                        if (action == 'confirm') {
-                            this.MessageBoxInstance = instance;
-
-                            instance.confirmButtonLoading = true;
-//                            instance.confirmButtonText = '执行中...';
-                            this.scoHttp('delete', '/admin/manager/user/' + id, response => {
-                                instance.confirmButtonLoading = false;
-                                instance.close();
-                                this.$message.success('删除成功');
-                                this.getResults();
-                            });
-                        } else {
-                            done();
-                        }
-                    }
-                }).then(action => {}).catch(action => {});
-            },
-            save () {
-                this.buttonLoading = true;
-                this.scoHttp('post', '/admin/manager/user/save', this.info, response => {
-                    this.editModal = false;
-                    this.buttonLoading = false;
-                    this.getResults();
-                });
-            },
-            setRole (index) {
-                this.setRoleModal = true;
-                this.buttonLoading = false;
-                this.roleData = {
-                    id: this.pageData.data[index].id,
-                    name: this.pageData.data[index].name,
-                    roles: [],
-                };
-
-                this.pageData.data[index].roles.forEach(role => {
-                    this.roleData.roles.push(role.id);
-                });
-
-                this.errors = {};
-
-            },
-            saveRole () {
-                this.buttonLoading = true;
-                this.scoHttp('post', '/admin/manager/user/save/role', this.roleData, response => {
-                    this.setRoleModal = false;
-                    this.buttonLoading = false;
-                    this.getResults();
-                });
-            }
         }
     }
 </script>

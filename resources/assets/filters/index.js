@@ -1,4 +1,3 @@
-// import scoHttp from './http.js'
 import axios from './axios'
 
 const install = function (Vue) {

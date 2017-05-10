@@ -228,10 +228,11 @@
             },
             getResults() {
                 this.tableLoading = true;
-                this.scoHttp('/admin/system/menu/list', response => {
-                    this.tableLoading = false;
-                    this.menuList = response.data;
-                });
+                this.$http.get('/admin/system/menu/list')
+                    .then(response => {
+                        this.tableLoading = false;
+                        this.menuList = response.data;
+                    }).catch(error => {})
             },
             fetchData () {
                 this.getResults();
@@ -257,12 +258,13 @@
 
                             instance.confirmButtonLoading = true;
 //                            instance.confirmButtonText = '执行中...';
-                            this.scoHttp('delete', '/admin/system/menu/' + id, response => {
-                                instance.confirmButtonLoading = false;
-                                instance.close();
-                                this.$message.success('删除成功');
-                                this.getResults();
-                            });
+                            this.$http.delete('/admin/system/menu/' + id)
+                                .then(response => {
+                                    instance.confirmButtonLoading = false;
+                                    instance.close();
+                                    this.$message.success('删除成功');
+                                    this.getResults();
+                                }).catch(error => {});
                         } else {
                             done();
                         }
@@ -283,13 +285,13 @@
 
                             instance.confirmButtonLoading = true;
 //                            instance.confirmButtonText = '执行中...';
-
-                            this.scoHttp('post', '/admin/system/menu/batch/delete', {'ids': this.selection}, response => {
-                                instance.confirmButtonLoading = false;
-                                instance.close();
-                                this.$message.success('删除成功');
-                                this.getResults();
-                            });
+                            this.$http.post('/admin/system/menu/batch/delete', {'ids': this.selection})
+                                .then(response => {
+                                    instance.confirmButtonLoading = false;
+                                    instance.close();
+                                    this.$message.success('删除成功');
+                                    this.getResults();
+                                }).catch(error => {})
                         } else {
                             done();
                         }
@@ -300,11 +302,12 @@
 //                console.log(this.info);
 //                return false;
                 this.buttonLoading = true;
-                this.scoHttp('post', '/admin/system/menu/save', this.info, response => {
-                    this.editModal = false;
-                    this.buttonLoading = false;
-                    this.getResults();
-                });
+                this.$http.post('/admin/system/menu/save', this.info)
+                    .then(response => {
+                        this.editModal = false;
+                        this.buttonLoading = false;
+                        this.getResults();
+                    }).catch(error => {});
             }
         }
     }

@@ -98,19 +98,7 @@
                                 _this.$refs.tree.setCheckedKeys(keys);
                             }
                             _this.loading = false;
-                        })).catch(error => {
-                            /*if (error.response) {
-                                console.log('form response', error.response);
-                            } else if (error.request) {
-                                // The request was made but no response was received
-                                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                                // http.ClientRequest in node.js
-                                console.log('form request', error.request);
-                            } else {
-                                console.log('form message', error.message);
-                                // Something happened in setting up the request that triggered an Error
-                            }*/
-                        });
+                        })).catch(error => {});
                 } else {
                     this.getPermissionList().then(response => {
                         this.permissionList = this.parsePermissionTree(response.data);
@@ -155,13 +143,7 @@
             },
             save() {
                 this.info.perms = this.getCheckedPermission();
-
-//                this.buttonLoading = true;
-                /*this.scoHttp('post', '/admin/manager/role/save', this.info, response => {
-                    this.editModal = false;
-                    this.buttonLoading = false;
-                    this.getResults();
-                });*/
+                this.buttonLoading = true;
                 this.$http.post('/admin/manager/role/save', this.info).then(response => {
                     this.buttonLoading = false;
                     this.$message.success('操作成功')
@@ -170,7 +152,6 @@
                     this.errors = error.response.data;
                     this.buttonLoading = false;
                 })
-                console.log(this.info);
             },
             // 获取选中的节点（包括半选中节点）
             getCheckedPermission() {

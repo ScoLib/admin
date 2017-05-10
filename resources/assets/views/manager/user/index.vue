@@ -202,17 +202,18 @@
                 }
 
                 this.tableLoading = true;
-                this.scoHttp('/admin/manager/user/list', {'page': page}, response => {
-                    this.tableLoading = false;
-                    this.pageData = response.data;
-                });
+                this.$http.get('/admin/manager/user/list', {params: {'page': page}})
+                    .then(response => {
+                        this.tableLoading = false;
+                        this.pageData = response.data;
+                    }).catch(error => {})
             },
             fetchData () {
                 this.getResults();
-
-                this.scoHttp('/admin/manager/role/all', response => {
-                    this.roleList = response.data;
-                });
+                this.$http.get('/admin/manager/role/all')
+                    .then(response => {
+                        this.roleList = response.data;
+                    }).catch(error => {})
             },
             add () {
                 this.editModal = true;
@@ -242,27 +243,29 @@
 
                             instance.confirmButtonLoading = true;
 //                            instance.confirmButtonText = '执行中...';
-                            this.scoHttp('delete', '/admin/manager/user/' + id, response => {
-                                instance.confirmButtonLoading = false;
-                                instance.close();
-                                this.$message.success('删除成功');
-                                this.getResults();
-                            });
+                            this.$http.delete('/admin/manager/user/' + id)
+                                .then(response => {
+                                    instance.confirmButtonLoading = false;
+                                    instance.close();
+                                    this.$message.success('删除成功');
+                                    this.getResults();
+                                }).catch(error => {})
                         } else {
                             done();
                         }
                     }
-                }).then(action => {}).catch(action => {});
+                }).then(action => {}).catch(error => {});
             },
-            save () {
+            save() {
                 this.buttonLoading = true;
-                this.scoHttp('post', '/admin/manager/user/save', this.info, response => {
-                    this.editModal = false;
-                    this.buttonLoading = false;
-                    this.getResults();
-                });
+                this.$http.post('/admin/manager/user/save', this.info)
+                    .then(response => {
+                        this.editModal = false;
+                        this.buttonLoading = false;
+                        this.getResults();
+                    }).catch(error => {})
             },
-            setRole (index) {
+            setRole(index) {
                 this.setRoleModal = true;
                 this.buttonLoading = false;
                 this.roleData = {
@@ -276,15 +279,15 @@
                 });
 
                 this.errors = {};
-
             },
             saveRole () {
                 this.buttonLoading = true;
-                this.scoHttp('post', '/admin/manager/user/save/role', this.roleData, response => {
-                    this.setRoleModal = false;
-                    this.buttonLoading = false;
-                    this.getResults();
-                });
+                this.$http.post('/admin/manager/user/save/role', this.roleData)
+                    .then(response => {
+                        this.setRoleModal = false;
+                        this.buttonLoading = false;
+                        this.getResults();
+                    }).catch(error => {})
             }
         }
     }

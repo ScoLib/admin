@@ -53,7 +53,7 @@
                         <el-table-column :label="$t('table.name')" prop="name">
                         </el-table-column>
 
-                        <el-table-column label="显示名称" prop="display_name">
+                        <el-table-column :label="$t('table.display_name')" prop="display_name">
                         </el-table-column>
 
                         <el-table-column label="创建时间" prop="created_at">
@@ -152,12 +152,13 @@
                             this.MessageBoxInstance = instance;
 
                             instance.confirmButtonLoading = true;
-                            this.scoHttp('delete', '/admin/manager/role/' + id, response => {
-                                instance.confirmButtonLoading = false;
-                                instance.close();
-                                this.$message.success('删除成功');
-                                this.getResults();
-                            });
+                            this.$http.delete('/admin/manager/role/' + id)
+                                .then(response => {
+                                    instance.confirmButtonLoading = false;
+                                    instance.close();
+                                    this.$message.success('删除成功');
+                                    this.getResults();
+                                }).catch(error => {})
                         } else {
                             done();
                         }
@@ -178,13 +179,13 @@
 
                             instance.confirmButtonLoading = true;
 //                            instance.confirmButtonText = '执行中...';
-
-                            this.scoHttp('post', '/admin/manager/role/batch/delete', {'ids': this.selection}, response => {
-                                instance.confirmButtonLoading = false;
-                                instance.close();
-                                this.$message.success('删除成功');
-                                this.getResults();
-                            });
+                            this.$http.post('/admin/manager/role/batch/delete', {'ids': this.selection})
+                                .then(response => {
+                                    instance.confirmButtonLoading = false;
+                                    instance.close();
+                                    this.$message.success('删除成功');
+                                    this.getResults();
+                                }).catch(error => {})
                         } else {
                             done();
                         }
