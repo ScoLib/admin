@@ -5,9 +5,6 @@ require('./js');
 import Vue from 'vue';
 // import VueResource from 'vue-resource';
 import ElementUI from 'element-ui';
-import format from 'element-ui/lib/locale/format';
-const formater = format(Vue);
-
 import i18n from './lang';
 import store from './store';
 import router from './router';

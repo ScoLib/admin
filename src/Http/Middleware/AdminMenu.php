@@ -2,8 +2,8 @@
 
 namespace Sco\Admin\Http\Middleware;
 
+use Auth;
 use Closure;
-use Route;
 use Sco\Admin\Models\Permission;
 
 class AdminMenu
@@ -30,7 +30,7 @@ class AdminMenu
     private function checkMenuPermission($list)
     {
         $return = $list->filter(function ($permission, $key) {
-            if (request()->user()->can($permission->name)) {
+            if (Auth::user()->can($permission->name)) {
                 if (!$permission->child->isEmpty()) {
                     $permission->child = $this->checkMenuPermission($permission->child);
                 }

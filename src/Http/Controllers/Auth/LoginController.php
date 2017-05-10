@@ -49,7 +49,7 @@ class LoginController extends Controller
     {
         $this->validate($request, [
             $this->username() => 'required|string',
-            'password' => 'required|string',
+            'password'        => 'required|string',
         ], trans('admin::validation'), trans('admin::validation.attributes'));
     }
 
@@ -70,15 +70,18 @@ class LoginController extends Controller
      * The user has been authenticated.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Sco\Admin\Models\Manager  $user
+     * @param  \Sco\Admin\Models\Manager $user
+     *
      * @return mixed
      */
     protected function authenticated(Request $request, $user)
     {
         return [
-            'id' => $user->id,
+            'id'   => $user->id,
             'name' => $user->name,
-            'role' => $user->roles->first()->display_name,
+            'role' => $user->roles->makeHidden([
+                'description', 'created_at', 'updated_at', 'pivot',
+            ])->first(null, collect()),
         ];
     }
 
@@ -95,7 +98,8 @@ class LoginController extends Controller
     /**
      * Log the user out of the application.
      *
-     * @param  Request  $request
+     * @param  Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function logout(Request $request)

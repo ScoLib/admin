@@ -31,7 +31,7 @@
                                 <img src="../../img/user2-160x160.jpg" class="img-circle" alt="User Image">
 
                                 <p>
-                                    {{ user.name }} - {{ user.role }}
+                                    {{ user.name }} - {{ user.role.display_name }}
                                     <small>Member since Nov. 2012</small>
                                 </p>
                             </li>

@@ -3,6 +3,7 @@
 
 namespace Sco\Admin\Http\Controllers\Manager;
 
+use Auth;
 use DB;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -48,7 +49,11 @@ class RoleController extends Controller
             $model = new Role();
         } else {
             $model = Role::findOrFail($request->input('id'));
+            if ($model->id == 1 && $model->id != Auth::id()) {
+                return response()->json(['error' => 'Unauthenticated.'], 401);
+            }
         }
+
 
         $model->name         = $request->input('name');
         $model->display_name = $request->input('display_name');

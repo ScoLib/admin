@@ -307,7 +307,10 @@
                         this.editModal = false;
                         this.buttonLoading = false;
                         this.getResults();
-                    }).catch(error => {});
+                    }).catch(error => {
+                        this.buttonLoading = false;
+                        this.errors = error.response.data;
+                    });
             }
         }
     }

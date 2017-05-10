@@ -108,6 +108,16 @@ export default [
                 ],
             },
             {
+                path: '403',
+                component (resolve) {
+                    require(['../views/errors/403.vue'], resolve);
+                },
+                name: 'admin.403',
+                meta: {
+                    title: '403'
+                },
+            },
+            {
                 path: '*',
                 redirect: {
                     name: 'admin.dashboard'

@@ -34,6 +34,8 @@ class Manager extends Authenticatable
 
     protected $guarded = ['created_at', 'updated_at'];
 
+    protected $hidden = ['password'];
+
     protected $events = [
         'created'  => \Sco\ActionLog\Events\ModelWasCreated::class,
         'updated'  => \Sco\ActionLog\Events\ModelWasUpdated::class,

@@ -16,13 +16,17 @@ const router = new VueRouter({
 
 //路由开始前
 router.beforeEach((to, from, next) => {
-    // console.log(to);
-    // console.log(from);
+    console.log(to);
+    console.log(from);
     if (typeof window.LoggedUser != 'undefined') {
         store.commit('setUser', window.LoggedUser);
     }
 
     if (to.fullPath != '/#') {
+        if (to.name != 'admin.login' && Object.keys(store.state.user).length == 0) {
+            return next({name: 'admin.login'});
+        }
+
         let title = 'Sco Admin';
         if (to.meta.title) {
             title = to.meta.title + ' - ' + title;

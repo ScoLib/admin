@@ -16,7 +16,7 @@
     window.LoggedUser = {
         id: '{{Auth::user()->id}}',
         name: '{{Auth::user()->name}}',
-        role: '{{Auth::user()->roles->first()->display_name}}'
+        role: {!! Auth::user()->roles->makeHidden(['description', 'created_at', 'updated_at', 'pivot'])->first(null, collect()) !!}
     }
 @endif
 </script>
