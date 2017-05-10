@@ -40,7 +40,7 @@ Route::group([
         }
 
         Route::get('menu', function () {
-            $menus = request()->get('admin.menu');
+            $menus = request()->attributes->get('admin.menu');
             return response()->json($menus);
         })->name('admin.menu')->middleware('admin.menu');
 

@@ -26,6 +26,7 @@ router.beforeEach((to, from, next) => {
         if (to.name != 'admin.login' && Object.keys(store.state.user).length == 0) {
             return next({name: 'admin.login'});
         }
+        
 
         let title = 'Sco Admin';
         if (to.meta.title) {

@@ -19,4 +19,6 @@
         role: {!! Auth::user()->roles->makeHidden(['description', 'created_at', 'updated_at', 'pivot'])->first(null, collect()) !!}
     }
 @endif
+
+    window.Permissions = {!! request()->attributes->get('admin.permissions', collect()) !!};
 </script>
