@@ -254,8 +254,6 @@
                     type: 'warning',
                     beforeClose: (action, instance, done) => {
                         if (action == 'confirm') {
-                            this.MessageBoxInstance = instance;
-
                             instance.confirmButtonLoading = true;
 //                            instance.confirmButtonText = '执行中...';
                             this.$http.delete('/admin/system/menu/' + id)
@@ -264,7 +262,10 @@
                                     instance.close();
                                     this.$message.success('删除成功');
                                     this.getResults();
-                                }).catch(error => {});
+                                }).catch(error => {
+                                    instance.confirmButtonLoading = false;
+                                    instance.close();
+                                });
                         } else {
                             done();
                         }
@@ -281,8 +282,6 @@
                     type: 'warning',
                     beforeClose: (action, instance, done) => {
                         if (action == 'confirm') {
-                            this.MessageBoxInstance = instance;
-
                             instance.confirmButtonLoading = true;
 //                            instance.confirmButtonText = '执行中...';
                             this.$http.post('/admin/system/menu/batch/delete', {'ids': this.selection})
@@ -291,7 +290,10 @@
                                     instance.close();
                                     this.$message.success('删除成功');
                                     this.getResults();
-                                }).catch(error => {})
+                                }).catch(error => {
+                                    instance.confirmButtonLoading = false;
+                                    instance.close();
+                                })
                         } else {
                             done();
                         }
@@ -307,7 +309,9 @@
                         this.getResults();
                     }).catch(error => {
                         this.buttonLoading = false;
-                        this.errors = error.response.data;
+                        if (typeof error.response.data == 'object') {
+                            this.errors = error.response.data;
+                        }
                     });
             }
         }

@@ -113,10 +113,10 @@
             parseCheckedPermission(perms) {
                 let list = [];
                 Object.keys(perms).forEach(index => {
-                    if (this.info.perms.indexOf(perms[index].id) > -1) {
-                        if (Object.keys(perms[index].children).length > 0) {
-                            list = list.concat(this.parseCheckedPermission(perms[index].children));
-                        } else {
+                    if (Object.keys(perms[index].children).length > 0) {
+                        list = list.concat(this.parseCheckedPermission(perms[index].children));
+                    } else {
+                        if (this.info.perms.indexOf(perms[index].id) > -1) {
                             list.push(perms[index].id);
                         }
                     }
@@ -135,7 +135,7 @@
                     }
                     list.push({
                         id: perms[index].id,
-                        label: perms[index].display_name + '(' + perms[index].name + ')',
+                        label: perms[index].id + ': ' + perms[index].display_name + '(' + perms[index].name + ')',
                         children: children,
                     });
                 });
@@ -149,8 +149,10 @@
                     this.$message.success('操作成功')
                     this.$router.replace({name: 'admin.manager.role'})
                 }).catch(error => {
-                    this.errors = error.response.data;
                     this.buttonLoading = false;
+                    if (typeof error.response.data == 'object') {
+                        this.errors = error.response.data;
+                    }
                 })
             },
             // 获取选中的节点（包括半选中节点）
@@ -158,7 +160,7 @@
                 let keys = this.$refs.tree.getCheckedKeys();
                 let nodesDOM = this.$refs.tree.$el.querySelectorAll('.el-tree-node');
                 let nodesVue = [].map.call(nodesDOM, node => node.__vue__);
-                nodesVue.filter(item => item.indeterminate === true).forEach(_vue => {
+                nodesVue.filter(item => item.node.indeterminate === true).forEach(_vue => {
                     keys.push(_vue.node.data.id);
                 });
                 return keys;

@@ -149,8 +149,6 @@
                     type: 'warning',
                     beforeClose: (action, instance, done) => {
                         if (action == 'confirm') {
-                            this.MessageBoxInstance = instance;
-
                             instance.confirmButtonLoading = true;
                             this.$http.delete('/admin/manager/role/' + id)
                                 .then(response => {
@@ -158,7 +156,10 @@
                                     instance.close();
                                     this.$message.success('删除成功');
                                     this.getResults();
-                                }).catch(error => {})
+                                }).catch(error => {
+                                    instance.confirmButtonLoading = false;
+                                    instance.close();
+                                })
                         } else {
                             done();
                         }
@@ -175,8 +176,6 @@
                     type: 'warning',
                     beforeClose: (action, instance, done) => {
                         if (action == 'confirm') {
-                            this.MessageBoxInstance = instance;
-
                             instance.confirmButtonLoading = true;
 //                            instance.confirmButtonText = '执行中...';
                             this.$http.post('/admin/manager/role/batch/delete', {'ids': this.selection})
@@ -185,7 +184,10 @@
                                     instance.close();
                                     this.$message.success('删除成功');
                                     this.getResults();
-                                }).catch(error => {})
+                                }).catch(error => {
+                                    instance.confirmButtonLoading = false;
+                                    instance.close();
+                                })
                         } else {
                             done();
                         }

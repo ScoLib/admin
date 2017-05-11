@@ -5,9 +5,7 @@ import { Message } from 'element-ui'
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 axios.defaults.withCredentials = true;
 
-axios.interceptors.response.use(response => {
-    return response;
-}, error => {
+axios.interceptors.response.use(null, error => {
     if (error.response) {
         console.log('axios response', error.response);
         if (typeof error.response.data == 'object') {

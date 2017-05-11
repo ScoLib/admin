@@ -208,14 +208,14 @@
                         this.pageData = response.data;
                     }).catch(error => {})
             },
-            fetchData () {
+            fetchData() {
                 this.getResults();
                 this.$http.get('/admin/manager/role/all')
                     .then(response => {
                         this.roleList = response.data;
                     }).catch(error => {})
             },
-            add () {
+            add() {
                 this.editModal = true;
                 this.info = {
                     name: '',
@@ -224,7 +224,7 @@
                 };
                 this.errors = {};
             },
-            edit (index) {
+            edit(index) {
                 this.editModal = true;
                 this.info = {
                     id: this.pageData.data[index].id,
@@ -234,13 +234,11 @@
                 };
                 this.errors = {};
             },
-            remove (id) {
+            remove(id) {
                 this.$confirm('确定要删除此管理员吗？', '提示', {
                     type: 'warning',
                     beforeClose: (action, instance, done) => {
                         if (action == 'confirm') {
-                            this.MessageBoxInstance = instance;
-
                             instance.confirmButtonLoading = true;
 //                            instance.confirmButtonText = '执行中...';
                             this.$http.delete('/admin/manager/user/' + id)
@@ -249,12 +247,15 @@
                                     instance.close();
                                     this.$message.success('删除成功');
                                     this.getResults();
-                                }).catch(error => {})
+                                }).catch(error => {
+                                    instance.confirmButtonLoading = false;
+                                    instance.close();
+                                })
                         } else {
                             done();
                         }
                     }
-                }).then(action => {}).catch(error => {});
+                });
             },
             save() {
                 this.buttonLoading = true;
@@ -265,7 +266,9 @@
                         this.getResults();
                     }).catch(error => {
                         this.buttonLoading = false;
-                        this.errors = error.response.data;
+                        if (typeof error.response.data == 'object') {
+                            this.errors = error.response.data;
+                        }
                     })
             },
             setRole(index) {
@@ -290,7 +293,10 @@
                         this.setRoleModal = false;
                         this.buttonLoading = false;
                         this.getResults();
-                    }).catch(error => {})
+                    }).catch(error => {
+                        this.setRoleModal = false;
+                        this.buttonLoading = false;
+                    })
             }
         }
     }
