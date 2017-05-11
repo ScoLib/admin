@@ -3,16 +3,13 @@ require('bootstrap');
 require('./js');
 
 import Vue from 'vue';
-// import VueResource from 'vue-resource';
 import ElementUI from 'element-ui';
 import i18n from './lang';
 import store from './store';
 import router from './router';
 import App from './components/App.vue';
-import filters from './filters';
+import util from './util';
 
-// Vue.use(VueResource);
-// Vue.use(ElementUI);
 Vue.use(ElementUI, {
     i18n: function(path, options) {
         let value = i18n.t(path, options);
@@ -22,7 +19,7 @@ Vue.use(ElementUI, {
     }
 })
 
-Vue.use(filters);
+Vue.use(util);
 
 Vue.component(
     'bForm',

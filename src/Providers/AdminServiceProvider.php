@@ -17,9 +17,10 @@ class AdminServiceProvider extends ServiceProvider
     ];
 
     protected $middlewares = [
-        'auth.admin'  => \Sco\Admin\Http\Middleware\AdminAuthenticate::class,
-        'guest.admin' => \Sco\Admin\Http\Middleware\RedirectIfAuthenticated::class,
-        'admin.menu'  => \Sco\Admin\Http\Middleware\AdminMenu::class,
+        'auth.admin'        => \Sco\Admin\Http\Middleware\AdminAuthenticate::class,
+        'guest.admin'       => \Sco\Admin\Http\Middleware\RedirectIfAuthenticated::class,
+        'admin.menu'        => \Sco\Admin\Http\Middleware\AdminMenu::class,
+        'admin.permissions' => \Sco\Admin\Http\Middleware\Permissions::class,
     ];
 
     public function getBasePath()
@@ -110,7 +111,7 @@ class AdminServiceProvider extends ServiceProvider
         $this->app->register(\Sco\ActionLog\LaravelServiceProvider::class);
 
         AliasLoader::getInstance([
-            'Entrust'   => \Zizaco\Entrust\EntrustFacade::class,
+            'Entrust' => \Zizaco\Entrust\EntrustFacade::class,
         ])->register();
     }
 
@@ -133,7 +134,7 @@ class AdminServiceProvider extends ServiceProvider
     protected function publishConfig()
     {
         $this->publishes([
-            $this->getBasePath() . '/config/'   => config_path(),
+            $this->getBasePath() . '/config/' => config_path(),
         ], 'config');
     }
 

@@ -18,6 +18,8 @@ Route::group([
         $spaRoutes = [
             // 控制台
             'admin.dashboard'           => '/',
+
+            'admin.403'                 => '403',
             // 操作日志
             'admin.system.log'          => 'system/log',
             // 菜单管理
@@ -36,13 +38,18 @@ Route::group([
         foreach ($spaRoutes as $name => $route) {
             Route::get($route, function () {
                 return view('admin::app');
-            })->name($name);
+            })->name($name)->middleware('admin.permissions');
         }
 
         Route::get('menu', function () {
             $menus = request()->attributes->get('admin.menu');
             return response()->json($menus);
         })->name('admin.menu')->middleware('admin.menu');
+
+        Route::get('permissions', function () {
+            $permissions = request()->attributes->get('admin.permissions');
+            return response()->json($permissions);
+        })->name('admin.permissions')->middleware('admin.permissions');
 
         // 菜单列表数据
         Route::get('system/menu/list', 'System\MenuController@getList')

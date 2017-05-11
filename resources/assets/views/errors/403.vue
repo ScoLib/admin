@@ -1,3 +1,9 @@
+<style>
+    .help-block {
+        margin-top: 5px;
+        margin-bottom: 10px;
+    }
+</style>
 <template>
     <!-- Automatic element centering -->
     <div class="lockscreen-wrapper">
@@ -14,7 +20,7 @@
             对不起，你没有权限操作这个页面
         </div>
         <div class="text-center">
-            <a href="" class="btn btn-success btn-block">返回</a>
+            <button @click.prevent="$router.go(-1)" class="btn btn-success btn-block">返  回</button>
         </div>
     </div>
     <!-- /.center -->

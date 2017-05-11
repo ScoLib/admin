@@ -76,7 +76,7 @@
             login () {
                 this.buttonLoading = true;
                 this.$http.post('/admin/login', this.info).then(response => {
-                    this.buttonLoading = false;
+//                    this.buttonLoading = false;
                     this.$store.commit('setUser', response.data);
                     this.$router.push({name: 'admin.dashboard'});
                 }).catch(error => {

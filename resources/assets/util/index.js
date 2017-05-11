@@ -1,7 +1,9 @@
 import axios from './axios'
+import can from './can'
 
 const install = function (Vue) {
     Vue.axios = axios
+    Vue.can = can
     Object.defineProperties(Vue.prototype, {
         axios: {
             get() {
@@ -11,6 +13,11 @@ const install = function (Vue) {
         $http: {
             get() {
                 return axios
+            }
+        },
+        can: {
+            get() {
+                return can
             }
         }
     })

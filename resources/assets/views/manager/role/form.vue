@@ -135,7 +135,7 @@
                     }
                     list.push({
                         id: perms[index].id,
-                        label: perms[index].display_name,
+                        label: perms[index].display_name + '(' + perms[index].name + ')',
                         children: children,
                     });
                 });

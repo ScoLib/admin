@@ -9,8 +9,20 @@ export default [
         },
         name: 'admin.login',
         meta: {
-            title: '登录'
-        }
+            title: '登录',
+            auth: false,
+        },
+    },
+    {
+        path: '/admin/403',
+        component (resolve) {
+            require(['../views/errors/403.vue'], resolve);
+        },
+        name: 'admin.403',
+        meta: {
+            title: '403',
+            auth: false,
+        },
     },
     {
         path: '/admin',
@@ -26,7 +38,8 @@ export default [
                 },
                 name: 'admin.dashboard',
                 meta: {
-                    title: '控制台'
+                    title: '控制台',
+                    auth: true,
                 }
             },
             {
@@ -43,7 +56,8 @@ export default [
                         },
                         name: 'admin.system.log',
                         meta: {
-                            title: '操作日志'
+                            title: '操作日志',
+                            auth: true,
                         },
                     },
                     {
@@ -53,7 +67,8 @@ export default [
                         },
                         name: 'admin.system.menu',
                         meta: {
-                            title: '菜单管理'
+                            title: '菜单管理',
+                            auth: true,
                         },
                     }
                 ],
@@ -72,7 +87,8 @@ export default [
                         },
                         name: 'admin.manager.user',
                         meta: {
-                            title: '管理员'
+                            title: '管理员',
+                            auth: true,
                         }
                     },
                     {
@@ -82,7 +98,8 @@ export default [
                         },
                         name: 'admin.manager.role',
                         meta: {
-                            title: '角色管理'
+                            title: '角色管理',
+                            auth: true,
                         },
                     },
                     {
@@ -92,7 +109,8 @@ export default [
                         },
                         name: 'admin.manager.role.create',
                         meta: {
-                            title: '创建角色'
+                            title: '创建角色',
+                            auth: true,
                         }
                     },
                     {
@@ -102,20 +120,11 @@ export default [
                         },
                         name: 'admin.manager.role.edit',
                         meta: {
-                            title: '编辑角色'
+                            title: '编辑角色',
+                            auth: true,
                         },
                     },
                 ],
-            },
-            {
-                path: '403',
-                component (resolve) {
-                    require(['../views/errors/403.vue'], resolve);
-                },
-                name: 'admin.403',
-                meta: {
-                    title: '403'
-                },
             },
             {
                 path: '*',

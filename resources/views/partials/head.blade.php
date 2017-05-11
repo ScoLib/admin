@@ -12,13 +12,15 @@
 <script>
     window.Lang = "{{ config('app.locale') }}"
 
-@if (Auth::user())
+@if (Auth::check())
     window.LoggedUser = {
         id: '{{Auth::user()->id}}',
         name: '{{Auth::user()->name}}',
-        role: {!! Auth::user()->roles->makeHidden(['description', 'created_at', 'updated_at', 'pivot'])->first(null, collect()) !!}
+        role: {!! Auth::user()->roles->makeHidden(['description', 'created_at', 'updated_at', 'pivot', 'perms'])->first(null, collect()) !!}
     }
-@endif
 
-    window.Permissions = {!! request()->attributes->get('admin.permissions', collect()) !!};
+    window.PermList = {!! request()->attributes->get('admin.permissions', collect()) !!};
+
+ @endif
+
 </script>

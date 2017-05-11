@@ -79,3 +79,4 @@ INSERT INTO `sco_permissions` VALUES ('24', '18', '', '批量删除角色', 'adm
 INSERT INTO `sco_permissions` VALUES ('25', '18', '', '创建角色', 'admin.manager.role.create', '0', '0', '', '2016-08-23 11:18:46', '2016-08-23 11:18:49');
 INSERT INTO `sco_permissions` VALUES ('26', '18', '', '编辑角色', 'admin.manager.role.edit', '0', '0', '', '2016-08-23 11:18:46', '2016-08-23 11:18:49');
 INSERT INTO `sco_permissions` VALUES ('27', '18', '', '获取角色信息', 'admin.manager.role.get', '0', '0', '', '2016-08-23 11:18:46', '2016-08-23 11:18:49');
+INSERT INTO `sco_permissions` VALUES ('28', '1', '', 'Ajax获取用户权限', 'admin.permissions', '0', '0', '', '2016-08-23 11:18:46', '2016-08-23 11:18:49');

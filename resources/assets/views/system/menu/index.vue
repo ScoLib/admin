@@ -220,7 +220,7 @@
         watch: {
         },
         methods: {
-            getSelected (selection) {
+            getSelected(selection) {
                 this.selection = [];
                 selection.forEach(row => {
                     this.selection.push(row.id);
@@ -234,22 +234,22 @@
                         this.menuList = response.data;
                     }).catch(error => {})
             },
-            fetchData () {
+            fetchData() {
                 this.getResults();
             },
-            add () {
+            add() {
                 this.editModal = true;
                 this.info = {pid: 0, is_menu: 1, sort: 255};
                 this.errors = {};
             },
-            edit (index) {
+            edit(index) {
 //                console.log(index);
 //                console.log(this.menuList[index]);
                 this.editModal = true;
                 this.info = this.menuList[index];
                 this.errors = {};
             },
-            remove (id) {
+            remove(id) {
                 this.$confirm('确定要删除此菜单及其所有子菜单吗？', '提示',{
                     type: 'warning',
                     beforeClose: (action, instance, done) => {
@@ -271,7 +271,7 @@
                     }
                 }).then(action => {}).catch(action => {});
             },
-            batchRemove () {
+            batchRemove() {
                 if (this.selection.length == 0) {
                     this.$message.error('请选择操作对象');
                     return false;
@@ -298,9 +298,7 @@
                     }
                 }).then(action => {}).catch(action => {});
             },
-            saveMenu () {
-//                console.log(this.info);
-//                return false;
+            saveMenu() {
                 this.buttonLoading = true;
                 this.$http.post('/admin/system/menu/save', this.info)
                     .then(response => {

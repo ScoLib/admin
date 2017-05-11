@@ -5,11 +5,15 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
     state: {
-        user: {}
+        user: {},
+        permissions: [],
     },
     mutations: {
-        setUser(store, user) {
-            store.user = user;
+        setUser(state, user) {
+            state.user = user;
+        },
+        setPermissions(state, permissions) {
+            state.permissions = permissions;
         }
     }
 });

@@ -80,7 +80,7 @@ class LoginController extends Controller
             'id'   => $user->id,
             'name' => $user->name,
             'role' => $user->roles->makeHidden([
-                'description', 'created_at', 'updated_at', 'pivot',
+                'description', 'created_at', 'updated_at', 'pivot', 'perms',
             ])->first(null, collect()),
         ];
     }
