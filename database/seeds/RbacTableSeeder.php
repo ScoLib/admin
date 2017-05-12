@@ -73,7 +73,7 @@ class RbacTableSeeder extends Seeder
 
     private function insertRoleUser()
     {
-        DB::table('roles')->insert([
+        DB::table('role_user')->insert([
             'manager_id' => 1,
             'role_id'    => 1,
         ]);

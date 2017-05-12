@@ -13,7 +13,7 @@ use Sco\Admin\Exceptions\Handler;
 class AdminServiceProvider extends ServiceProvider
 {
     protected $commands = [
-        \Sco\Admin\Commands\Install::class,
+        \Sco\Admin\Console\InstallCommand::class
     ];
 
     protected $middlewares = [
@@ -95,7 +95,7 @@ class AdminServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //$this->commands($this->commands);
+        $this->commands($this->commands);
 
         $this->mergeConfigFrom(
             $this->getBasePath() . '/config/admin.php',
