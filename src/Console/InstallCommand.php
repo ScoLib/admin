@@ -3,6 +3,9 @@
 namespace Sco\Admin\Console;
 
 use Illuminate\Console\Command;
+use Symfony\Component\Process\Exception\ProcessFailedException;
+use Symfony\Component\Process\ExecutableFinder;
+use Symfony\Component\Process\Process;
 
 class InstallCommand extends Command
 {
@@ -44,7 +47,10 @@ class InstallCommand extends Command
 
         $this->publish();
         $this->migrate();
-        $this->seed();
+        $this->npm();
+
+
+        $this->info('Successfully Installed Sco Admin!');
     }
 
     protected function publish()
@@ -72,5 +78,35 @@ class InstallCommand extends Command
         ]);
         $this->line('');
 
+    }
+
+    protected function npm()
+    {
+        $finder = new ExecutableFinder();
+        $result = $finder->find('npm');
+        if ($result === null) {
+            $this->error('Not Found Npm Command');
+            $this->error('You Must install Node.js And execute Command "npm run production"');
+        } else {
+
+            $this->executeCommand("npm install");
+            $this->executeCommand("npm run production");
+        }
+    }
+
+    private function executeCommand($command)
+    {
+        $process = new Process($command);
+        try {
+            $process->mustRun(function ($type, $buffer) {
+                if (Process::ERR === $type) {
+                    $this->error($buffer);
+                } else {
+                    $this->line($buffer);
+                }
+            });
+        } catch (ProcessFailedException $exception) {
+            $this->error($exception->getMessage());
+        }
     }
 }
