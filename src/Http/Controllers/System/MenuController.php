@@ -34,11 +34,11 @@ class MenuController extends Controller
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function getList()
+    public function index()
     {
         $menus = $this->getPermissionModel()->getMenuTreeList();
 
-        return response()->json($menus->values());
+        return view('admin::system.menu.index', compact('menus'));
     }
 
     /**

@@ -18,7 +18,7 @@ const router = new VueRouter({
 
 
 //路由开始前
-router.beforeEach((to, from, next) => {
+/*router.beforeEach((to, from, next) => {
     // console.log('to', to);
     // console.log(from);
     if (typeof window.LoggedUser != 'undefined') {
@@ -66,7 +66,7 @@ router.beforeEach((to, from, next) => {
             next();
         }
     }
-});
+});*/
 
 
 //路由完成后

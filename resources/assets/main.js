@@ -5,9 +5,6 @@ require('./js');
 import Vue from 'vue';
 import ElementUI from 'element-ui';
 import i18n from './lang';
-import store from './store';
-import router from './router';
-import App from './components/App.vue';
 import util from './util';
 
 Vue.use(ElementUI, {
@@ -32,8 +29,5 @@ Vue.component(
 );
 
 const app = new Vue({
-    router,
-    store,
     i18n,
-    render: h => h(App),
 }).$mount('#app');
