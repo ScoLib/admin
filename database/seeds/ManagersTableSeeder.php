@@ -3,7 +3,7 @@
 use Illuminate\Database\Seeder;
 use Carbon\Carbon;
 
-class RbacTableSeeder extends Seeder
+class ManagersTableSeeder extends Seeder
 {
     private $managerModel;
 
@@ -15,25 +15,7 @@ class RbacTableSeeder extends Seeder
         $this->managerModel = new $managerModelName();
     }
 
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
     public function run()
-    {
-        $this->insertManager();
-        //$this->insertRoleUser();
-
-
-        $database = file_get_contents(__DIR__ . '/' . 'rbac.sql');
-        $prefix   = env('DB_PREFIX', '');
-        $database = str_replace('sco_', $prefix, $database);
-
-        DB::connection()->getPdo()->exec($database);
-    }
-
-    private function insertManager()
     {
         $managerTable = $this->managerModel->getTable();
         if ($managerTable != 'users') {
@@ -46,13 +28,5 @@ class RbacTableSeeder extends Seeder
                 'updated_at' => Carbon::now(),
             ]);
         }
-    }
-
-    private function insertRoleUser()
-    {
-        DB::table('role_user')->insert([
-            'manager_id' => 1,
-            'role_id'    => 1,
-        ]);
     }
 }
