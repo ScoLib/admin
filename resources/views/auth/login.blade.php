@@ -1,14 +1,12 @@
-<style>
-    body {
-        background: #d2d6de;
-    }
-</style>
-<template>
-    <div class="login-box">
+@extends('admin::layouts.auth')
+
+@section('body')
+    <div class="login-box" id="app">
         <div class="login-logo">
             <b>Sco</b>Admin
         </div>
         <!-- /.login-logo -->
+        <transition name="fade">
         <div class="login-box-body">
             <p class="login-box-msg">
                 请输入您的邮箱和密码
@@ -21,7 +19,7 @@
                        v-model="info.email">
                 <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
                 <div class="help-block" v-if="errors.email">
-                    {{ errors.email[0] }}
+                    @{{ errors.email[0] }}
                 </div>
             </div>
             <div :class="['form-group', 'has-feedback', errors.password ? 'has-error' : '']">
@@ -30,9 +28,9 @@
                        placeholder="密码"
                        v-model="info.password">
                 <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-            <div class="help-block" v-if="errors.password">
-                {{ errors.password[0] }}
-            </div>
+                <div class="help-block" v-if="errors.password">
+                    @{{ errors.password[0] }}
+                </div>
             </div>
             <div class="row">
                 <div class="col-xs-8">
@@ -54,36 +52,12 @@
             </div>
 
         </div>
+        </transition>
         <!-- /.login-box-body -->
     </div>
     <!-- /.login-box -->
-</template>
+@endsection
 
-<script>
-    export default {
-        data() {
-            return {
-                info: {
-                    email: '',
-                    password: '',
-                    remember: true,
-                },
-                buttonLoading: false,
-                errors: {},
-            }
-        },
-        methods: {
-            login () {
-                this.buttonLoading = true;
-                this.$http.post('/admin/login', this.info).then(response => {
-//                    this.buttonLoading = false;
-                    this.$store.commit('setUser', response.data);
-                    this.$router.push({name: 'admin.dashboard'});
-                }).catch(error => {
-                    this.buttonLoading = false;
-                    this.errors = error.response.data;
-                })
-            }
-        }
-    }
-</script>
+@section('script')
+    <script src="{{ mix('js/admin/login.js') }}"></script>
+@endsection

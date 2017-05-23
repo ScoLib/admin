@@ -27,7 +27,7 @@
         <transition name="fade">
             @include('admin::partials.submenu', [
                 'isTop' => true,
-                'childs' => request()->attributes->get('admin.menu'),
+                'childs' => request()->attributes->get('admin.menu', collect()),
                 'ulClass' => "sidebar-menu"
             ])
         </transition>

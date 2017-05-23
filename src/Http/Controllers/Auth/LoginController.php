@@ -42,7 +42,7 @@ class LoginController extends Controller
 
     public function showLoginForm()
     {
-        return view('admin::app');
+        return view('admin::auth.login');
     }
 
     protected function validateLogin(Request $request)
