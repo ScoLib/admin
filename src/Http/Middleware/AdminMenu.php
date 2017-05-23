@@ -4,7 +4,6 @@ namespace Sco\Admin\Http\Middleware;
 
 use Auth;
 use Closure;
-use Route;
 use Sco\Admin\Models\Permission;
 
 class AdminMenu
@@ -32,12 +31,6 @@ class AdminMenu
     {
         $return = $list->filter(function ($permission, $key) {
             if (Auth::user()->can($permission->name)) {
-                if (Route::currentRouteName() == $permission->name) {
-                    $position = (new Permission())->getAncestors($permission->id);
-                    $position->push($permission);
-                    request()->attributes->set('admin.menu.position', $position);
-                }
-
                 if (!$permission->child->isEmpty()) {
                     $permission->child = $this->checkMenuPermission($permission->child);
                 }

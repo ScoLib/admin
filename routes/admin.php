@@ -14,22 +14,16 @@ Route::group([
     //退出
     Route::get('logout', 'Auth\LoginController@logout')->name('admin.logout');
 
-    Route::group(['middleware' => ['auth.admin', 'admin.menu']], function () {
-        Route::get('/', 'DashboardController@index')
-            ->name('admin.dashboard');
-
-        Route::get('system/menu', 'System\MenuController@index')
-            ->name('admin.system.menu');
-
+    Route::group(['middleware' => 'auth.admin'], function () {
         $spaRoutes = [
             // 控制台
-            //'admin.dashboard'           => '/',
+            'admin.dashboard'           => '/',
 
             'admin.403'                 => '403',
             // 操作日志
             'admin.system.log'          => 'system/log',
             // 菜单管理
-            //'admin.system.menu'         => 'system/menu',
+            'admin.system.menu'         => 'system/menu',
             // 管理员
             'admin.manager.user'        => 'manager/user',
             // 角色管理
@@ -46,6 +40,16 @@ Route::group([
                 return view('admin::app');
             })->name($name)->middleware('admin.permissions');
         }
+
+        Route::get('menu', function () {
+            $menus = request()->attributes->get('admin.menu');
+            return response()->json($menus);
+        })->name('admin.menu')->middleware('admin.menu');
+
+        Route::get('permissions', function () {
+            $permissions = request()->attributes->get('admin.permissions');
+            return response()->json($permissions);
+        })->name('admin.permissions')->middleware('admin.permissions');
 
         // 菜单列表数据
         Route::get('system/menu/list', 'System\MenuController@getList')
