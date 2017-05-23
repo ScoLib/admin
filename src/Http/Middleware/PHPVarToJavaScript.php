@@ -4,6 +4,7 @@
 namespace Sco\Admin\Http\Middleware;
 
 use Auth;
+use JavaScript;
 use Illuminate\Http\Request;
 
 class PHPVarToJavaScript
@@ -11,17 +12,23 @@ class PHPVarToJavaScript
     public function handle(Request $request, \Closure $next)
     {
         config([
-            'javascript.bind_js_vars_to_this_view' => 'admin::partials.head',
+            'javascript.bind_js_vars_to_this_view' => 'admin::partials.script',
+            'javascript.js_namespace' => 'window.Admin'
         ]);
-        JavaScript::put([
+        $js = [
             'Lang' => config('app.locale'),
-            'LoggedUser' => [
+            'Version' => config('admin.version'),
+        ];
+        if (Auth::check()) {
+            $js['LoggedUser'] = [
                 'id' => Auth::id(),
                 'name' => Auth::user()->name,
                 'role' => Auth::user()->roles->makeHidden(['description', 'created_at', 'updated_at', 'pivot', 'perms'])->first(null, collect())
-            ],
-            'PermList' => request()->attributes->get('admin.permissions', collect())
-        ]);
+            ];
+            $js['PermList'] = request()->attributes->get('admin.permissions', collect());
+        }
+
+        JavaScript::put($js);
         return $next($request);
     }
 

@@ -110,6 +110,7 @@ class AdminServiceProvider extends ServiceProvider
     {
         $this->app->register(\Zizaco\Entrust\EntrustServiceProvider::class);
         $this->app->register(\Sco\ActionLog\LaravelServiceProvider::class);
+        $this->app->register(\Laracasts\Utilities\JavaScript\JavaScriptServiceProvider::class);
 
         AliasLoader::getInstance([
             'Entrust' => \Zizaco\Entrust\EntrustFacade::class,

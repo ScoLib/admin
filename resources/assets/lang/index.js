@@ -8,7 +8,7 @@ import zh from './zh-CN';
 import EleEn from 'element-ui/lib/locale/lang/en';
 import EleZh from 'element-ui/lib/locale/lang/zh-CN';
 
-Vue.config.lang = window.Lang;
+Vue.config.lang = window.Admin.Lang;
 
 Vue.use(VueI18n);
 

@@ -21,8 +21,8 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
     // console.log('to', to);
     // console.log(from);
-    if (typeof window.LoggedUser != 'undefined') {
-        store.commit('setUser', window.LoggedUser);
+    if (typeof window.Admin.LoggedUser != 'undefined') {
+        store.commit('setUser', window.Admin.LoggedUser);
     }
 
     if (to.fullPath != '/#') {
@@ -33,8 +33,8 @@ router.beforeEach((to, from, next) => {
         document.title = title;
 
         if (to.meta.auth) {
-            if (typeof window.PermList != 'undefined') {
-                store.commit('setPermissions', window.PermList);
+            if (typeof window.Admin.PermList != 'undefined') {
+                store.commit('setPermissions', window.Admin.PermList);
             }
 
             if (Object.keys(store.state.user).length == 0) {
