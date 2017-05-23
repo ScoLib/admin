@@ -8,6 +8,7 @@ use Illuminate\Routing\Controller;
 use Sco\Admin\Exceptions\AdminHttpException;
 use Sco\Admin\Http\Requests\ManagerRequest;
 use Sco\Admin\Models\Manager;
+use Sco\Admin\Models\Role;
 
 class UserController extends Controller
 {
@@ -52,5 +53,11 @@ class UserController extends Controller
         $user->roles()->sync($request->input('roles'));
 
         return response()->json(['message' => 'ok']);
+    }
+
+    public function getAllRole()
+    {
+        $roles = Role::all();
+        return response()->json($roles);
     }
 }

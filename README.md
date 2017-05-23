@@ -34,19 +34,19 @@ mix.autoload({
     vue: ['Vue']
 });
 
-mix.js('resources/assets/vendor/admin/main.js', 'public/js/admin.js')
+mix.js('resources/assets/vendor/admin/main.js', 'public/js/admin/app.js')
     .extract(['vue', 'jquery', 'bootstrap', 'vue-router', 'element-ui'])
     .webpackConfig({
         output: {
-            chunkFilename: `js/[name]${mix.config.inProduction ? '.[chunkhash].chunk.js' : '.chunk.js'}`,
+            chunkFilename: `js/admin/[name]${mix.config.inProduction ? '.[chunkhash].chunk.js' : '.chunk.js'}`,
             publicPath: '/',
         },
     });
+
 mix.less('resources/assets/vendor/admin/less/admin.less', 'public/css/admin.css');
 
 if (mix.config.inProduction) {
     mix.version();
-    mix.disableNotifications();
 }
 ```
 

@@ -31,12 +31,6 @@ class RoleController extends Controller
         return response()->json($roles);
     }
 
-    public function getAll()
-    {
-        $roles = Role::all();
-        return response()->json($roles);
-    }
-
     public function getPermissionList()
     {
         $perms = (new Permission())->getPermRouteList();

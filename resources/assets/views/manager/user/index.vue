@@ -111,14 +111,16 @@
                            disabled
                            slot="name">
 
-                    <div class="checkbox" v-for="role in roleList" slot="role">
-                        <label>
-                            <input
-                                   :value="role.id"
-                                   type="checkbox"
-                                   v-model="roleData.roles">
-                            {{ role.display_name }}
-                        </label>
+                    <div slot="role" v-loading="checkboxLoading">
+                        <div class="checkbox" v-for="role in roleList">
+                            <label>
+                                <input
+                                        :value="role.id"
+                                        type="checkbox"
+                                        v-model="roleData.roles">
+                                {{ role.display_name }}
+                            </label>
+                        </div>
                     </div>
 
                 </b-form>
@@ -183,6 +185,7 @@
                 setRoleModal: false,
                 roleData: {},
                 roleList: [],
+                checkboxLoading: false,
             }
         },
         computed: {
@@ -210,10 +213,6 @@
             },
             fetchData() {
                 this.getResults();
-                this.$http.get('/admin/manager/role/all')
-                    .then(response => {
-                        this.roleList = response.data;
-                    }).catch(error => {})
             },
             add() {
                 this.editModal = true;
@@ -285,6 +284,14 @@
                 });
 
                 this.errors = {};
+                if (this.roleList.length == 0) {
+                    this.checkboxLoading = true;
+                    this.$http.get('/admin/manager/user/role/all')
+                        .then(response => {
+                            this.roleList = response.data;
+                            this.checkboxLoading = false;
+                        });
+                }
             },
             saveRole () {
                 this.buttonLoading = true;
