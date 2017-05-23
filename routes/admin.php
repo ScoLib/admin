@@ -38,7 +38,7 @@ Route::group([
         foreach ($spaRoutes as $name => $route) {
             Route::get($route, function () {
                 return view('admin::app');
-            })->name($name)->middleware('admin.permissions');
+            })->name($name)->middleware(['admin.permissions', 'admin.phptojs']);
         }
 
         Route::get('menu', function () {

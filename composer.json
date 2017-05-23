@@ -22,7 +22,8 @@
         "league/fractal": "~0.15.0",
         "scolib/entrust": "~2.0",
         "scolib/laravel-action-log": "~1.0",
-        "scolib/tree": "~1.0"
+        "scolib/tree": "~1.0",
+        "laracasts/utilities": "~2.0"
     },
     "require-dev": {
         "laravel/framework": "^5.4",

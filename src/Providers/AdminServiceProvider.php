@@ -21,6 +21,7 @@ class AdminServiceProvider extends ServiceProvider
         'guest.admin'       => \Sco\Admin\Http\Middleware\RedirectIfAuthenticated::class,
         'admin.menu'        => \Sco\Admin\Http\Middleware\AdminMenu::class,
         'admin.permissions' => \Sco\Admin\Http\Middleware\Permissions::class,
+        'admin.phptojs'     => \Sco\Admin\Http\Middleware\PHPVarToJavaScript::class,
     ];
 
     public function getBasePath()

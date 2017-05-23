@@ -9,18 +9,3 @@
 <link rel="stylesheet" href="{{ mix('css/admin.css') }}">
 @yield('css')
 
-<script>
-    window.Lang = "{{ config('app.locale') }}"
-
-@if (Auth::check())
-    window.LoggedUser = {
-        id: '{{Auth::user()->id}}',
-        name: '{{Auth::user()->name}}',
-        role: {!! Auth::user()->roles->makeHidden(['description', 'created_at', 'updated_at', 'pivot', 'perms'])->first(null, collect()) !!}
-    }
-
-    window.PermList = {!! request()->attributes->get('admin.permissions', collect()) !!};
-
- @endif
-
-</script>
