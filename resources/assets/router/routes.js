@@ -85,7 +85,7 @@ export default [
                         component (resolve) {
                             require(['../views/users/user/index.vue'], resolve);
                         },
-                        name: 'admin.manager.user',
+                        name: 'admin.users.user',
                         meta: {
                             title: '管理员',
                             auth: true,
@@ -96,7 +96,7 @@ export default [
                         component (resolve) {
                             require(['../views/users/role/index.vue'], resolve);
                         },
-                        name: 'admin.manager.role',
+                        name: 'admin.users.role',
                         meta: {
                             title: '角色管理',
                             auth: true,
@@ -107,7 +107,7 @@ export default [
                         component (resolve) {
                             require(['../views/users/role/form.vue'], resolve);
                         },
-                        name: 'admin.manager.role.create',
+                        name: 'admin.users.role.create',
                         meta: {
                             title: '创建角色',
                             auth: true,
@@ -118,7 +118,7 @@ export default [
                         component (resolve) {
                             require(['../views/users/role/form.vue'], resolve);
                         },
-                        name: 'admin.manager.role.edit',
+                        name: 'admin.users.role.edit',
                         meta: {
                             title: '编辑角色',
                             auth: true,

@@ -51,7 +51,7 @@
         },
         computed: {
             title () {
-                return this.$route.name == 'admin.manager.role.edit'
+                return this.$route.name == 'admin.users.role.edit'
                     ? this.$t('form.edit_role')
                     : this.$t('form.create_role');
             },
@@ -77,7 +77,7 @@
         },
         methods: {
             fetchData() {
-                if (this.$route.name == 'admin.manager.role.edit' && this.$route.params.id) {
+                if (this.$route.name == 'admin.users.role.edit' && this.$route.params.id) {
                     var _this = this;
                     this.$http.all([this.getInfo(), this.getPermissionList()])
                         .then(this.$http.spread(function (infoRes, permsRes) {
@@ -107,7 +107,7 @@
                 }
             },
             getInfo() {
-                return this.$http.get('/admin/manager/role/'+ this.$route.params.id);
+                return this.$http.get('/admin/users/role/'+ this.$route.params.id);
             },
             // 处理需要设置为选中的节点（移除半选中节点，只保留最深层的）
             parseCheckedPermission(perms) {
@@ -124,7 +124,7 @@
                 return list;
             },
             getPermissionList() {
-                return this.$http.get('/admin/manager/role/perms/list');
+                return this.$http.get('/admin/users/role/perms/list');
             },
             parsePermissionTree(perms) {
                 let list = [];
@@ -144,10 +144,10 @@
             save() {
                 this.info.perms = this.getCheckedPermission();
                 this.buttonLoading = true;
-                this.$http.post('/admin/manager/role/save', this.info).then(response => {
+                this.$http.post('/admin/users/role/save', this.info).then(response => {
                     this.buttonLoading = false;
                     this.$message.success('操作成功')
-                    this.$router.replace({name: 'admin.manager.role'})
+                    this.$router.replace({name: 'admin.users.role'})
                 }).catch(error => {
                     this.buttonLoading = false;
                     if (typeof error.response.data == 'object') {

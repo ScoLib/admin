@@ -27,7 +27,7 @@
 
 
                     <div class="btn-group btn-group-sm pull-right margin-r-5">
-                        <router-link :to="{ name: 'admin.manager.role.create' }" class="btn btn-default">
+                        <router-link :to="{ name: 'admin.users.role.create' }" class="btn btn-default">
                             <i class="fa fa-plus bigger-120"></i>
                             创建角色
                         </router-link>
@@ -68,7 +68,7 @@
                                 <div class="hidden-xs btn-group">
                                     <router-link
                                             class="btn btn-xs btn-info"
-                                            :to="{name:'admin.manager.role.edit', params: {id: scope.row.id}}">
+                                            :to="{name:'admin.users.role.edit', params: {id: scope.row.id}}">
                                         <i class="fa fa-pencil bigger-120"></i>
                                     </router-link>
                                     <button class="btn btn-xs btn-danger"
@@ -139,7 +139,7 @@
             },
             getResults() {
                 this.tableLoading = true;
-                this.$http.get('/admin/manager/role/list').then(response => {
+                this.$http.get('/admin/users/role/list').then(response => {
                     this.tableLoading = false;
                     this.pageData = response.data;
                 }).catch(error => {})
@@ -150,7 +150,7 @@
                     beforeClose: (action, instance, done) => {
                         if (action == 'confirm') {
                             instance.confirmButtonLoading = true;
-                            this.$http.delete('/admin/manager/role/' + id)
+                            this.$http.delete('/admin/users/role/' + id)
                                 .then(response => {
                                     instance.confirmButtonLoading = false;
                                     instance.close();
@@ -178,7 +178,7 @@
                         if (action == 'confirm') {
                             instance.confirmButtonLoading = true;
 //                            instance.confirmButtonText = '执行中...';
-                            this.$http.post('/admin/manager/role/batch/delete', {'ids': this.selection})
+                            this.$http.post('/admin/users/role/batch/delete', {'ids': this.selection})
                                 .then(response => {
                                     instance.confirmButtonLoading = false;
                                     instance.close();
