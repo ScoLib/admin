@@ -4,10 +4,11 @@ namespace Sco\Admin\Models;
 
 use DB;
 use Cache;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Sco\Admin\Exceptions\AdminHttpException;
+use Sco\Admin\Traits\EntrustPermissionTrait;
 use Sco\Tree\Traits\TreeTrait;
-use Zizaco\Entrust\EntrustPermission;
 
 /**
  * Sco\Admin\Models\Permission
@@ -35,9 +36,9 @@ use Zizaco\Entrust\EntrustPermission;
  * @method static \Illuminate\Database\Query\Builder|\Sco\Admin\Models\Permission whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class Permission extends EntrustPermission
+class Permission extends Model
 {
-    use TreeTrait;
+    use TreeTrait, EntrustPermissionTrait;
 
     protected $hidden = ['created_at', 'updated_at'];
 
@@ -58,6 +59,14 @@ class Permission extends EntrustPermission
         'updated'  => \Sco\ActionLog\Events\ModelWasUpdated::class,
         'deleted'  => \Sco\ActionLog\Events\ModelWasDeleted::class,
     ];
+
+
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+        $this->table = config('admin.permissions_table');
+    }
+
 
     /**
      * @return \Illuminate\Support\Collection

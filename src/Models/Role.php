@@ -2,10 +2,8 @@
 
 namespace Sco\Admin\Models;
 
-use Zizaco\Entrust\EntrustRole;
-use Illuminate\Cache\TaggableStore;
-use Cache;
-use Config;
+use Illuminate\Database\Eloquent\Model;
+use Sco\Admin\Traits\EntrustRoleTrait;
 
 /**
  * Sco\Admin\Models\Role
@@ -26,8 +24,10 @@ use Config;
  * @method static \Illuminate\Database\Query\Builder|\Sco\Admin\Models\Role whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class Role extends EntrustRole
+class Role extends Model
 {
+    use EntrustRoleTrait;
+
     protected $fillable = ['name', 'display_name', 'description'];
 
     protected $events = [
@@ -35,4 +35,10 @@ class Role extends EntrustRole
         'updated'  => \Sco\ActionLog\Events\ModelWasUpdated::class,
         'deleted'  => \Sco\ActionLog\Events\ModelWasDeleted::class,
     ];
+
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+        $this->table = config('admin.roles_table');
+    }
 }

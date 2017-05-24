@@ -7,23 +7,26 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Sco\Admin\Exceptions\AdminHttpException;
 use Sco\Admin\Http\Requests\ManagerRequest;
-use Sco\Admin\Models\Manager;
 use Sco\Admin\Models\Role;
 
 class UserController extends Controller
 {
+
     public function getList()
     {
-        $users = Manager::with('roles')->paginate();
+        $userModelName = config('admin.user');
+        $userModel = new $userModelName();
+        $users = $userModel->with('roles')->paginate();
         return response()->json($users);
     }
 
     public function save(ManagerRequest $request)
     {
-        if (empty($request->input('id'))) {
-            $model = new Manager();
-        } else {
-            $model = Manager::findOrFail($request->input('id'));
+        $userModelName = config('admin.user');
+        $model = new $userModelName();
+
+        if (!empty($request->input('id'))) {
+            $model = $model->findOrFail($request->input('id'));
         }
         $model->name = $request->input('name');
         $model->email = $request->input('email');
@@ -42,14 +45,16 @@ class UserController extends Controller
             throw new AdminHttpException('超级管理员不能删除');
         }
 
-        $model = Manager::findOrFail($id);
+        $userModelName = config('admin.user');
+        $model = (new $userModelName())->findOrFail($id);
         $model->delete();
         return response()->json(['message' => 'ok']);
     }
 
     public function saveRole(Request $request)
     {
-        $user = Manager::findOrFail($request->input('id'));
+        $userModelName = config('admin.user');
+        $user = (new $userModelName())->findOrFail($request->input('id'));
         $user->roles()->sync($request->input('roles'));
 
         return response()->json(['message' => 'ok']);
