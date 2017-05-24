@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Sco\Admin\Http\Controllers\Manager;
+namespace Sco\Admin\Http\Controllers\Users;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;

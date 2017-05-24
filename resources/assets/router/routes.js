@@ -74,7 +74,7 @@ export default [
                 ],
             },
             {
-                path: 'manager',
+                path: 'users',
                 component: Blank,
                 meta: {
                     title: '管理组'
@@ -83,7 +83,7 @@ export default [
                     {
                         path: 'user',
                         component (resolve) {
-                            require(['../views/manager/user/index.vue'], resolve);
+                            require(['../views/users/user/index.vue'], resolve);
                         },
                         name: 'admin.manager.user',
                         meta: {
@@ -94,7 +94,7 @@ export default [
                     {
                         path: 'role',
                         component (resolve) {
-                            require(['../views/manager/role/index.vue'], resolve);
+                            require(['../views/users/role/index.vue'], resolve);
                         },
                         name: 'admin.manager.role',
                         meta: {
@@ -105,7 +105,7 @@ export default [
                     {
                         path: 'role/create',
                         component (resolve) {
-                            require(['../views/manager/role/form.vue'], resolve);
+                            require(['../views/users/role/form.vue'], resolve);
                         },
                         name: 'admin.manager.role.create',
                         meta: {
@@ -116,7 +116,7 @@ export default [
                     {
                         path: 'role/:id/edit',
                         component (resolve) {
-                            require(['../views/manager/role/form.vue'], resolve);
+                            require(['../views/users/role/form.vue'], resolve);
                         },
                         name: 'admin.manager.role.edit',
                         meta: {

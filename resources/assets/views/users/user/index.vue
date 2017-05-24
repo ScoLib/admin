@@ -205,7 +205,7 @@
                 }
 
                 this.tableLoading = true;
-                this.$http.get('/admin/manager/user/list', {params: {'page': page}})
+                this.$http.get('/admin/users/user/list', {params: {'page': page}})
                     .then(response => {
                         this.tableLoading = false;
                         this.pageData = response.data;
@@ -240,7 +240,7 @@
                         if (action == 'confirm') {
                             instance.confirmButtonLoading = true;
 //                            instance.confirmButtonText = '执行中...';
-                            this.$http.delete('/admin/manager/user/' + id)
+                            this.$http.delete('/admin/users/user/' + id)
                                 .then(response => {
                                     instance.confirmButtonLoading = false;
                                     instance.close();
@@ -258,7 +258,7 @@
             },
             save() {
                 this.buttonLoading = true;
-                this.$http.post('/admin/manager/user/save', this.info)
+                this.$http.post('/admin/users/user/save', this.info)
                     .then(response => {
                         this.editModal = false;
                         this.buttonLoading = false;
@@ -286,7 +286,7 @@
                 this.errors = {};
                 if (this.roleList.length == 0) {
                     this.checkboxLoading = true;
-                    this.$http.get('/admin/manager/user/role/all')
+                    this.$http.get('/admin/users/user/role/all')
                         .then(response => {
                             this.roleList = response.data;
                             this.checkboxLoading = false;
@@ -295,7 +295,7 @@
             },
             saveRole () {
                 this.buttonLoading = true;
-                this.$http.post('/admin/manager/user/save/role', this.roleData)
+                this.$http.post('/admin/users/user/save/role', this.roleData)
                     .then(response => {
                         this.setRoleModal = false;
                         this.buttonLoading = false;

@@ -25,21 +25,21 @@ Route::group([
     Route::group(['middleware' => 'auth.admin'], function () {
         $spaRoutes = [
             // 控制台
-            'dashboard'           => '/',
+            'dashboard'         => '/',
             // 403
-            '403'                 => '403',
+            '403'               => '403',
             // 操作日志
-            'system.log'          => 'system/log',
+            'system.log'        => 'system/log',
             // 菜单管理
-            'system.menu'         => 'system/menu',
+            'system.menu'       => 'system/menu',
             // 管理员
-            'manager.user'        => 'manager/user',
+            'users.user'        => 'users/user',
             // 角色管理
-            'manager.role'        => 'manager/role',
+            'users.role'        => 'users/role',
             // 创建角色
-            'manager.role.create' => 'manager/role/create',
+            'users.role.create' => 'users/role/create',
             // 编辑角色
-            'manager.role.edit'   => 'manager/role/{id}/edit',
+            'users.role.edit'   => 'users/role/{id}/edit',
 
         ];
 
@@ -98,9 +98,9 @@ Route::group([
 
         // 管理组
         Route::group([
-            'as'        => 'manager.',
-            'prefix'    => 'manager',
-            'namespace' => 'Manager',
+            'as'        => 'users.',
+            'prefix'    => 'users',
+            'namespace' => 'Users',
         ], function () {
             // 管理员
             Route::group(['as' => 'user.', 'prefix' => 'user'], function () {
