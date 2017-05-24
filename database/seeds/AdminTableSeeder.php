@@ -6,6 +6,7 @@ class AdminTableSeeder extends Seeder
 {
     public function run()
     {
-        $this->call(RbacTableSeeder::class);
+        //$this->call(RbacTableSeeder::class);
+        $this->call(PermissionsTableSeeder::class);
     }
 }
