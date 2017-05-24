@@ -86,16 +86,6 @@ class LoginController extends Controller
     }
 
     /**
-     * Get the guard to be used during authentication.
-     *
-     * @return \Illuminate\Contracts\Auth\StatefulGuard
-     */
-    protected function guard()
-    {
-        return Auth::guard(config('admin.guard'));
-    }
-
-    /**
      * Log the user out of the application.
      *
      * @param  Request $request

@@ -13,12 +13,13 @@ class RedirectIfAuthenticated
      *
      * @param \Illuminate\Http\Request $request
      * @param \Closure                 $next
+     * @param  string|null  $guard
      *
      * @return mixed
      */
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next, $guard = null)
     {
-        if (Auth::guard(config('admin.guard'))->check()) {
+        if (Auth::guard($guard)->check()) {
             return redirect()->route('admin.dashboard');
         }
 

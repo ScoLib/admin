@@ -4,12 +4,11 @@
 namespace Sco\Admin\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Sco\Admin\Traits\EntrustPermissionTrait;
-use Sco\Admin\Traits\ModelEventTrait;
+use Sco\Admin\Traits\EntrustUserTrait;
 
 class User extends Authenticatable
 {
-    use EntrustPermissionTrait, ModelEventTrait;
+    use EntrustUserTrait;
 
     protected $visible = ['id', 'name', 'email', 'created_at', 'roles'];
 
@@ -17,6 +16,11 @@ class User extends Authenticatable
 
     protected $hidden = ['password'];
 
+    protected $events = [
+        'created'  => \Sco\ActionLog\Events\ModelWasCreated::class,
+        'updated'  => \Sco\ActionLog\Events\ModelWasUpdated::class,
+        'deleted'  => \Sco\ActionLog\Events\ModelWasDeleted::class,
+    ];
 
     public function __construct(array $attributes = [])
     {

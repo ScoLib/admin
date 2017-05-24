@@ -5,19 +5,6 @@ use Illuminate\Database\Migrations\Migration;
 
 class RbacSetupTables extends Migration
 {
-    private $managerTable;
-    private $managerForeignKey;
-
-    public function __construct()
-    {
-        $guard                   = config('admin.guard');
-        $provider                = config("auth.guards.{$guard}.provider");
-        $managerModelName        = config("auth.providers.{$provider}.model");
-        $managerModel            = new $managerModelName();
-        $this->managerTable      = $managerModel->getTable();
-        $this->managerForeignKey = $managerModel->getForeignKey();
-    }
-
     /**
      * Run the migrations.
      *
@@ -25,28 +12,6 @@ class RbacSetupTables extends Migration
      */
     public function up()
     {
-        // Create table for admin user
-        if ($this->managerTable != 'users') {
-            Schema::create($this->managerTable, function (Blueprint $table) {
-                $table->engine = "InnoDB COMMENT='管理员表'";
-                $table->increments('id');
-
-                $table->string('name')
-                    ->unique()
-                    ->comment('名称');
-
-                $table->string('email')
-                    ->unique()
-                    ->comment('邮箱');
-
-                $table->string('password')
-                    ->comment('密码');
-
-                $table->rememberToken();
-                $table->timestamps();
-            });
-        }
-
         // Create table for storing roles
         Schema::create('roles', function (Blueprint $table) {
             $table->engine = "InnoDB COMMENT='角色表'";
@@ -69,7 +34,7 @@ class RbacSetupTables extends Migration
         // Create table for associating roles to users (Many-to-Many)
         Schema::create('role_user', function (Blueprint $table) {
             $table->engine = "InnoDB COMMENT='角色与用户对应表'";
-            $table->integer($this->managerForeignKey)
+            $table->integer(config('admin.user_foreign_key'))
                 ->unsigned()
                 ->comment('管理员ID');
 
@@ -77,7 +42,7 @@ class RbacSetupTables extends Migration
                 ->unsigned()
                 ->comment('角色ID');
 
-            $table->primary([$this->managerForeignKey, 'role_id']);
+            $table->primary([config('admin.user_foreign_key'), 'role_id']);
         });
 
         // Create table for storing permissions
@@ -143,8 +108,5 @@ class RbacSetupTables extends Migration
         Schema::drop('permissions');
         Schema::drop('role_user');
         Schema::drop('roles');
-        if ($this->managerTable != 'users') {
-            Schema::drop($this->managerTable);
-        }
     }
 }
