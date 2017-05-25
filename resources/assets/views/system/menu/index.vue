@@ -47,7 +47,16 @@
 
                         <el-table-column label="显示名称">
                             <template scope="scope">
-                                <span v-html="scope.row.spacer"></span> {{ scope.row.display_name }}
+                                <el-popover trigger="hover" placement="top" v-if="scope.row.description">
+                                    <span>{{ scope.row.description }}</span>
+                                    <div slot="reference" class="name-wrapper">
+                                        <span v-html="scope.row.spacer"></span> {{ scope.row.display_name }}
+                                    </div>
+                                </el-popover>
+
+                                <template v-else>
+                                    <span v-html="scope.row.spacer"></span> {{ scope.row.display_name }}
+                                </template>
                             </template>
                         </el-table-column>
 
