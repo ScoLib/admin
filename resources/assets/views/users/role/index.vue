@@ -159,6 +159,7 @@
                                     instance.close();
                                     this.$message.success('删除成功');
                                     this.getResults();
+                                    this.flushPermission();
                                 }).catch(error => {
                                     instance.confirmButtonLoading = false;
                                     instance.close();
@@ -187,6 +188,7 @@
                                     instance.close();
                                     this.$message.success('删除成功');
                                     this.getResults();
+                                    this.flushPermission();
                                 }).catch(error => {
                                     instance.confirmButtonLoading = false;
                                     instance.close();

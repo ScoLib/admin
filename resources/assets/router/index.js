@@ -33,9 +33,9 @@ router.beforeEach((to, from, next) => {
         document.title = title;
 
         if (to.meta.auth) {
-            if (typeof window.Admin != 'undefined' && window.Admin.PermList) {
-                store.commit('setPermissions', window.Admin.PermList);
-            }
+            // if (typeof window.Admin != 'undefined' && window.Admin.PermList) {
+                // store.commit('setPermissions', window.Admin.PermList);
+            // }
 
             if (Object.keys(store.state.user).length == 0) {
                 return next({name: 'admin.login'});

@@ -149,7 +149,8 @@
                 this.$http.post('/admin/users/role/save', this.info).then(response => {
                     this.buttonLoading = false;
                     this.$message.success('操作成功')
-                    this.$router.replace({name: 'admin.users.role'})
+                    this.flushPermission();
+                    this.$router.push({name: 'admin.users.role'})
                 }).catch(error => {
                     this.buttonLoading = false;
                     if (typeof error.response.data == 'object') {
@@ -167,6 +168,9 @@
                 });
                 return keys;
             },
+            flushPermission() {
+                this.$store.commit('setPermissions', []);
+            }
         }
 
     }

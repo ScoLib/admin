@@ -47,7 +47,7 @@ Route::group([
             Route::get($route, function () {
                 return view('admin::app');
             })->name($name)
-                ->middleware(['admin.permissions', 'admin.phptojs']);
+                ->middleware(['admin.phptojs']);
         }
 
         Route::get('menu', function () {
