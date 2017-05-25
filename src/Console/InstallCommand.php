@@ -47,8 +47,6 @@ class InstallCommand extends Command
 
         $this->publish();
         $this->migrate();
-        $this->npm();
-
 
         $this->info('Successfully Installed Sco Admin!');
     }
@@ -78,35 +76,5 @@ class InstallCommand extends Command
         ]);
         $this->line('');
 
-    }
-
-    protected function npm()
-    {
-        $finder = new ExecutableFinder();
-        $result = $finder->find('npm');
-        if ($result === null) {
-            $this->error('Not Found Npm Command');
-            $this->error('You Must install Node.js And execute Command "npm run production"');
-        } else {
-
-            $this->executeCommand("npm install");
-            $this->executeCommand("npm run production");
-        }
-    }
-
-    private function executeCommand($command)
-    {
-        $process = new Process($command);
-        try {
-            $process->mustRun(function ($type, $buffer) {
-                if (Process::ERR === $type) {
-                    $this->error($buffer);
-                } else {
-                    $this->line($buffer);
-                }
-            });
-        } catch (ProcessFailedException $exception) {
-            $this->error($exception->getMessage());
-        }
     }
 }

@@ -27,7 +27,10 @@
 
 
                     <div class="btn-group btn-group-sm pull-right margin-r-5">
-                        <router-link :to="{ name: 'admin.users.role.create' }" class="btn btn-default">
+                        <router-link
+                                :to="{ name: 'admin.users.role.create' }"
+                                v-if="can('admin.users.role.create')"
+                                class="btn btn-default">
                             <i class="fa fa-plus bigger-120"></i>
                             创建角色
                         </router-link>
@@ -73,7 +76,7 @@
                                     </router-link>
                                     <button class="btn btn-xs btn-danger"
                                             @click.prevent="remove(scope.row.id)"
-                                            :disabled="scope.row.id == 1"
+                                            :disabled="scope.row.name == 'admin'"
                                             title="删除">
                                         <i class="fa fa-trash-o bigger-120"></i>
                                     </button>
@@ -129,7 +132,7 @@
                 this.getResults();
             },
             selectable(row, index) {
-                return row.id == 1 ? false : true;
+                return row.name == 'admin' ? false : true;
             },
             getSelected(selection) {
                 this.selection = [];
@@ -194,6 +197,9 @@
                     }
                 }).then(action => {}).catch(action => {});
             },
+            flushPermission() {
+                this.$store.commit('setPermissions', []);
+            }
         }
     }
 </script>

@@ -23,11 +23,7 @@ class RoleController extends Controller
 
     public function getList()
     {
-        $roles = Role::with([
-            'perms' => function ($query) {
-                $query->select('id');
-            },
-        ])->paginate();
+        $roles = Role::paginate();
         return response()->json($roles);
     }
 
@@ -43,13 +39,12 @@ class RoleController extends Controller
             $model = new Role();
         } else {
             $model = Role::findOrFail($request->input('id'));
-            if ($model->id == 1 && $model->id != Auth::id()) {
+            if ($model->name == 'admin' && !Auth::user()->hasRole($model->name)) {
                 return response()->json(['error' => 'Unauthenticated.'], 401);
             }
         }
 
-
-        $model->name         = $request->input('name');
+        //$model->name         = $request->input('name');
         $model->display_name = $request->input('display_name');
 
         DB::transaction(function () use ($model, $request) {
@@ -62,11 +57,11 @@ class RoleController extends Controller
 
     public function delete($id)
     {
-        if ($id == 1) {
+        $role = Role::findOrFail($id);
+        if ($role->name == 'admin') {
             throw new AdminHttpException('超级管理员角色不能删除');
         }
 
-        $role = Role::findOrFail($id);
         $role->delete();
 
         return response()->json(['message' => 'ok']);
@@ -86,7 +81,14 @@ class RoleController extends Controller
         }
 
         DB::transaction(function () use ($request) {
-            Role::destroy($request->input('ids'));
+            foreach ($request->input('ids') as $id) {
+                $role = Role::findOrFail($id);
+                if ($role->name == 'admin') {
+                    throw new AdminHttpException('超级管理员角色不能删除');
+                }
+
+                $role->delete();
+            }
         });
 
         return response()->json(['message' => 'ok']);

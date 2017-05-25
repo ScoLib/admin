@@ -3,7 +3,6 @@
 namespace Sco\Admin\Providers;
 
 use Illuminate\Contracts\Debug\ExceptionHandler;
-use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\ServiceProvider;
 use Sco\Admin\Exceptions\Handler;
 
@@ -108,13 +107,8 @@ class AdminServiceProvider extends ServiceProvider
 
     protected function registerProviders()
     {
-        $this->app->register(\Zizaco\Entrust\EntrustServiceProvider::class);
         $this->app->register(\Sco\ActionLog\LaravelServiceProvider::class);
         $this->app->register(\Laracasts\Utilities\JavaScript\JavaScriptServiceProvider::class);
-
-        AliasLoader::getInstance([
-            'Entrust' => \Zizaco\Entrust\EntrustFacade::class,
-        ])->register();
     }
 
     protected function publishAdmin()

@@ -79,6 +79,8 @@
             fetchData() {
                 if (this.$route.name == 'admin.users.role.edit' && this.$route.params.id) {
                     var _this = this;
+                    this.fields[0]['disabled'] = true; // 标识名不可编辑
+
                     this.$http.all([this.getInfo(), this.getPermissionList()])
                         .then(this.$http.spread(function (infoRes, permsRes) {
 //                            console.log('perms', permsRes);
