@@ -6,7 +6,7 @@
                     <h3 class="box-title">{{ title }}</h3>
 
                     <div class="btn-group btn-group-sm pull-right margin-r-5">
-                        <button type="button" class="btn btn-default" @click.prevent="$router.go(-1)">
+                        <button type="button" class="btn btn-default" @click.prevent="$router.push({name: 'admin.users.role'})">
                             <i class="fa fa-reply bigger-120"></i>
                             {{ $t('form.back') }}
                         </button>

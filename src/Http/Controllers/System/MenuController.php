@@ -4,7 +4,9 @@ namespace Sco\Admin\Http\Controllers\System;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Sco\Admin\Http\Requests\StorePermissionRequest;
 use Sco\Admin\Http\Requests\PermissionRequest;
+use Sco\Admin\Http\Requests\UpdatePermissionRequest;
 use Sco\Admin\Models\Permission;
 
 /**
@@ -41,6 +43,11 @@ class MenuController extends Controller
         return response()->json($menus->values());
     }
 
+    public function store(StorePermissionRequest $request)
+    {
+
+    }
+
     /**
      * 保存菜单信息
      *
@@ -52,6 +59,11 @@ class MenuController extends Controller
     {
         $this->getPermissionModel()->saveMenu($request);
         return response()->json(['message' => 'ok']);
+    }
+
+    public function update(UpdatePermissionRequest $request)
+    {
+
     }
 
     /**

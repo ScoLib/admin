@@ -49,11 +49,5 @@ trait EntrustPermissionTrait
 
             return true;
         });
-
-        static::saved(function ($permission) {
-            // 超管加权限
-            Role::where('name', 'admin')
-                ->first()->attachPermission($permission);
-        });
     }
 }
