@@ -6,36 +6,45 @@ namespace Sco\Admin\Http\Controllers\Users;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Sco\Admin\Exceptions\AdminHttpException;
-use Sco\Admin\Http\Requests\ManagerRequest;
+use Sco\Admin\Http\Requests\StoreUserRequest;
+use Sco\Admin\Http\Requests\UpdateUserRequest;
 use Sco\Admin\Models\Role;
 
 class UserController extends Controller
 {
 
-    public function getList()
+    /**
+     * @return \Illuminate\Foundation\Auth\User
+     */
+    private function getUserModel()
     {
         $userModelName = config('admin.user');
-        $userModel = new $userModelName();
-        $users = $userModel->with('roles')->paginate();
+        return new $userModelName();
+    }
+
+    public function getList()
+    {
+        $users = $this->getUserModel()->with('roles')->paginate();
         return response()->json($users);
     }
 
-    public function save(ManagerRequest $request)
+    public function store(StoreUserRequest $request)
     {
-        $userModelName = config('admin.user');
-        $model = new $userModelName();
+        $model = $this->getUserModel();
+        $data = $request->only(['name', 'email', 'password']);
+        $data['password'] = bcrypt($data['password']);
+        $model->fill($data)->save();
+        return response()->json(['message' => 'ok']);
+    }
 
-        if (!empty($request->input('id'))) {
-            $model = $model->findOrFail($request->input('id'));
-        }
-        $model->name = $request->input('name');
-        $model->email = $request->input('email');
+    public function update(UpdateUserRequest $request)
+    {
+        $user = $this->getUserModel()->findOrFail($request->input('id'));
+        $data = $request->only(['name', 'email']);
         if (!empty($request->input('password'))) {
-            $model->password = $request->input('password');
+            $data['password'] = bcrypt($request->input('password'));
         }
-
-        $model->save();
-
+        $user->fill($data)->save();
         return response()->json(['message' => 'ok']);
     }
 
@@ -45,16 +54,14 @@ class UserController extends Controller
             throw new AdminHttpException('超级管理员不能删除');
         }
 
-        $userModelName = config('admin.user');
-        $model = (new $userModelName())->findOrFail($id);
+        $model = $this->getUserModel()->findOrFail($id);
         $model->delete();
         return response()->json(['message' => 'ok']);
     }
 
     public function saveRole(Request $request)
     {
-        $userModelName = config('admin.user');
-        $user = (new $userModelName())->findOrFail($request->input('id'));
+        $user = $this->getUserModel()->findOrFail($request->input('id'));
         $user->roles()->sync($request->input('roles'));
 
         return response()->json(['message' => 'ok']);

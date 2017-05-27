@@ -66,6 +66,11 @@
                         title: this.$t('table.display_name'),
                     },
                     {
+                        key: 'description',
+                        title: this.$t('table.description'),
+                        type: 'textarea',
+                    },
+                    {
                         key: 'perms',
                         title: '授权',
                     }

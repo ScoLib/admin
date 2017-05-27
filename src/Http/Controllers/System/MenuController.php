@@ -15,55 +15,42 @@ use Sco\Admin\Models\Permission;
 class MenuController extends Controller
 {
     /**
-     * @var Permission
-     */
-    private $permissionModel;
-
-    /**
-     * @return \Sco\Admin\Models\Permission
-     */
-    private function getPermissionModel()
-    {
-        if ($this->permissionModel) {
-            return $this->permissionModel;
-        }
-
-        return $this->permissionModel = new Permission();
-    }
-
-    /**
      * 菜单列表
      *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function getList()
     {
-        $menus = $this->getPermissionModel()->getMenuTreeList();
-
+        $menus = (new Permission())->getMenuTreeList();
         return response()->json($menus->values());
-    }
-
-    public function store(StorePermissionRequest $request)
-    {
-
     }
 
     /**
      * 保存菜单信息
      *
-     * @param \Sco\Admin\Http\Requests\PermissionRequest $request 提交数据
+     * @param \Sco\Admin\Http\Requests\StorePermissionRequest $request 提交数据
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function save(PermissionRequest $request)
+    public function store(StorePermissionRequest $request)
     {
-        $this->getPermissionModel()->saveMenu($request);
+        $model = new Permission();
+        $model->fill($request->input())->save();
         return response()->json(['message' => 'ok']);
     }
 
+    /**
+     *  更新菜单
+     *
+     * @param \Sco\Admin\Http\Requests\UpdatePermissionRequest $request 提交数据
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function update(UpdatePermissionRequest $request)
     {
-
+        $perm = Permission::findOrFail($request->input('id'));
+        $perm->update($request->input());
+        return response()->json(['message' => 'ok']);
     }
 
     /**
@@ -73,9 +60,9 @@ class MenuController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function delete($id)
+    public function destroy($id)
     {
-        $this->getPermissionModel()->deleteMenu($id);
+        (new Permission())->destroyMenu($id);
         return response()->json(['message' => 'ok']);
     }
 
@@ -86,13 +73,13 @@ class MenuController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function batchDelete(Request $request)
+    public function batchDestroy(Request $request)
     {
         if (!is_array($request->input('ids'))) {
             throw new AdminHttpException('参数错误');
         }
 
-        $this->getPermissionModel()->deleteMenu($request->input('ids'));
+        (new Permission())->destroyMenu($request->input('ids'));
         return response()->json(['message' => 'ok']);
     }
 }

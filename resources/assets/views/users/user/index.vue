@@ -65,7 +65,7 @@
                                         <i class="fa fa-pencil bigger-120"></i>
                                     </button>
                                     <button class="btn btn-xs btn-danger"
-                                            @click.prevent="remove(scope.row.id)"
+                                            @click.prevent="destroy(scope.row.id)"
                                             :disabled="scope.row.id == 1"
                                             title="删除管理员">
                                         <i class="fa fa-trash-o bigger-120"></i>
@@ -233,7 +233,7 @@
                 };
                 this.errors = {};
             },
-            remove(id) {
+            destroy(id) {
                 this.$confirm('确定要删除此管理员吗？', '提示', {
                     type: 'warning',
                     beforeClose: (action, instance, done) => {
@@ -258,7 +258,12 @@
             },
             save() {
                 this.buttonLoading = true;
-                this.$http.post('/admin/users/user/save', this.info)
+                if (typeof this.info.id == 'undefined') {
+                    var url = '/admin/users/user/store';
+                } else {
+                    var url = '/admin/users/user/update';
+                }
+                this.$http.post(url, this.info)
                     .then(response => {
                         this.editModal = false;
                         this.buttonLoading = false;

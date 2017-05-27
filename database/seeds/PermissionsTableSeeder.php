@@ -27,9 +27,10 @@ class PermissionsTableSeeder extends Seeder
         $menu = $this->insertPerm('admin.system.menu', '后台菜单', $system->id, 1,
             'fa-link');
         $this->insertPerm('admin.system.menu.list', '菜单列表数据', $menu->id);
-        $this->insertPerm('admin.system.menu.save', '保存菜单', $menu->id);
-        $this->insertPerm('admin.system.menu.delete', '删除菜单', $menu->id);
-        $this->insertPerm('admin.system.menu.batch.delete', '批量删除菜单',
+        $this->insertPerm('admin.system.menu.store', '创建菜单', $menu->id);
+        $this->insertPerm('admin.system.menu.update', '更新菜单', $menu->id);
+        $this->insertPerm('admin.system.menu.destroy', '删除菜单', $menu->id);
+        $this->insertPerm('admin.system.menu.batch.destroy', '批量删除菜单',
             $menu->id);
     }
 
@@ -40,7 +41,8 @@ class PermissionsTableSeeder extends Seeder
         $user = $this->insertPerm('admin.users.user', '管理员', $users->id, 1,
             'fa-user');
         $this->insertPerm('admin.users.user.list', '管理员列表数据', $user->id);
-        $this->insertPerm('admin.users.user.save', '保存管理员', $user->id);
+        $this->insertPerm('admin.users.user.store', '创建管理员', $user->id);
+        $this->insertPerm('admin.users.user.update', '更新管理员', $user->id);
 
         $saveRole = $this->insertPerm('admin.users.user.save.role', '设置角色',
             $user->id);
@@ -51,9 +53,10 @@ class PermissionsTableSeeder extends Seeder
         $role = $this->insertPerm('admin.users.role', '角色管理', $users->id, 1,
             'fa-user-plus');
         $this->insertPerm('admin.users.role.list', '角色列表数据', $role->id);
-        $this->insertPerm('admin.users.role.save', '保存角色', $role->id);
-        $this->insertPerm('admin.users.role.delete', '删除角色', $role->id);
-        $this->insertPerm('admin.users.role.batch.delete', '批量删除角色',
+        $this->insertPerm('admin.users.role.store', '创建角色', $role->id);
+        $this->insertPerm('admin.users.role.update', '更新角色', $role->id);
+        $this->insertPerm('admin.users.role.destroy', '删除角色', $role->id);
+        $this->insertPerm('admin.users.role.batch.destroy', '批量删除角色',
             $role->id);
         $this->insertPerm('admin.users.role.create', '创建角色', $role->id);
 

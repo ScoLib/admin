@@ -10,8 +10,8 @@
                             <span class="sr-only">Toggle Dropdown</span>
                         </button>
                         <ul class="dropdown-menu" role="menu">
-                            <li>
-                                <a href="#" @click.prevent="batchRemove">
+                            <li v-if="can('admin.system.menu.batch.destroy')">
+                                <a href="#" @click.prevent="batchDestroy">
                                     <i class="fa fa-trash-o bigger-120"></i> 删除
                                 </a>
                             </li>
@@ -26,7 +26,11 @@
                     </div>
 
                     <div class="btn-group btn-group-sm pull-right margin-r-5">
-                        <button type="button" class="btn btn-default" @click.prevent="add">
+                        <button
+                                type="button"
+                                class="btn btn-default"
+                                v-if="can('admin.system.menu.store')"
+                                @click.prevent="add">
                             <i class="fa fa-plus bigger-120"></i>
                             创建菜单
                         </button>
@@ -93,13 +97,15 @@
                                     <button
                                             class="btn btn-xs btn-info"
                                             title="编辑菜单"
+                                            v-if="can('admin.system.menu.update')"
                                             @click.prevent="edit(scope.$index)">
                                         <i class="fa fa-pencil bigger-120"></i>
                                     </button>
                                     <button
                                             class="btn btn-xs btn-danger"
                                             title="删除菜单"
-                                            @click.prevent="remove(scope.row.id)">
+                                            v-if="can('admin.system.menu.destroy')"
+                                            @click.prevent="destroy(scope.row.id)">
                                         <i class="fa fa-trash-o bigger-120"></i>
                                     </button>
                                 </div>
@@ -140,7 +146,7 @@
                 </b-form>
                 <div slot="footer" class="dialog-footer">
                     <el-button @click="editModal = false">取 消</el-button>
-                    <el-button type="primary" @click="saveMenu" :loading="buttonLoading">确 定</el-button>
+                    <el-button type="primary" @click="save" :loading="buttonLoading">确 定</el-button>
                 </div>
             </el-dialog>
 
@@ -258,7 +264,7 @@
                 this.info = this.menuList[index];
                 this.errors = {};
             },
-            remove(id) {
+            destroy(id) {
                 this.$confirm('确定要删除此菜单及其所有子菜单吗？', '提示',{
                     type: 'warning',
                     beforeClose: (action, instance, done) => {
@@ -281,7 +287,7 @@
                     }
                 }).then(action => {}).catch(action => {});
             },
-            batchRemove() {
+            batchDestroy() {
                 if (this.selection.length == 0) {
                     this.$message.error('请选择操作对象');
                     return false;
@@ -293,7 +299,7 @@
                         if (action == 'confirm') {
                             instance.confirmButtonLoading = true;
 //                            instance.confirmButtonText = '执行中...';
-                            this.$http.post('/admin/system/menu/batch/delete', {'ids': this.selection})
+                            this.$http.post('/admin/system/menu/batch/destroy', {'ids': this.selection})
                                 .then(response => {
                                     instance.confirmButtonLoading = false;
                                     instance.close();
@@ -309,9 +315,14 @@
                     }
                 }).then(action => {}).catch(action => {});
             },
-            saveMenu() {
+            save() {
                 this.buttonLoading = true;
-                this.$http.post('/admin/system/menu/save', this.info)
+                if (typeof this.info.id == 'undefined') {
+                    var url = '/admin/system/menu/store';
+                } else {
+                    var url = '/admin/system/menu/update';
+                }
+                this.$http.post(url, this.info)
                     .then(response => {
                         this.editModal = false;
                         this.buttonLoading = false;

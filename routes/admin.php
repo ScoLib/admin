@@ -77,17 +77,21 @@ Route::group([
                     ->name('list');
 
                 // 保存菜单
-                Route::post('save', 'MenuController@save')
-                    ->name('save');
+                Route::post('store', 'MenuController@store')
+                    ->name('store');
+
+                // 更新菜单
+                Route::post('update', 'MenuController@update')
+                    ->name('update');
 
                 // 删除菜单
-                Route::delete('{id}', 'MenuController@delete')
-                    ->name('delete')
+                Route::delete('{id}', 'MenuController@destroy')
+                    ->name('destroy')
                     ->where('id', '[0-9]+');
 
                 // 批量删除菜单
-                Route::post('batch/delete', 'MenuController@batchDelete')
-                    ->name('batch.delete');
+                Route::post('batch/destroy', 'MenuController@batchDestroy')
+                    ->name('batch.destroy');
             });
 
             // 操作日志
@@ -108,8 +112,11 @@ Route::group([
                 Route::get('list', 'UserController@getList')
                     ->name('list');
 
-                Route::post('save', 'UserController@save')
-                    ->name('save');
+                Route::post('store', 'UserController@store')
+                    ->name('store');
+
+                Route::post('update', 'UserController@update')
+                    ->name('update');
 
                 Route::post('save/role', 'UserController@saveRole')
                     ->name('save.role');
@@ -124,15 +131,18 @@ Route::group([
 
             // 角色管理
             Route::group(['as' => 'role.', 'prefix' => 'role'], function () {
-                Route::post('save', 'RoleController@save')
-                    ->name('save');
+                Route::post('store', 'RoleController@store')
+                    ->name('store');
+
+                Route::post('update', 'RoleController@update')
+                    ->name('update');
 
                 Route::get('{id}', 'RoleController@get')
                     ->name('get')
                     ->where('id', '[0-9]+');
 
-                Route::delete('{id}', 'RoleController@delete')
-                    ->name('delete')
+                Route::delete('{id}', 'RoleController@destroy')
+                    ->name('destroy')
                     ->where('id', '[0-9]+');
 
                 // 角色列表
@@ -142,8 +152,8 @@ Route::group([
                 Route::get('perms/list', 'RoleController@getPermissionList')
                     ->name('perms.list');
 
-                Route::post('batch/delete', 'RoleController@batchDelete')
-                    ->name('batch.delete');
+                Route::post('batch/destroy', 'RoleController@batchDestroy')
+                    ->name('batch.destroy');
             });
 
         });

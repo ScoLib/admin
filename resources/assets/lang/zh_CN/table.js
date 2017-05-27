@@ -2,6 +2,7 @@ export default {
     id: 'ID',
     name: '标识',
     display_name: '显示名称',
+    description: '描述',
     created_at: '创建时间',
     updated_at: '更新时间',
     action: '操作',

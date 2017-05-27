@@ -57,6 +57,7 @@ class RbacSetupTables extends Migration
 
             $table->string('icon', 100)
                 ->comment('图标class')
+                ->nullable()
                 ->default('');
 
             $table->string('display_name', 200)

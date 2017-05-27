@@ -29,7 +29,7 @@
                     <div class="btn-group btn-group-sm pull-right margin-r-5">
                         <router-link
                                 :to="{ name: 'admin.users.role.create' }"
-                                v-if="can('admin.users.role.create')"
+                                v-if="can('admin.users.role.store')"
                                 class="btn btn-default">
                             <i class="fa fa-plus bigger-120"></i>
                             创建角色
@@ -71,12 +71,15 @@
                                 <div class="hidden-xs btn-group">
                                     <router-link
                                             class="btn btn-xs btn-info"
-                                            :to="{name:'admin.users.role.edit', params: {id: scope.row.id}}">
+                                            v-if="can('admin.users.role.update')"
+                                            :to="{name:'admin.users.role.edit', params: {id: scope.row.id}}"
+                                            title="编辑">
                                         <i class="fa fa-pencil bigger-120"></i>
                                     </router-link>
                                     <button class="btn btn-xs btn-danger"
-                                            @click.prevent="remove(scope.row.id)"
+                                            @click.prevent="destroy(scope.row.id)"
                                             :disabled="scope.row.name == 'admin'"
+                                            v-if="can('admin.users.role.destroy')"
                                             title="删除">
                                         <i class="fa fa-trash-o bigger-120"></i>
                                     </button>
@@ -147,7 +150,7 @@
                     this.pageData = response.data;
                 }).catch(error => {})
             },
-            remove (id) {
+            destroy(id) {
                 this.$confirm('确定要删除此角色吗？', '提示', {
                     type: 'warning',
                     beforeClose: (action, instance, done) => {
@@ -170,7 +173,7 @@
                     }
                 }).then(action => {}).catch(action => {});
             },
-            batchRemove () {
+            batchDestroy() {
                 if (this.selection.length == 0) {
                     this.$message.error('请选择操作对象');
                     return false;
@@ -182,7 +185,7 @@
                         if (action == 'confirm') {
                             instance.confirmButtonLoading = true;
 //                            instance.confirmButtonText = '执行中...';
-                            this.$http.post('/admin/users/role/batch/delete', {'ids': this.selection})
+                            this.$http.post('/admin/users/role/batch/destroy', {'ids': this.selection})
                                 .then(response => {
                                     instance.confirmButtonLoading = false;
                                     instance.close();

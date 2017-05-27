@@ -7,6 +7,7 @@ use Cache;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Sco\Admin\Exceptions\AdminHttpException;
+use Sco\Admin\Observers\PermissionObserver;
 use Sco\Admin\Traits\EntrustPermissionTrait;
 use Sco\Tree\Traits\TreeTrait;
 
@@ -48,11 +49,11 @@ class Permission extends Model
 
     private $allRoutes = null;
 
-    private $validList = null;
-
     private $permList = null;
 
     private $menuList = null;
+
+    protected $fillable = ['pid', 'display_name', 'name', 'icon', 'is_menu', 'sort', 'description'];
 
     protected $events = [
         'created'  => \Sco\ActionLog\Events\ModelWasCreated::class,
@@ -102,28 +103,6 @@ class Permission extends Model
     }
 
     /**
-     * 获取有效的路由列表
-     *
-     * @return \Illuminate\Support\Collection
-     */
-    /*public function getValidRouteList()
-    {
-        if ($this->validList) {
-            return $this->validList;
-        }
-
-        $all = $this->getAll();
-
-        $this->validList = collect([]);
-        foreach ($all as $route) {
-            if (!empty($route->uri) && $route->uri != '#') {
-                $this->validList->push($route);
-            }
-        }
-        return $this->validList;
-    }*/
-
-    /**
      * 获取权限列表
      *
      * @return \Illuminate\Support\Collection|null
@@ -155,69 +134,6 @@ class Permission extends Model
         return $this->menuList = $this->getLayerOfDescendants(0);
     }
 
-    /*public function getInfoById($id)
-    {
-        return $this->getSelf($id);
-    }
-
-    public function getInfoByName($name)
-    {
-        $all = $this->getAll();
-        $key = $all->search(function ($item) use ($name) {
-            return $item->name == $name;
-        });
-        return $key === false ? false : $all->get($key);
-    }*/
-
-    /*public function getParentTree($id)
-    {
-        return $this->getAncestors($id);
-    }
-
-    public function getParentTreeAndSelfById($id)
-    {
-        $self = $this->getInfoById($id);
-        if ($self) {
-            $parent = $this->getParentTree($self->id);
-            $parent->push($self);
-            return $parent;
-        }
-        return false;
-    }
-
-    public function getParentTreeAndSelfByName($name)
-    {
-        $self = $this->getInfoByName($name);
-        if ($self) {
-            $parent = $this->getParentTree($self->id);
-            $parent->push($self);
-            return $parent;
-        }
-        return false;
-    }*/
-
-    public function saveMenu(Request $request)
-    {
-        if (empty($request->input('id'))) {
-            $model = $this;
-        } else {
-            $model = $this->findOrFail($request->input('id'));
-        }
-
-        $model->pid          = $request->input('pid');
-        $model->display_name = $request->input('display_name');
-        $model->name         = $request->input('name');
-        $model->icon         = $request->input('icon') ?: '';
-        $model->is_menu      = $request->input('is_menu', 0);
-        $model->sort         = $request->input('sort', 255);
-        $model->description  = $request->input('description') ?: '';
-
-        $model->save();
-
-        $this->clearCache();
-        return true;
-    }
-
     /**
      * 删除菜单
      *
@@ -225,7 +141,7 @@ class Permission extends Model
      *
      * @return bool
      */
-    public function deleteMenu($ids)
+    public function destroyMenu($ids)
     {
         if (!is_array($ids)) {
             $ids = [intval($ids)];
@@ -244,13 +160,13 @@ class Permission extends Model
             $this->destroy($items->toArray());
         });
 
-        $this->clearCache();
-
         return true;
     }
 
-    private function clearCache()
+    public static function boot()
     {
-        Cache::forget('permission_all');
+        parent::boot();
+
+        static::observe(PermissionObserver::class);
     }
 }

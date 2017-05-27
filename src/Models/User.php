@@ -16,6 +16,8 @@ class User extends Authenticatable
 
     protected $hidden = ['password'];
 
+    protected $fillable = ['name', 'email', 'password'];
+
     protected $events = [
         'created'  => \Sco\ActionLog\Events\ModelWasCreated::class,
         'updated'  => \Sco\ActionLog\Events\ModelWasUpdated::class,

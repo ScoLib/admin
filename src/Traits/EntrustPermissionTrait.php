@@ -36,10 +36,8 @@ trait EntrustPermissionTrait
      *
      * @return void|bool
      */
-    public static function boot()
+    public static function bootEntrustPermissionTrait()
     {
-        parent::boot();
-
         static::deleting(function ($permission) {
             if (!method_exists(Config::get('admin.permission'),
                 'bootSoftDeletes')

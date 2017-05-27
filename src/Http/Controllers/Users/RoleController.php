@@ -8,7 +8,8 @@ use DB;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Sco\Admin\Exceptions\AdminHttpException;
-use Sco\Admin\Http\Requests\RoleRequest;
+use Sco\Admin\Http\Requests\StoreRoleRequest;
+use Sco\Admin\Http\Requests\UpdateRoleRequest;
 use Sco\Admin\Models\Permission;
 use Sco\Admin\Models\Role;
 
@@ -33,29 +34,33 @@ class RoleController extends Controller
         return response()->json($perms, 200, [], JSON_FORCE_OBJECT);
     }
 
-    public function save(RoleRequest $request)
+    public function store(StoreRoleRequest $request)
     {
-        if (empty($request->input('id'))) {
-            $model = new Role();
-        } else {
-            $model = Role::findOrFail($request->input('id'));
-            if ($model->name == 'admin' && !Auth::user()->hasRole($model->name)) {
-                return response()->json(['error' => 'Unauthenticated.'], 401);
-            }
-        }
-
-        //$model->name         = $request->input('name');
-        $model->display_name = $request->input('display_name');
-
-        DB::transaction(function () use ($model, $request) {
-            $model->save();
-            $model->savePermissions($request->input('perms'));
+        $role = new Role();
+        $role->fill($request->input());
+        DB::transaction(function () use ($role, $request) {
+            $role->save();
+            $role->savePermissions($request->input('perms'));
         });
-
         return response()->json(['message' => 'ok']);
     }
 
-    public function delete($id)
+    public function update(UpdateRoleRequest $request)
+    {
+        $role = Role::findOrFail($request->input('id'));
+        if ($role->name == 'admin' && !Auth::user()->hasRole($role->name)) {
+            return response()->json(['error' => 'Unauthenticated.'], 401);
+        }
+
+        $role->fill($request->input());
+        DB::transaction(function () use ($role, $request) {
+            $role->save();
+            $role->savePermissions($request->input('perms'));
+        });
+        return response()->json(['message' => 'ok']);
+    }
+
+    public function destroy($id)
     {
         $role = Role::findOrFail($id);
         if ($role->name == 'admin') {
@@ -74,7 +79,7 @@ class RoleController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function batchDelete(Request $request)
+    public function batchDestroy(Request $request)
     {
         if (!is_array($request->input('ids'))) {
             throw new AdminHttpException('参数错误');
