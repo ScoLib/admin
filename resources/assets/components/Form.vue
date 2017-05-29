@@ -5,29 +5,33 @@
 
             <div class="col-xs-12 col-sm-9">
                 <slot :name="field.key" :field="field">
-                    <select
-                            :class="['form-control', field.class]"
+                    <el-select
+                            placeholder="请选择"
+                            :class="field.class"
+                            :popper-class="field.popperClass"
                             :name="field.key"
                             v-model="info[field.key]"
                             v-if="field.type == 'select'">
-                        <option
+                        <el-option
                                 :value="option.value"
+                                :key="option.value"
+                                :label="option.label"
                                 v-for="option in field.options">
-                            {{option.label}}
-                        </option>
-                    </select>
+                        </el-option>
+                    </el-select>
 
-                    <div class="radio" v-for="option in field.options" v-else-if="field.type == 'radio'">
-                        <label>
-                            <input
-                                    type="radio"
-                                    :name="field.key"
-                                    :value="option.value"
-                                    :disabled="option.disabled"
-                                    v-model="info[field.key]">
+                    <el-radio-group
+                            v-model="info[field.key]"
+                            v-else-if="field.type == 'radio'">
+                        <el-radio-button
+                                v-for="option in field.options"
+                                :name="field.key"
+                                :key="option.value"
+                                :disabled="option.disabled"
+                                :label="option.value">
                             {{option.label}}
-                        </label>
-                    </div>
+                        </el-radio-button>
+                    </el-radio-group>
 
                     <div class="checkbox" v-for="option in field.options" v-else-if="field.type == 'checkbox'">
                         <label>
@@ -42,7 +46,7 @@
                     </div>
 
                     <template v-else-if="typeof field.type === 'undefined' || ['text', 'textarea', 'number', 'email', 'password'].indexOf(field.type) > -1">
-                        <b-input
+                        <el-input
                                 :custom-class="field.class"
                                 :type="field.type"
                                 :name="field.key"
@@ -51,7 +55,7 @@
                                 :readonly="field.readonly"
                                 :rows="field.rows"
                                 v-model="info[field.key]">
-                        </b-input>
+                        </el-input>
                     </template>
 
                 </slot>

@@ -1,3 +1,8 @@
+<style>
+    .width100 {
+        width: 100%;
+    }
+</style>
 <template>
     <div class="row">
         <div class="col-xs-12">
@@ -122,27 +127,15 @@
                         :fields="formFields"
                         :info="info"
                         :errors="errors">
-                    <select
-                            class="form-control"
-                            name="pid"
-                            slot="pid"
-                            v-model="info.pid">
-                        <option value="0">顶级菜单</option>
-                        <option
-                                :value="menu.id"
-                                v-for="menu in menuList">
-                            <i v-html="menu.spacer"></i>{{menu.display_name}}
-                        </option>
 
-
-                    </select>
-
-                    <input type="text" data-toggle="tooltip"
-                           data-original-title="必须是路由的别名，如不是链接，则填“#”"
-                            name="name" class="form-control"
-                           placeholder="admin.system.menu"
-                           slot="name"
-                           v-model="info.name">
+                    <el-input
+                            type="text"
+                            data-toggle="tooltip"
+                            data-original-title="必须是路由的别名，如不是链接，则填“#”"
+                            name="name"
+                            placeholder="admin.system.menu"
+                            slot="name"
+                            v-model="info.name"></el-input>
                 </b-form>
                 <div slot="footer" class="dialog-footer">
                     <el-button @click="editModal = false">取 消</el-button>
@@ -179,12 +172,27 @@
             modalTitle () {
                 return this.info.id ? '编辑菜单' : '新建菜单';
             },
+            menuOpts() {
+                let options = [{
+                    'value': 0,
+                    'label': '顶级菜单',
+                }];
+                this.menuList.forEach(menu => {
+                    options.push({
+                        'value': menu.id,
+                        'label': $('<div/>').html(menu.spacer).text() + menu.display_name
+                    })
+                });
+                return options;
+            },
             formFields () {
                 return [
                     {
                         key: 'pid',
                         title: '父级菜单',
                         type: 'select',
+                        options: this.menuOpts,
+                        class: 'width100'
                     },
                     {
                         key: 'display_name',
@@ -316,6 +324,8 @@
                 }).then(action => {}).catch(action => {});
             },
             save() {
+                console.log(this.info);
+                return false;
                 this.buttonLoading = true;
                 if (typeof this.info.id == 'undefined') {
                     var url = '/admin/system/menu/store';

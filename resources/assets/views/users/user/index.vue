@@ -11,7 +11,11 @@
                     </div>
 
                     <div class="btn-group btn-group-sm pull-right margin-r-5">
-                        <button type="button" class="btn btn-default" @click.prevent="add">
+                        <button
+                                type="button"
+                                class="btn btn-default"
+                                v-if="can('admin.users.user.store')"
+                                @click.prevent="add">
                             <i class="fa fa-plus bigger-120"></i>
                             创建管理员
                         </button>
@@ -53,18 +57,14 @@
                             <template scope="scope">
                                 <div class="hidden-xs btn-group">
                                     <button class="btn btn-xs btn-info"
-                                            @click.prevent="setRole(scope.$index)"
-                                            :disabled="scope.row.id == 1"
-                                            title="设置角色">
-                                        <i class="fa fa-user-plus bigger-120"></i>
-                                    </button>
-
-                                    <button class="btn btn-xs btn-info"
+                                            v-if="can('admin.users.user.update')"
                                             @click.prevent="edit(scope.$index)"
+                                            :disabled="cantEdit(scope.row)"
                                             title="编辑管理员">
                                         <i class="fa fa-pencil bigger-120"></i>
                                     </button>
                                     <button class="btn btn-xs btn-danger"
+                                            v-if="can('admin.users.user.destroy')"
                                             @click.prevent="destroy(scope.row.id)"
                                             :disabled="scope.row.id == 1"
                                             title="删除管理员">
@@ -91,43 +91,22 @@
                         :fields="editFields"
                         :info="info"
                         :errors="errors">
-                </b-form>
-
-                <div slot="footer" class="dialog-footer">
-                    <el-button @click="editModal = false">取 消</el-button>
-                    <el-button type="primary" @click="save" :loading="buttonLoading">确 定</el-button>
-                </div>
-            </el-dialog>
-
-            <el-dialog title="设置角色" v-model="setRoleModal">
-
-                <b-form
-                        :fields="roleFields"
-                        :info="roleData"
-                        :errors="errors">
-                    <input type="text"
-                           class="form-control"
-                           :value="roleData.name"
-                           disabled
-                           slot="name">
-
                     <div slot="role" v-loading="checkboxLoading">
                         <div class="checkbox" v-for="role in roleList">
                             <label>
                                 <input
                                         :value="role.id"
                                         type="checkbox"
-                                        v-model="roleData.roles">
+                                        v-model="info.roles">
                                 {{ role.display_name }}
                             </label>
                         </div>
                     </div>
-
                 </b-form>
 
                 <div slot="footer" class="dialog-footer">
-                    <el-button @click="setRoleModal = false">取 消</el-button>
-                    <el-button type="primary" @click="saveRole" :loading="buttonLoading">确 定</el-button>
+                    <el-button @click="editModal = false">取 消</el-button>
+                    <el-button type="primary" @click="save" :loading="buttonLoading">确 定</el-button>
                 </div>
             </el-dialog>
 
@@ -156,13 +135,6 @@
                         title: '密码',
                         type: 'password',
                     },
-                ],
-
-                roleFields: [
-                    {
-                        key: 'name',
-                        title: '管理员名称',
-                    },
                     {
                         key: 'role',
                         title: '角色',
@@ -182,8 +154,6 @@
                 buttonLoading: false,
 
                 // 角色
-                setRoleModal: false,
-                roleData: {},
                 roleList: [],
                 checkboxLoading: false,
             }
@@ -214,13 +184,25 @@
             fetchData() {
                 this.getResults();
             },
+            getRoleList() {
+                if (this.roleList.length == 0) {
+                    this.checkboxLoading = true;
+                    this.$http.get('/admin/users/user/role/all')
+                        .then(response => {
+                            this.roleList = response.data;
+                            this.checkboxLoading = false;
+                        });
+                }
+            },
             add() {
                 this.editModal = true;
                 this.info = {
                     name: '',
                     email: '',
                     password: '',
+                    roles: [],
                 };
+                this.getRoleList();
                 this.errors = {};
             },
             edit(index) {
@@ -230,8 +212,32 @@
                     name: this.pageData.data[index].name,
                     email: this.pageData.data[index].email,
                     password: '',
+                    roles: [],
                 };
+                this.pageData.data[index].roles.forEach(role => {
+                    this.info.roles.push(role.id);
+                });
+                this.getRoleList();
                 this.errors = {};
+            },
+            save() {
+                this.buttonLoading = true;
+                if (typeof this.info.id == 'undefined') {
+                    var url = '/admin/users/user/store';
+                } else {
+                    var url = '/admin/users/user/update';
+                }
+                this.$http.post(url, this.info)
+                    .then(response => {
+                        this.editModal = false;
+                        this.buttonLoading = false;
+                        this.getResults();
+                    }).catch(error => {
+                    this.buttonLoading = false;
+                    if (typeof error.response.data == 'object') {
+                        this.errors = error.response.data;
+                    }
+                })
             },
             destroy(id) {
                 this.$confirm('确定要删除此管理员吗？', '提示', {
@@ -256,59 +262,8 @@
                     }
                 });
             },
-            save() {
-                this.buttonLoading = true;
-                if (typeof this.info.id == 'undefined') {
-                    var url = '/admin/users/user/store';
-                } else {
-                    var url = '/admin/users/user/update';
-                }
-                this.$http.post(url, this.info)
-                    .then(response => {
-                        this.editModal = false;
-                        this.buttonLoading = false;
-                        this.getResults();
-                    }).catch(error => {
-                        this.buttonLoading = false;
-                        if (typeof error.response.data == 'object') {
-                            this.errors = error.response.data;
-                        }
-                    })
-            },
-            setRole(index) {
-                this.setRoleModal = true;
-                this.buttonLoading = false;
-                this.roleData = {
-                    id: this.pageData.data[index].id,
-                    name: this.pageData.data[index].name,
-                    roles: [],
-                };
-
-                this.pageData.data[index].roles.forEach(role => {
-                    this.roleData.roles.push(role.id);
-                });
-
-                this.errors = {};
-                if (this.roleList.length == 0) {
-                    this.checkboxLoading = true;
-                    this.$http.get('/admin/users/user/role/all')
-                        .then(response => {
-                            this.roleList = response.data;
-                            this.checkboxLoading = false;
-                        });
-                }
-            },
-            saveRole () {
-                this.buttonLoading = true;
-                this.$http.post('/admin/users/user/save/role', this.roleData)
-                    .then(response => {
-                        this.setRoleModal = false;
-                        this.buttonLoading = false;
-                        this.getResults();
-                    }).catch(error => {
-                        this.setRoleModal = false;
-                        this.buttonLoading = false;
-                    })
+            cantEdit(row) {
+                return row.id == 1 && this.$store.state.user.id != row.id;
             }
         }
     }

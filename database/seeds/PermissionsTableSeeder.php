@@ -44,11 +44,9 @@ class PermissionsTableSeeder extends Seeder
         $this->insertPerm('admin.users.user.store', '创建管理员', $user->id);
         $this->insertPerm('admin.users.user.update', '更新管理员', $user->id);
 
-        $saveRole = $this->insertPerm('admin.users.user.save.role', '设置角色',
-            $user->id);
-        $this->insertPerm('admin.users.user.role.all', '获取所有角色',
-            $saveRole->id);
-        $this->insertPerm('admin.users.user.delete', '删除管理员', $user->id);
+        $this->insertPerm('admin.users.user.role.all', 'Ajax获取所有角色数据',
+            $user->id, 0, '', '用于创建和编辑');
+        $this->insertPerm('admin.users.user.destroy', '删除管理员', $user->id);
 
         $role = $this->insertPerm('admin.users.role', '角色管理', $users->id, 1,
             'fa-user-plus');
