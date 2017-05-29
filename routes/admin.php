@@ -118,11 +118,8 @@ Route::group([
                 Route::post('update', 'UserController@update')
                     ->name('update');
 
-                Route::post('save/role', 'UserController@saveRole')
-                    ->name('save.role');
-
-                Route::delete('{id}', 'UserController@delete')
-                    ->name('delete')
+                Route::delete('{id}', 'UserController@destroy')
+                    ->name('destroy')
                     ->where('id', '[0-9]+');
 
                 Route::get('role/all', 'UserController@getAllRole')
