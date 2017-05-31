@@ -29,21 +29,47 @@ NPM
 ```
 
 ```javascript
+var adminPublicPath = 'vendor/admin/';
 mix.autoload({
     jquery: ['$', 'window.jQuery', 'jQuery'],
     vue: ['Vue']
 });
 
-mix.js('resources/assets/vendor/admin/main.js', 'public/js/admin/app.js')
-    .extract(['vue', 'jquery', 'bootstrap', 'vue-router', 'element-ui'])
-    .webpackConfig({
-        output: {
-            chunkFilename: `js/admin/[name]${mix.config.inProduction ? '.[chunkhash].chunk.js' : '.chunk.js'}`,
-            publicPath: '/',
-        },
-    });
+mix.webpackConfig({
+    output: {
+        chunkFilename: `${adminPublicPath}js/[name]${mix.config.inProduction ? '.[chunkhash].chunk.js' : '.chunk.js'}`,
+        publicPath: '/',
+    },
+    module: {
+        rules: [
+            {
+                test: /\.(woff2?|ttf|eot|svg|otf)$/,
+                loader: 'file-loader',
+                options: {
+                    name: `${adminPublicPath}fonts/[name].[ext]?[hash]`,
+                    publicPath: '/'
+                }
+            },
+            {
+                test: /\.(png|jpe?g|gif)$/,
+                loaders: [
+                    {
+                        loader: 'file-loader',
+                        options: {
+                            name: `${adminPublicPath}images/[name].[ext]?[hash]`,
+                            publicPath: '/'
+                        }
+                    },
+                ]
+            },
+        ],
+    },
+});
 
-mix.less('resources/assets/vendor/admin/less/admin.less', 'public/css/admin.css');
+mix.js('resources/assets/vendor/admin/main.js', `public/${adminPublicPath}js/app.js`)
+    .extract(['vue', 'jquery', 'bootstrap', 'vue-router', 'element-ui'])
+
+mix.less('resources/assets/vendor/admin/less/admin.less', `public/${adminPublicPath}css/app.css`);
 
 if (mix.config.inProduction) {
     mix.version();

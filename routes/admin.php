@@ -50,7 +50,7 @@ Route::group([
         }
     });
 
-    Route::group(['middleware' => ['auth', 'can']], function () {
+    Route::group(['middleware' => ['auth', 'admin.can']], function () {
         Route::get('menu', function () {
             $menus = request()->attributes->get('admin.menu');
             return response()->json($menus);
