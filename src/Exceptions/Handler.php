@@ -3,10 +3,12 @@
 namespace Sco\Admin\Exceptions;
 
 use Exception;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Contracts\Debug\ExceptionHandler as ExceptionHandlerContract;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Handler implements ExceptionHandlerContract
 {
@@ -40,19 +42,12 @@ class Handler implements ExceptionHandlerContract
      */
     public function render($request, Exception $exception)
     {
+        $exception = $this->prepareException($exception);
+
         if ($exception instanceof AuthenticationException) {
-            if ($request->expectsJson()) {
-                return response('Unauthenticated.', 401);
-            }
-            return redirect()->guest(route('admin.login'));
-        }
-
-        if ($exception instanceof ModelNotFoundException) {
-            return response($exception->getMessage(), 404);
-        }
-
-        if ($exception instanceof HttpException) {
-            return response($exception->getMessage(), $exception->getStatusCode());
+            return $this->unauthenticated($request, $exception);
+        } elseif ($exception instanceof HttpException) {
+            return $this->renderHttpException($request, $exception);
         }
 
         return $this->parentHandler->render($request, $exception);
@@ -69,5 +64,54 @@ class Handler implements ExceptionHandlerContract
     public function renderForConsole($output, Exception $exception)
     {
         $this->parentHandler->renderForConsole($output, $exception);
+    }
+
+    /**
+     * Prepare exception for rendering.
+     *
+     * @param  \Exception  $exception
+     * @return \Exception
+     */
+    protected function prepareException(Exception $exception)
+    {
+        if ($exception instanceof ModelNotFoundException) {
+            $exception = new NotFoundHttpException($exception->getMessage(), $exception);
+        } elseif ($exception instanceof AuthorizationException) {
+            $exception = new HttpException(403, $exception->getMessage() ?: 'Forbidden');
+        }
+
+        return $exception;
+    }
+
+    /**
+     * Convert an authentication exception into an unauthenticated response.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Auth\AuthenticationException  $exception
+     * @return \Illuminate\Http\Response
+     */
+    protected function unauthenticated($request, AuthenticationException $exception)
+    {
+        if ($request->expectsJson()) {
+            return response('Unauthenticated.', 401);
+        }
+
+        return redirect()->guest(route('admin.login'));
+    }
+
+    /**
+     * Render the given HttpException.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Symfony\Component\HttpKernel\Exception\HttpException  $exception
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    protected function renderHttpException($request, HttpException $exception)
+    {
+        $status = $exception->getStatusCode();
+        if ($request->expectsJson()) {
+            return response($exception->getMessage() ?: 'Not Found', $status);
+        }
+        return response()->view('admin::app', ['exception' => $exception], $status, $exception->getHeaders());
     }
 }

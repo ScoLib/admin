@@ -21,6 +21,7 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
     // console.log('to', to);
     // console.log(from);
+    // console.log(window.Admin);
     if (typeof window.Admin != 'undefined' && window.Admin.LoggedUser) {
         store.commit('setUser', window.Admin.LoggedUser);
     }

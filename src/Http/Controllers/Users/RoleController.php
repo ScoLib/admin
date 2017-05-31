@@ -5,7 +5,7 @@ namespace Sco\Admin\Http\Controllers\Users;
 
 use Auth;
 use DB;
-use Illuminate\Auth\AuthenticationException;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Sco\Admin\Exceptions\AdminHttpException;
@@ -50,7 +50,7 @@ class RoleController extends Controller
     {
         $role = Role::findOrFail($request->input('id'));
         if ($role->name == 'admin' && !Auth::user()->hasRole($role->name)) {
-            throw new AuthenticationException();
+            throw new AuthorizationException();
         }
 
         $role->fill($request->input());
@@ -65,7 +65,7 @@ class RoleController extends Controller
     {
         $role = Role::findOrFail($id);
         if ($role->name == 'admin') {
-            throw new AuthenticationException();
+            throw new AuthorizationException();
         }
 
         $role->delete();
@@ -90,7 +90,7 @@ class RoleController extends Controller
             foreach ($request->input('ids') as $id) {
                 $role = Role::findOrFail($id);
                 if ($role->name == 'admin') {
-                    throw new AuthenticationException();
+                    throw new AuthorizationException();
                 }
 
                 $role->delete();

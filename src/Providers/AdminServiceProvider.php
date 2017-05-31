@@ -12,14 +12,16 @@ use Sco\Admin\Exceptions\Handler;
 class AdminServiceProvider extends ServiceProvider
 {
     protected $commands = [
-        \Sco\Admin\Console\InstallCommand::class
+        \Sco\Admin\Console\InstallCommand::class,
     ];
 
     protected $middlewares = [
-        'guest.admin'       => \Sco\Admin\Http\Middleware\RedirectIfAuthenticated::class,
+        'admin.guest'       => \Sco\Admin\Http\Middleware\RedirectIfAuthenticated::class,
         'admin.menu'        => \Sco\Admin\Http\Middleware\AdminMenu::class,
         'admin.permissions' => \Sco\Admin\Http\Middleware\Permissions::class,
         'admin.phptojs'     => \Sco\Admin\Http\Middleware\PHPVarToJavaScript::class,
+        'admin.can'         => \Sco\Admin\Http\Middleware\Authorize::class,
+        'admin.role'        => \Sco\Admin\Http\Middleware\EntrustRole::class,
     ];
 
     public function getBasePath()

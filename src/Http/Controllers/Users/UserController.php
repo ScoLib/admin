@@ -5,9 +5,8 @@ namespace Sco\Admin\Http\Controllers\Users;
 
 use Auth;
 use DB;
-use Illuminate\Auth\AuthenticationException;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Routing\Controller;
-use Sco\Admin\Exceptions\AdminHttpException;
 use Sco\Admin\Http\Requests\StoreUserRequest;
 use Sco\Admin\Http\Requests\UpdateUserRequest;
 use Sco\Admin\Models\Role;
@@ -47,7 +46,7 @@ class UserController extends Controller
     {
         $user = $this->getUserModel()->findOrFail($request->input('id'));
         if ($user->id == 1 && Auth::id() != $user->id) {
-            throw new AuthenticationException();
+            throw new AuthorizationException();
         }
         $data = $request->only(['name', 'email']);
         if (!empty($request->input('password'))) {
@@ -64,7 +63,7 @@ class UserController extends Controller
     public function destroy($id)
     {
         if ($id == 1) {
-            throw new AuthenticationException();
+            throw new AuthorizationException();
         }
 
         $model = $this->getUserModel()->findOrFail($id);

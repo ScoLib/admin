@@ -22,7 +22,7 @@ Route::group([
             ->name('logout');
     });
 
-    Route::group(['middleware' => 'auth'], function () {
+    Route::group(['middleware' => ['auth', 'admin.phptojs', 'admin.can']], function () {
         $spaRoutes = [
             // 控制台
             'dashboard'         => '/',
@@ -46,10 +46,11 @@ Route::group([
         foreach ($spaRoutes as $name => $route) {
             Route::get($route, function () {
                 return view('admin::app');
-            })->name($name)
-                ->middleware(['admin.phptojs']);
+            })->name($name);
         }
+    });
 
+    Route::group(['middleware' => ['auth', 'can']], function () {
         Route::get('menu', function () {
             $menus = request()->attributes->get('admin.menu');
             return response()->json($menus);
@@ -61,9 +62,7 @@ Route::group([
             return response()->json($permissions);
         })->name('permissions')
             ->middleware('admin.permissions');
-    });
 
-    Route::group(['middleware' => 'auth'], function () {
         // 系统管理
         Route::group([
             'as'        => 'system.',

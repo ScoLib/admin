@@ -154,7 +154,12 @@
             save() {
                 this.info.perms = this.getCheckedPermission();
                 this.buttonLoading = true;
-                this.$http.post('/admin/users/role/save', this.info).then(response => {
+                if (this.$route.name == 'admin.users.role.create') {
+                    var url = '/admin/users/role/store';
+                } else {
+                    var url = '/admin/users/role/update';
+                }
+                this.$http.post(url, this.info).then(response => {
                     this.buttonLoading = false;
                     this.$message.success('操作成功')
                     this.flushPermission();
