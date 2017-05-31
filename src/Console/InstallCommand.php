@@ -75,6 +75,5 @@ class InstallCommand extends Command
             '--class' => \AdminTableSeeder::class,
         ]);
         $this->line('');
-
     }
 }

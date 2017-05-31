@@ -16,7 +16,6 @@ class AdminServiceProvider extends ServiceProvider
     ];
 
     protected $middlewares = [
-        'auth.admin'        => \Sco\Admin\Http\Middleware\AdminAuthenticate::class,
         'guest.admin'       => \Sco\Admin\Http\Middleware\RedirectIfAuthenticated::class,
         'admin.menu'        => \Sco\Admin\Http\Middleware\AdminMenu::class,
         'admin.permissions' => \Sco\Admin\Http\Middleware\Permissions::class,

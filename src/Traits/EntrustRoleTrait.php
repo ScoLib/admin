@@ -32,7 +32,8 @@ trait EntrustRoleTrait
     }
 
     public function save(array $options = [])
-    {   //both inserts and updates
+    {
+        //both inserts and updates
         if (!parent::save($options)) {
             return false;
         }
@@ -43,7 +44,8 @@ trait EntrustRoleTrait
     }
 
     public function delete(array $options = [])
-    {   //soft or hard
+    {
+        //soft or hard
         if (!parent::delete($options)) {
             return false;
         }
@@ -54,7 +56,8 @@ trait EntrustRoleTrait
     }
 
     public function restore()
-    {   //soft delete undo's
+    {
+        //soft delete undo's
         if (!parent::restore()) {
             return false;
         }

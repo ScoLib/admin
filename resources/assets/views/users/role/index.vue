@@ -10,8 +10,8 @@
                             <span class="sr-only">Toggle Dropdown</span>
                         </button>
                         <ul class="dropdown-menu">
-                            <li>
-                                <a href="#" @click.prevent="batchRemove">
+                            <li v-if="can('admin.users.role.batch.destroy')">
+                                <a href="#" @click.prevent="batchDestroy">
                                     <i class="fa fa-trash-o bigger-120"></i> 删除
                                 </a>
                             </li>
@@ -29,7 +29,7 @@
                     <div class="btn-group btn-group-sm pull-right margin-r-5">
                         <router-link
                                 :to="{ name: 'admin.users.role.create' }"
-                                v-if="can('admin.users.role.store')"
+                                v-if="can('admin.users.role.create')"
                                 class="btn btn-default">
                             <i class="fa fa-plus bigger-120"></i>
                             创建角色
@@ -71,7 +71,7 @@
                                 <div class="hidden-xs btn-group">
                                     <router-link
                                             class="btn btn-xs btn-info"
-                                            v-if="can('admin.users.role.update')"
+                                            v-if="can('admin.users.role.edit')"
                                             :to="{name:'admin.users.role.edit', params: {id: scope.row.id}}"
                                             title="编辑">
                                         <i class="fa fa-pencil bigger-120"></i>

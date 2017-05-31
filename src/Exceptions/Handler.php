@@ -3,6 +3,7 @@
 namespace Sco\Admin\Exceptions;
 
 use Exception;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Contracts\Debug\ExceptionHandler as ExceptionHandlerContract;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -39,6 +40,13 @@ class Handler implements ExceptionHandlerContract
      */
     public function render($request, Exception $exception)
     {
+        if ($exception instanceof AuthenticationException) {
+            if ($request->expectsJson()) {
+                return response('Unauthenticated.', 401);
+            }
+            return redirect()->guest(route('admin.login'));
+        }
+
         if ($exception instanceof ModelNotFoundException) {
             return response($exception->getMessage(), 404);
         }

@@ -33,7 +33,8 @@ trait EntrustUserTrait
     }
 
     public function save(array $options = [])
-    {   //both inserts and updates
+    {
+        //both inserts and updates
         if (Cache::getStore() instanceof TaggableStore) {
             Cache::tags(Config::get('admin.role_user_table'))->flush();
         }
@@ -41,7 +42,8 @@ trait EntrustUserTrait
     }
 
     public function delete(array $options = [])
-    {   //soft or hard
+    {
+        //soft or hard
         parent::delete($options);
         if (Cache::getStore() instanceof TaggableStore) {
             Cache::tags(Config::get('admin.role_user_table'))->flush();
@@ -49,7 +51,8 @@ trait EntrustUserTrait
     }
 
     public function restore()
-    {   //soft delete undo's
+    {
+        //soft delete undo's
         parent::restore();
         if (Cache::getStore() instanceof TaggableStore) {
             Cache::tags(Config::get('admin.role_user_table'))->flush();
@@ -245,7 +248,6 @@ trait EntrustUserTrait
                 ['roles' => $checkedRoles, 'permissions' => $checkedPermissions],
             ];
         }
-
     }
 
     /**
@@ -311,5 +313,4 @@ trait EntrustUserTrait
             $this->detachRole($role);
         }
     }
-
 }

@@ -22,7 +22,7 @@ Route::group([
             ->name('logout');
     });
 
-    Route::group(['middleware' => 'auth.admin'], function () {
+    Route::group(['middleware' => 'auth'], function () {
         $spaRoutes = [
             // 控制台
             'dashboard'         => '/',
@@ -63,7 +63,7 @@ Route::group([
             ->middleware('admin.permissions');
     });
 
-    Route::group(['middleware' => 'auth.admin'], function () {
+    Route::group(['middleware' => 'auth'], function () {
         // 系统管理
         Route::group([
             'as'        => 'system.',
@@ -97,7 +97,6 @@ Route::group([
             // 操作日志
             Route::get('log/list', 'ActionLogController@getList')
                 ->name('log.list');
-
         });
 
         // 管理组
@@ -152,7 +151,6 @@ Route::group([
                 Route::post('batch/destroy', 'RoleController@batchDestroy')
                     ->name('batch.destroy');
             });
-
         });
     });
 });

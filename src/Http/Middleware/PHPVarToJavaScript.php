@@ -25,11 +25,9 @@ class PHPVarToJavaScript
                 'name' => Auth::user()->name,
                 'role' => Auth::user()->roles->makeHidden(['description', 'created_at', 'updated_at', 'pivot', 'perms'])->first(null, collect())
             ];
-            //$js['PermList'] = request()->attributes->get('admin.permissions', collect());
         }
 
         JavaScript::put($js);
         return $next($request);
     }
-
 }

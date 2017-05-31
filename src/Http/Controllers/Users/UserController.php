@@ -64,7 +64,7 @@ class UserController extends Controller
     public function destroy($id)
     {
         if ($id == 1) {
-            throw new AdminHttpException('超级管理员不能删除');
+            throw new AuthenticationException();
         }
 
         $model = $this->getUserModel()->findOrFail($id);
