@@ -17,7 +17,7 @@
                                 v-if="can('admin.users.user.store')"
                                 @click.prevent="add">
                             <i class="fa fa-plus bigger-120"></i>
-                            创建管理员
+                            新建用户
                         </button>
                     </div>
                 </div>
@@ -41,7 +41,7 @@
                         <el-table-column label="创建时间" prop="created_at">
                         </el-table-column>
 
-                        <el-table-column label="管理组">
+                        <el-table-column label="角色">
                             <template scope="scope">
                                 <template v-for="role in scope.row.roles">
                                     {{ role.display_name }}[{{ role.name }}]<br>
@@ -60,14 +60,14 @@
                                             v-if="can('admin.users.user.update')"
                                             @click.prevent="edit(scope.$index)"
                                             :disabled="cantEdit(scope.row)"
-                                            title="编辑管理员">
+                                            title="编辑用户">
                                         <i class="fa fa-pencil bigger-120"></i>
                                     </button>
                                     <button class="btn btn-xs btn-danger"
                                             v-if="can('admin.users.user.destroy')"
                                             @click.prevent="destroy(scope.row.id)"
                                             :disabled="scope.row.id == 1"
-                                            title="删除管理员">
+                                            title="删除用户">
                                         <i class="fa fa-trash-o bigger-120"></i>
                                     </button>
                                 </div>
@@ -124,7 +124,7 @@
                 editFields: [
                     {
                         key: 'name',
-                        title: '管理员名称',
+                        title: '用户名',
                     },
                     {
                         key: 'email',
@@ -160,7 +160,7 @@
         },
         computed: {
             modalTitle () {
-                return this.info.id ? '编辑管理员' : '新建管理员';
+                return this.info.id ? '编辑用户' : '新建用户';
             },
         },
         created () {

@@ -26,6 +26,7 @@
                             node-key="id"
                             ref="tree"
                             default-expand-all
+                            :render-content="renderContent"
                             slot="perms">
                     </el-tree>
                 </b-form>
@@ -146,6 +147,7 @@
                     list.push({
                         id: perms[index].id,
                         label: perms[index].id + ': ' + perms[index].display_name + '(' + perms[index].name + ')',
+                        description: perms[index].description,
                         children: children,
                     });
                 });
@@ -183,7 +185,28 @@
             },
             flushPermission() {
                 this.$store.commit('setPermissions', []);
-            }
+            },
+            renderContent(h, {node, data, store}) {
+                if (data.description) {
+                    return h('span', [
+                        node.label + ' ',
+                        h('el-tooltip', {
+                            props: {
+                                content: data.description,
+                                effect: 'dark',
+                                placement: 'top'
+                            }
+                        },
+                        [
+                            h('i', {
+                                class: 'fa fa-question-circle'
+                            })
+                        ])
+                    ])
+                } else {
+                    return h('span', node.label);
+                }
+            },
         }
 
     }

@@ -77,7 +77,7 @@ export default [
                 path: 'users',
                 component: Blank,
                 meta: {
-                    title: '管理组'
+                    title: '用户管理'
                 },
                 children: [
                     {
@@ -87,7 +87,7 @@ export default [
                         },
                         name: 'admin.users.user',
                         meta: {
-                            title: '管理员',
+                            title: '用户',
                             auth: true,
                         }
                     },

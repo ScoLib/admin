@@ -38,20 +38,20 @@ class PermissionsTableSeeder extends Seeder
 
     private function users()
     {
-        $users = $this->insertPerm('#', '管理组', 0, 1, 'fa-users');
+        $users = $this->insertPerm('#', '用户管理', 0, 1, 'fa-users');
 
-        $user = $this->insertPerm('admin.users.user', '管理员', $users->id, 1,
+        $user = $this->insertPerm('admin.users.user', '用户', $users->id, 1,
             'fa-user');
-        $this->insertPerm('admin.users.user.list', '管理员列表数据', $user->id);
-        $this->insertPerm('admin.users.user.store', '保存管理员', $user->id);
+        $this->insertPerm('admin.users.user.list', 'Ajax获取用户列表数据', $user->id);
+        $this->insertPerm('admin.users.user.store', '保存用户', $user->id);
 
-        $updateUser = $this->insertPerm('admin.users.user.update', '更新管理员', $user->id);
+        $updateUser = $this->insertPerm('admin.users.user.update', '更新用户', $user->id);
         $this->insertPerm('admin.users.user.role.all', 'Ajax获取所有角色数据',
-            $updateUser->id, 0, '', '用于创建和编辑');
+            $updateUser->id, 0, '', '用于创建和编辑用户');
 
         $this->insertPerm('admin.users.user.destroy', '删除管理员', $user->id);
 
-        $role = $this->insertPerm('admin.users.role', '角色管理', $users->id, 1,
+        $role = $this->insertPerm('admin.users.role', '角色', $users->id, 1,
             'fa-user-plus');
         $this->insertPerm('admin.users.role.list', '角色列表数据', $role->id);
 
@@ -62,9 +62,9 @@ class PermissionsTableSeeder extends Seeder
 
         $roleEdit = $this->insertPerm('admin.users.role.edit', '编辑角色',
             $role->id);
-        $this->insertPerm('admin.users.role.get', '获取角色信息', $roleEdit->id, 0,
+        $this->insertPerm('admin.users.role.get', 'Ajax获取角色信息', $roleEdit->id, 0,
             '', '用于编辑角色时获取数据');
-        $this->insertPerm('admin.users.role.perms.list', 'ajax获取权限列表',
+        $this->insertPerm('admin.users.role.perms.list', 'Ajax获取权限列表',
             $roleEdit->id, 0, '', '用于编辑角色时获取数据');
         $this->insertPerm('admin.users.role.update', '更新角色', $roleEdit->id);
 
