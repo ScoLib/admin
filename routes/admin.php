@@ -152,4 +152,38 @@ Route::group([
             });
         });
     });
+
+    Route::group([], function () {
+        Route::post('{model}/list', function ($model) {
+            dd('list', $model);
+        })->where(['model' => '[a-z_/]+']);
+
+        Route::get('{model}/create', function ($model) {
+            dd('create', $model);
+        })->where(['model' => '[a-z_/]+']);
+
+        Route::post('{model}/store', function ($model) {
+            dd('store', $model);
+        })->where(['model' => '[a-z_/]+']);
+
+        Route::post('{model}/update', function ($model) {
+            dd('update', $model);
+        })->where(['model' => '[a-z_/]+']);
+
+        Route::post('{model}/batch/destroy', function ($model) {
+            dd('batch/destroy', $model);
+        })->where(['model' => '[a-z_/]+']);
+
+        Route::delete('{model}/{id}', function ($model, $id) {
+            dd('destroy', $model, $id);
+        })->where(['model' => '[a-z_/]+', 'id' => '[0-9]+']);
+
+        Route::get('{model}/{id}/edit', function ($model, $id) {
+            dd('edit', $model, $id);
+        })->where(['model' => '[a-z_/]+', 'id' => '[0-9]+']);
+
+        Route::get('{model}', function ($model) {
+            dd($model);
+        })->where(['model' => '[a-z_/]+']);
+    });
 });
