@@ -45,9 +45,13 @@ class Handler implements ExceptionHandlerContract
         $exception = $this->prepareException($exception);
 
         if ($exception instanceof AuthenticationException) {
-            return $this->unauthenticated($request, $exception);
+            $response = $this->unauthenticated($request, $exception);
         } elseif ($exception instanceof HttpException) {
-            return $this->renderHttpException($request, $exception);
+            $response = $this->renderHttpException($request, $exception);
+        }
+
+        if ($response) {
+            return $response;
         }
 
         return $this->parentHandler->render($request, $exception);
@@ -96,7 +100,9 @@ class Handler implements ExceptionHandlerContract
             return response('Unauthenticated.', 401);
         }
 
-        return redirect()->guest(route('admin.login'));
+        if ($this->isAdmin($request)) {
+            return redirect()->guest(route('admin.login'));
+        }
     }
 
     /**
@@ -112,6 +118,13 @@ class Handler implements ExceptionHandlerContract
         if ($request->expectsJson()) {
             return response($exception->getMessage() ?: 'Not Found', $status);
         }
-        return response()->view('admin::app', ['exception' => $exception], $status, $exception->getHeaders());
+        if ($this->isAdmin($request)) {
+            //return response()->view('admin::app', ['exception' => $exception], $status, $exception->getHeaders());
+        }
+    }
+
+    protected function isAdmin($request)
+    {
+        return $request->route() && $request->route()->getPrefix() == 'admin';
     }
 }
