@@ -125,6 +125,6 @@ class Handler implements ExceptionHandlerContract
 
     protected function isAdmin($request)
     {
-        return $request->route() && $request->route()->getPrefix() == 'admin';
+        return $request->route() && strpos($request->route()->getPrefix(), 'admin') === 0;
     }
 }

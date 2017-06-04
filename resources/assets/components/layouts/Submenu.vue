@@ -5,7 +5,7 @@
         <router-link
                 tag="li"
                 v-for="child in childs"
-                :to="child.name == '#' ? notUrl : {name: child.name}"
+                :to="child.name == '#' ? notUrl : child.url"
                 :class="activeClass(child.child)"
                 :key="child.id"
                 exact>

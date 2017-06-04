@@ -4,6 +4,7 @@ namespace Sco\Admin\Http\Middleware;
 
 use Auth;
 use Closure;
+use Route;
 use Sco\Admin\Models\Permission;
 
 class AdminMenu
@@ -34,10 +35,21 @@ class AdminMenu
                 if (!$permission->child->isEmpty()) {
                     $permission->child = $this->checkMenuPermission($permission->child);
                 }
+                $permission->url = $this->getRouteUrl($permission);
                 return $permission;
             }
         });
 
         return $return;
+    }
+
+    private function getRouteUrl($permission)
+    {
+        if ($permission->name == '#') {
+            return '';
+        } else {
+            return Route::has($permission->name) ? route($permission->name, [], false)
+                : ('/' . str_replace('.', '/', $permission->name));
+        }
     }
 }

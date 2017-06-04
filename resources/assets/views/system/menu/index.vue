@@ -315,8 +315,6 @@
                 }).then(action => {}).catch(action => {});
             },
             save() {
-                console.log(this.info);
-                return false;
                 this.buttonLoading = true;
                 if (typeof this.info.id == 'undefined') {
                     var url = '/admin/system/menu/store';

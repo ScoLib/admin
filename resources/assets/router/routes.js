@@ -128,9 +128,45 @@ export default [
             },
             {
                 path: '*',
-                redirect: {
-                    name: 'admin.dashboard'
+                component: Blank,
+                meta: {
+                    title: '用户管理'
                 },
+                children: [
+                    {
+                        path: ':id/edit',
+                        component (resolve) {
+                            require(['../views/model/form.vue'], resolve);
+                        },
+                        name: 'admin.model.edit',
+                        meta: {
+                            title: 'edit',
+                            auth: true,
+                        },
+                    },
+                    {
+                        path: 'create',
+                        component (resolve) {
+                            require(['../views/model/form.vue'], resolve);
+                        },
+                        name: 'admin.model.create',
+                        meta: {
+                            title: 'create',
+                            auth: true,
+                        },
+                    },
+                    {
+                        path: '/',
+                        component (resolve) {
+                            require(['../views/model/index.vue'], resolve);
+                        },
+                        name: 'admin.model',
+                        meta: {
+                            title: 'index',
+                            auth: true,
+                        }
+                    },
+                ],
             },
         ],
     }

@@ -32,7 +32,7 @@ Route::group([
             'system.log'        => 'system/log',
             // 菜单管理
             'system.menu'       => 'system/menu',
-            // 管理员
+            // 用户
             'users.user'        => 'users/user',
             // 角色管理
             'users.role'        => 'users/role',
@@ -104,9 +104,9 @@ Route::group([
             'prefix'    => 'users',
             'namespace' => 'Users',
         ], function () {
-            // 管理员
+            // 用户
             Route::group(['as' => 'user.', 'prefix' => 'user'], function () {
-                // 管理员列表数据
+                // 用户列表数据
                 Route::get('list', 'UserController@getList')
                     ->name('list');
 
@@ -153,37 +153,44 @@ Route::group([
         });
     });
 
-    Route::group([], function () {
-        Route::post('{model}/list', function ($model) {
-            dd('list', $model);
-        })->where(['model' => '[a-z_/]+']);
+    Route::pattern('model', '[a-z_/]+');
+    Route::group([
+        'middleware' => ['auth', 'admin.phptojs'],
+        'prefix' => '{model}'
+    ], function () {
 
-        Route::get('{model}/create', function ($model) {
-            dd('create', $model);
-        })->where(['model' => '[a-z_/]+']);
+        Route::post('list', function () {
+            return view('admin::app');
+        });
 
-        Route::post('{model}/store', function ($model) {
-            dd('store', $model);
-        })->where(['model' => '[a-z_/]+']);
+        Route::get('create', function () {
+            return view('admin::app');
+        })->name('model.create');
 
-        Route::post('{model}/update', function ($model) {
-            dd('update', $model);
-        })->where(['model' => '[a-z_/]+']);
+        Route::post('store', function ($model) {
+            return view('admin::app');
+        });
 
-        Route::post('{model}/batch/destroy', function ($model) {
-            dd('batch/destroy', $model);
-        })->where(['model' => '[a-z_/]+']);
+        Route::post('update', function ($model) {
+            return view('admin::app');
+        });
 
-        Route::delete('{model}/{id}', function ($model, $id) {
+        Route::post('batch/destroy', function ($model) {
+            return view('admin::app');
+        });
+
+        Route::delete('{id}', function ($model, $id) {
             dd('destroy', $model, $id);
-        })->where(['model' => '[a-z_/]+', 'id' => '[0-9]+']);
+        })->where(['id' => '[0-9]+']);
 
-        Route::get('{model}/{id}/edit', function ($model, $id) {
-            dd('edit', $model, $id);
-        })->where(['model' => '[a-z_/]+', 'id' => '[0-9]+']);
+        Route::get('{id}/edit', function ($model, $id) {
+            return view('admin::app');
+        })->where(['id' => '[0-9]+'])
+            ->name('model.edit');
 
-        Route::get('{model}', function ($model) {
-            dd($model);
-        })->where(['model' => '[a-z_/]+']);
+        Route::get('/', function ($model) {
+            return view('admin::app');
+        })->name('model');
     });
+
 });
