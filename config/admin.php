@@ -138,4 +138,6 @@ return [
             'users.permission',
         ],
     ],
+
+    'model_config_dir' => 'admin_model'
 ];

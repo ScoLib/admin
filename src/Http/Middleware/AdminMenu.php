@@ -2,13 +2,19 @@
 
 namespace Sco\Admin\Http\Middleware;
 
-use Auth;
 use Closure;
 use Route;
-use Sco\Admin\Models\Permission;
+use Sco\Admin\Config\Factory as ConfigFactory;
 
 class AdminMenu
 {
+    protected $configFactory;
+
+    public function __construct(ConfigFactory $configFactory)
+    {
+        $this->configFactory = $configFactory;
+    }
+
     /**
      * Handle an incoming request.
      *
@@ -29,15 +35,17 @@ class AdminMenu
         $menus = collect();
         foreach ($list as $key => $items) {
             if (is_string($items)) {
-                $menu = [
-                    'title' => $items,
-                    'url'   => $this->getRouteUrl('admin.' . $items),
-                    'child' => [],
-                ];
-                $menus->push($menu);
+                $config = $this->configFactory->make($items);
+                if ($config && $config->getAttribute('permission')) {
+                    $menus->push([
+                        'title' => $config->getAttribute('title'),
+                        'url'   => $this->getRouteUrl('admin.' . $items),
+                        'child' => [],
+                    ]);
+                }
             } elseif (is_array($items)) { // child
                 $childs = $this->getAdminMenu($items);
-                if (!empty($childs)) {
+                if ($childs->isNotEmpty()) {
                     $menu = [
                         'title' => $key,
                         'url'   => '/#',
