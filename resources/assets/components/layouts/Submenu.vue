@@ -5,14 +5,14 @@
         <router-link
                 tag="li"
                 v-for="child in childs"
-                :to="child.name == '#' ? notUrl : child.url"
+                :to="child.url"
                 :class="activeClass(child.child)"
                 :key="child.id"
                 exact>
             <a>
                 <i :class="['fa', child.icon ? child.icon : 'fa-circle-o']"></i>
-                <span v-if="isTop"> {{ child.display_name }} </span>
-                <template v-else>{{ child.display_name }}</template>
+                <span v-if="isTop"> {{ child.title }} </span>
+                <template v-else>{{ child.title }}</template>
 
                 <span class="pull-right-container" v-if="Object.keys(child.child).length > 0">
                     <i class="fa fa-angle-left pull-right"></i>
@@ -30,9 +30,9 @@
         name: 'Submenu',
         props: {
             childs: {
-                type: Object,
+                type: Object|Array,
                 default () {
-                    return {};
+                    return [];
                 }
             },
             isTop: {
@@ -47,9 +47,6 @@
             }
         },
         computed: {
-            notUrl () {
-                return '/#';
-            }
         },
         methods: {
             activeClass (child) {
@@ -57,7 +54,9 @@
                 if (Object.keys(child).length > 0) {
                     var _this = this;
                     Object.keys(child).forEach(index => {
-                        if (child[index].name == _this.$route.name) {
+//                        console.log(child[index].url)
+//                        console.log(_this.$route)
+                        if (child[index].url == _this.$route.path) {
                             activeClass = ['treeview', 'active'];
                         }
                     });

@@ -125,4 +125,17 @@ return [
     |
     */
     'permission_foreign_key' => 'permission_id',
+
+    'menus' => [
+        'dashboard',
+        '系统管理' => [
+            'system.log',
+            'system.menu',
+        ],
+        '用户管理' => [
+            'users.user',
+            'users.role',
+            'users.permission',
+        ],
+    ],
 ];

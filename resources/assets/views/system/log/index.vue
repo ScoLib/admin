@@ -143,7 +143,9 @@
         },
         methods: {
             changePage(page) {
-                this.searchParams.page = page;
+                if (!isNaN(page)) {
+                    this.searchParams.page = page;
+                }
                 this.getResults();
             },
             getResults() {
@@ -154,7 +156,7 @@
                         this.pageData = response.data;
                     }).catch(error => {})
             },
-            fetchData () {
+            fetchData() {
                 this.getResults();
             },
         }

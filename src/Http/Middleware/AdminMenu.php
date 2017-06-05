@@ -19,37 +19,41 @@ class AdminMenu
      */
     public function handle($request, Closure $next)
     {
-        $request->attributes->set('admin.menu', $this->getAdminMenu());
+        $request->attributes->set('admin.menu',
+            $this->getAdminMenu(config('admin.menus')));
         return $next($request);
     }
 
-    protected function getAdminMenu()
+    protected function getAdminMenu($list)
     {
-        return $this->checkMenuPermission((new Permission())->getMenuList());
-    }
-
-    private function checkMenuPermission($list)
-    {
-        $return = $list->filter(function ($permission, $key) {
-            if (Auth::user()->can($permission->name)) {
-                if (!$permission->child->isEmpty()) {
-                    $permission->child = $this->checkMenuPermission($permission->child);
+        $menus = collect();
+        foreach ($list as $key => $items) {
+            if (is_string($items)) {
+                $menu = [
+                    'title' => $items,
+                    'url'   => $this->getRouteUrl('admin.' . $items),
+                    'child' => [],
+                ];
+                $menus->push($menu);
+            } elseif (is_array($items)) { // child
+                $childs = $this->getAdminMenu($items);
+                if (!empty($childs)) {
+                    $menu = [
+                        'title' => $key,
+                        'url'   => '/#',
+                        'child' => $childs,
+                    ];
+                    $menus->push($menu);
                 }
-                $permission->url = $this->getRouteUrl($permission);
-                return $permission;
             }
-        });
-
-        return $return;
+        }
+        return $menus;
     }
 
-    private function getRouteUrl($permission)
+    private function getRouteUrl($name)
     {
-        if ($permission->name == '#') {
-            return '';
-        } else {
-            return Route::has($permission->name) ? route($permission->name, [], false)
-                : ('/' . str_replace('.', '/', $permission->name));
-        }
+        return Route::has($name) ? route($name, [], false)
+            : ('/' . str_replace('.', '/', $name));
+
     }
 }

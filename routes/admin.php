@@ -156,41 +156,36 @@ Route::group([
     Route::pattern('model', '[a-z_/]+');
     Route::group([
         'middleware' => ['auth', 'admin.phptojs'],
-        'prefix' => '{model}'
+        'prefix' => '{model}',
+        'as' => 'model.',
     ], function () {
 
         Route::post('list', function () {
             return view('admin::app');
         });
 
-        Route::get('create', function () {
-            return view('admin::app');
-        })->name('model.create');
+        Route::get('create', 'AdminController@create')
+            ->name('create');
 
-        Route::post('store', function ($model) {
-            return view('admin::app');
-        });
+        Route::post('store', 'AdminController@store')
+            ->name('store');
 
-        Route::post('update', function ($model) {
-            return view('admin::app');
-        });
+        Route::post('update', 'AdminController@update')
+            ->name('update');
 
-        Route::post('batch/destroy', function ($model) {
-            return view('admin::app');
-        });
+        Route::post('batch/destroy', 'AdminController@batchDestroy')
+            ->name('batch.destroy');
 
-        Route::delete('{id}', function ($model, $id) {
-            dd('destroy', $model, $id);
-        })->where(['id' => '[0-9]+']);
+        Route::delete('{id}', 'AdminController@destroy')
+            ->where(['id' => '[0-9]+'])
+            ->name('destroy');
 
-        Route::get('{id}/edit', function ($model, $id) {
-            return view('admin::app');
-        })->where(['id' => '[0-9]+'])
-            ->name('model.edit');
+        Route::get('{id}/edit', 'AdminController@edit')
+            ->where(['id' => '[0-9]+'])
+            ->name('edit');
 
-        Route::get('/', function ($model) {
-            return view('admin::app');
-        })->name('model');
+        Route::get('/', 'AdminController@index')
+            ->name('index');
     });
 
 });
