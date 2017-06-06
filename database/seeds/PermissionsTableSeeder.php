@@ -6,9 +6,16 @@ class PermissionsTableSeeder extends Seeder
 {
     public function run()
     {
-        $this->dashboard();
-        $this->system();
-        $this->users();
+        //$this->dashboard();
+        //$this->system();
+        //$this->users();
+
+        $this->storePermission('view_admin', '访问后台');
+        $this->storePermission('manage_log', '管理操作日志');
+        $this->storePermission('view_user', '查看用户');
+        $this->storePermission('create_user', '创建用户');
+        $this->storePermission('update_user', '编辑用户');
+        $this->storePermission('delete_user', '删除用户');
     }
 
     private function dashboard()
@@ -45,7 +52,8 @@ class PermissionsTableSeeder extends Seeder
         $this->insertPerm('admin.users.user.list', 'Ajax获取用户列表数据', $user->id);
         $this->insertPerm('admin.users.user.store', '保存用户', $user->id);
 
-        $updateUser = $this->insertPerm('admin.users.user.update', '更新用户', $user->id);
+        $updateUser = $this->insertPerm('admin.users.user.update', '更新用户',
+            $user->id);
         $this->insertPerm('admin.users.user.role.all', 'Ajax获取所有角色数据',
             $updateUser->id, 0, '', '用于创建和编辑用户');
 
@@ -62,7 +70,8 @@ class PermissionsTableSeeder extends Seeder
 
         $roleEdit = $this->insertPerm('admin.users.role.edit', '编辑角色',
             $role->id);
-        $this->insertPerm('admin.users.role.get', 'Ajax获取角色信息', $roleEdit->id, 0,
+        $this->insertPerm('admin.users.role.get', 'Ajax获取角色信息', $roleEdit->id,
+            0,
             '', '用于编辑角色时获取数据');
         $this->insertPerm('admin.users.role.perms.list', 'Ajax获取权限列表',
             $roleEdit->id, 0, '', '用于编辑角色时获取数据');
@@ -90,6 +99,19 @@ class PermissionsTableSeeder extends Seeder
         $permission->name         = $name;
         $permission->is_menu      = $isMenu;
         $permission->sort         = 1;
+        $permission->description  = $description;
+        $permission->save();
+
+        return $permission;
+    }
+
+    private function storePermission($name, $displayName, $description = '')
+    {
+        $permissionModelName = config('admin.permission');
+        $permission          = new $permissionModelName();
+
+        $permission->display_name = $displayName;
+        $permission->name         = $name;
         $permission->description  = $description;
         $permission->save();
 

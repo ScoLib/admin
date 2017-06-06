@@ -22,18 +22,18 @@ Route::group([
             ->name('logout');
     });
 
-    Route::group(['middleware' => ['auth', 'admin.phptojs', 'admin.can']], function () {
+    Route::group(['middleware' => ['auth', 'admin.phptojs']], function () {
         $spaRoutes = [
             // 控制台
             'dashboard'         => '/',
             // 403
             '403'               => '403',
             // 操作日志
-            'system.log'        => 'system/log',
+            //'system.log'        => 'system/log',
             // 菜单管理
-            'system.menu'       => 'system/menu',
+            //'system.menu'       => 'system/menu',
             // 用户
-            'users.user'        => 'users/user',
+            //'users.user'        => 'users/user',
             // 角色管理
             'users.role'        => 'users/role',
             // 创建角色
@@ -50,7 +50,7 @@ Route::group([
         }
     });
 
-    Route::group(['middleware' => ['auth', 'admin.can']], function () {
+    Route::group(['middleware' => ['auth']], function () {
         Route::get('menu', function () {
             $menus = request()->attributes->get('admin.menu');
             return response()->json($menus);
@@ -62,6 +62,13 @@ Route::group([
             return response()->json($permissions);
         })->name('permissions')
             ->middleware('admin.permissions');
+
+        // 操作日志
+        Route::get('system/log/list', 'System\ActionLogController@getList')
+            ->name('system.log.list');
+    });
+
+    Route::group(['middleware' => ['auth', 'admin.can']], function () {
 
         // 系统管理
         Route::group([
@@ -93,9 +100,7 @@ Route::group([
                     ->name('batch.destroy');
             });
 
-            // 操作日志
-            Route::get('log/list', 'ActionLogController@getList')
-                ->name('log.list');
+
         });
 
         // 管理组

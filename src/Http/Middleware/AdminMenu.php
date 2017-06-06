@@ -2,6 +2,7 @@
 
 namespace Sco\Admin\Http\Middleware;
 
+use Auth;
 use Closure;
 use Route;
 use Sco\Admin\Config\Factory as ConfigFactory;
@@ -35,13 +36,24 @@ class AdminMenu
         $menus = collect();
         foreach ($list as $key => $items) {
             if (is_string($items)) {
-                $config = $this->configFactory->make($items);
-                if ($config && $config->getAttribute('permissions.view')) {
-                    $menus->push([
-                        'title' => $config->getAttribute('title'),
-                        'url'   => $this->getRouteUrl('admin.' . $items),
-                        'child' => [],
-                    ]);
+                $name = 'admin.' . $items;
+                if (Route::has($name)) {
+                    if (Auth::user()->can($name)) {
+                        $menus->push([
+                            'title' => $key,
+                            'url'   => route($name),
+                            'child' => [],
+                        ]);
+                    }
+                } else {
+                    $config = $this->configFactory->make($items);
+                    if ($config && $config->getAttribute('permissions.view')) {
+                        $menus->push([
+                            'title' => $config->getAttribute('title'),
+                            'url'   => ('/' . str_replace('.', '/', $name)),
+                            'child' => [],
+                        ]);
+                    }
                 }
             } elseif (is_array($items)) { // child
                 $childs = $this->getAdminMenu($items);
@@ -56,12 +68,5 @@ class AdminMenu
             }
         }
         return $menus;
-    }
-
-    private function getRouteUrl($name)
-    {
-        return Route::has($name) ? route($name, [], false)
-            : ('/' . str_replace('.', '/', $name));
-
     }
 }
