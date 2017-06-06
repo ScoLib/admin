@@ -50,7 +50,7 @@ class Handler implements ExceptionHandlerContract
             $response = $this->renderHttpException($request, $exception);
         }
 
-        if ($response) {
+        if (isset($response)) {
             return $response;
         }
 

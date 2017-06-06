@@ -36,7 +36,7 @@ class AdminMenu
         foreach ($list as $key => $items) {
             if (is_string($items)) {
                 $config = $this->configFactory->make($items);
-                if ($config && $config->getAttribute('permission')) {
+                if ($config && $config->getAttribute('permissions.view')) {
                     $menus->push([
                         'title' => $config->getAttribute('title'),
                         'url'   => $this->getRouteUrl('admin.' . $items),
