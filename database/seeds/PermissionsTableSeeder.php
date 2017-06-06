@@ -12,10 +12,23 @@ class PermissionsTableSeeder extends Seeder
 
         $this->storePermission('view_admin', '访问后台');
         $this->storePermission('manage_log', '管理操作日志');
+
         $this->storePermission('view_user', '查看用户');
         $this->storePermission('create_user', '创建用户');
         $this->storePermission('update_user', '编辑用户');
         $this->storePermission('delete_user', '删除用户');
+
+        $this->storePermission('view_role', '查看角色');
+        $this->storePermission('create_role', '创建角色');
+        $this->storePermission('update_role', '编辑角色');
+        $this->storePermission('delete_role', '删除角色');
+
+        $this->storePermission('view_permission', '查看权限');
+        $this->storePermission('create_permission', '创建权限');
+        $this->storePermission('update_permission', '编辑权限');
+        $this->storePermission('delete_permission', '删除权限');
+
+        $this->storePermission('admin.system.menu', '菜单');
     }
 
     private function dashboard()

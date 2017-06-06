@@ -31,11 +31,11 @@ Route::group([
             // 操作日志
             //'system.log'        => 'system/log',
             // 菜单管理
-            //'system.menu'       => 'system/menu',
+            'system.menu'       => 'system/menu',
             // 用户
             //'users.user'        => 'users/user',
             // 角色管理
-            'users.role'        => 'users/role',
+            //'users.role'        => 'users/role',
             // 创建角色
             'users.role.create' => 'users/role/create',
             // 编辑角色

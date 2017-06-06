@@ -36,21 +36,21 @@ class AdminMenu
         $menus = collect();
         foreach ($list as $key => $items) {
             if (is_string($items)) {
-                $name = 'admin.' . $items;
-                if (Route::has($name)) {
-                    if (Auth::user()->can($name)) {
+                if (Route::has($items)) {
+                    if (Auth::user()->can($items)) {
                         $menus->push([
                             'title' => $key,
-                            'url'   => route($name),
+                            'url'   => route($items, [], false),
                             'child' => [],
                         ]);
                     }
                 } else {
                     $config = $this->configFactory->make($items);
                     if ($config && $config->getAttribute('permissions.view')) {
+                        $model = str_replace('.', '/', $items);
                         $menus->push([
                             'title' => $config->getAttribute('title'),
-                            'url'   => ('/' . str_replace('.', '/', $name)),
+                            'url'   => route('admin.model.index', ['model' => $model], false),
                             'child' => [],
                         ]);
                     }

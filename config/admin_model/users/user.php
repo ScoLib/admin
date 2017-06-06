@@ -6,7 +6,6 @@ return [
 
     'permissions' => [
         'view'   => function () {
-            return true;
             return Auth::user()->can('view_user');
         },
         'create' => function () {

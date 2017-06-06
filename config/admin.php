@@ -126,11 +126,23 @@ return [
     */
     'permission_foreign_key' => 'permission_id',
 
+    /**
+     * Admin Menu
+     *
+     * [
+     *  'model1', // file is "/config/{model_config_dir}/model1.php"
+     *  'GroupName' => [
+     *      'ModelGroup.model1',  // file is "/config/{model_config_dir}/ModelGroup/model1.php"
+     *      'model2',  // file is "/config/{model_config_dir}/model2.php"
+     *      'title' => 'RouteName',  // admin route name
+     *  ],
+     * ]
+     */
     'menus' => [
         'dashboard',
         '系统管理' => [
             'system.log',
-            'system.menu',
+            '菜单' => 'admin.system.menu',
         ],
         '用户管理' => [
             'users.user',

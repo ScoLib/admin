@@ -5,7 +5,13 @@ return [
     'model' => \Sco\ActionLog\Models\ActionLogModel::class,
 
     'permissions' => function () {
-        return true;
         return Auth::user()->can('manage_log');
-    }
+    },
+    'columns' => [
+        [
+            'field' => 'id',
+            'title' => 'ID',
+        ],
+    ],
+
 ];
