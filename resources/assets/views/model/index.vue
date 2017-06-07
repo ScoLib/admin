@@ -144,6 +144,9 @@
             this.fetchData();
         },
         watch: {
+            '$route'() {
+                this.fetchData();
+            }
         },
         methods: {
             fetchData () {

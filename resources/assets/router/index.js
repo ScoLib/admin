@@ -25,6 +25,10 @@ router.beforeEach((to, from, next) => {
     if (typeof window.Admin != 'undefined' && window.Admin.LoggedUser) {
         store.commit('setUser', window.Admin.LoggedUser);
     }
+    if (to.meta.title) {
+        store.commit('setMetaTitle', to.meta.title);
+        document.title = store.state.metaTitle + ' - ' + window.Admin.Title;
+    }
 
     if (to.fullPath != '/#') {
 
@@ -46,15 +50,18 @@ router.beforeEach((to, from, next) => {
                             store.commit('setModel', data);
                             store.commit('setMetaTitle', response.data.title);
                             document.title = store.state.metaTitle + ' - ' + window.Admin.Title;
+                            next();
                         }).catch(error => {})
                 } else {
                     to.meta.title = store.state.models[to.params.model].title;
                     store.commit('setMetaTitle', to.meta.title);
                     document.title = store.state.metaTitle + ' - ' + window.Admin.Title;
+                    next();
                 }
             } else {
                 store.commit('setMetaTitle', to.meta.title);
                 document.title = store.state.metaTitle + ' - ' + window.Admin.Title;
+                next();
             }
 
 
@@ -79,7 +86,6 @@ router.beforeEach((to, from, next) => {
                     // return next({name: 'admin.403'});
                 }
             }*/
-            next();
         } else {
             next();
         }

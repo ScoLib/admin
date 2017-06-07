@@ -13,6 +13,12 @@ class Factory
 
     }
 
+    public function makeFromUri($uri)
+    {
+        $name = str_replace('/', '.', $uri);
+        return $this->make($name);
+    }
+
     public function make($name)
     {
         $config = null;

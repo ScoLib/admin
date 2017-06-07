@@ -6,6 +6,7 @@ namespace Sco\Admin\Http\Middleware;
 use Auth;
 use JavaScript;
 use Illuminate\Http\Request;
+use Sco\Admin\Config\Factory;
 
 class PHPVarToJavaScript
 {
@@ -25,6 +26,14 @@ class PHPVarToJavaScript
                 'name' => Auth::user()->name,
                 'role' => Auth::user()->roles->makeHidden(['description', 'created_at', 'updated_at', 'pivot', 'perms'])->first(null, collect())
             ];
+        }
+
+        if ($request->route() && $request->route('model')) {
+            $model = $request->route('model');
+            $config = (new Factory())->makeFromUri($model);
+            if ($config) {
+                $js['ModelConfig'][$model] = $config->getAttribute();
+            }
         }
 
         JavaScript::put($js);
