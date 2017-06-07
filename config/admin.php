@@ -2,9 +2,9 @@
 
 return [
     /**
-     * Sco Admin Package Version
+     * Sco Admin Title
      */
-    'version' => '1.0.0-dev',
+    'title' => 'Sco Admin',
 
     /*
     |--------------------------------------------------------------------------
@@ -149,6 +149,7 @@ return [
             'users.role',
             'users.permission',
         ],
+        'test',
     ],
 
     'model_config_dir' => 'admin_model'

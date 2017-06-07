@@ -17,7 +17,7 @@ class PHPVarToJavaScript
         ]);
         $js = [
             'Lang' => config('app.locale'),
-            'Version' => config('admin.version'),
+            'Title' => config('admin.title'),
         ];
         if (Auth::check()) {
             $js['LoggedUser'] = [
