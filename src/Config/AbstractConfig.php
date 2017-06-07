@@ -28,20 +28,20 @@ abstract class AbstractConfig
 
     protected function parsePermission()
     {
-        $permissions = collect();
-        $permission  = $this->getAttribute('permissions');
-        if (is_array($permission)) {
-            $option = array_merge($this->defaultPermissions, $permission);
+        $attribute = collect();
+        $permissions  = $this->getAttribute('permissions');
+        if (is_array($permissions)) {
+            $option = array_merge($this->defaultPermissions, $permissions);
             foreach ($option as $key => $item) {
                 $val = $item instanceof \Closure ? $item() : $item;
-                $permissions->put($key, $val ? true : false);
+                $attribute->put($key, $val ? true : false);
             }
         } else {
-            $val = $permission instanceof \Closure ? $permission() : $permission;
+            $val = $permissions instanceof \Closure ? $permissions() : $permissions;
             foreach ($this->defaultPermissions as $key => $item) {
-                $permissions->put($key, $val ? true : false);
+                $attribute->put($key, $val ? true : false);
             }
         }
-        $this->setAttribute('permissions', $permissions->toArray());
+        $this->setAttribute('permissions', $attribute->toArray());
     }
 }

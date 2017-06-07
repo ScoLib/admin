@@ -6,7 +6,7 @@ class Config extends AbstractConfig
 {
     protected $attributes = [
         'title'      => '',
-        'permission' => true,
+        'permissions' => true,
     ];
 
 }
