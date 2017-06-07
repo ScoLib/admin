@@ -42,7 +42,7 @@ export default [
                     auth: true,
                 }
             },
-            {
+/*            {
                 path: 'system',
                 component: Blank,
                 meta: {
@@ -72,7 +72,7 @@ export default [
                         },
                     }
                 ],
-            },
+            },*/
             {
                 path: 'users',
                 component: Blank,
@@ -127,11 +127,8 @@ export default [
                 ],
             },
             {
-                path: '*',
+                path: ':model+',
                 component: Blank,
-                meta: {
-                    title: '用户管理'
-                },
                 children: [
                     {
                         path: ':id/edit',
@@ -140,7 +137,6 @@ export default [
                         },
                         name: 'admin.model.edit',
                         meta: {
-                            title: 'edit',
                             auth: true,
                         },
                     },
@@ -151,7 +147,6 @@ export default [
                         },
                         name: 'admin.model.create',
                         meta: {
-                            title: 'create',
                             auth: true,
                         },
                     },
@@ -160,9 +155,8 @@ export default [
                         component (resolve) {
                             require(['../views/model/index.vue'], resolve);
                         },
-                        name: 'admin.model',
+                        name: 'admin.model.index',
                         meta: {
-                            title: 'index',
                             auth: true,
                         }
                     },

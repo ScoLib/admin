@@ -4,12 +4,19 @@
 namespace Sco\Admin\Http\Controllers;
 
 use Illuminate\Routing\Controller;
+use Sco\Admin\Config\Factory;
 
 class AdminController extends Controller
 {
-    public function index()
+    public function getList()
     {
-        return view('admin::app');
+
+    }
+
+    public function config($model)
+    {
+        $config = (new Factory())->make(str_replace('/', '.', $model));
+        return response()->json($config->getAttribute());
     }
 
     public function create()

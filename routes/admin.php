@@ -68,7 +68,7 @@ Route::group([
             ->name('system.log.list');
     });
 
-    Route::group(['middleware' => ['auth', 'admin.can']], function () {
+    Route::group(['middleware' => ['auth']], function () {
 
         // 系统管理
         Route::group([
@@ -165,9 +165,10 @@ Route::group([
         'as' => 'model.',
     ], function () {
 
-        Route::post('list', function () {
-            return view('admin::app');
-        });
+        Route::post('list', 'AdminController@getList')
+            ->name('list');
+
+        Route::get('config', 'AdminController@config');
 
         Route::get('create', 'AdminController@create')
             ->name('create');
@@ -189,8 +190,9 @@ Route::group([
             ->where(['id' => '[0-9]+'])
             ->name('edit');
 
-        Route::get('/', 'AdminController@index')
-            ->name('index');
+        Route::get('/', function () {
+            return view('admin::app');
+        })->name('index');
     });
 
 });

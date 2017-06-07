@@ -34,15 +34,14 @@
         name: 'AppContent',
         computed: {
             title () {
-                return this.$route.meta.title;
+                return this.$store.state.metaTitle;
             },
             breads () {
                 let breads = [];
+//                console.log(this.$route.matched);
                 this.$route.matched.forEach(route => {
-                    if (typeof route.parent === 'object') {
-                        let parent = route.parent;
-                        breads.push({url: parent.path, title: parent.meta.title});
-
+                    if (typeof route.parent === 'object' && route.parent.meta.title) {
+                        breads.push({path: route.parent.path, title: route.parent.meta.title});
                     }
                 });
                 return breads;

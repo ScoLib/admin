@@ -7,6 +7,8 @@ export default new Vuex.Store({
     state: {
         user: {},
         permissions: [],
+        models: {},
+        metaTitle: '',
     },
     mutations: {
         setUser(state, user) {
@@ -14,6 +16,12 @@ export default new Vuex.Store({
         },
         setPermissions(state, permissions) {
             state.permissions = permissions;
+        },
+        setModel(state, data) {
+            state.models = Object.assign(state.models, data);
+        },
+        setMetaTitle(state, title) {
+            state.metaTitle = title ? title : '';
         }
     }
 });
