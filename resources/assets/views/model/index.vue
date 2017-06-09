@@ -10,7 +10,7 @@
                             <span class="sr-only">Toggle Dropdown</span>
                         </button>
                         <ul class="dropdown-menu">
-                            <li v-if="permissions.delete">
+                            <li v-if="config.permissions.delete">
                                 <a href="#" @click.prevent="batchDestroy">
                                     <i class="fa fa-trash-o bigger-120"></i> 删除
                                 </a>
@@ -29,10 +29,10 @@
                     <div class="btn-group btn-group-sm pull-right margin-r-5">
                         <router-link
                                 :to="{ name: 'admin.users.role.create' }"
-                                v-if="can('admin.users.role.create')"
+                                v-if="config.permissions.create"
                                 class="btn btn-default">
                             <i class="fa fa-plus bigger-120"></i>
-                            创建角色
+                            创建 {{ config.title }}
                         </router-link>
                     </div>
                 </div>
@@ -71,7 +71,7 @@
                                 <div class="hidden-xs btn-group">
                                     <router-link
                                             class="btn btn-xs btn-info"
-                                            v-if="can('admin.users.role.edit')"
+                                            v-if="config.permissions.update"
                                             :to="{name:'admin.users.role.edit', params: {id: scope.row.id}}"
                                             title="编辑">
                                         <i class="fa fa-pencil bigger-120"></i>
@@ -79,7 +79,7 @@
                                     <button class="btn btn-xs btn-danger"
                                             @click.prevent="destroy(scope.row.id)"
                                             :disabled="scope.row.name == 'admin'"
-                                            v-if="can('admin.users.role.destroy')"
+                                            v-if="config.permissions.delete"
                                             title="删除">
                                         <i class="fa fa-trash-o bigger-120"></i>
                                     </button>
@@ -136,9 +136,6 @@
                     return models[model];
                 }
             },
-            permissions() {
-                return this.config.permissions;
-            }
         },
         created () {
             this.fetchData();

@@ -23,6 +23,7 @@ NPM
     "vue": "^2.*",
     "vue-i18n": "^6.*",
     "vue-router": "^2.*",
+    "vue-top-progress": "^0.*",
     "vuex": "^2.*",
     "element-ui": "^1.*"
   }

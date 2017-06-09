@@ -1,8 +1,14 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import routes from './routes'
-import store from '../store'
 import util from '../util'
+import VueProgressBar from 'vue-progressbar'
+
+Vue.use(VueProgressBar, {
+    color: 'rgb(143, 255, 199)',
+    failedColor: 'red',
+    height: '2px'
+})
 
 Vue.use(VueRouter)
 Vue.use(util)
@@ -23,44 +29,45 @@ router.beforeEach((to, from, next) => {
     // console.log(from);
     // console.log(window.Admin);
     if (typeof window.Admin != 'undefined' && window.Admin.LoggedUser) {
-        store.commit('setUser', window.Admin.LoggedUser);
+        router.app.$store.commit('setUser', window.Admin.LoggedUser);
     }
     if (to.meta.title) {
-        store.commit('setMetaTitle', to.meta.title);
-        document.title = store.state.metaTitle + ' - ' + window.Admin.Title;
+        router.app.$store.commit('setMetaTitle', to.meta.title);
+        document.title = router.app.$store.state.metaTitle + ' - ' + window.Admin.Title;
     }
 
     if (to.fullPath != '/#') {
+        router.app.$Progress.start();
 
         if (to.meta.auth) {
             // if (typeof window.Admin != 'undefined' && window.Admin.PermList) {
                 // store.commit('setPermissions', window.Admin.PermList);
             // }
 
-            if (Object.keys(store.state.user).length == 0) {
+            if (Object.keys(router.app.$store.state.user).length == 0) {
                 return next({name: 'admin.login'});
             }
 
             if ($.inArray(to.name, ['admin.model.index', 'admin.model.create', 'admin.model.edit']) != -1) {
-                if (Object.keys(store.state.models).indexOf(to.params.model) == -1) {
-                    Vue.axios.get('/admin/' + to.params.model + '/config')
+                if (Object.keys(router.app.$store.state.models).indexOf(to.params.model) == -1) {
+                    router.app.axios.get('/admin/' + to.params.model + '/config')
                         .then(response => {
                             var data = {};
                             data[to.params.model] = response.data;
-                            store.commit('setModel', data);
-                            store.commit('setMetaTitle', response.data.title);
-                            document.title = store.state.metaTitle + ' - ' + window.Admin.Title;
+                            router.app.$store.commit('setModel', data);
+                            router.app.$store.commit('setMetaTitle', response.data.title);
+                            document.title = router.app.$store.state.metaTitle + ' - ' + window.Admin.Title;
                             next();
                         }).catch(error => {})
                 } else {
-                    to.meta.title = store.state.models[to.params.model].title;
-                    store.commit('setMetaTitle', to.meta.title);
-                    document.title = store.state.metaTitle + ' - ' + window.Admin.Title;
+                    to.meta.title = router.app.$store.state.models[to.params.model].title;
+                    router.app.$store.commit('setMetaTitle', to.meta.title);
+                    document.title = router.app.$store.state.metaTitle + ' - ' + window.Admin.Title;
                     next();
                 }
             } else {
-                store.commit('setMetaTitle', to.meta.title);
-                document.title = store.state.metaTitle + ' - ' + window.Admin.Title;
+                router.app.$store.commit('setMetaTitle', to.meta.title);
+                document.title = router.app.$store.state.metaTitle + ' - ' + window.Admin.Title;
                 next();
             }
 
@@ -95,6 +102,7 @@ router.beforeEach((to, from, next) => {
 
 //路由完成后
 router.afterEach(route => {
+    router.app.$Progress.finish();
 });
 
 export default router;
