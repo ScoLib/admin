@@ -2,11 +2,11 @@
 
 namespace Sco\Admin\Config;
 
-use Sco\Admin\Traits\HasAttributes;
+use Sco\Attributes\HasAttributesTrait;
 
 abstract class AbstractConfig
 {
-    use HasAttributes;
+    use HasAttributesTrait;
 
     protected $defaultPermissions = [
         'view'   => true,
