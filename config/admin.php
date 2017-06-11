@@ -139,7 +139,7 @@ return [
      * ]
      */
     'menus' => [
-        'dashboard',
+        'admin.dashboard',
         '系统管理' => [
             'system.log',
             '菜单' => 'admin.system.menu',

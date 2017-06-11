@@ -17,7 +17,7 @@ abstract class AbstractConfig
 
     public function __construct(array $attributes)
     {
-        $this->merge($attributes);
+        $this->setAttribute($attributes);
         $this->parse();
     }
 
