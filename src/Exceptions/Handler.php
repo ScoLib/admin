@@ -48,6 +48,8 @@ class Handler implements ExceptionHandlerContract
             $response = $this->unauthenticated($request, $exception);
         } elseif ($exception instanceof HttpException) {
             $response = $this->renderHttpException($request, $exception);
+        } elseif ($exception instanceof AdminException) {
+            $response = $this->renderAdminException($request, $exception);
         }
 
         if (isset($response)) {
@@ -73,7 +75,8 @@ class Handler implements ExceptionHandlerContract
     /**
      * Prepare exception for rendering.
      *
-     * @param  \Exception  $exception
+     * @param  \Exception $exception
+     *
      * @return \Exception
      */
     protected function prepareException(Exception $exception)
@@ -90,8 +93,9 @@ class Handler implements ExceptionHandlerContract
     /**
      * Convert an authentication exception into an unauthenticated response.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Illuminate\Auth\AuthenticationException  $exception
+     * @param  \Illuminate\Http\Request                 $request
+     * @param  \Illuminate\Auth\AuthenticationException $exception
+     *
      * @return \Illuminate\Http\Response
      */
     protected function unauthenticated($request, AuthenticationException $exception)
@@ -108,8 +112,9 @@ class Handler implements ExceptionHandlerContract
     /**
      * Render the given HttpException.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Symfony\Component\HttpKernel\Exception\HttpException  $exception
+     * @param  \Illuminate\Http\Request                              $request
+     * @param  \Symfony\Component\HttpKernel\Exception\HttpException $exception
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     protected function renderHttpException($request, HttpException $exception)
@@ -126,5 +131,18 @@ class Handler implements ExceptionHandlerContract
     protected function isAdmin($request)
     {
         return $request->route() && strpos($request->route()->getPrefix(), 'admin') === 0;
+    }
+
+    /**
+     * @param \Illuminate\Http\Request             $request
+     * @param \Sco\Admin\Exceptions\AdminException $exception
+     *
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     */
+    protected function renderAdminException($request, AdminException $exception)
+    {
+        if ($request->expectsJson()) {
+            return response($exception->getMessage(), 500);
+        }
     }
 }

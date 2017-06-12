@@ -36,8 +36,6 @@ class AdminServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->registerMiddleware();
-
         // 路由文件
         $this->loadRoutes();
 
@@ -57,26 +55,6 @@ class AdminServiceProvider extends ServiceProvider
             $this->publishAdmin();
         }
 
-        $this->registerExceptionHandler();
-    }
-
-    protected function registerExceptionHandler()
-    {
-        $exceptHandler = app(ExceptionHandler::class);
-        $this->app->singleton(
-            ExceptionHandler::class,
-            function () use ($exceptHandler) {
-                return new Handler($exceptHandler);
-            }
-        );
-    }
-
-    protected function registerMiddleware()
-    {
-        $router = $this->app['router'];
-        foreach ($this->middlewares as $key => $middleware) {
-            $router->aliasMiddleware($key, $middleware);
-        }
     }
 
     protected function loadRoutes()
@@ -96,6 +74,8 @@ class AdminServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->registerMiddleware();
+
         $this->commands($this->commands);
 
         $this->mergeConfigFrom(
@@ -104,12 +84,32 @@ class AdminServiceProvider extends ServiceProvider
         );
 
         $this->registerProviders();
+        $this->registerExceptionHandler();
+    }
+
+    protected function registerMiddleware()
+    {
+        $router = $this->app['router'];
+        foreach ($this->middlewares as $key => $middleware) {
+            $router->aliasMiddleware($key, $middleware);
+        }
     }
 
     protected function registerProviders()
     {
         $this->app->register(\Sco\ActionLog\LaravelServiceProvider::class);
         $this->app->register(\Laracasts\Utilities\JavaScript\JavaScriptServiceProvider::class);
+    }
+
+    protected function registerExceptionHandler()
+    {
+        $exceptHandler = app(ExceptionHandler::class);
+        $this->app->singleton(
+            ExceptionHandler::class,
+            function () use ($exceptHandler) {
+                return new Handler($exceptHandler);
+            }
+        );
     }
 
     protected function publishAdmin()

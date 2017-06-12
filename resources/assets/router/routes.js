@@ -91,7 +91,7 @@ export default [
                             auth: true,
                         }
                     },
-                    {
+                    /*{
                         path: 'role',
                         component (resolve) {
                             require(['../views/users/role/index.vue'], resolve);
@@ -123,7 +123,7 @@ export default [
                             title: '编辑角色',
                             auth: true,
                         },
-                    },
+                    },*/
                 ],
             },
             {

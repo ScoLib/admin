@@ -8,7 +8,7 @@ use DB;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Sco\Admin\Exceptions\AdminHttpException;
+use Sco\Admin\Exceptions\InvalidArgumentException;
 use Sco\Admin\Http\Requests\StoreRoleRequest;
 use Sco\Admin\Http\Requests\UpdateRoleRequest;
 use Sco\Admin\Models\Permission;
@@ -83,7 +83,7 @@ class RoleController extends Controller
     public function batchDestroy(Request $request)
     {
         if (!is_array($request->input('ids'))) {
-            throw new AdminHttpException('参数错误');
+            throw new InvalidArgumentException('参数错误');
         }
 
         DB::transaction(function () use ($request) {

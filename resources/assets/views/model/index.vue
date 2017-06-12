@@ -28,7 +28,7 @@
 
                     <div class="btn-group btn-group-sm pull-right margin-r-5">
                         <router-link
-                                :to="{ name: 'admin.users.role.create' }"
+                                :to="{ path: '/admin/' + $route.params.model + '/create'}"
                                 v-if="config.permissions.create"
                                 class="btn btn-default">
                             <i class="fa fa-plus bigger-120"></i>
@@ -135,7 +135,7 @@
 //                    console.log(models);
                     return models[model];
                 }
-            },
+            }
         },
         created () {
             this.fetchData();

@@ -5,8 +5,7 @@ namespace Sco\Admin\Models;
 use DB;
 use Cache;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Request;
-use Sco\Admin\Exceptions\AdminHttpException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Sco\Admin\Observers\PermissionObserver;
 use Sco\Admin\Traits\EntrustPermissionTrait;
 use Sco\Tree\Traits\TreeTrait;
@@ -153,7 +152,7 @@ class Permission extends Model
         }
         $items = $items->unique();
         if ($items->isEmpty()) {
-            throw new AdminHttpException('菜单不存在');
+            throw new ModelNotFoundException('菜单不存在');
         }
 
         DB::transaction(function () use ($items) {

@@ -16,7 +16,7 @@ class AdminController extends Controller
     public function config($model)
     {
         $config = (new Factory())->makeFromUri($model);
-        return response()->json($config->getAttribute());
+        return $config;
     }
 
     public function create()

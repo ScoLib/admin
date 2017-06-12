@@ -28,13 +28,13 @@ class PHPVarToJavaScript
             ];
         }
 
-        if ($request->route() && $request->route('model')) {
+        /*if ($request->route() && $request->route('model')) {
             $model = $request->route('model');
             $config = (new Factory())->makeFromUri($model);
             if ($config) {
-                $js['ModelConfig'][$model] = $config->getAttribute();
+                $js['ModelConfig'][$model] = $config->toArray();
             }
-        }
+        }*/
 
         JavaScript::put($js);
         return $next($request);

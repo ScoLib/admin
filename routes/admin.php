@@ -37,9 +37,9 @@ Route::group([
             // 角色管理
             //'users.role'        => 'users/role',
             // 创建角色
-            'users.role.create' => 'users/role/create',
+            //'users.role.create' => 'users/role/create',
             // 编辑角色
-            'users.role.edit'   => 'users/role/{id}/edit',
+            //'users.role.edit'   => 'users/role/{id}/edit',
 
         ];
 
@@ -130,7 +130,7 @@ Route::group([
             });
 
             // 角色管理
-            Route::group(['as' => 'role.', 'prefix' => 'role'], function () {
+            /*Route::group(['as' => 'role.', 'prefix' => 'role'], function () {
                 Route::post('store', 'RoleController@store')
                     ->name('store');
 
@@ -154,7 +154,7 @@ Route::group([
 
                 Route::post('batch/destroy', 'RoleController@batchDestroy')
                     ->name('batch.destroy');
-            });
+            });*/
         });
     });
 
