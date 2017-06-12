@@ -4,6 +4,7 @@ namespace Sco\Admin\Providers;
 
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Support\ServiceProvider;
+use Sco\Admin\Config\Factory;
 use Sco\Admin\Exceptions\Handler;
 
 /**
@@ -16,12 +17,13 @@ class AdminServiceProvider extends ServiceProvider
     ];
 
     protected $middlewares = [
-        'admin.guest'       => \Sco\Admin\Http\Middleware\RedirectIfAuthenticated::class,
-        'admin.menu'        => \Sco\Admin\Http\Middleware\AdminMenu::class,
-        'admin.permissions' => \Sco\Admin\Http\Middleware\Permissions::class,
-        'admin.phptojs'     => \Sco\Admin\Http\Middleware\PHPVarToJavaScript::class,
-        'admin.can'         => \Sco\Admin\Http\Middleware\Authorize::class,
-        'admin.role'        => \Sco\Admin\Http\Middleware\EntrustRole::class,
+        'admin.guest'          => \Sco\Admin\Http\Middleware\RedirectIfAuthenticated::class,
+        'admin.menu'           => \Sco\Admin\Http\Middleware\AdminMenu::class,
+        'admin.permissions'    => \Sco\Admin\Http\Middleware\Permissions::class,
+        'admin.phptojs'        => \Sco\Admin\Http\Middleware\PHPVarToJavaScript::class,
+        'admin.can'            => \Sco\Admin\Http\Middleware\Authorize::class,
+        'admin.role'           => \Sco\Admin\Http\Middleware\EntrustRole::class,
+        'admin.resolve.config' => \Sco\Admin\Http\Middleware\ResolveConfigInstance::class,
     ];
 
     public function getBasePath()
@@ -85,6 +87,8 @@ class AdminServiceProvider extends ServiceProvider
 
         $this->registerProviders();
         $this->registerExceptionHandler();
+
+        $this->registerConfigFactory();
     }
 
     protected function registerMiddleware()
@@ -154,5 +158,12 @@ class AdminServiceProvider extends ServiceProvider
         $this->publishes([
             $this->getBasePath() . '/routes/admin.php' => base_path('routes/admin.php'),
         ], 'routes');
+    }
+
+    protected function registerConfigFactory()
+    {
+        $this->app->singleton('admin.config.factory', function ($app) {
+            return new Factory($app);
+        });
     }
 }

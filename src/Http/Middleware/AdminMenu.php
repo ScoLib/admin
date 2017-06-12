@@ -9,12 +9,6 @@ use Sco\Admin\Config\Factory as ConfigFactory;
 
 class AdminMenu
 {
-    protected $configFactory;
-
-    public function __construct(ConfigFactory $configFactory)
-    {
-        $this->configFactory = $configFactory;
-    }
 
     /**
      * Handle an incoming request.
@@ -45,7 +39,7 @@ class AdminMenu
                         ]);
                     }
                 } else {
-                    $config = $this->configFactory->make($items);
+                    $config = app('admin.config.factory')->make($items);
                     if ($config && $config->getAttribute('permissions.view')) {
                         $model = str_replace('.', '/', $items);
                         $menus->push([

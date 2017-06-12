@@ -160,7 +160,7 @@ Route::group([
 
     Route::pattern('model', '[a-z_/]+');
     Route::group([
-        'middleware' => ['auth', 'admin.phptojs'],
+        'middleware' => ['auth', 'admin.phptojs', 'admin.resolve.config'],
         'prefix' => '{model}',
         'as' => 'model.',
     ], function () {

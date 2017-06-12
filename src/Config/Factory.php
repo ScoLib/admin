@@ -7,11 +7,16 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Factory
 {
+    /**
+     * @var \Illuminate\Foundation\Application
+     */
+    protected $app;
+
     protected $configs = [];
 
-    public function __construct()
+    public function __construct($app)
     {
-
+        $this->app = $app;
     }
 
     public function makeFromUri($uri)

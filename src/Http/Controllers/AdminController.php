@@ -4,7 +4,6 @@
 namespace Sco\Admin\Http\Controllers;
 
 use Illuminate\Routing\Controller;
-use Sco\Admin\Config\Factory;
 
 class AdminController extends Controller
 {
@@ -13,9 +12,9 @@ class AdminController extends Controller
 
     }
 
-    public function config($model)
+    public function config()
     {
-        $config = (new Factory())->makeFromUri($model);
+        $config = app('admin.config.instance');
         return $config;
     }
 

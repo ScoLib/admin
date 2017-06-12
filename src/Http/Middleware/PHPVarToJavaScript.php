@@ -6,7 +6,6 @@ namespace Sco\Admin\Http\Middleware;
 use Auth;
 use JavaScript;
 use Illuminate\Http\Request;
-use Sco\Admin\Config\Factory;
 
 class PHPVarToJavaScript
 {
