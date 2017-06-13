@@ -4,7 +4,7 @@ namespace Sco\Admin\Config;
 
 use Sco\Attributes\HasAttributesTrait;
 
-abstract class Config implements ConfigInterface
+abstract class Config
 {
     use HasAttributesTrait;
 

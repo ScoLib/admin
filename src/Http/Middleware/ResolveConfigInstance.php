@@ -25,6 +25,5 @@ class ResolveConfigInstance
         }
 
         return $next($request);
-
     }
 }

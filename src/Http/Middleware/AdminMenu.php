@@ -5,7 +5,6 @@ namespace Sco\Admin\Http\Middleware;
 use Auth;
 use Closure;
 use Route;
-use Sco\Admin\Config\Factory as ConfigFactory;
 
 class AdminMenu
 {

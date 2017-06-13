@@ -5,7 +5,7 @@ namespace Sco\Admin\Config;
 use Sco\Admin\Exceptions\InvalidArgumentException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class Factory
+class ConfigManager
 {
     /**
      * @var \Illuminate\Foundation\Application

@@ -99,8 +99,6 @@ Route::group([
                 Route::post('batch/destroy', 'MenuController@batchDestroy')
                     ->name('batch.destroy');
             });
-
-
         });
 
         // 管理组
@@ -194,5 +192,4 @@ Route::group([
             return view('admin::app');
         })->name('index');
     });
-
 });

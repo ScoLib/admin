@@ -4,7 +4,7 @@ namespace Sco\Admin\Providers;
 
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Support\ServiceProvider;
-use Sco\Admin\Config\Factory;
+use Sco\Admin\Config\ConfigManager;
 use Sco\Admin\Exceptions\Handler;
 
 /**
@@ -56,7 +56,6 @@ class AdminServiceProvider extends ServiceProvider
             $this->loadMigrationsFrom($this->getBasePath() . '/database/migrations');
             $this->publishAdmin();
         }
-
     }
 
     protected function loadRoutes()
@@ -163,7 +162,7 @@ class AdminServiceProvider extends ServiceProvider
     protected function registerConfigFactory()
     {
         $this->app->singleton('admin.config.factory', function ($app) {
-            return new Factory($app);
+            return new ConfigManager($app);
         });
     }
 }
