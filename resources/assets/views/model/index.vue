@@ -48,6 +48,15 @@
                                 :selectable="selectable">
                         </el-table-column>
 
+                        <el-table-column
+                                :label="column.label"
+                                :prop="column.prop"
+                                :width="column.width"
+                                :fixed="column.fixed"
+                                v-for="column in columns"
+                                :key="column.prop">
+                        </el-table-column>
+
                         <el-table-column :label="$t('table.id')"
                                          prop="id"
                                          width="60">
@@ -72,7 +81,7 @@
                                     <router-link
                                             class="btn btn-xs btn-info"
                                             v-if="config.permissions.update"
-                                            :to="{name:'admin.users.role.edit', params: {id: scope.row.id}}"
+                                            :to="{path:'admin/edit'}"
                                             title="编辑">
                                         <i class="fa fa-pencil bigger-120"></i>
                                     </router-link>
@@ -106,7 +115,6 @@
 
 <script>
 
-
     export default {
         components: {
         },
@@ -120,6 +128,20 @@
                 selection: [],
                 buttonLoading: false,
 
+                columns: [
+                    {
+                        prop: 'id',
+                        label: 'ID',
+                        width: '50',
+                        fixed: false,
+                    },
+                    {
+                        prop: 'name',
+                        label: 'Name',
+                        width: '0',
+                        fixed: true,
+                    },
+                ]
             }
         },
         computed: {

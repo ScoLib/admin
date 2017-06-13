@@ -8,6 +8,8 @@ abstract class Config implements ConfigInterface
 {
     use HasAttributesTrait;
 
+    protected $original = [];
+
     protected $defaultPermissions = [
         'view'   => true,
         'create' => true,
@@ -15,14 +17,15 @@ abstract class Config implements ConfigInterface
         'delete' => true,
     ];
 
-    public function __construct(array $attributes)
+    public function __construct(array $original)
     {
-        $this->setAttribute($attributes);
+        $this->original = $original;
         $this->parse();
     }
 
     protected function parse()
     {
+        $this->setAttribute('title', $this->original['title']);
         $this->parsePermission();
     }
 
