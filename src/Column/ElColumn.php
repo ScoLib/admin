@@ -11,4 +11,8 @@ use Illuminate\Contracts\Support\Jsonable;
 class ElColumn extends Column implements ColumnInterface, Arrayable, Jsonable, JsonSerializable
 {
 
+    protected $defaults = [
+        'fixed' => false,
+    ];
+
 }

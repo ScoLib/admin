@@ -3,15 +3,29 @@
 
 namespace Sco\Admin\Column;
 
-use Sco\Attributes\HasAttributesTrait;
+use Sco\Attributes\HasOriginalAndAttributesTrait;
 
 abstract class Column
 {
-    use HasAttributesTrait;
+    use HasOriginalAndAttributesTrait;
 
-    public function __construct($option)
+    protected $defaultsOptions = [
+        'key'      => '',
+        'title'    => '',
+        'sortable' => true,
+        'width'    => 0,
+    ];
+
+    protected $defaults = [];
+
+    public function __construct($options)
     {
-        $this->setAttribute($option);
+        $this->setOriginal(array_merge($this->getDefaults(), $options));
+    }
+
+    protected function getDefaults()
+    {
+        return array_merge($this->defaultsOptions, $this->defaults);
     }
 
     function __toString()

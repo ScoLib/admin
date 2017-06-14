@@ -8,7 +8,6 @@ abstract class Config
 {
     use HasOriginalAndAttributesTrait;
 
-
     protected $defaultPermissions = [
         'view'   => true,
         'create' => true,

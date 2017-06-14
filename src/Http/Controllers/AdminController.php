@@ -9,6 +9,7 @@ class AdminController extends Controller
 {
     public function getList()
     {
+        app('admin.config.instance')->filters()->orderBy()->paginate();
     }
 
     public function config()
