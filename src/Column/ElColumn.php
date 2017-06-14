@@ -3,7 +3,12 @@
 
 namespace Sco\Admin\Column;
 
-class ElColumn extends Column implements ColumnInterface
+use JsonSerializable;
+use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Contracts\Support\Jsonable;
+
+
+class ElColumn extends Column implements ColumnInterface, Arrayable, Jsonable, JsonSerializable
 {
 
 }

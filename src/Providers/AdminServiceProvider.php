@@ -4,6 +4,7 @@ namespace Sco\Admin\Providers;
 
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Support\ServiceProvider;
+use Sco\Admin\Column\ColumnManager;
 use Sco\Admin\Config\ConfigManager;
 use Sco\Admin\Exceptions\Handler;
 
@@ -88,6 +89,7 @@ class AdminServiceProvider extends ServiceProvider
         $this->registerExceptionHandler();
 
         $this->registerConfigFactory();
+        $this->registerColumnFactory();
     }
 
     protected function registerMiddleware()
@@ -163,6 +165,13 @@ class AdminServiceProvider extends ServiceProvider
     {
         $this->app->singleton('admin.config.factory', function ($app) {
             return new ConfigManager($app);
+        });
+    }
+
+    protected function registerColumnFactory()
+    {
+        $this->app->singleton('admin.column', function ($app) {
+            return new ColumnManager($app);
         });
     }
 }

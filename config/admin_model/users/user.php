@@ -18,4 +18,5 @@ return [
             return Auth::user()->can('delete_user');
         },
     ],
+    'columns'     => [],
 ];

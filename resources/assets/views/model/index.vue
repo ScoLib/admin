@@ -53,7 +53,7 @@
                                 :prop="column.prop"
                                 :width="column.width"
                                 :fixed="column.fixed"
-                                v-for="column in columns"
+                                v-for="column in config.columns"
                                 :key="column.prop">
                         </el-table-column>
 
@@ -127,28 +127,13 @@
 
                 selection: [],
                 buttonLoading: false,
-
-                columns: [
-                    {
-                        prop: 'id',
-                        label: 'ID',
-                        width: '50',
-                        fixed: false,
-                    },
-                    {
-                        prop: 'name',
-                        label: 'Name',
-                        width: '0',
-                        fixed: true,
-                    },
-                ]
             }
         },
         computed: {
             config() {
                 let models = this.$store.state.models;
                 let model = this.$route.params.model;
-//                console.log(models);
+                console.log(models[model]);
 //                console.log(model);
 //                console.log(Object.keys(models).indexOf(model));
                 if (Object.keys(models).indexOf(model) == -1) {

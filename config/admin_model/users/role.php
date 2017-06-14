@@ -18,4 +18,18 @@ return [
             return Auth::user()->can('delete_role');
         },
     ],
+    'columns'     => [
+        [
+            'key'   => 'id',
+            'title' => 'ID',
+            'width' => '50',
+            'fixed' => false,
+        ],
+        [
+            'key'   => 'name',
+            'title' => 'Name',
+            'width' => '0',
+            'fixed' => false,
+        ],
+    ],
 ];

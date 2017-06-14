@@ -25,8 +25,7 @@ class RoleController extends Controller
 
     public function getList()
     {
-        $roles = Role::paginate();
-        return response()->json($roles);
+        return Role::paginate();
     }
 
     public function getPermissionList()
