@@ -167,7 +167,7 @@
             },
             getResults() {
                 this.tableLoading = true;
-                this.$http.get('/admin/users/role/list').then(response => {
+                this.$http.get('/admin/' + this.$route.params.model + '/list').then(response => {
                     this.tableLoading = false;
                     this.pageData = response.data;
                 }).catch(error => {})

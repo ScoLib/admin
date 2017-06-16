@@ -95,7 +95,7 @@ abstract class Config
     {
         $this->getTitle();
         $this->getPermissions();
-        $this->getColumns();
+        //$this->getColumns();
 
         return $this->getAttributes();
     }

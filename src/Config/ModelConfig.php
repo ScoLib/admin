@@ -6,12 +6,13 @@ use JsonSerializable;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
 use Sco\Admin\Exceptions\InvalidArgumentException;
+use Sco\Admin\Contracts\Config as ConfigContract;
 
-class ModelConfig extends Config implements ConfigInterface, Arrayable, Jsonable, JsonSerializable
+class ModelConfig extends Config implements ConfigContract, Arrayable, Jsonable, JsonSerializable
 {
 
     protected $orderBy = [];
-    protected $modelFilters = [];
+    protected $wheres = [];
 
     /**
      * Get Model
@@ -28,9 +29,9 @@ class ModelConfig extends Config implements ConfigInterface, Arrayable, Jsonable
         throw new InvalidArgumentException("class {$modelName} not found");
     }
 
-    public function filters($filters)
+    public function where($filters)
     {
-        $this->modelFilters = $filters;
+        $this->wheres = $filters;
         return $this;
     }
 
@@ -40,19 +41,23 @@ class ModelConfig extends Config implements ConfigInterface, Arrayable, Jsonable
         return $this;
     }
 
-    public function paginate()
+    public function paginate($perPage = null)
     {
-        $data = $this->parseWhere()
-            ->orderBy($this->orderBy['column'], $this->orderBy['direction'])
-            ->paginate(20);
+        $model = $this->compileWhere();
+        if (!empty($this->orderBy)) {
+            $model->orderBy($this->orderBy['column'], $this->orderBy['direction']);
+        }
+
+        $data = $model->paginate($perPage);
+        return $data;
     }
 
-    protected function parseWhere()
+    protected function compileWhere()
     {
         $model = $this->getModel();
-        if (!empty($this->modelFilters)) {
-            foreach ($this->modelFilters as $key => $filter) {
-                list($operator, $value) = is_array($filter) ? $filter : ['=', $filter];
+        if (!empty($this->wheres)) {
+            foreach ($this->wheres as $key => $where) {
+                list($operator, $value) = is_array($where) ? $where : ['=', $where];
                 $model->where($key, $operator, $value);
             }
         }

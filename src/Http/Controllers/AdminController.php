@@ -4,12 +4,13 @@
 namespace Sco\Admin\Http\Controllers;
 
 use Illuminate\Routing\Controller;
+use Sco\Admin\Contracts\Config as ConfigContract;
 
 class AdminController extends Controller
 {
     public function getList()
     {
-        app('admin.config.instance')->filters()->orderBy()->paginate();
+        //return $model->paginate();
     }
 
     public function config()

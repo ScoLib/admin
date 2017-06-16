@@ -1,9 +1,9 @@
 <?php
 
 
-namespace Sco\Admin\Config;
+namespace Sco\Admin\Contracts;
 
-interface ConfigInterface
+interface Config
 {
     public function getOption($key, $default = null);
 }

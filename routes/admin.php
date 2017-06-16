@@ -52,7 +52,7 @@ Route::group([
 
     Route::group(['middleware' => ['auth']], function () {
         Route::get('menu', function () {
-            $menus = request()->attributes->get('admin.menu');
+            $menus = Admin::getMenus();
             return response()->json($menus);
         })->name('menu')
             ->middleware('admin.menu');
@@ -163,7 +163,7 @@ Route::group([
         'as' => 'model.',
     ], function () {
 
-        Route::post('list', 'AdminController@getList')
+        Route::get('list', 'AdminController@getList')
             ->name('list');
 
         Route::get('config', 'AdminController@config');

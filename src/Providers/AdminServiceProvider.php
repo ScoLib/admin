@@ -3,10 +3,16 @@
 namespace Sco\Admin\Providers;
 
 use Illuminate\Contracts\Debug\ExceptionHandler;
+use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\ServiceProvider;
+use Laracasts\Utilities\JavaScript\JavaScriptServiceProvider;
+use Sco\ActionLog\LaravelServiceProvider;
+use Sco\Admin\Admin;
 use Sco\Admin\Column\ColumnManager;
 use Sco\Admin\Config\ConfigManager;
 use Sco\Admin\Exceptions\Handler;
+use Sco\Admin\Facades\Config as ConfigFacade;
+use Sco\Admin\Facades\Admin as AdminFacade;
 
 /**
  *
@@ -25,6 +31,17 @@ class AdminServiceProvider extends ServiceProvider
         'admin.can'            => \Sco\Admin\Http\Middleware\Authorize::class,
         'admin.role'           => \Sco\Admin\Http\Middleware\EntrustRole::class,
         'admin.resolve.config' => \Sco\Admin\Http\Middleware\ResolveConfigInstance::class,
+    ];
+
+    protected $providers = [
+        LaravelServiceProvider::class,
+        JavaScriptServiceProvider::class,
+        PublishServiceProvider::class,
+    ];
+
+    protected $aliases = [
+        'Admin'       => AdminFacade::class,
+        'AdminConfig' => ConfigFacade::class,
     ];
 
     public function getBasePath()
@@ -55,7 +72,6 @@ class AdminServiceProvider extends ServiceProvider
 
         if ($this->app->runningInConsole()) {
             $this->loadMigrationsFrom($this->getBasePath() . '/database/migrations');
-            $this->publishAdmin();
         }
     }
 
@@ -77,6 +93,7 @@ class AdminServiceProvider extends ServiceProvider
     public function register()
     {
         $this->registerMiddleware();
+        $this->registerAliases();
 
         $this->commands($this->commands);
 
@@ -89,7 +106,9 @@ class AdminServiceProvider extends ServiceProvider
         $this->registerExceptionHandler();
 
         $this->registerConfigFactory();
-        $this->registerColumnFactory();
+        //$this->registerColumnFactory();
+
+        $this->registerAdmin();
     }
 
     protected function registerMiddleware()
@@ -98,12 +117,22 @@ class AdminServiceProvider extends ServiceProvider
         foreach ($this->middlewares as $key => $middleware) {
             $router->aliasMiddleware($key, $middleware);
         }
+
+        /*        $router->bind('model', function ($value) {
+                    return $this->app->make('admin.config.factory')->makeFromUri($value);
+                });*/
+    }
+
+    protected function registerAliases()
+    {
+        AliasLoader::getInstance($this->aliases);
     }
 
     protected function registerProviders()
     {
-        $this->app->register(\Sco\ActionLog\LaravelServiceProvider::class);
-        $this->app->register(\Laracasts\Utilities\JavaScript\JavaScriptServiceProvider::class);
+        foreach ($this->providers as $provider) {
+            $this->app->register($provider);
+        }
     }
 
     protected function registerExceptionHandler()
@@ -117,50 +146,6 @@ class AdminServiceProvider extends ServiceProvider
         );
     }
 
-    protected function publishAdmin()
-    {
-        $this->publishAssets();
-        $this->publishConfig();
-        $this->publishViews();
-        $this->publishTranslations();
-        $this->publishRoutes();
-    }
-
-    protected function publishAssets()
-    {
-        $this->publishes([
-            $this->getBasePath() . '/resources/assets' => base_path('resources/assets/vendor/admin'),
-        ], 'assets');
-    }
-
-    protected function publishConfig()
-    {
-        $this->publishes([
-            $this->getBasePath() . '/config/' => config_path(),
-        ], 'config');
-    }
-
-    protected function publishViews()
-    {
-        $this->publishes([
-            $this->getBasePath() . '/resources/views' => base_path('resources/views/vendor/admin'),
-        ], 'views');
-    }
-
-    protected function publishTranslations()
-    {
-        $this->publishes([
-            $this->getBasePath() . '/resources/lang' => base_path('resources/lang/vendor/admin'),
-        ], 'lang');
-    }
-
-    protected function publishRoutes()
-    {
-        $this->publishes([
-            $this->getBasePath() . '/routes/admin.php' => base_path('routes/admin.php'),
-        ], 'routes');
-    }
-
     protected function registerConfigFactory()
     {
         $this->app->singleton('admin.config.factory', function ($app) {
@@ -168,10 +153,9 @@ class AdminServiceProvider extends ServiceProvider
         });
     }
 
-    protected function registerColumnFactory()
+    protected function registerAdmin()
     {
-        $this->app->singleton('admin.column', function ($app) {
-            return new ColumnManager($app);
-        });
+        $this->app->instance('admin.instance', new Admin($this->app));
     }
+
 }

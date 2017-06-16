@@ -127,7 +127,7 @@ export default [
                 ],
             },
             {
-                path: ':model+',
+                path: ':model',
                 component: Blank,
                 children: [
                     {

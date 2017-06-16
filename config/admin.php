@@ -132,7 +132,7 @@ return [
      * [
      *  'model1', // file is "/config/{model_config_dir}/model1.php"
      *  'GroupName' => [
-     *      'ModelGroup.model1',  // file is "/config/{model_config_dir}/ModelGroup/model1.php"
+     *      'model1',  // file is "/config/{model_config_dir}/ModelGroup/model1.php"
      *      'model2',  // file is "/config/{model_config_dir}/model2.php"
      *      'title' => 'RouteName',  // admin route name
      *  ],
@@ -141,13 +141,13 @@ return [
     'menus' => [
         'admin.dashboard',
         '系统管理' => [
-            'system.log',
+            'logs',
             '菜单' => 'admin.system.menu',
         ],
         '用户管理' => [
-            'users.user',
-            'users.role',
-            'users.permission',
+            'users',
+            'roles',
+            'permissions',
         ],
         'test',
     ],
