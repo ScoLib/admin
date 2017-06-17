@@ -13,9 +13,9 @@ class AdminController extends Controller
         //return $model->paginate();
     }
 
-    public function config()
+    public function config(ConfigContract $config)
     {
-        $config = app('admin.config.instance');
+        //$config = app('admin.config.instance');
         return $config;
     }
 

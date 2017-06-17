@@ -98,24 +98,17 @@ Sco\Admin\Providers\AdminServiceProvider::class,
 
 编辑auth.php
 ```php
-    'guards' => [
-        'admin' => [
-            'driver' => 'session',
-            'provider' => 'admin',
-        ],
-    ],
-    
     'providers' => [
-        'admin' => [
+        'users' => [
             'driver' => 'eloquent',
-            'model' => \Sco\Admin\Models\Manager::class,
+            'model' => \Sco\Admin\Models\User::class,
         ],
     ],
 ```
 
 --tag: assets/config/views/lang/routes
 ```php
-php artisan vendor:publish --provider="Sco\Admin\Providers\AdminServiceProvider" --force
+php artisan vendor:publish --provider="Sco\Admin\Providers\PublishServiceProvider" --force
 php artisan migrate
 php artisan db:seed --class=AdminTableSeeder
 ```

@@ -20,7 +20,7 @@ class ResolveConfigInstance
             app()->singleton(
                 'admin.config.instance',
                 function ($app) use ($model) {
-                    return $app->make('admin.config.factory')->makeFromUri($model);
+                    //return $app->make('admin.config.factory')->makeFromUri($model);
                 });
         }
 

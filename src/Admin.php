@@ -4,8 +4,10 @@
 namespace Sco\Admin;
 
 use Auth;
+use Illuminate\Support\Collection;
 use Route;
 use Illuminate\Foundation\Application;
+use Sco\Admin\Config\ModelConfig;
 use Sco\Admin\Contracts\Admin as AdminContract;
 use Illuminate\Config\Repository as ConfigRepository;
 
@@ -21,12 +23,16 @@ class Admin implements AdminContract
      */
     protected $config;
 
+    protected $models;
+
     public function __construct(Application $app)
     {
         $this->app = $app;
         $this->config = new ConfigRepository(
             $this->app['config']->get('admin', [])
         );
+
+        $this->models = new Collection();
     }
 
     public function getMenus($list = null)
@@ -70,6 +76,10 @@ class Admin implements AdminContract
 
     public function getConfig($name)
     {
-        return $this->app['admin.config.factory']->make($name);
+        if (!$this->models->has($name)) {
+            $this->models->put($name, new ModelConfig($this->app, $name));
+        }
+
+        return $this->models->get($name);
     }
 }

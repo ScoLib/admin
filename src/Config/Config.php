@@ -2,11 +2,16 @@
 
 namespace Sco\Admin\Config;
 
+use Illuminate\Foundation\Application;
 use Sco\Attributes\HasOriginalAndAttributesTrait;
 
 abstract class Config
 {
     use HasOriginalAndAttributesTrait;
+
+    protected $app;
+    protected $name;
+    protected $config;
 
     protected $defaultPermissions = [
         'view'   => true,
@@ -15,10 +20,18 @@ abstract class Config
         'delete' => true,
     ];
 
-    public function __construct(array $attributes)
+    public function __construct(Application $app, $name)
     {
-        $this->setOriginal($attributes);
+        $this->app = $app;
+        $this->name = $name;
+
+        $this->config = $this->compileConfig();
+        //$this->setOriginal($attributes);
         $this->getOptions();
+    }
+
+    protected function compileConfig()
+    {
     }
 
     protected function getTitle()
@@ -84,11 +97,6 @@ abstract class Config
         }
 
         return $fields;
-    }
-
-    public function getOption($key, $default = null)
-    {
-        return $this->getAttribute($key, $default);
     }
 
     public function getOptions()

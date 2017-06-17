@@ -82,9 +82,15 @@ class Handler implements ExceptionHandlerContract
     protected function prepareException(Exception $exception)
     {
         if ($exception instanceof ModelNotFoundException) {
-            $exception = new NotFoundHttpException($exception->getMessage(), $exception);
+            $exception = new NotFoundHttpException(
+                $exception->getMessage(),
+                $exception
+            );
         } elseif ($exception instanceof AuthorizationException) {
-            $exception = new HttpException(403, $exception->getMessage() ?: 'Forbidden');
+            $exception = new HttpException(
+                403,
+                $exception->getMessage() ?: 'Forbidden'
+            );
         }
 
         return $exception;
@@ -98,8 +104,10 @@ class Handler implements ExceptionHandlerContract
      *
      * @return \Illuminate\Http\Response
      */
-    protected function unauthenticated($request, AuthenticationException $exception)
-    {
+    protected function unauthenticated(
+        $request,
+        AuthenticationException $exception
+    ) {
         if ($request->expectsJson()) {
             return response('Unauthenticated.', 401);
         }
@@ -130,7 +138,8 @@ class Handler implements ExceptionHandlerContract
 
     protected function isAdmin($request)
     {
-        return $request->route() && strpos($request->route()->getPrefix(), 'admin') === 0;
+        $route = $request->route();
+        return $route && strpos($route->getPrefix(), 'admin') === 0;
     }
 
     /**

@@ -8,11 +8,8 @@ use Illuminate\Support\ServiceProvider;
 use Laracasts\Utilities\JavaScript\JavaScriptServiceProvider;
 use Sco\ActionLog\LaravelServiceProvider;
 use Sco\Admin\Admin;
-use Sco\Admin\Column\ColumnManager;
-use Sco\Admin\Config\ConfigManager;
 use Sco\Admin\Exceptions\Handler;
-use Sco\Admin\Facades\Config as ConfigFacade;
-use Sco\Admin\Facades\Admin as AdminFacade;
+use Sco\Admin\Facades\AdminFacade;
 
 /**
  *
@@ -24,13 +21,13 @@ class AdminServiceProvider extends ServiceProvider
     ];
 
     protected $middlewares = [
-        'admin.guest'          => \Sco\Admin\Http\Middleware\RedirectIfAuthenticated::class,
-        'admin.menu'           => \Sco\Admin\Http\Middleware\AdminMenu::class,
-        'admin.permissions'    => \Sco\Admin\Http\Middleware\Permissions::class,
-        'admin.phptojs'        => \Sco\Admin\Http\Middleware\PHPVarToJavaScript::class,
-        'admin.can'            => \Sco\Admin\Http\Middleware\Authorize::class,
-        'admin.role'           => \Sco\Admin\Http\Middleware\EntrustRole::class,
-        'admin.resolve.config' => \Sco\Admin\Http\Middleware\ResolveConfigInstance::class,
+        'admin.guest'       => \Sco\Admin\Http\Middleware\RedirectIfAuthenticated::class,
+        //'admin.menu'           => \Sco\Admin\Http\Middleware\AdminMenu::class,
+        'admin.permissions' => \Sco\Admin\Http\Middleware\Permissions::class,
+        'admin.phptojs'     => \Sco\Admin\Http\Middleware\PHPVarToJavaScript::class,
+        'admin.can'         => \Sco\Admin\Http\Middleware\Authorize::class,
+        'admin.role'        => \Sco\Admin\Http\Middleware\EntrustRole::class,
+        //'admin.resolve.config' => \Sco\Admin\Http\Middleware\ResolveConfigInstance::class,
     ];
 
     protected $providers = [
@@ -40,8 +37,8 @@ class AdminServiceProvider extends ServiceProvider
     ];
 
     protected $aliases = [
-        'Admin'       => AdminFacade::class,
-        'AdminConfig' => ConfigFacade::class,
+        'Admin' => AdminFacade::class,
+        //'AdminConfig' => ConfigFacade::class,
     ];
 
     public function getBasePath()
@@ -92,23 +89,19 @@ class AdminServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->registerMiddleware();
-        $this->registerAliases();
-
-        $this->commands($this->commands);
-
         $this->mergeConfigFrom(
             $this->getBasePath() . '/config/admin.php',
             'admin'
         );
 
-        $this->registerProviders();
         $this->registerExceptionHandler();
-
-        $this->registerConfigFactory();
-        //$this->registerColumnFactory();
-
         $this->registerAdmin();
+        $this->registerAliases();
+        $this->registerMiddleware();
+
+        $this->commands($this->commands);
+
+        $this->registerProviders();
     }
 
     protected function registerMiddleware()
@@ -118,9 +111,9 @@ class AdminServiceProvider extends ServiceProvider
             $router->aliasMiddleware($key, $middleware);
         }
 
-        /*        $router->bind('model', function ($value) {
-                    return $this->app->make('admin.config.factory')->makeFromUri($value);
-                });*/
+        $router->bind('model', function ($value) {
+            return $this->app['admin.instance']->getConfig($value);
+        });
     }
 
     protected function registerAliases()
@@ -146,16 +139,8 @@ class AdminServiceProvider extends ServiceProvider
         );
     }
 
-    protected function registerConfigFactory()
-    {
-        $this->app->singleton('admin.config.factory', function ($app) {
-            return new ConfigManager($app);
-        });
-    }
-
     protected function registerAdmin()
     {
         $this->app->instance('admin.instance', new Admin($this->app));
     }
-
 }

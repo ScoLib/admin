@@ -4,10 +4,10 @@ namespace Sco\Admin\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
-class Config extends Facade
+class AdminFacade extends Facade
 {
     public static function getFacadeAccessor()
     {
-        return 'admin.config.factory';
+        return 'admin.instance';
     }
 }

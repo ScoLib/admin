@@ -3,7 +3,6 @@
 
 namespace Sco\Admin\Providers;
 
-
 use Illuminate\Support\ServiceProvider;
 
 class PublishServiceProvider extends ServiceProvider
@@ -26,7 +25,6 @@ class PublishServiceProvider extends ServiceProvider
 
     public function register()
     {
-
     }
 
     protected function publishAssets()
