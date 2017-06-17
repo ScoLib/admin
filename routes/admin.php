@@ -54,8 +54,7 @@ Route::group([
         Route::get('menu', function () {
             $menus = Admin::getMenus();
             return response()->json($menus);
-        })->name('menu')
-            ->middleware('admin.menu');
+        })->name('menu');
 
         Route::get('permissions', function () {
             $permissions = request()->attributes->get('admin.permissions');
@@ -158,7 +157,7 @@ Route::group([
 
     Route::pattern('model', '[a-z_/]+');
     Route::group([
-        'middleware' => ['auth', 'admin.phptojs', 'admin.resolve.config'],
+        'middleware' => ['auth', 'admin.phptojs'],
         'prefix' => '{model}',
         'as' => 'model.',
     ], function () {
