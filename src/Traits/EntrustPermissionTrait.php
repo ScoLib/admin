@@ -22,10 +22,12 @@ trait EntrustPermissionTrait
      */
     public function roles()
     {
-        return $this->belongsToMany(Config::get('admin.role'),
+        return $this->belongsToMany(
+            Config::get('admin.role'),
             Config::get('admin.permission_role_table'),
             Config::get('admin.permission_foreign_key'),
-            Config::get('admin.role_foreign_key'));
+            Config::get('admin.role_foreign_key')
+        );
     }
 
     /**
@@ -39,8 +41,10 @@ trait EntrustPermissionTrait
     public static function bootEntrustPermissionTrait()
     {
         static::deleting(function ($permission) {
-            if (!method_exists(Config::get('admin.permission'),
-                'bootSoftDeletes')
+            if (!method_exists(
+                Config::get('admin.permission'),
+                'bootSoftDeletes'
+            )
             ) {
                 $permission->roles()->sync([]);
             }

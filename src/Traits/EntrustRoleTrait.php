@@ -22,10 +22,13 @@ trait EntrustRoleTrait
         $rolePrimaryKey = $this->primaryKey;
         $cacheKey       = 'entrust_permissions_for_role_' . $this->$rolePrimaryKey;
         if (Cache::getStore() instanceof TaggableStore) {
-            return Cache::tags(Config::get('admin.permission_role_table'))->remember($cacheKey,
-                Config::get('cache.ttl', 60), function () {
+            return Cache::tags(Config::get('admin.permission_role_table'))->remember(
+                $cacheKey,
+                Config::get('cache.ttl', 60),
+                function () {
                     return $this->perms()->get();
-                });
+                }
+            );
         } else {
             return $this->perms()->get();
         }
@@ -74,10 +77,12 @@ trait EntrustRoleTrait
      */
     public function users()
     {
-        return $this->belongsToMany(Config::get('admin.user'),
+        return $this->belongsToMany(
+            Config::get('admin.user'),
             Config::get('admin.role_user_table'),
             Config::get('admin.role_foreign_key'),
-            Config::get('admin.user_foreign_key'));
+            Config::get('admin.user_foreign_key')
+        );
     }
 
     /**
@@ -89,10 +94,12 @@ trait EntrustRoleTrait
      */
     public function perms()
     {
-        return $this->belongsToMany(Config::get('admin.permission'),
+        return $this->belongsToMany(
+            Config::get('admin.permission'),
             Config::get('admin.permission_role_table'),
             Config::get('admin.role_foreign_key'),
-            Config::get('admin.permission_foreign_key'));
+            Config::get('admin.permission_foreign_key')
+        );
     }
 
     /**
@@ -105,8 +112,10 @@ trait EntrustRoleTrait
     public static function bootEntrustRoleTrait()
     {
         static::deleting(function ($role) {
-            if (!method_exists(Config::get('admin.role'),
-                'bootSoftDeletes')
+            if (!method_exists(
+                Config::get('admin.role'),
+                'bootSoftDeletes'
+            )
             ) {
                 $role->users()->sync([]);
                 $role->perms()->sync([]);

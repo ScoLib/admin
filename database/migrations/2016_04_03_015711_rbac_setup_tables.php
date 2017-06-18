@@ -13,7 +13,8 @@ class RbacSetupTables extends Migration
     public function up()
     {
         // Create table for storing roles
-        Schema::create(config('admin.roles_table'),
+        Schema::create(
+            config('admin.roles_table'),
             function (Blueprint $table) {
                 $table->engine = "InnoDB COMMENT='角色表'";
                 $table->increments('id');
@@ -30,10 +31,12 @@ class RbacSetupTables extends Migration
                     ->comment('备注');
 
                 $table->timestamps();
-            });
+            }
+        );
 
         // Create table for associating roles to users (Many-to-Many)
-        Schema::create(config('admin.role_user_table'),
+        Schema::create(
+            config('admin.role_user_table'),
             function (Blueprint $table) {
                 $table->engine = "InnoDB COMMENT='角色与用户对应表'";
                 $table->integer(config('admin.user_foreign_key'))
@@ -48,10 +51,12 @@ class RbacSetupTables extends Migration
                     config('admin.user_foreign_key'),
                     config('admin.role_foreign_key'),
                 ]);
-            });
+            }
+        );
 
         // Create table for storing permissions
-        Schema::create(config('admin.permissions_table'),
+        Schema::create(
+            config('admin.permissions_table'),
             function (Blueprint $table) {
                 $table->engine = "InnoDB COMMENT='权限表'";
 
@@ -69,10 +74,12 @@ class RbacSetupTables extends Migration
                     ->comment('描述');
 
                 $table->timestamps();
-            });
+            }
+        );
 
         // Create table for associating permissions to roles (Many-to-Many)
-        Schema::create(config('admin.permission_role_table'),
+        Schema::create(
+            config('admin.permission_role_table'),
             function (Blueprint $table) {
                 $table->engine = "InnoDB COMMENT='权限与角色对应表'";
                 $table->integer(config('admin.permission_foreign_key'))
@@ -87,7 +94,8 @@ class RbacSetupTables extends Migration
                     config('admin.permission_foreign_key'),
                     config('admin.role_foreign_key'),
                 ]);
-            });
+            }
+        );
     }
 
     /**

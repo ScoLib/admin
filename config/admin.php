@@ -152,5 +152,4 @@ return [
         'test',
     ],
 
-    'model_config_dir' => 'admin_model'
 ];

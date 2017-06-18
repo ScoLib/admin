@@ -2,6 +2,7 @@
 
 namespace Sco\Admin\Config;
 
+use Illuminate\Config\Repository as ConfigRepository;
 use Illuminate\Foundation\Application;
 use Sco\Attributes\HasOriginalAndAttributesTrait;
 
@@ -13,63 +14,51 @@ abstract class Config
     protected $name;
     protected $config;
 
-    protected $defaultPermissions = [
-        'view'   => true,
-        'create' => true,
-        'update' => true,
-        'delete' => true,
-    ];
+    protected $title;
+    protected $permissions;
+    protected $columns;
 
     public function __construct(Application $app, $name)
     {
-        $this->app = $app;
+        $this->app  = $app;
         $this->name = $name;
 
-        $this->config = $this->compileConfig();
-        //$this->setOriginal($attributes);
-        $this->getOptions();
+        $this->config = new ConfigRepository(
+            $this->app['files']->getRequire($this->getConfigFile())
+        );
     }
 
-    protected function compileConfig()
+    public function getConfigFile()
     {
+        return $this->app['path.config']
+            . DIRECTORY_SEPARATOR . 'admin'
+            . DIRECTORY_SEPARATOR . $this->name . '.php';
     }
 
-    protected function getTitle()
+    public function getTitle()
     {
-        $title = $this->getAttribute('title');
-        if ($title) {
-            return $title;
+        if (!$this->title) {
+            $this->title = $this->config->get('title');
         }
 
-        $title = $this->getOriginal('title');
-        $this->setAttribute('title', $title);
-        return $title;
+        return $this->title;
     }
 
-    protected function getPermissions()
+    /**
+     * @return \Sco\Admin\Config\PermissionsConfig
+     */
+    public function getPermissions()
     {
-        $permissions = $this->getAttribute('permissions', collect());
-        if ($permissions->isEmpty()) {
-            $option = $this->getOriginal('permissions');
-            if (is_array($option)) {
-                $option = array_merge($this->defaultPermissions, $option);
-                foreach ($option as $key => $item) {
-                    $val = $item instanceof \Closure ? $item() : $item;
-                    $permissions->put($key, $val ? true : false);
-                }
-            } else {
-                $val = $option instanceof \Closure ? $option() : $option;
-                foreach ($this->defaultPermissions as $key => $item) {
-                    $permissions->put($key, $val ? true : false);
-                }
-            }
-            $this->setAttribute('permissions', $permissions);
+        if (!$this->permissions) {
+            $config = $this->config->get('permissions');
+
+            $this->permissions = new PermissionsConfig($config);
         }
 
-        return $permissions;
+        return $this->permissions;
     }
 
-    protected function getColumns()
+    public function getColumns()
     {
         $columns = $this->getAttribute('columns', collect());
         if ($columns->isEmpty()) {
@@ -99,14 +88,17 @@ abstract class Config
         return $fields;
     }
 
-    public function getOptions()
+    public function getConfigs()
     {
-        $this->getTitle();
-        $this->getPermissions();
-        //$this->getColumns();
+        $this->setAttribute([
+            'title'       => $this->getTitle(),
+            'permissions' => $this->getPermissions(),
+            //'columns'     => $this->getColumns(),
+        ]);
 
         return $this->getAttributes();
     }
+
 
     public function __toString()
     {

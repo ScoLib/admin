@@ -15,8 +15,7 @@ class AdminController extends Controller
 
     public function config(ConfigContract $config)
     {
-        //$config = app('admin.config.instance');
-        return $config;
+        return $config->getConfigs();
     }
 
     public function create()

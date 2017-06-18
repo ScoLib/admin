@@ -23,10 +23,13 @@ trait EntrustUserTrait
         $userPrimaryKey = $this->primaryKey;
         $cacheKey       = 'entrust_roles_for_user_' . $this->$userPrimaryKey;
         if (Cache::getStore() instanceof TaggableStore) {
-            return Cache::tags(Config::get('admin.role_user_table'))->remember($cacheKey,
-                Config::get('cache.ttl'), function () {
+            return Cache::tags(Config::get('admin.role_user_table'))->remember(
+                $cacheKey,
+                Config::get('cache.ttl'),
+                function () {
                     return $this->roles()->get();
-                });
+                }
+            );
         } else {
             return $this->roles()->get();
         }
@@ -66,10 +69,12 @@ trait EntrustUserTrait
      */
     public function roles()
     {
-        return $this->belongsToMany(Config::get('admin.role'),
+        return $this->belongsToMany(
+            Config::get('admin.role'),
             Config::get('admin.role_user_table'),
             Config::get('admin.user_foreign_key'),
-            Config::get('admin.role_foreign_key'));
+            Config::get('admin.role_foreign_key')
+        );
     }
 
     /**
@@ -82,8 +87,10 @@ trait EntrustUserTrait
     public static function bootEntrustUserTrait()
     {
         static::deleting(function ($user) {
-            if (!method_exists(Config::get('admin.user'),
-                'bootSoftDeletes')
+            if (!method_exists(
+                Config::get('admin.user'),
+                'bootSoftDeletes'
+            )
             ) {
                 $user->roles()->sync([]);
             }
@@ -224,11 +231,17 @@ trait EntrustUserTrait
         // If validate all and there is a false in either
         // Check that if validate all, then there should not be any false.
         // Check that if not validate all, there must be at least one true.
-        if (($options['validate_all'] && !(in_array(false,
-                        $checkedRoles) || in_array(false,
-                        $checkedPermissions))) ||
-            (!$options['validate_all'] && (in_array(true,
-                        $checkedRoles) || in_array(true, $checkedPermissions)))
+        if (($options['validate_all'] && !(in_array(
+            false,
+            $checkedRoles
+        ) || in_array(
+            false,
+            $checkedPermissions
+        ))) ||
+            (!$options['validate_all'] && (in_array(
+                true,
+                $checkedRoles
+            ) || in_array(true, $checkedPermissions)))
         ) {
             $validateAll = true;
         } else {

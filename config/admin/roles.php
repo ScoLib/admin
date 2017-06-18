@@ -11,8 +11,8 @@ return [
         'create' => function () {
             return Auth::user()->can('create_role');
         },
-        'update' => function () {
-            return Auth::user()->can('update_role');
+        'edit'   => function () {
+            return Auth::user()->can('edit_role');
         },
         'delete' => function () {
             return Auth::user()->can('delete_role');

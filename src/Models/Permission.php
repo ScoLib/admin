@@ -84,10 +84,12 @@ class Permission extends Model
             return $this->allRoutes;
         }
 
-        $this->allRoutes = Cache::rememberForever('permission_all',
+        $this->allRoutes = Cache::rememberForever(
+            'permission_all',
             function () {
                 return $this->orderBy('sort')->get();
-            });
+            }
+        );
         return $this->allRoutes;
     }
 

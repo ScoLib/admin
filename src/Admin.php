@@ -51,9 +51,9 @@ class Admin implements AdminContract
                     }
                 } else {
                     $config = $this->getConfig($items);
-                    if ($config && $config->getAttribute('permissions.view')) {
+                    if ($config && $config->getPermissions()->isViewable()) {
                         $menus->push([
-                            'title' => $config->getAttribute('title'),
+                            'title' => $config->getTitle(),
                             'url'   => route('admin.model.index', ['model' => $items], false),
                             'child' => [],
                         ]);
@@ -74,6 +74,11 @@ class Admin implements AdminContract
         return $menus;
     }
 
+    /**
+     * @param $name
+     *
+     * @return \Sco\Admin\Contracts\Config
+     */
     public function getConfig($name)
     {
         if (!$this->models->has($name)) {
