@@ -16,4 +16,9 @@ interface Config
      */
     public function getPermissions();
     public function getColumns();
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    public function getModel();
 }

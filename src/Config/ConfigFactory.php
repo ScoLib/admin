@@ -2,11 +2,16 @@
 
 namespace Sco\Admin\Config;
 
+use JsonSerializable;
+use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Config\Repository as ConfigRepository;
 use Illuminate\Foundation\Application;
+use Sco\Admin\Column\Columns;
+use Sco\Admin\Contracts\Config as ConfigContract;
 use Sco\Attributes\HasOriginalAndAttributesTrait;
 
-abstract class Config
+class ConfigFactory implements ConfigContract, Arrayable, Jsonable, JsonSerializable
 {
     use HasOriginalAndAttributesTrait;
 
@@ -17,6 +22,7 @@ abstract class Config
     protected $title;
     protected $permissions;
     protected $columns;
+    protected $model;
 
     public function __construct(Application $app, $name)
     {
@@ -28,7 +34,7 @@ abstract class Config
         );
     }
 
-    public function getConfigFile()
+    private function getConfigFile()
     {
         return $this->app['path.config']
             . DIRECTORY_SEPARATOR . 'admin'
@@ -60,17 +66,13 @@ abstract class Config
 
     public function getColumns()
     {
-        $columns = $this->getAttribute('columns', collect());
-        if ($columns->isEmpty()) {
-            $options = $this->getOriginal('columns');
-            foreach ($options as $option) {
-                $columns->push(app('admin.column')->make($option));
-            }
+        if (!$this->columns) {
+            $config = $this->config->get('columns');
 
-            $this->setAttribute('columns', $columns);
+            $this->columns = new Columns($config);
         }
 
-        return $columns;
+        return $this->columns;
     }
 
     protected function getFields()
@@ -88,12 +90,24 @@ abstract class Config
         return $fields;
     }
 
+    /**
+     * @return \Sco\Admin\Config\ModelConfig
+     */
+    public function getModel()
+    {
+        if (!$this->model) {
+            $class       = $this->config->get('model');
+            $this->model = new ModelConfig($this, new $class());
+        }
+        return $this->model;
+    }
+
     public function getConfigs()
     {
         $this->setAttribute([
             'title'       => $this->getTitle(),
             'permissions' => $this->getPermissions(),
-            //'columns'     => $this->getColumns(),
+            'columns'     => $this->getColumns(),
         ]);
 
         return $this->getAttributes();

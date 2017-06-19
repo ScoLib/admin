@@ -8,9 +8,9 @@ use Sco\Admin\Contracts\Config as ConfigContract;
 
 class AdminController extends Controller
 {
-    public function getList()
+    public function getList(ConfigContract $config)
     {
-        //return $model->paginate();
+        return $config->getModel()->orderBy('id', 'desc')->paginate();
     }
 
     public function config(ConfigContract $config)

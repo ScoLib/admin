@@ -152,4 +152,6 @@ return [
         'test',
     ],
 
+    'column' => \Sco\Admin\Column\ElColumn::class,
+
 ];

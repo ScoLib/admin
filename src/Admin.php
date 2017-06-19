@@ -7,7 +7,8 @@ use Auth;
 use Illuminate\Support\Collection;
 use Route;
 use Illuminate\Foundation\Application;
-use Sco\Admin\Config\ModelConfig;
+use Sco\Admin\Config\ConfigFactory;
+use Sco\Admin\Config\ModelFactory;
 use Sco\Admin\Contracts\Admin as AdminContract;
 use Illuminate\Config\Repository as ConfigRepository;
 
@@ -82,7 +83,7 @@ class Admin implements AdminContract
     public function getConfig($name)
     {
         if (!$this->models->has($name)) {
-            $this->models->put($name, new ModelConfig($this->app, $name));
+            $this->models->put($name, new ConfigFactory($this->app, $name));
         }
 
         return $this->models->get($name);

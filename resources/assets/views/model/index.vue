@@ -28,7 +28,7 @@
 
                     <div class="btn-group btn-group-sm pull-right margin-r-5">
                         <router-link
-                                :to="{ path: '/admin/' + $route.params.model + '/create'}"
+                                :to="{ name: 'admin.model.create', params: {model: $route.params.model}}"
                                 v-if="config.permissions.create"
                                 class="btn btn-default">
                             <i class="fa fa-plus bigger-120"></i>
@@ -49,12 +49,12 @@
                         </el-table-column>
 
                         <el-table-column
-                                :label="column.label"
-                                :prop="column.prop"
+                                :label="column.title"
+                                :prop="column.key"
                                 :width="column.width"
                                 :fixed="column.fixed"
                                 v-for="column in config.columns"
-                                :key="column.prop">
+                                :key="column.key">
                         </el-table-column>
 
                         <el-table-column :label="$t('table.id')"
@@ -80,8 +80,8 @@
                                 <div class="hidden-xs btn-group">
                                     <router-link
                                             class="btn btn-xs btn-info"
-                                            v-if="config.permissions.update"
-                                            :to="{path:'admin/edit'}"
+                                            v-if="config.permissions.edit"
+                                            :to="{name:'admin.model.edit', params:{model:$route.params.model,id:scope.row.id}}"
                                             title="编辑">
                                         <i class="fa fa-pencil bigger-120"></i>
                                     </router-link>

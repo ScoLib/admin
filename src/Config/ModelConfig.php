@@ -2,65 +2,63 @@
 
 namespace Sco\Admin\Config;
 
+use Illuminate\Database\Eloquent\Model;
 use JsonSerializable;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
-use Sco\Admin\Exceptions\InvalidArgumentException;
 use Sco\Admin\Contracts\Config as ConfigContract;
+use Sco\Attributes\HasAttributesTrait;
 
-class ModelConfig extends Config implements ConfigContract, Arrayable, Jsonable, JsonSerializable
+class ModelConfig implements Arrayable, Jsonable, JsonSerializable
 {
+    use HasAttributesTrait;
 
-    protected $orderBy = [];
-    protected $wheres = [];
-
+    protected $configFactory;
     /**
-     * Get Model
-     *
-     * @return \Illuminate\Database\Eloquent\Model
-     * @throws \Sco\Admin\Exceptions\InvalidArgumentException
+     * @var \Illuminate\Database\Eloquent\Model
      */
-    protected function getModel()
-    {
-        $modelName = $this->getOriginal('model');
-        if (class_exists($modelName)) {
-            return new $modelName();
-        }
-        throw new InvalidArgumentException("class {$modelName} not found");
-    }
+    protected $model;
 
-    public function where($filters)
+    public function __construct(ConfigContract $factory, Model $model)
     {
-        $this->wheres = $filters;
-        return $this;
-    }
-
-    public function orderBy($column, $direction = 'asc')
-    {
-        $this->orderBy = compact('column', 'direction');
-        return $this;
+        $this->configFactory = $factory;
+        $this->model = $model;
     }
 
     public function paginate($perPage = null)
     {
-        $model = $this->compileWhere();
-        if (!empty($this->orderBy)) {
-            $model->orderBy($this->orderBy['column'], $this->orderBy['direction']);
-        }
-
-        $data = $model->paginate($perPage);
+        $data = $this->model->paginate($perPage);
         return $data;
     }
 
-    protected function compileWhere()
+    public function get()
     {
-        $model = $this->getModel();
-        if (!empty($this->wheres)) {
-            foreach ($this->wheres as $key => $where) {
-                list($operator, $value) = is_array($where) ? $where : ['=', $where];
-                $model->where($key, $operator, $value);
-            }
-        }
-        return $model;
+        $data = $this->model->get();
+        return $data;
+    }
+
+    /**
+     * Handle dynamic method calls into the model.
+     *
+     * @param  string  $method
+     * @param  array  $parameters
+     * @return mixed
+     */
+    public function __call($method, $parameters)
+    {
+        $this->model = $this->model->$method(...$parameters);
+        return $this;
+    }
+
+    /**
+     * Handle dynamic static method calls into the method.
+     *
+     * @param  string  $method
+     * @param  array  $parameters
+     * @return mixed
+     */
+    public static function __callStatic($method, $parameters)
+    {
+        return (new static)->$method(...$parameters);
     }
 }

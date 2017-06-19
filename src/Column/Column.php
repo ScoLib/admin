@@ -9,7 +9,7 @@ abstract class Column
 {
     use HasOriginalAndAttributesTrait;
 
-    protected $defaultsOptions = [
+    protected $defaultsAttributes = [
         'key'      => '',
         'title'    => '',
         'sortable' => true,
@@ -18,14 +18,14 @@ abstract class Column
 
     protected $defaults = [];
 
-    public function __construct($options)
+    public function __construct($attributes)
     {
-        $this->setOriginal(array_merge($this->getDefaults(), $options));
+        $this->setAttribute(array_merge($this->getDefaults(), $attributes));
     }
 
     protected function getDefaults()
     {
-        return array_merge($this->defaultsOptions, $this->defaults);
+        return array_merge($this->defaultsAttributes, $this->defaults);
     }
 
     function __toString()
