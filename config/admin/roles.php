@@ -23,13 +23,18 @@ return [
             'key'   => 'id',
             'title' => 'ID',
             'width' => '50',
-            'fixed' => false,
         ],
         [
             'key'   => 'name',
             'title' => 'Name',
-            'width' => '0',
-            'fixed' => false,
+        ],
+        [
+            'key'   => 'display_name',
+            'title' => 'display_name',
+        ],
+        [
+            'key'   => 'created_at',
+            'title' => 'created_at',
         ],
     ],
 ];

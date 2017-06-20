@@ -52,28 +52,15 @@
                                 :label="column.title"
                                 :prop="column.key"
                                 :width="column.width"
+                                :min-width="column.minWidth"
+                                :sortable="column.sortable"
                                 :fixed="column.fixed"
                                 v-for="column in config.columns"
                                 :key="column.key">
                         </el-table-column>
 
-                        <el-table-column :label="$t('table.id')"
-                                         prop="id"
-                                         width="60">
-                        </el-table-column>
-
-                        <el-table-column :label="$t('table.name')" prop="name">
-                        </el-table-column>
-
-                        <el-table-column :label="$t('table.display_name')" prop="display_name">
-                        </el-table-column>
-
-                        <el-table-column label="创建时间" prop="created_at">
-                        </el-table-column>
-
                         <el-table-column
                                 label="操作"
-                                width="120"
                                 align="center"
                                 column-key="index">
                             <template scope="scope">

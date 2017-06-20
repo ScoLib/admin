@@ -12,7 +12,7 @@ abstract class Column
     protected $defaultsAttributes = [
         'key'      => '',
         'title'    => '',
-        'sortable' => true,
+        'sortable' => false,
         'width'    => 0,
     ];
 
