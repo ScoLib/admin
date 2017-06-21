@@ -12,6 +12,22 @@ return [
             'key'   => 'id',
             'title' => 'ID',
         ],
+        [
+            'key'   => 'type',
+            'title' => 'Type',
+        ],
+        [
+            'key'   => 'content',
+            'title' => 'content',
+        ],
+        [
+            'key'   => 'client_ip',
+            'title' => 'client_ip',
+        ],
+        [
+            'key'   => 'client',
+            'title' => 'client',
+        ],
     ],
 
 ];

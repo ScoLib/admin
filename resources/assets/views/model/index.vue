@@ -1,3 +1,8 @@
+<style>
+    .el-table__header,.el-table__body,.el-table__footer {
+        width: 100% !important;
+    }
+</style>
 <template>
     <div class="row">
         <div class="col-xs-12">
@@ -145,7 +150,7 @@
                 let model = this.$route.params.model;
 //                console.log(models[model]);
 //                console.log(model);
-                console.log(Object.keys(models).indexOf(model));
+//                console.log(Object.keys(models).indexOf(model));
                 if (Object.keys(models).indexOf(model) == -1) {
                     return {};
                 } else {
