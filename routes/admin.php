@@ -56,11 +56,11 @@ Route::group([
             return response()->json($menus);
         })->name('menu');
 
-        Route::get('permissions', function () {
+        /*Route::get('permissions', function () {
             $permissions = request()->attributes->get('admin.permissions');
             return response()->json($permissions);
         })->name('permissions')
-            ->middleware('admin.permissions');
+            ->middleware('admin.permissions');*/
 
         // 操作日志
         Route::get('system/log/list', 'System\ActionLogController@getList')

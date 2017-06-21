@@ -18,5 +18,22 @@ return [
             return Auth::user()->can('delete_permission');
         },
     ],
-    'columns'     => [],
+    'columns'     => [
+        [
+            'key'   => 'id',
+            'title' => 'ID',
+        ],
+        [
+            'key'   => 'name',
+            'title' => 'Name',
+        ],
+        [
+            'key'   => 'display_name',
+            'title' => 'display_name',
+        ],
+        [
+            'key'   => 'created_at',
+            'title' => 'created_at',
+        ],
+    ],
 ];

@@ -48,33 +48,38 @@
                                 :selectable="selectable">
                         </el-table-column>
 
-                        <el-table-column
+                        <el-column
+                                :column="column"
+                                v-for="column in config.columns"
+                                :key="column.key">
+                        </el-column>
+
+                        <!--<el-table-column
                                 :label="column.title"
                                 :prop="column.key"
-                                :width="column.width"
                                 :min-width="column.minWidth"
                                 :sortable="column.sortable"
                                 :fixed="column.fixed"
                                 v-for="column in config.columns"
                                 :key="column.key">
-                        </el-table-column>
+                        </el-table-column>-->
 
                         <el-table-column
                                 label="操作"
                                 align="center"
+                                width="120"
                                 column-key="index">
                             <template scope="scope">
                                 <div class="hidden-xs btn-group">
                                     <router-link
                                             class="btn btn-xs btn-info"
                                             v-if="config.permissions.edit"
-                                            :to="{name:'admin.model.edit', params:{model:$route.params.model,id:scope.row.id}}"
+                                            :to="{name:'admin.model.edit', params:{model:$route.params.model,id:scope.row[config.primaryKey]}}"
                                             title="编辑">
                                         <i class="fa fa-pencil bigger-120"></i>
                                     </router-link>
                                     <button class="btn btn-xs btn-danger"
-                                            @click.prevent="destroy(scope.row.id)"
-                                            :disabled="scope.row.name == 'admin'"
+                                            @click.prevent="destroy(scope.row[config.primaryKey])"
                                             v-if="config.permissions.delete"
                                             title="删除">
                                         <i class="fa fa-trash-o bigger-120"></i>
@@ -102,6 +107,24 @@
 
 <script>
 
+    Vue.component('el-column', {
+        functional: true,
+        render: function(createElement, context) {
+            var props = context.props.column;
+            props['label'] = props.title;
+            props['prop'] = props.key;
+            return createElement('el-table-column', {
+                props
+            });
+        },
+        props: {
+            column: {
+                type: Object,
+                default: {}
+            }
+        }
+    });
+
     export default {
         components: {
         },
@@ -120,13 +143,13 @@
             config() {
                 let models = this.$store.state.models;
                 let model = this.$route.params.model;
-                console.log(models[model]);
+//                console.log(models[model]);
 //                console.log(model);
-//                console.log(Object.keys(models).indexOf(model));
+                console.log(Object.keys(models).indexOf(model));
                 if (Object.keys(models).indexOf(model) == -1) {
                     return {};
                 } else {
-//                    console.log(models);
+                    console.log(models[model]);
                     return models[model];
                 }
             }
@@ -144,38 +167,43 @@
                 this.getResults();
             },
             selectable(row, index) {
-                return row.name == 'admin' ? false : true;
+                return true;
+//                return row.name == 'admin' ? false : true;
             },
             getSelected(selection) {
                 this.selection = [];
                 selection.forEach(row => {
-                    this.selection.push(row.id);
+                    this.selection.push(row[this.config.primaryKey]);
                 });
             },
-            getResults() {
+            getResults(page) {
+                if (typeof page === 'undefined') {
+                    page = 1;
+                }
+
                 this.tableLoading = true;
-                this.$http.get('/admin/' + this.$route.params.model + '/list').then(response => {
-                    this.tableLoading = false;
-                    this.pageData = response.data;
-                }).catch(error => {})
+                this.$http.get('/admin/' + this.$route.params.model + '/list', {params: {'page': page}})
+                    .then(response => {
+                        this.tableLoading = false;
+                        this.pageData = response.data;
+                    }).catch(error => {})
             },
             destroy(id) {
-                this.$confirm('确定要删除此角色吗？', '提示', {
+                this.$confirm('确定要删除此' + this.config.title + '吗？', '提示', {
                     type: 'warning',
                     beforeClose: (action, instance, done) => {
                         if (action == 'confirm') {
                             instance.confirmButtonLoading = true;
-                            this.$http.delete('/admin/users/role/' + id)
+                            this.$http.delete('/admin/' + this.$route.params.model + '/' + id)
                                 .then(response => {
                                     instance.confirmButtonLoading = false;
                                     instance.close();
                                     this.$message.success('删除成功');
                                     this.getResults();
-                                    this.flushPermission();
                                 }).catch(error => {
-                                instance.confirmButtonLoading = false;
-                                instance.close();
-                            })
+                                    instance.confirmButtonLoading = false;
+                                    instance.close();
+                                })
                         } else {
                             done();
                         }
@@ -188,32 +216,28 @@
                     return false;
                 }
 
-                this.$confirm('确定要执行删除角色操作吗？', '提示',{
+                this.$confirm('确定要执行批量删除' + this.config.title + '操作吗？', '提示',{
                     type: 'warning',
                     beforeClose: (action, instance, done) => {
                         if (action == 'confirm') {
                             instance.confirmButtonLoading = true;
 //                            instance.confirmButtonText = '执行中...';
-                            this.$http.post('/admin/users/role/batch/destroy', {'ids': this.selection})
+                            this.$http.post('/admin/' + this.$route.params.model + '/batch/destroy', {'ids': this.selection})
                                 .then(response => {
                                     instance.confirmButtonLoading = false;
                                     instance.close();
                                     this.$message.success('删除成功');
                                     this.getResults();
-                                    this.flushPermission();
                                 }).catch(error => {
-                                instance.confirmButtonLoading = false;
-                                instance.close();
-                            })
+                                    instance.confirmButtonLoading = false;
+                                    instance.close();
+                                })
                         } else {
                             done();
                         }
                     }
                 }).then(action => {}).catch(action => {});
             },
-            flushPermission() {
-                this.$store.commit('setPermissions', []);
-            }
         }
     }
 </script>

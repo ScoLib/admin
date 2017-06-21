@@ -105,6 +105,7 @@ class ConfigFactory implements ConfigContract, Arrayable, Jsonable, JsonSerializ
     public function getConfigs()
     {
         $this->setAttribute([
+            'primaryKey' => $this->getModel()->getKeyName(),
             'title'       => $this->getTitle(),
             'permissions' => $this->getPermissions(),
             'columns'     => $this->getColumns(),

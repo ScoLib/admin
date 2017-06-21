@@ -40,8 +40,6 @@ class Permission extends Model
 {
     use TreeTrait, EntrustPermissionTrait;
 
-    protected $hidden = ['created_at', 'updated_at'];
-
     protected $guarded = ['created_at', 'updated_at'];
 
     protected $treeNodeParentIdName = 'pid';

@@ -46,7 +46,11 @@ class ModelConfig implements Arrayable, Jsonable, JsonSerializable
      */
     public function __call($method, $parameters)
     {
-        $this->model = $this->model->$method(...$parameters);
+        if (in_array($method, ['getKeyName'])) {
+            return $this->model->$method(...$parameters);
+        }
+
+        $this->model->$method(...$parameters);
         return $this;
     }
 

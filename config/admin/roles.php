@@ -22,11 +22,12 @@ return [
         [
             'key'   => 'id',
             'title' => 'ID',
-            'width' => '50',
+            'width' => '80',
         ],
         [
             'key'   => 'name',
             'title' => 'Name',
+            'width' => '120',
         ],
         [
             'key'   => 'display_name',

@@ -12,8 +12,8 @@ abstract class Column
     protected $defaultsAttributes = [
         'key'      => '',
         'title'    => '',
-        'sortable' => false,
-        'width'    => 0,
+        //'sortable' => false,
+        //'width'    => 0,
     ];
 
     protected $defaults = [];
