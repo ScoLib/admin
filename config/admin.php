@@ -152,6 +152,6 @@ return [
         'test',
     ],
 
-    'column' => \Sco\Admin\Column\ElColumn::class,
+    'column' => \Sco\Admin\Column\IvuColumn::class,
 
 ];

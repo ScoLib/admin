@@ -12,8 +12,8 @@ abstract class Column
     protected $defaultsAttributes = [
         'key'      => '',
         'title'    => '',
-        //'sortable' => false,
-        //'width'    => 0,
+        'sortable' => false,
+        'width'    => 0,
     ];
 
     protected $defaults = [];
@@ -28,7 +28,7 @@ abstract class Column
         return array_merge($this->defaultsAttributes, $this->defaults);
     }
 
-    function __toString()
+    public function __toString()
     {
         return $this->toJson();
     }

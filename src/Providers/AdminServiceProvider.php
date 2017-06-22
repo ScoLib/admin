@@ -21,11 +21,11 @@ class AdminServiceProvider extends ServiceProvider
     ];
 
     protected $middlewares = [
-        'admin.guest'       => \Sco\Admin\Http\Middleware\RedirectIfAuthenticated::class,
-        'admin.permissions' => \Sco\Admin\Http\Middleware\Permissions::class,
-        'admin.phptojs'     => \Sco\Admin\Http\Middleware\PHPVarToJavaScript::class,
-        'admin.can'         => \Sco\Admin\Http\Middleware\Authorize::class,
-        'admin.role'        => \Sco\Admin\Http\Middleware\EntrustRole::class,
+        'admin.guest'     => \Sco\Admin\Http\Middleware\RedirectIfAuthenticated::class,
+        'admin.phptojs'   => \Sco\Admin\Http\Middleware\PHPVarToJavaScript::class,
+        'admin.can.route' => \Sco\Admin\Http\Middleware\RouteAuthorize::class,
+        'admin.can.model' => \Sco\Admin\Http\Middleware\ModelAuthorize::class,
+        'admin.role'      => \Sco\Admin\Http\Middleware\EntrustRole::class,
     ];
 
     protected $providers = [
@@ -96,6 +96,7 @@ class AdminServiceProvider extends ServiceProvider
         $this->registerAdmin();
         $this->registerAliases();
         $this->registerMiddleware();
+        $this->bindRouteModel();
 
         $this->commands($this->commands);
 
@@ -104,14 +105,9 @@ class AdminServiceProvider extends ServiceProvider
 
     protected function registerMiddleware()
     {
-        $router = $this->app['router'];
         foreach ($this->middlewares as $key => $middleware) {
-            $router->aliasMiddleware($key, $middleware);
+            $this->app['router']->aliasMiddleware($key, $middleware);
         }
-
-        $router->bind('model', function ($value) {
-            return $this->app['admin.instance']->getConfig($value);
-        });
     }
 
     protected function registerAliases()
@@ -140,5 +136,12 @@ class AdminServiceProvider extends ServiceProvider
     protected function registerAdmin()
     {
         $this->app->instance('admin.instance', new Admin($this->app));
+    }
+
+    protected function bindRouteModel()
+    {
+        $this->app['router']->bind('model', function ($value) {
+            return $this->app['admin.instance']->getConfig($value);
+        });
     }
 }

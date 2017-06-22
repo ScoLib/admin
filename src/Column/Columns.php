@@ -23,6 +23,6 @@ class Columns implements ColumnsContract, Arrayable, Jsonable, JsonSerializable
     public function addColumn($column)
     {
         $columnClass = config('admin.column');
-        $this->setAttribute($column['key'], new $columnClass($column));
+        $this->attributes[] = new $columnClass($column);
     }
 }

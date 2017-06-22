@@ -1,8 +1,3 @@
-<style>
-    .el-table__header,.el-table__body,.el-table__footer {
-        width: 100% !important;
-    }
-</style>
 <template>
     <div class="row">
         <div class="col-xs-12">
@@ -26,7 +21,7 @@
                     <div class="btn-group btn-group-sm">
                         <button type="button" class="btn btn-primary" @click.prevent="fetchData">
                             <i class="fa fa-refresh"></i>
-                            刷新
+                            {{ $t('table.refresh') }}
                         </button>
                     </div>
 
@@ -44,7 +39,14 @@
                 <!-- /.box-header -->
                 <div class="box-body table-responsive no-padding">
 
-                    <el-table :data="pageData.data"
+                    <Table
+                            :data="pageData.data"
+                            v-loading="tableLoading"
+                            @on-selection-change="getSelected"
+                            :columns="columns">
+                    </Table>
+
+                    <!--<el-table :data="pageData.data"
                               v-loading="tableLoading"
                               @selection-change="getSelected">
 
@@ -59,7 +61,7 @@
                                 :key="column.key">
                         </el-column>
 
-                        <!--<el-table-column
+                        &lt;!&ndash;<el-table-column
                                 :label="column.title"
                                 :prop="column.key"
                                 :min-width="column.minWidth"
@@ -67,7 +69,7 @@
                                 :fixed="column.fixed"
                                 v-for="column in config.columns"
                                 :key="column.key">
-                        </el-table-column>-->
+                        </el-table-column>&ndash;&gt;
 
                         <el-table-column
                                 label="操作"
@@ -93,16 +95,22 @@
                             </template>
                         </el-table-column>
 
-                    </el-table>
+                    </el-table>-->
                 </div>
                 <!-- /.box-body -->
                 <div class="box-footer clearfix">
-                    <el-pagination
+                    <!--<el-pagination
                             layout="total, prev, pager, next"
                             :page-size="pageData.per_page"
                             @current-change="getResults"
                             :total="pageData.total">
-                    </el-pagination>
+                    </el-pagination>-->
+                    <Page
+                            :page-size="pageData.per_page"
+                            show-total
+                            size="small"
+                            @on-change="getResults"
+                            :total="pageData.total"></Page>
                 </div>
             </div>
 
@@ -157,6 +165,74 @@
                     console.log(models[model]);
                     return models[model];
                 }
+            },
+            columns() {
+                let columns = [
+                    {
+                        type: 'selection',
+                        width: 60,
+                        align: 'center'
+                    }
+                ];
+                columns = columns.concat(this.config.columns);
+                columns.push({
+                    title: '操作',
+                    key: 'action',
+                    width: 150,
+                    align: 'center',
+                    render: (h, params) => {
+//                        console.log(params);
+
+                        let buttons = [];
+                        if (this.config.permissions.edit) {
+                            let edit = h('router-link', {
+                                class: 'btn btn-xs btn-info',
+                                title: this.$t('table.edit'),
+                                props: {
+                                    to: {
+                                        name: 'admin.model.edit',
+                                        params:{
+                                            model: this.$route.params.model,
+                                            id: params.row[this.config.primaryKey]
+                                        }
+                                    }
+                                }
+                            }, [
+                                h('i', {
+                                    class: 'fa fa-pencil bigger-120'
+                                })
+                            ]);
+                            buttons.push(edit);
+                        }
+
+                        if (this.config.permissions.delete) {
+                            let del = h('Button', {
+                                class: 'btn btn-xs btn-danger',
+                                title: this.$t('table.delete'),
+                                props: {
+                                    type: 'error',
+                                    size: 'small'
+                                },
+                                on: {
+                                    click: () => {
+                                        this.destroy(params.row[this.config.primaryKey])
+                                    }
+                                }
+                            }, [
+                                h('i', {
+                                    class: 'fa fa-trash-o bigger-120'
+                                })
+                            ]);
+                            buttons.push(del);
+                        }
+
+                        return h('div',{
+                            class: 'hidden-xs btn-group'
+                        }, buttons);
+                    }
+                });
+//                console.log(columns);
+                return columns;
             }
         },
         created () {
@@ -180,6 +256,7 @@
                 selection.forEach(row => {
                     this.selection.push(row[this.config.primaryKey]);
                 });
+                console.log(this.selection);
             },
             getResults(page) {
                 if (typeof page === 'undefined') {
@@ -194,7 +271,23 @@
                     }).catch(error => {})
             },
             destroy(id) {
-                this.$confirm('确定要删除此' + this.config.title + '吗？', '提示', {
+                this.$Modal.confirm({
+                    title: '提示',
+                    content: '确定要删除此' + this.config.title + '吗？',
+                    loading: true,
+                    onOk: () => {
+                        this.$http.delete('/admin/' + this.$route.params.model + '/' + id)
+                            .then(response => {
+                                this.$Modal.remove();
+                                this.$Message.success('删除成功');
+                                this.getResults();
+                            }).catch(error => {
+                                this.$Modal.remove();
+
+                            })
+                    }
+                });
+                /*this.$confirm('确定要删除此' + this.config.title + '吗？', '提示', {
                     type: 'warning',
                     beforeClose: (action, instance, done) => {
                         if (action == 'confirm') {
@@ -213,15 +306,32 @@
                             done();
                         }
                     }
-                }).then(action => {}).catch(action => {});
+                }).then(action => {}).catch(action => {});*/
             },
             batchDestroy() {
                 if (this.selection.length == 0) {
-                    this.$message.error('请选择操作对象');
+                    this.$Message.error('请选择操作对象');
                     return false;
                 }
 
-                this.$confirm('确定要执行批量删除' + this.config.title + '操作吗？', '提示',{
+                this.$Modal.confirm({
+                    title: '提示',
+                    content: '确定要执行批量删除' + this.config.title + '操作吗？',
+                    loading: true,
+                    onOk: () => {
+                        this.$http.post('/admin/' + this.$route.params.model + '/batch/destroy', {'ids': this.selection})
+                            .then(response => {
+                                this.$Modal.remove();
+                                this.$Message.success('删除成功');
+                                this.getResults();
+                            }).catch(error => {
+                                this.$Modal.remove();
+                            })
+                    }
+                });
+
+
+                /*this.$confirm('确定要执行批量删除' + this.config.title + '操作吗？', '提示',{
                     type: 'warning',
                     beforeClose: (action, instance, done) => {
                         if (action == 'confirm') {
@@ -241,7 +351,7 @@
                             done();
                         }
                     }
-                }).then(action => {}).catch(action => {});
+                }).then(action => {}).catch(action => {});*/
             },
         }
     }

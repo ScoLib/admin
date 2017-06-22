@@ -42,21 +42,36 @@ class PermissionsConfig implements Arrayable, Jsonable, JsonSerializable
 
     public function isCreatable()
     {
-        return $this->getAttribute('create', false);
+        return $this->can('create');
     }
 
     public function isViewable()
     {
-        return $this->getAttribute('view', false);
+        return $this->can('view');
     }
 
     public function isEditable()
     {
-        return $this->getAttribute('edit', false);
+        return $this->can('edit');
     }
 
     public function isDeletable()
     {
-        return $this->getAttribute('delete', false);
+        return $this->can('delete');
+    }
+
+    public function can($permission)
+    {
+        if (!is_array($permission)) {
+            $permission = [$permission];
+        }
+
+        foreach ($permission as $item) {
+            $hasPerm = $this->getAttribute($item, false);
+            if (!$hasPerm) {
+                return false;
+            }
+        }
+        return true;
     }
 }

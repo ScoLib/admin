@@ -63,8 +63,8 @@ Route::group([
             ->middleware('admin.permissions');*/
 
         // 操作日志
-        Route::get('system/log/list', 'System\ActionLogController@getList')
-            ->name('system.log.list');
+        /*Route::get('system/log/list', 'System\ActionLogController@getList')
+            ->name('system.log.list');*/
     });
 
     Route::group(['middleware' => ['auth']], function () {
@@ -78,7 +78,7 @@ Route::group([
             // 后台菜单
             Route::group(['as' => 'menu.', 'prefix' => 'menu'], function () {
                 // 菜单列表数据
-                Route::get('list', 'MenuController@getList')
+                /*Route::get('list', 'MenuController@getList')
                     ->name('list');
 
                 // 保存菜单
@@ -96,7 +96,7 @@ Route::group([
 
                 // 批量删除菜单
                 Route::post('batch/destroy', 'MenuController@batchDestroy')
-                    ->name('batch.destroy');
+                    ->name('batch.destroy');*/
             });
         });
 
@@ -163,32 +163,42 @@ Route::group([
     ], function () {
 
         Route::get('list', 'AdminController@getList')
-            ->name('list');
+            ->name('list')
+            ->middleware('admin.can.model:view');
 
-        Route::get('config', 'AdminController@config');
+        Route::get('config', 'AdminController@config')
+            ->name('config')
+            ->middleware('admin.can.model:view');
 
         Route::get('create', 'AdminController@create')
-            ->name('create');
+            ->name('create')
+            ->middleware('admin.can.model:create');
 
         Route::post('store', 'AdminController@store')
-            ->name('store');
-
-        Route::post('update', 'AdminController@update')
-            ->name('update');
-
-        Route::post('batch/destroy', 'AdminController@batchDestroy')
-            ->name('batch.destroy');
-
-        Route::delete('{id}', 'AdminController@destroy')
-            ->where(['id' => '[0-9]+'])
-            ->name('destroy');
+            ->name('store')
+            ->middleware('admin.can.model:create');
 
         Route::get('{id}/edit', 'AdminController@edit')
             ->where(['id' => '[0-9]+'])
-            ->name('edit');
+            ->name('edit')
+            ->middleware('admin.can.model:edit');
+
+        Route::post('update', 'AdminController@update')
+            ->name('update')
+            ->middleware('admin.can.model:edit');
+
+        Route::post('batch/destroy', 'AdminController@batchDestroy')
+            ->name('batch.destroy')
+            ->middleware('admin.can.model:delete');
+
+        Route::delete('{id}', 'AdminController@destroy')
+            ->where(['id' => '[0-9]+'])
+            ->name('destroy')
+            ->middleware('admin.can.model:delete');
 
         Route::get('/', function () {
             return view('admin::app');
-        })->name('index');
+        })->name('index')
+            ->middleware('admin.can.model:view');
     });
 });

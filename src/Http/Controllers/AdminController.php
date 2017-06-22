@@ -34,8 +34,9 @@ class AdminController extends Controller
     {
     }
 
-    public function destroy()
+    public function destroy(ConfigContract $config, $id)
     {
+        dd($config, $id);
     }
 
     public function batchDestroy()

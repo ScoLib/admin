@@ -3,14 +3,19 @@ require('bootstrap');
 require('./js');
 
 import Vue from 'vue';
-import ElementUI from 'element-ui';
+import iView from 'iview';
+// import ElementUI from 'element-ui';
 import i18n from './lang';
 import store from './store';
 import router from './router';
 import App from './components/App.vue';
 import util from './util';
+import ElLoading from 'element-loading'
 
-Vue.use(ElementUI, {
+// Vue.use(iView);
+Vue.use(ElLoading);
+
+Vue.use(iView, {
     i18n: function(path, options) {
         let value = i18n.t(path, options);
         if (value !== null && value !== undefined) return value;

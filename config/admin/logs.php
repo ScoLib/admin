@@ -4,9 +4,20 @@ return [
     'title' => '操作日志',
     'model' => \Sco\ActionLog\Models\ActionLogModel::class,
 
-    'permissions' => function () {
-        return Auth::user()->can('manage_log');
-    },
+    'permissions' => [
+        'view'   => function () {
+            return Auth::user()->can('manage_log');
+        },
+        'create' => function () {
+            return false;
+        },
+        'edit'   => function () {
+            return false;
+        },
+        'delete' => function () {
+            return false;
+        },
+    ],
     'columns'     => [
         [
             'key'   => 'id',

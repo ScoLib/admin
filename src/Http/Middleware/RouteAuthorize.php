@@ -7,7 +7,7 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Route;
 use Illuminate\Contracts\Auth\Factory as Auth;
 
-class Authorize
+class RouteAuthorize
 {
     const DELIMITER = '|';
 

@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { Message } from 'element-ui'
+// import { Message } from 'element-ui'
 import router from '../router'
 
 
@@ -17,11 +17,12 @@ axios.interceptors.response.use(null, error => {
             router.push({name: 'admin.login'})
             return;
         }
+        // console.log(router.app.$Message);
         console.log('axios response', error.response);
         if (typeof error.response.data == 'object') {
             return Promise.reject(error);
         } else {
-            Message.error(error.response.data);
+            router.app.$Message.error(error.response.data);
         }
     } else if (error.request) {
         // The request was made but no response was received
@@ -31,7 +32,7 @@ axios.interceptors.response.use(null, error => {
     } else {
         console.log('axios message', error.message);
         // Something happened in setting up the request that triggered an Error
-        Message.error(error.message);
+        router.app.$Message.error(error.message);
     }
     return Promise.reject(error);
 })

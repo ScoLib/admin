@@ -44,11 +44,11 @@
                 </div>
                 <!-- /.col -->
                 <div class="col-xs-4">
-                    <el-button
+                    <Button
                             type="primary"
                             class="btn btn-primary btn-block btn-flat"
                             :loading="buttonLoading"
-                            @click.prevent="login">登录</el-button>
+                            @click.prevent="login">登录</Button>
                 </div>
                 <!-- /.col -->
             </div>
