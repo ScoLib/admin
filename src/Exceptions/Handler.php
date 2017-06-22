@@ -7,6 +7,7 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Contracts\Debug\ExceptionHandler as ExceptionHandlerContract;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -109,7 +110,7 @@ class Handler implements ExceptionHandlerContract
         AuthenticationException $exception
     ) {
         if ($request->expectsJson()) {
-            return response('Unauthenticated.', 401);
+            return response('Unauthenticated', 401);
         }
 
         if ($this->isAdmin($request)) {
@@ -129,7 +130,7 @@ class Handler implements ExceptionHandlerContract
     {
         $status = $exception->getStatusCode();
         if ($request->expectsJson()) {
-            return response($exception->getMessage() ?: 'Not Found', $status);
+            return response($exception->getMessage() ?: Response::$statusTexts[$status], $status);
         }
         if ($this->isAdmin($request)) {
             //return response()->view('admin::app', ['exception' => $exception], $status, $exception->getHeaders());
@@ -151,7 +152,7 @@ class Handler implements ExceptionHandlerContract
     protected function renderAdminException($request, AdminException $exception)
     {
         if ($request->expectsJson()) {
-            return response($exception->getMessage(), 500);
+            return response($exception->getMessage() ?: 'Internal Server Error', 500);
         }
     }
 }

@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import routes from './routes'
-import util from '../util'
+// import util from '../util'
 import VueProgressBar from 'vue-progressbar'
 
 Vue.use(VueProgressBar, {
@@ -11,7 +11,7 @@ Vue.use(VueProgressBar, {
 })
 
 Vue.use(VueRouter)
-Vue.use(util)
+// Vue.use(util)
 
 const router = new VueRouter({
     routes,
@@ -58,7 +58,9 @@ router.beforeEach((to, from, next) => {
                             router.app.$store.commit('setMetaTitle', response.data.title);
                             document.title = router.app.$store.state.metaTitle + ' - ' + window.Admin.Title;
                             next();
-                        }).catch(error => {})
+                        }).catch(error => {
+                            next({name: 'admin.403'});
+                        })
                 } else {
                     to.meta.title = router.app.$store.state.models[to.params.model].title;
                     router.app.$store.commit('setMetaTitle', to.meta.title);
@@ -66,9 +68,27 @@ router.beforeEach((to, from, next) => {
                     next();
                 }
             } else {
-                router.app.$store.commit('setMetaTitle', to.meta.title);
-                document.title = router.app.$store.state.metaTitle + ' - ' + window.Admin.Title;
-                next();
+                if (typeof to.name == 'undefined' || to.name == '') {
+                    return next({name: 'admin.403'});
+                }
+                router.app.axios.get('/admin/check/perm/' + to.name)
+                    .then(response => {
+                        router.app.$store.commit('setMetaTitle', to.meta.title);
+                        document.title = router.app.$store.state.metaTitle + ' - ' + window.Admin.Title;
+                        next();
+                        // console.log('response', response.data);
+                        /*store.commit('setPermissions', response.data);
+
+                        if (Vue.can(to.name)) {
+                            router.app.$store.commit('setMetaTitle', to.meta.title);
+                            document.title = router.app.$store.state.metaTitle + ' - ' + window.Admin.Title;
+                            next();
+                        } else {
+                            next({name: 'admin.403'});
+                        }*/
+                    }).catch(error => {
+                        return next({name: 'admin.403'});
+                    })
             }
 
 

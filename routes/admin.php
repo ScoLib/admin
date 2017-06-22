@@ -33,7 +33,7 @@ Route::group([
             // 菜单管理
             'system.menu'       => 'system/menu',
             // 用户
-            //'users.user'        => 'users/user',
+            //'users'        => 'users',
             // 角色管理
             //'users.role'        => 'users/role',
             // 创建角色
@@ -65,6 +65,13 @@ Route::group([
         // 操作日志
         /*Route::get('system/log/list', 'System\ActionLogController@getList')
             ->name('system.log.list');*/
+
+        Route::get('check/perm/{name}', function ($name) {
+            if (Auth::user()->can($name)) {
+                return response()->json(['message' => 'ok']);
+            }
+            throw new \Illuminate\Auth\Access\AuthorizationException();
+        });
     });
 
     Route::group(['middleware' => ['auth']], function () {
