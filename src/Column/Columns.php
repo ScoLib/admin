@@ -3,6 +3,7 @@
 
 namespace Sco\Admin\Column;
 
+use Illuminate\Database\Eloquent\Model;
 use JsonSerializable;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
@@ -24,5 +25,12 @@ class Columns implements ColumnsContract, Arrayable, Jsonable, JsonSerializable
     {
         $columnClass = config('admin.column');
         $this->attributes[] = new $columnClass($column);
+    }
+
+    public function parseRow(Model $model)
+    {
+        foreach ($this->getAttributes() as $column) {
+            var_dump($column->parseData($model));
+        }
     }
 }

@@ -3,15 +3,23 @@
 namespace Sco\Admin\Config;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Application;
 use JsonSerializable;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
 use Sco\Admin\Contracts\Config as ConfigContract;
 use Sco\Attributes\HasAttributesTrait;
 
+/**
+ * Class ModelConfig
+ *
+ * @method static \Illuminate\Database\Eloquent\Model|Model getKeyName()
+ */
 class ModelConfig implements Arrayable, Jsonable, JsonSerializable
 {
     use HasAttributesTrait;
+
+    protected $app;
 
     protected $configFactory;
     /**
@@ -19,8 +27,9 @@ class ModelConfig implements Arrayable, Jsonable, JsonSerializable
      */
     protected $model;
 
-    public function __construct(ConfigContract $factory, Model $model)
+    public function __construct(Application $app, ConfigContract $factory, Model $model)
     {
+        $this->app = $app;
         $this->configFactory = $factory;
         $this->model = $model;
     }
@@ -28,6 +37,21 @@ class ModelConfig implements Arrayable, Jsonable, JsonSerializable
     public function paginate($perPage = null)
     {
         $data = $this->model->paginate($perPage);
+
+        $data->setCollection($this->parseRows($data->items()));
+
+        return $data;
+    }
+
+    protected function parseRows($rows)
+    {
+        $data = collect();
+        if ($rows) {
+            foreach ($rows as $row) {
+                $data->push($this->configFactory->getColumns()->parseRow($row));
+            }
+        }
+        dd($data);
         return $data;
     }
 

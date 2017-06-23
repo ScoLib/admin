@@ -26,8 +26,9 @@ class AdminController extends Controller
     {
     }
 
-    public function edit()
+    public function edit(ConfigContract $config, $id)
     {
+        dd($config->getModel()->find($id)) ;
     }
 
     public function update()
@@ -36,7 +37,8 @@ class AdminController extends Controller
 
     public function destroy(ConfigContract $config, $id)
     {
-        dd($config, $id);
+        $info = $config->getModel()->findOrFail($id);
+        $info->delete();
     }
 
     public function batchDestroy()

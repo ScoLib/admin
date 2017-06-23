@@ -97,7 +97,7 @@ class ConfigFactory implements ConfigContract, Arrayable, Jsonable, JsonSerializ
     {
         if (!$this->model) {
             $class       = $this->config->get('model');
-            $this->model = new ModelConfig($this, new $class());
+            $this->model = new ModelConfig($this->app, $this, new $class());
         }
         return $this->model;
     }
