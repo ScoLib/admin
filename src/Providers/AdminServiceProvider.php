@@ -2,6 +2,7 @@
 
 namespace Sco\Admin\Providers;
 
+use Carbon\Carbon;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\ServiceProvider;
@@ -51,6 +52,8 @@ class AdminServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Carbon::setLocale($this->app['config']->get('app.locale'));
+
         // 路由文件
         $this->loadRoutes();
 

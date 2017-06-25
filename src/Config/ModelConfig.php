@@ -48,10 +48,13 @@ class ModelConfig implements Arrayable, Jsonable, JsonSerializable
         $data = collect();
         if ($rows) {
             foreach ($rows as $row) {
-                $data->push($this->configFactory->getColumns()->parseRow($row));
+                $newRow = collect();
+                foreach ($this->configFactory->getColumns() as $column) {
+                    $newRow->put($column->getName(), $column->setModel($row)->render());
+                }
+                $data->push($newRow);
             }
         }
-        dd($data);
         return $data;
     }
 

@@ -127,6 +127,11 @@ return [
     'permission_foreign_key' => 'permission_id',
 
     /**
+     * Entrust cache time to live (minutes)
+     */
+    'rbac_cache_ttl' => '60',
+
+    /**
      * Admin Menu
      *
      * [
@@ -139,10 +144,9 @@ return [
      * ]
      */
     'menus' => [
-        'admin.dashboard',
         '系统管理' => [
             'logs',
-            '菜单' => 'admin.system.menu',
+            //'菜单' => 'admin.system.menu',
         ],
         '用户管理' => [
             'users',

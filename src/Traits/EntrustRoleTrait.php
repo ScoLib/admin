@@ -24,7 +24,7 @@ trait EntrustRoleTrait
         if (Cache::getStore() instanceof TaggableStore) {
             return Cache::tags(Config::get('admin.permission_role_table'))->remember(
                 $cacheKey,
-                Config::get('cache.ttl', 60),
+                Config::get('admin.rbac_cache_ttl', 60),
                 function () {
                     return $this->perms()->get();
                 }

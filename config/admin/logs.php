@@ -19,24 +19,24 @@ return [
         },
     ],
     'columns'     => [
-        [
-            'key'   => 'id',
+        'id' => [
             'title' => 'ID',
         ],
-        [
-            'key'   => 'type',
+        'user' => [
+            'title' => 'User',
+            'relationship' => 'user',
+            'fields'       => 'name',
+        ],
+        'type' => [
             'title' => 'Type',
         ],
-        [
-            'key'   => 'content',
+        'content' => [
             'title' => 'content',
         ],
-        [
-            'key'   => 'client_ip',
+        'client_ip' => [
             'title' => 'client_ip',
         ],
-        [
-            'key'   => 'client',
+        'client' => [
             'title' => 'client',
         ],
     ],

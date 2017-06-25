@@ -13,4 +13,17 @@ class IvuColumn extends Column implements ColumnContract, Arrayable, Jsonable, J
     protected $defaults = [
         'fixed' => false,
     ];
+
+    public function toArray()
+    {
+        $column = [
+            'fixed' => $this->getAttribute('fixed')
+        ];
+        $render = $this->getAttribute('render');
+        if ($render) {
+            $column['render'] = $render;
+        }
+
+        return array_merge(parent::toArray(), $column);
+    }
 }

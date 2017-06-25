@@ -120,7 +120,7 @@
 
 <script>
 
-    Vue.component('el-column', {
+    /*Vue.component('el-column', {
         functional: true,
         render: function(createElement, context) {
             var props = context.props.column;
@@ -136,7 +136,7 @@
                 default: {}
             }
         }
-    });
+    });*/
 
     export default {
         components: {
@@ -162,7 +162,7 @@
                 if (Object.keys(models).indexOf(model) == -1) {
                     return {};
                 } else {
-                    console.log(models[model]);
+//                    console.log(models[model]);
                     return models[model];
                 }
             },
@@ -174,16 +174,75 @@
                         align: 'center'
                     }
                 ];
-                columns = columns.concat(this.config.columns);
+                this.config.columns.forEach(function (column) {
+//                    console.log(column.render);
+                    var exp = column.render;
+                    var self = this;
+                    if (typeof column.render !== 'undefined') {
+                        column.render = (h, params) => {
+//                            console.log(params.row);
+                            let renderStr;
+                            if (params.row[column.key] instanceof Array) {
+                                renderStr = params.row[column.key].map((item, index) => {
+//                                    return <span>{item.display_name}[{item.name}] {index}</span>;
+                                    try {
+                                        var a = exp.replace(/\(:(\w+)\)/g, (w, key) => {
+                                            return key == 'index' ? index : item[key];
+                                        });
+                                        console.log(Vue.compile(exp).render)
+                                        return self.$compile(exp);
+                                    } catch (e) {
+                                        console.log(e);
+                                    }
+                                });
+                            }
+                            console.log(renderStr);
+                            return (renderStr);
+                        }
+                    }
+                    columns.push(column);
+                });
+//                columns = columns.concat(this.config.columns);
                 columns.push({
                     title: '操作',
                     key: 'action',
                     width: 150,
                     align: 'center',
                     render: (h, params) => {
-//                        console.log(params);
+//                        console.log(this);
+                        var self = this;
+                        let editButton,delButton;
+                        if  (this.config.permissions.edit) {
+                            var link =
+                            editButton = (
+                                <router-link
+                                    class="btn btn-xs btn-info"
+                                    to={{name:'admin.model.edit', params:{model:self.$route.params.model,id:params.row[self.config.primaryKey]}}}
+                                    title="编辑">
+                                    <i class="fa fa-pencil bigger-120"></i>
+                                </router-link>
+                            );
+                        }
+                        if (this.config.permissions.delete) {
+                            let destroy = () => {
+                                this.destroy(params.row[this.config.primaryKey])
+                            };
+                            delButton = (
+                                <button
+                                    class="btn btn-xs btn-danger"
+                                    onClick={destroy}
+                                    title="删除">
+                                    <i class="fa fa-trash-o bigger-120"></i>
+                                </button>
+                            );
+                        }
 
-                        let buttons = [];
+                        return (
+                            <div class="hidden-xs btn-group">
+                                {editButton}{delButton}
+                            </div>
+                        );
+                        /*let buttons = [];
                         if (this.config.permissions.edit) {
                             let edit = h('router-link', {
                                 class: 'btn btn-xs btn-info',
@@ -228,7 +287,7 @@
 
                         return h('div',{
                             class: 'hidden-xs btn-group'
-                        }, buttons);
+                        }, buttons);*/
                     }
                 });
 //                console.log(columns);
@@ -256,13 +315,13 @@
                 selection.forEach(row => {
                     this.selection.push(row[this.config.primaryKey]);
                 });
-                console.log(this.selection);
+//                console.log(this.selection);
             },
             getResults(page) {
                 if (typeof page === 'undefined') {
                     page = 1;
                 }
-
+                this.pageData = {};
                 this.tableLoading = true;
                 this.$http.get('/admin/' + this.$route.params.model + '/list', {params: {'page': page}})
                     .then(response => {

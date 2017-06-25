@@ -69,7 +69,10 @@ class ConfigFactory implements ConfigContract, Arrayable, Jsonable, JsonSerializ
         if (!$this->columns) {
             $config = $this->config->get('columns');
 
-            $this->columns = new Columns($config);
+            $this->columns = collect($config)->mapWithKeys(function ($item, $key) {
+                $columnClass = config('admin.column');
+                return [$key => new $columnClass($key, $item)];
+            });
         }
 
         return $this->columns;
@@ -108,7 +111,7 @@ class ConfigFactory implements ConfigContract, Arrayable, Jsonable, JsonSerializ
             'primaryKey' => $this->getModel()->getKeyName(),
             'title'       => $this->getTitle(),
             'permissions' => $this->getPermissions(),
-            'columns'     => $this->getColumns(),
+            'columns'     => $this->getColumns()->values(),
         ]);
 
         return $this->getAttributes();

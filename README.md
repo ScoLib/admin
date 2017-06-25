@@ -16,6 +16,10 @@ NPM
 ```json
   "dependencies": {
     "axios": "^0.*",
+    "babel-helper-vue-jsx-merge-props": "^2.0.2",
+    "babel-plugin-syntax-jsx": "^6.18.0",
+    "babel-plugin-transform-vue-jsx": "^3.4.3",
+    "babel-preset-es2015": "^6.24.1",
     "bootstrap": "^3.3.7",
     "element-loading": "^1.0.0",
     "font-awesome": "^4.7.0",
@@ -30,6 +34,16 @@ NPM
   }
 ```
 
+In your `.babelrc`:
+
+```javascript
+{
+  "presets": ["es2015"],
+  "plugins": ["transform-vue-jsx"]
+}
+```
+
+In your `webpack.mix.js`:
 ```javascript
 var adminPublicPath = 'vendor/admin/';
 mix.autoload({
@@ -107,7 +121,7 @@ Sco\Admin\Providers\AdminServiceProvider::class,
     ],
 ```
 
---tag: assets/config/views/lang/routes
+`--tag: assets/config/views/lang/routes`
 ```php
 php artisan vendor:publish --provider="Sco\Admin\Providers\PublishServiceProvider" --force
 php artisan migrate

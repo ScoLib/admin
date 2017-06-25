@@ -19,23 +19,25 @@ return [
         },
     ],
     'columns'     => [
-        [
-            'key'   => 'id',
+        'id' => [
             'title' => 'ID',
             'width' => '80',
         ],
-        [
-            'key'   => 'name',
+        'name' => [
             'title' => 'Name',
             'width' => '120',
         ],
-        [
-            'key'   => 'display_name',
+        'display_name' => [
             'title' => 'display_name',
         ],
-        [
-            'key'   => 'created_at',
+        'created_at' => [
             'title' => 'created_at',
+            'format' => 'Y/m/d',
+        ],
+        'permissions' => [
+            'title' => 'Perm',
+            'relationship' => 'perms',
+            'fields' => 'id,display_name',
         ],
     ],
 ];

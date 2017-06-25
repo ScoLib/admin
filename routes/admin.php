@@ -23,15 +23,24 @@ Route::group([
     });
 
     Route::group(['middleware' => ['auth', 'admin.phptojs']], function () {
+        Route::get('/', function () {
+            return view('admin::app');
+        })->name('dashboard')
+            ->middleware('admin.can.route:view_admin');
+
+        Route::get('403', function () {
+            return view('admin::app');
+        })->name('403');
+
         $spaRoutes = [
             // 控制台
-            'dashboard'         => '/',
+            //'dashboard'         => '/',
             // 403
-            '403'               => '403',
+            //'403'               => '403',
             // 操作日志
             //'system.log'        => 'system/log',
             // 菜单管理
-            'system.menu'       => 'system/menu',
+            //'system.menu'       => 'system/menu',
             // 用户
             //'users'        => 'users',
             // 角色管理
@@ -74,7 +83,7 @@ Route::group([
         });
     });
 
-    Route::group(['middleware' => ['auth']], function () {
+    /*Route::group(['middleware' => ['auth']], function () {
 
         // 系统管理
         Route::group([
@@ -85,7 +94,7 @@ Route::group([
             // 后台菜单
             Route::group(['as' => 'menu.', 'prefix' => 'menu'], function () {
                 // 菜单列表数据
-                /*Route::get('list', 'MenuController@getList')
+                Route::get('list', 'MenuController@getList')
                     ->name('list');
 
                 // 保存菜单
@@ -103,7 +112,7 @@ Route::group([
 
                 // 批量删除菜单
                 Route::post('batch/destroy', 'MenuController@batchDestroy')
-                    ->name('batch.destroy');*/
+                    ->name('batch.destroy');
             });
         });
 
@@ -134,7 +143,7 @@ Route::group([
             });
 
             // 角色管理
-            /*Route::group(['as' => 'role.', 'prefix' => 'role'], function () {
+            Route::group(['as' => 'role.', 'prefix' => 'role'], function () {
                 Route::post('store', 'RoleController@store')
                     ->name('store');
 
@@ -158,9 +167,9 @@ Route::group([
 
                 Route::post('batch/destroy', 'RoleController@batchDestroy')
                     ->name('batch.destroy');
-            });*/
+            });
         });
-    });
+    });*/
 
     Route::pattern('model', '[a-z_/]+');
     Route::group([

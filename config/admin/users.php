@@ -19,36 +19,27 @@ return [
         },
     ],
     'columns'     => [
-        [
-            'key'   => 'id',
+        'id' => [
             'title' => 'ID',
             'width' => '80',
         ],
-        [
-            'key'   => 'name',
+        'name' => [
             'title' => 'Name',
             'width' => '120',
         ],
-        [
-            'key'   => 'email',
+        'email' => [
             'title' => 'email',
         ],
-        [
-            'key'          => 'role_name',
+        'roles' => [
             'title'        => 'roles',
             'relationship' => 'roles',
             'fields'       => 'name,display_name',
-            'render'       => function ($model) {
-                $render = [];
-                foreach ($model->roles as $role) {
-                    $render[] = "{$role->display_name}[{$role->name}]";
-                }
-                return implode('<br>', $render);
-            },
+            'render'       => '<span>{{item.display_name}}[{{item.name}}] {{index}}</span>',
+            //'render'       => '<span>(:display_name)[(:name)] (:index)</span>',
         ],
-        [
-            'key'   => 'created_at',
+        'created_at' => [
             'title' => 'created_at',
+            'format' => 'humans',
         ],
     ],
 ];
