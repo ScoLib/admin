@@ -5,7 +5,6 @@ namespace Sco\Admin\Column;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Collection;
 use Sco\Attributes\HasOriginalAndAttributesTrait;
 
@@ -84,6 +83,7 @@ abstract class Column
             if ($results instanceof Collection) {
                 return $results->pluck($fields);
             }
+            return '';
         }
 
         $values = collect();
@@ -124,6 +124,8 @@ abstract class Column
                 } else {
                     $value = $value->format($this->getAttribute('format'));
                 }
+            } else {
+                $value = (string) $value;
             }
         }
 

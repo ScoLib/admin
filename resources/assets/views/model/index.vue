@@ -176,120 +176,102 @@
                 ];
                 this.config.columns.forEach(function (column) {
 //                    console.log(column.render);
-                    var exp = column.render;
                     var self = this;
-                    if (typeof column.render !== 'undefined') {
+                    if (typeof column.template !== 'undefined') {
+                        Vue.component(column.key + 'column-render', {
+                            template: column.template,
+                            data() {
+                                return {}
+                            },
+                            props: {
+                                item: {
+                                    type: Array | Object,
+                                    default() {
+                                        return {}
+                                    }
+                                }
+                            }
+                        });
+
                         column.render = (h, params) => {
-//                            console.log(params.row);
                             let renderStr;
-                            if (params.row[column.key] instanceof Array) {
-                                renderStr = params.row[column.key].map((item, index) => {
-//                                    return <span>{item.display_name}[{item.name}] {index}</span>;
+                            if (params.row[column.key] instanceof Array && params.row[column.key].length) {
+                                return params.row[column.key].map((item, index) => {
                                     try {
-                                        var a = exp.replace(/\(:(\w+)\)/g, (w, key) => {
-                                            return key == 'index' ? index : item[key];
+                                        return h(column.key + 'column-render', {
+                                            props: {
+                                                item
+                                            }
                                         });
-                                        console.log(Vue.compile(exp).render)
-                                        return self.$compile(exp);
                                     } catch (e) {
                                         console.log(e);
+                                        self.$Message.error('column(' + column.key +') template is wrong');
                                     }
                                 });
+                            } else {
+                                try {
+                                    return h(column.key + 'column-render', {
+                                        props: {
+                                            item: params.row[column.key]
+                                        }
+                                    });
+                                } catch (e) {
+                                    console.log(e);
+                                    self.$Message.error('column(' + column.key +') template is wrong');
+                                }
                             }
-                            console.log(renderStr);
+//                            console.log(renderStr);
                             return (renderStr);
                         }
+                        delete column.template;
                     }
                     columns.push(column);
                 });
-//                columns = columns.concat(this.config.columns);
-                columns.push({
-                    title: '操作',
-                    key: 'action',
-                    width: 150,
-                    align: 'center',
-                    render: (h, params) => {
+                if (this.config.permissions.edit || this.config.permissions.delete) {
+                    columns.push({
+                        title: '操作',
+                        key: 'action',
+                        width: 150,
+                        align: 'center',
+                        render: (h, params) => {
 //                        console.log(this);
-                        var self = this;
-                        let editButton,delButton;
-                        if  (this.config.permissions.edit) {
-                            var link =
-                            editButton = (
-                                <router-link
-                                    class="btn btn-xs btn-info"
-                                    to={{name:'admin.model.edit', params:{model:self.$route.params.model,id:params.row[self.config.primaryKey]}}}
-                                    title="编辑">
-                                    <i class="fa fa-pencil bigger-120"></i>
-                                </router-link>
-                            );
-                        }
-                        if (this.config.permissions.delete) {
-                            let destroy = () => {
-                                this.destroy(params.row[this.config.primaryKey])
-                            };
-                            delButton = (
-                                <button
-                                    class="btn btn-xs btn-danger"
-                                    onClick={destroy}
-                                    title="删除">
-                                    <i class="fa fa-trash-o bigger-120"></i>
-                                </button>
-                            );
-                        }
+                            var self = this,editButton,delButton;
+                            if  (self.config.permissions.edit) {
+                                var link = {
+                                    name:'admin.model.edit',
+                                    params:{
+                                        model:self.$route.params.model,
+                                        id:params.row[self.config.primaryKey]
+                                    }
+                                };
+                                editButton = (
+                                    <router-link class="btn btn-xs btn-info"
+                                        to={link}
+                                        title="编辑">
+                                        <i class="fa fa-pencil bigger-120"></i>
+                                    </router-link>
+                                );
+                            }
+                            if (self.config.permissions.delete) {
+                                let destroy = () => {
+                                    self.destroy(params.row[self.config.primaryKey])
+                                };
+                                delButton = (
+                                    <button class="btn btn-xs btn-danger"
+                                        onClick={destroy} title="删除">
+                                        <i class="fa fa-trash-o bigger-120"></i>
+                                    </button>
+                                );
+                            }
 
-                        return (
-                            <div class="hidden-xs btn-group">
-                                {editButton}{delButton}
+                            return (
+                                <div class="hidden-xs btn-group">
+                                {editButton} {delButton}
                             </div>
-                        );
-                        /*let buttons = [];
-                        if (this.config.permissions.edit) {
-                            let edit = h('router-link', {
-                                class: 'btn btn-xs btn-info',
-                                title: this.$t('table.edit'),
-                                props: {
-                                    to: {
-                                        name: 'admin.model.edit',
-                                        params:{
-                                            model: this.$route.params.model,
-                                            id: params.row[this.config.primaryKey]
-                                        }
-                                    }
-                                }
-                            }, [
-                                h('i', {
-                                    class: 'fa fa-pencil bigger-120'
-                                })
-                            ]);
-                            buttons.push(edit);
+                            );
                         }
-
-                        if (this.config.permissions.delete) {
-                            let del = h('Button', {
-                                class: 'btn btn-xs btn-danger',
-                                title: this.$t('table.delete'),
-                                props: {
-                                    type: 'error',
-                                    size: 'small'
-                                },
-                                on: {
-                                    click: () => {
-                                        this.destroy(params.row[this.config.primaryKey])
-                                    }
-                                }
-                            }, [
-                                h('i', {
-                                    class: 'fa fa-trash-o bigger-120'
-                                })
-                            ]);
-                            buttons.push(del);
-                        }
-
-                        return h('div',{
-                            class: 'hidden-xs btn-group'
-                        }, buttons);*/
-                    }
-                });
+                    });
+                }
 //                console.log(columns);
                 return columns;
             }

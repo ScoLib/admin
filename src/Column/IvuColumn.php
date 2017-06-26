@@ -19,9 +19,9 @@ class IvuColumn extends Column implements ColumnContract, Arrayable, Jsonable, J
         $column = [
             'fixed' => $this->getAttribute('fixed')
         ];
-        $render = $this->getAttribute('render');
-        if ($render) {
-            $column['render'] = $render;
+        $template = $this->getAttribute('template');
+        if ($template) {
+            $column['template'] = $template;
         }
 
         return array_merge(parent::toArray(), $column);

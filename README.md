@@ -12,14 +12,13 @@
 
 
 ## Install
+
+install `babel-plugin-transform-vue-jsx` [link](https://github.com/vuejs/babel-plugin-transform-vue-jsx)
+
 NPM
 ```json
   "dependencies": {
     "axios": "^0.*",
-    "babel-helper-vue-jsx-merge-props": "^2.0.2",
-    "babel-plugin-syntax-jsx": "^6.18.0",
-    "babel-plugin-transform-vue-jsx": "^3.4.3",
-    "babel-preset-es2015": "^6.24.1",
     "bootstrap": "^3.3.7",
     "element-loading": "^1.0.0",
     "font-awesome": "^4.7.0",
@@ -29,19 +28,10 @@ NPM
     "vue": "^2.*",
     "vue-i18n": "^6.*",
     "vue-router": "^2.*",
-    "vue-top-progress": "^0.*",
     "vuex": "^2.*",
   }
 ```
 
-In your `.babelrc`:
-
-```javascript
-{
-  "presets": ["es2015"],
-  "plugins": ["transform-vue-jsx"]
-}
-```
 
 In your `webpack.mix.js`:
 ```javascript

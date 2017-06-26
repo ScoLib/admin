@@ -19,20 +19,16 @@ return [
         },
     ],
     'columns'     => [
-        [
-            'key'   => 'id',
+        'id'           => [
             'title' => 'ID',
         ],
-        [
-            'key'   => 'name',
+        'name'         => [
             'title' => 'Name',
         ],
-        [
-            'key'   => 'display_name',
+        'display_name' => [
             'title' => 'display_name',
         ],
-        [
-            'key'   => 'created_at',
+        'created_at'   => [
             'title' => 'created_at',
         ],
     ],

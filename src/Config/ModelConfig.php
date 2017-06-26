@@ -77,7 +77,7 @@ class ModelConfig implements Arrayable, Jsonable, JsonSerializable
             return $this->model->$method(...$parameters);
         }
 
-        $this->model->$method(...$parameters);
+        $this->model = $this->model->$method(...$parameters);
         return $this;
     }
 

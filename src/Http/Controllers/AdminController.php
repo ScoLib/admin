@@ -10,7 +10,8 @@ class AdminController extends Controller
 {
     public function getList(ConfigContract $config)
     {
-        return $config->getModel()->orderBy('id', 'desc')->paginate();
+        $model = $config->getModel();
+        return $model->orderBy($model->getKeyName(), 'desc')->paginate();
     }
 
     public function config(ConfigContract $config)

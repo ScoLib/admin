@@ -2,16 +2,15 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import routes from './routes'
 // import util from '../util'
-import VueProgressBar from 'vue-progressbar'
+import iView from 'iview'
 
-Vue.use(VueProgressBar, {
+iView.LoadingBar.config({
     color: 'rgb(143, 255, 199)',
     failedColor: 'red',
-    height: '3px'
-})
+    height: 3
+});
 
 Vue.use(VueRouter)
-// Vue.use(util)
 
 const router = new VueRouter({
     routes,
@@ -37,7 +36,7 @@ router.beforeEach((to, from, next) => {
     }
 
     if (to.fullPath != '/#') {
-        router.app.$Progress.start();
+        router.app.$Loading.start();
 
         if (to.meta.auth) {
             // if (typeof window.Admin != 'undefined' && window.Admin.PermList) {
@@ -122,7 +121,7 @@ router.beforeEach((to, from, next) => {
 
 //路由完成后
 router.afterEach(route => {
-    router.app.$Progress.finish();
+    router.app.$Loading.finish();
 });
 
 export default router;

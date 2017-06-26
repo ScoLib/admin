@@ -26,7 +26,7 @@ Route::group([
         Route::get('/', function () {
             return view('admin::app');
         })->name('dashboard')
-            ->middleware('admin.can.route:view_admin');
+            ->middleware('admin.can.route');
 
         Route::get('403', function () {
             return view('admin::app');

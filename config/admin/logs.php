@@ -19,25 +19,33 @@ return [
         },
     ],
     'columns'     => [
-        'id' => [
-            'title' => 'ID',
+        'id'         => [
+            'title'    => 'ID',
+            'sortable' => true,
+            'width'    => '60',
         ],
-        'user' => [
-            'title' => 'User',
+        'user'       => [
+            'title'        => 'User',
+            'width'        => '120',
             'relationship' => 'user',
-            'fields'       => 'name',
+            'fields'       => 'id,name',
+            'template'     => '<span><template v-if="item.length == 0">guest / 0</template><template v-else>{{item.name}} / {{item.id}}</template></span>',
         ],
-        'type' => [
+        'type'       => [
             'title' => 'Type',
         ],
-        'content' => [
+        'content'    => [
             'title' => 'content',
         ],
-        'client_ip' => [
+        'client_ip'  => [
             'title' => 'client_ip',
         ],
-        'client' => [
+        'client'     => [
             'title' => 'client',
+        ],
+        'created_at' => [
+            'title'  => 'Created At',
+            'format' => 'humans',
         ],
     ],
 

@@ -19,26 +19,25 @@ return [
         },
     ],
     'columns'     => [
-        'id' => [
+        'id'         => [
             'title' => 'ID',
             'width' => '80',
         ],
-        'name' => [
+        'name'       => [
             'title' => 'Name',
             'width' => '120',
         ],
-        'email' => [
+        'email'      => [
             'title' => 'email',
         ],
-        'roles' => [
+        'roles'      => [
             'title'        => 'roles',
             'relationship' => 'roles',
             'fields'       => 'name,display_name',
-            'render'       => '<span>{{item.display_name}}[{{item.name}}] {{index}}</span>',
-            //'render'       => '<span>(:display_name)[(:name)] (:index)</span>',
+            'template'     => '<span>{{item.display_name}}[{{item.name}}]<br></span>',
         ],
         'created_at' => [
-            'title' => 'created_at',
+            'title'  => 'created_at',
             'format' => 'humans',
         ],
     ],
