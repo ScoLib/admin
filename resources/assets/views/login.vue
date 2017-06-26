@@ -18,6 +18,7 @@
                 <input type="email" name="email"
                        class="form-control"
                        placeholder="邮箱"
+                       @keyup.enter="login"
                        v-model="info.email">
                 <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
                 <div class="help-block" v-if="errors.email">
@@ -28,6 +29,7 @@
                 <input type="password" name="password"
                        class="form-control"
                        placeholder="密码"
+                       @keyup.enter="login"
                        v-model="info.password">
                 <span class="glyphicon glyphicon-lock form-control-feedback"></span>
             <div class="help-block" v-if="errors.password">
