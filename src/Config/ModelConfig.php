@@ -2,12 +2,14 @@
 
 namespace Sco\Admin\Config;
 
+use Illuminate\Config\Repository as ConfigRepository;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Application;
 use JsonSerializable;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
 use Sco\Admin\Contracts\Config as ConfigContract;
+use Sco\Admin\Contracts\Repository as RepositoryContract;
 use Sco\Attributes\HasAttributesTrait;
 
 /**
@@ -19,19 +21,46 @@ class ModelConfig implements Arrayable, Jsonable, JsonSerializable
 {
     use HasAttributesTrait;
 
+    /**
+     * @var \Illuminate\Foundation\Application
+     */
     protected $app;
 
+    /**
+     * @var \Sco\Admin\Contracts\Config
+     */
     protected $configFactory;
     /**
      * @var \Illuminate\Database\Eloquent\Model
      */
-    protected $model;
+    //protected $model;
 
-    public function __construct(Application $app, ConfigContract $factory, Model $model)
+    /**
+     * @var mixed|\Sco\Admin\Contracts\Repository
+     */
+    protected $repository;
+
+    protected $config;
+
+    public function __construct(Application $app, ConfigContract $factory)
     {
         $this->app = $app;
         $this->configFactory = $factory;
-        $this->model = $model;
+        //$this->model = $model;
+        $this->config = new ConfigRepository(
+            $this->getModelConfig()
+        );
+
+        $this->repository = $this->app->make(RepositoryContract::class);
+
+        $this->repository->setClass(
+            $factory->getConfigRepository()->get('model')
+        );
+    }
+
+    public function getRepository()
+    {
+        return $this->repository;
     }
 
     public function paginate($perPage = null)
@@ -64,6 +93,11 @@ class ModelConfig implements Arrayable, Jsonable, JsonSerializable
         return $data;
     }
 
+    public function delete($id)
+    {
+
+    }
+
     /**
      * Handle dynamic method calls into the model.
      *
@@ -71,7 +105,7 @@ class ModelConfig implements Arrayable, Jsonable, JsonSerializable
      * @param  array  $parameters
      * @return mixed
      */
-    public function __call($method, $parameters)
+    /*public function __call($method, $parameters)
     {
         if (in_array($method, ['getKeyName'])) {
             return $this->model->$method(...$parameters);
@@ -79,7 +113,7 @@ class ModelConfig implements Arrayable, Jsonable, JsonSerializable
 
         $this->model = $this->model->$method(...$parameters);
         return $this;
-    }
+    }*/
 
     /**
      * Handle dynamic static method calls into the method.
@@ -88,8 +122,8 @@ class ModelConfig implements Arrayable, Jsonable, JsonSerializable
      * @param  array  $parameters
      * @return mixed
      */
-    public static function __callStatic($method, $parameters)
+    /*public static function __callStatic($method, $parameters)
     {
         return (new static)->$method(...$parameters);
-    }
+    }*/
 }

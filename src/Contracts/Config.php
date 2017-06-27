@@ -18,6 +18,11 @@ interface Config
     public function getColumns();
 
     /**
+     * @return \Illuminate\Config\Repository
+     */
+    public function getConfigRepository();
+
+    /**
      * @return \Sco\Admin\Config\ModelConfig
      */
     public function getModel();

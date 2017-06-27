@@ -41,6 +41,12 @@ class ConfigFactory implements ConfigContract, Arrayable, Jsonable, JsonSerializ
             . DIRECTORY_SEPARATOR . $this->name . '.php';
     }
 
+    public function getConfigRepository()
+    {
+        return $this->config;
+    }
+
+
     public function getTitle()
     {
         if (!$this->title) {
@@ -99,8 +105,7 @@ class ConfigFactory implements ConfigContract, Arrayable, Jsonable, JsonSerializ
     public function getModel()
     {
         if (!$this->model) {
-            $class       = $this->config->get('model');
-            $this->model = new ModelConfig($this->app, $this, new $class());
+            $this->model = new ModelConfig($this->app, $this);
         }
         return $this->model;
     }
@@ -108,7 +113,7 @@ class ConfigFactory implements ConfigContract, Arrayable, Jsonable, JsonSerializ
     public function getConfigs()
     {
         $this->setAttribute([
-            'primaryKey' => $this->getModel()->getKeyName(),
+            'primaryKey' => $this->getModel()->getRepository()->getKeyName(),
             'title'       => $this->getTitle(),
             'permissions' => $this->getPermissions(),
             'columns'     => $this->getColumns()->values(),

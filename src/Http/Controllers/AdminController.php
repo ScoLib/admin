@@ -39,7 +39,9 @@ class AdminController extends Controller
     public function destroy(ConfigContract $config, $id)
     {
         $info = $config->getModel()->findOrFail($id);
+        //dd($info);
         $info->delete();
+        return response()->json(['message' => 'ok']);
     }
 
     public function batchDestroy()

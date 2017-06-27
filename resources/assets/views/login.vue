@@ -76,6 +76,7 @@
         },
         methods: {
             login () {
+                this.errors = {};
                 this.buttonLoading = true;
                 this.$http.post('/admin/login', this.info).then(response => {
 //                    this.buttonLoading = false;

@@ -9,8 +9,10 @@ use Illuminate\Support\ServiceProvider;
 use Laracasts\Utilities\JavaScript\JavaScriptServiceProvider;
 use Sco\ActionLog\LaravelServiceProvider;
 use Sco\Admin\Admin;
+use Sco\Admin\Contracts\Repository as RepositoryContract;
 use Sco\Admin\Exceptions\Handler;
 use Sco\Admin\Facades\AdminFacade;
+use Sco\Admin\Repositories\Repository;
 
 /**
  *
@@ -100,6 +102,8 @@ class AdminServiceProvider extends ServiceProvider
         $this->registerAliases();
         $this->registerMiddleware();
         $this->bindRouteModel();
+
+        $this->app->bind(RepositoryContract::class, Repository::class);
 
         $this->commands($this->commands);
 
