@@ -2,7 +2,10 @@
 
 return [
     'title' => '角色',
-    'model' => config('admin.role'),
+    'model' => [
+        'class' => config('admin.role'),
+        'perPage' => 0,
+    ],
 
     'permissions' => [
         'view'   => function () {

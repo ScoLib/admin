@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 
 interface Repository
 {
+    /**
+     * @return Model
+     */
     public function getModel();
 
     public function setModel(Model $model);

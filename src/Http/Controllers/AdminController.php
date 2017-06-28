@@ -11,7 +11,7 @@ class AdminController extends Controller
     public function getList(ConfigContract $config)
     {
         $model = $config->getModel();
-        return $model->orderBy($model->getKeyName(), 'desc')->paginate();
+        return $model->get();
     }
 
     public function config(ConfigContract $config)

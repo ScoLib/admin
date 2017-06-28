@@ -37,10 +37,10 @@
                     </div>
                 </div>
                 <!-- /.box-header -->
-                <div class="box-body table-responsive no-padding">
+                <div class="box-body table-responsive">
 
                     <Table
-                            :data="pageData.data"
+                            :data="tableData"
                             v-loading="tableLoading"
                             @on-selection-change="getSelected"
                             :columns="columns">
@@ -98,7 +98,7 @@
                     </el-table>-->
                 </div>
                 <!-- /.box-body -->
-                <div class="box-footer clearfix">
+                <div v-if="pageData.per_page" class="box-footer clearfix">
                     <!--<el-pagination
                             layout="total, prev, pager, next"
                             :page-size="pageData.per_page"
@@ -107,6 +107,7 @@
                     </el-pagination>-->
                     <Page
                             :page-size="pageData.per_page"
+                            :current="pageData.current_page"
                             show-total
                             size="small"
                             @on-change="getResults"
@@ -146,13 +147,27 @@
 
                 // 列表
                 tableLoading: false,
-                pageData: {},
+                pageData: {
+                    type: Object|Array,
+                    default() {
+                        return [];
+                    }
+                },
 
                 selection: [],
                 buttonLoading: false,
             }
         },
         computed: {
+            tableData() {
+                if (Object.keys(this.pageData).length == 0) {
+                    return [];
+                }
+                if (Object.keys(this.pageData).indexOf('data') > -1) {
+                    return this.pageData.data;
+                }
+                return this.pageData;
+            },
             config() {
                 let models = this.$store.state.models;
                 let model = this.$route.params.model;
@@ -192,6 +207,7 @@
                                 }
                             }
                         });
+                        delete column.template;
 
                         column.render = (h, params) => {
                             let renderStr;
@@ -223,7 +239,6 @@
 //                            console.log(renderStr);
                             return (renderStr);
                         }
-                        delete column.template;
                     }
                     columns.push(column);
                 });

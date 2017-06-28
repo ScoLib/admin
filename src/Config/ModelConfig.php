@@ -3,7 +3,6 @@
 namespace Sco\Admin\Config;
 
 use Illuminate\Config\Repository as ConfigRepository;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Application;
 use JsonSerializable;
 use Illuminate\Contracts\Support\Arrayable;
@@ -12,11 +11,6 @@ use Sco\Admin\Contracts\Config as ConfigContract;
 use Sco\Admin\Contracts\Repository as RepositoryContract;
 use Sco\Attributes\HasAttributesTrait;
 
-/**
- * Class ModelConfig
- *
- * @method static \Illuminate\Database\Eloquent\Model|Model getKeyName()
- */
 class ModelConfig implements Arrayable, Jsonable, JsonSerializable
 {
     use HasAttributesTrait;
@@ -36,7 +30,7 @@ class ModelConfig implements Arrayable, Jsonable, JsonSerializable
     //protected $model;
 
     /**
-     * @var mixed|\Sco\Admin\Contracts\Repository
+     * @var mixed|\Sco\Admin\Repositories\Repository
      */
     protected $repository;
 
@@ -48,28 +42,22 @@ class ModelConfig implements Arrayable, Jsonable, JsonSerializable
         $this->configFactory = $factory;
         //$this->model = $model;
         $this->config = new ConfigRepository(
-            $this->getModelConfig()
+            $this->getConfigValues()
         );
 
         $this->repository = $this->app->make(RepositoryContract::class);
 
         $this->repository->setClass(
-            $factory->getConfigRepository()->get('model')
+            $this->config->get('class')
         );
     }
 
+    /**
+     * @return mixed|\Sco\Admin\Repositories\Repository
+     */
     public function getRepository()
     {
         return $this->repository;
-    }
-
-    public function paginate($perPage = null)
-    {
-        $data = $this->model->paginate($perPage);
-
-        $data->setCollection($this->parseRows($data->items()));
-
-        return $data;
     }
 
     protected function parseRows($rows)
@@ -89,13 +77,44 @@ class ModelConfig implements Arrayable, Jsonable, JsonSerializable
 
     public function get()
     {
-        $data = $this->model->get();
+        $orderBy = $this->config->get('orderBy', [$this->getRepository()->getKeyName(), 'desc']);
+        $query = $this->getRepository()->orderBy($orderBy[0], $orderBy[1]);
+
+        if ($this->usePagination()) {
+            $data = $query->paginate($this->config->get('perPage'));
+
+            $data->setCollection($this->parseRows($data->items()));
+        } else {
+            $data = $this->parseRows($query->get());
+        }
+
+
         return $data;
     }
 
     public function delete($id)
     {
 
+    }
+
+    protected function usePagination()
+    {
+        return $this->config->get('perPage') > 0;
+    }
+
+    protected function getConfigValues()
+    {
+        $config = $this->configFactory->getConfigRepository()->get('model');
+        if (is_string($config)) {
+            $config = [
+                'class' => $config
+            ];
+        }
+        $config = array_merge([
+            //'orderBy' => [],
+            'perPage' => 10,
+        ], $config);
+        return $config;
     }
 
     /**

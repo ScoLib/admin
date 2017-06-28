@@ -8,6 +8,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Sco\Admin\Contracts\Repository as RepositoryContract;
 use Sco\Admin\Exceptions\RepositoryException;
 
+
+/**
+ * @method static \Illuminate\Database\Eloquent\Model getKeyName()
+ */
 class Repository implements RepositoryContract
 {
     protected $model;
@@ -49,8 +53,9 @@ class Repository implements RepositoryContract
     /**
      * Handle dynamic method calls into the model.
      *
-     * @param  string  $method
+     * @param  string $method
      * @param  array  $parameters
+     *
      * @return mixed
      */
     public function __call($method, $parameters)
@@ -61,8 +66,9 @@ class Repository implements RepositoryContract
     /**
      * Handle dynamic static method calls into the method.
      *
-     * @param  string  $method
+     * @param  string $method
      * @param  array  $parameters
+     *
      * @return mixed
      */
     public static function __callStatic($method, $parameters)
