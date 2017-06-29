@@ -155,6 +155,7 @@ return [
         ],
         'test',
     ],
+    'url_prefix' => 'admin',
 
     'column' => \Sco\Admin\Column\IvuColumn::class,
 

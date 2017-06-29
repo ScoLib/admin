@@ -57,7 +57,7 @@
         },
         created () {
             this.loading = true;
-            this.$http.get('/admin/menu').then(response => {
+            this.$http.get(`/${this.$store.state.urlPrefix}/menu`).then(response => {
                 this.loading = false;
                 this.menus = response.data;
             }).catch(error => {});

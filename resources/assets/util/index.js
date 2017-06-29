@@ -1,9 +1,9 @@
 import axios from './axios'
-import can from './can'
+// import can from './can'
 
 const install = function (Vue) {
     Vue.axios = axios
-    Vue.can = can
+    // Vue.can = can
     Object.defineProperties(Vue.prototype, {
         axios: {
             get() {
@@ -15,11 +15,11 @@ const install = function (Vue) {
                 return axios
             }
         },
-        can: {
+        /*can: {
             get() {
                 return can
             }
-        }
+        }*/
     })
 }
 

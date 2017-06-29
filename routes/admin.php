@@ -1,9 +1,9 @@
 <?php
 
 Route::group([
-    'prefix'     => 'admin',
+    'prefix'     => config('admin.url_prefix'),
     'middleware' => 'web',
-    'namespace'  => 'Sco\Admin\Http\Controllers',
+    'namespace'  => '\Sco\Admin\Http\Controllers',
     'as'         => 'admin.',
 ], function () {
 
@@ -203,11 +203,20 @@ Route::group([
             ->name('update')
             ->middleware('admin.can.model:edit');
 
+        Route::post('batch/delete', 'AdminController@batchDelete')
+            ->name('batch.delete')
+            ->middleware('admin.can.model:delete');
+
+        Route::delete('{id}/delete', 'AdminController@delete')
+            ->where(['id' => '[0-9]+'])
+            ->name('delete')
+            ->middleware('admin.can.model:delete');
+
         Route::post('batch/destroy', 'AdminController@batchDestroy')
             ->name('batch.destroy')
             ->middleware('admin.can.model:delete');
 
-        Route::delete('{id}', 'AdminController@destroy')
+        Route::delete('{id}/destroy', 'AdminController@destroy')
             ->where(['id' => '[0-9]+'])
             ->name('destroy')
             ->middleware('admin.can.model:delete');

@@ -19,7 +19,7 @@ class PublishServiceProvider extends ServiceProvider
             $this->publishConfig();
             $this->publishViews();
             $this->publishTranslations();
-            $this->publishRoutes();
+            //$this->publishRoutes();
         }
     }
 

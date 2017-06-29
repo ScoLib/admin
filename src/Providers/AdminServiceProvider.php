@@ -78,10 +78,6 @@ class AdminServiceProvider extends ServiceProvider
     protected function loadRoutes()
     {
         $routesFile = $this->getBasePath() . '/routes/admin.php';
-        if (file_exists(base_path('routes/admin.php'))) {
-            $routesFile = base_path('routes/admin.php');
-        }
-
         $this->loadRoutesFrom($routesFile);
     }
 

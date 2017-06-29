@@ -13,17 +13,20 @@ class PHPVarToJavaScript
     {
         config([
             'javascript.bind_js_vars_to_this_view' => 'admin::partials.script',
-            'javascript.js_namespace' => 'window.Admin'
+            'javascript.js_namespace'              => 'window.Admin',
         ]);
         $js = [
-            'Lang' => config('app.locale'),
-            'Title' => config('admin.title'),
+            'Lang'      => config('app.locale'),
+            'Title'     => config('admin.title'),
+            'UrlPrefix' => config('admin.url_prefix'),
         ];
         if (Auth::check()) {
             $js['LoggedUser'] = [
-                'id' => Auth::id(),
+                'id'   => Auth::id(),
                 'name' => Auth::user()->name,
-                'role' => Auth::user()->roles->makeHidden(['description', 'created_at', 'updated_at', 'pivot', 'perms'])->first(null, collect())
+                'role' => Auth::user()->roles->makeHidden([
+                    'description', 'created_at', 'updated_at', 'pivot', 'perms',
+                ])->first(null, collect()),
             ];
         }
 

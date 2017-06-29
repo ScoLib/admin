@@ -9,6 +9,7 @@ export default new Vuex.Store({
         permissions: [],
         models: {},
         metaTitle: '',
+        urlPrefix: '',
     },
     mutations: {
         setUser(state, user) {
@@ -22,6 +23,9 @@ export default new Vuex.Store({
         },
         setMetaTitle(state, title) {
             state.metaTitle = title ? title : '';
+        },
+        setUrlPrefix(state, prefix) {
+            state.urlPrefix = prefix;
         }
     }
 });

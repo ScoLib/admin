@@ -1,9 +1,14 @@
 import Parent from '../views/parent.vue'
 import Blank from '../views/blank.vue'
 
+var UrlPrefix = 'admin';
+if (typeof window.Admin != 'undefined') {
+    UrlPrefix = window.Admin.UrlPrefix;
+}
+
 export default [
     {
-        path: '/admin/login',
+        path: `/${UrlPrefix}/login`,
         component (resolve) {
             require(['../views/login.vue'], resolve);
         },
@@ -14,7 +19,7 @@ export default [
         },
     },
     {
-        path: '/admin/403',
+        path: `/${UrlPrefix}/403`,
         component (resolve) {
             require(['../views/errors/403.vue'], resolve);
         },
@@ -25,7 +30,7 @@ export default [
         },
     },
     {
-        path: '/admin',
+        path: `/${UrlPrefix}`,
         component: Parent,
         meta: {
             title: '首页'

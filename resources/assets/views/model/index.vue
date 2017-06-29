@@ -11,7 +11,7 @@
                         </button>
                         <ul class="dropdown-menu">
                             <li v-if="config.permissions.delete">
-                                <a href="#" @click.prevent="batchDestroy">
+                                <a href="#" @click.prevent="batchDelete">
                                     <i class="fa fa-trash-o bigger-120"></i> 删除
                                 </a>
                             </li>
@@ -139,6 +139,8 @@
         }
     });*/
 
+    import actionButtons from '../../components/actionButtons'
+
     export default {
         components: {
         },
@@ -242,6 +244,7 @@
                     }
                     columns.push(column);
                 });
+//                console.log(this.getActionButtons());
                 if (this.config.permissions.edit || this.config.permissions.delete) {
                     columns.push({
                         title: '操作',
@@ -249,39 +252,10 @@
                         width: 150,
                         align: 'center',
                         render: (h, params) => {
-//                        console.log(this);
-                            var self = this,editButton,delButton;
-                            if  (self.config.permissions.edit) {
-                                var link = {
-                                    name:'admin.model.edit',
-                                    params:{
-                                        model:self.$route.params.model,
-                                        id:params.row[self.config.primaryKey]
-                                    }
-                                };
-                                editButton = (
-                                    <router-link class="btn btn-xs btn-info"
-                                        to={link}
-                                        title="编辑">
-                                        <i class="fa fa-pencil bigger-120"></i>
-                                    </router-link>
-                                );
-                            }
-                            if (self.config.permissions.delete) {
-                                let destroy = () => {
-                                    self.destroy(params.row[self.config.primaryKey])
-                                };
-                                delButton = (
-                                    <button class="btn btn-xs btn-danger"
-                                        onClick={destroy} title="删除">
-                                        <i class="fa fa-trash-o bigger-120"></i>
-                                    </button>
-                                );
-                            }
-
+                            const buttons = actionButtons(h, this, params.row);
                             return (
                                 <div class="hidden-xs btn-group">
-                                {editButton} {delButton}
+                                {buttons}
                             </div>
                             );
                         }
@@ -289,6 +263,9 @@
                 }
 //                console.log(columns);
                 return columns;
+            },
+            urlPrefix() {
+                return this.$store.state.urlPrefix;
             }
         },
         created () {
@@ -320,19 +297,19 @@
                 }
                 this.pageData = {};
                 this.tableLoading = true;
-                this.$http.get('/admin/' + this.$route.params.model + '/list', {params: {'page': page}})
+                this.$http.get(`/${this.urlPrefix}/${this.$route.params.model}/list`, {params: {'page': page}})
                     .then(response => {
                         this.tableLoading = false;
                         this.pageData = response.data;
                     }).catch(error => {})
             },
-            destroy(id) {
+            delete(id) {
                 this.$Modal.confirm({
                     title: '提示',
-                    content: '确定要删除此' + this.config.title + '吗？',
+                    content: `确定要删除此${this.config.title}吗？`,
                     loading: true,
                     onOk: () => {
-                        this.$http.delete('/admin/' + this.$route.params.model + '/' + id)
+                        this.$http.delete(`/${this.urlPrefix}/${this.$route.params.model}/${id}`)
                             .then(response => {
                                 this.$Modal.remove();
                                 this.$Message.success('删除成功');
@@ -364,7 +341,7 @@
                     }
                 }).then(action => {}).catch(action => {});*/
             },
-            batchDestroy() {
+            batchDelete() {
                 if (this.selection.length == 0) {
                     this.$Message.error('请选择操作对象');
                     return false;
@@ -372,10 +349,10 @@
 
                 this.$Modal.confirm({
                     title: '提示',
-                    content: '确定要执行批量删除' + this.config.title + '操作吗？',
+                    content: `确定要执行批量删除${this.config.title}操作吗？`,
                     loading: true,
                     onOk: () => {
-                        this.$http.post('/admin/' + this.$route.params.model + '/batch/destroy', {'ids': this.selection})
+                        this.$http.post(`/${this.urlPrefix}/${this.$route.params.model}/batch/delete`, {'ids': this.selection})
                             .then(response => {
                                 this.$Modal.remove();
                                 this.$Message.success('删除成功');
@@ -409,6 +386,7 @@
                     }
                 }).then(action => {}).catch(action => {});*/
             },
+
         }
     }
 </script>

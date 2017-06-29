@@ -27,9 +27,15 @@ router.beforeEach((to, from, next) => {
     // console.log('to', to);
     // console.log(from);
     // console.log(window.Admin);
-    if (typeof window.Admin != 'undefined' && window.Admin.LoggedUser) {
-        router.app.$store.commit('setUser', window.Admin.LoggedUser);
+    var urlPrefix = 'admin';
+    if (typeof window.Admin != 'undefined') {
+        if (window.Admin.LoggedUser) {
+            router.app.$store.commit('setUser', window.Admin.LoggedUser);
+        }
+        urlPrefix = window.Admin.UrlPrefix;
     }
+    router.app.$store.commit('setUrlPrefix', urlPrefix)
+
     if (to.meta.title) {
         router.app.$store.commit('setMetaTitle', to.meta.title);
         document.title = router.app.$store.state.metaTitle + ' - ' + window.Admin.Title;
@@ -49,7 +55,7 @@ router.beforeEach((to, from, next) => {
 
             if ($.inArray(to.name, ['admin.model.index', 'admin.model.create', 'admin.model.edit']) != -1) {
                 if (Object.keys(router.app.$store.state.models).indexOf(to.params.model) == -1) {
-                    router.app.axios.get('/admin/' + to.params.model + '/config')
+                    router.app.axios.get(`/${router.app.$store.state.urlPrefix}/${to.params.model}/config`)
                         .then(response => {
                             var data = {};
                             data[to.params.model] = response.data;
@@ -70,48 +76,16 @@ router.beforeEach((to, from, next) => {
                 if (typeof to.name == 'undefined' || to.name == '') {
                     return next({name: 'admin.403'});
                 }
-                router.app.axios.get('/admin/check/perm/' + to.name)
+                router.app.axios.get(`/${router.app.$store.state.urlPrefix}/check/perm/${to.name}`)
                     .then(response => {
                         router.app.$store.commit('setMetaTitle', to.meta.title);
                         document.title = router.app.$store.state.metaTitle + ' - ' + window.Admin.Title;
                         next();
-                        // console.log('response', response.data);
-                        /*store.commit('setPermissions', response.data);
-
-                        if (Vue.can(to.name)) {
-                            router.app.$store.commit('setMetaTitle', to.meta.title);
-                            document.title = router.app.$store.state.metaTitle + ' - ' + window.Admin.Title;
-                            next();
-                        } else {
-                            next({name: 'admin.403'});
-                        }*/
                     }).catch(error => {
                         return next({name: 'admin.403'});
                     })
             }
 
-
-            /*if (store.state.permissions.length == 0) {
-                Vue.axios.get('/admin/permissions')
-                    .then(response => {
-                        // console.log('response', response.data);
-                        store.commit('setPermissions', response.data);
-
-                        if (Vue.can(to.name)) {
-                            next();
-                        } else {
-                            // return next({name: 'admin.403'});
-                        }
-                    }).catch(error => {
-                        // return next({name: 'admin.403'});
-                    })
-            } else {
-                if (Vue.can(to.name)) {
-                    next();
-                } else {
-                    // return next({name: 'admin.403'});
-                }
-            }*/
         } else {
             next();
         }
