@@ -309,7 +309,7 @@
                     content: `确定要删除此${this.config.title}吗？`,
                     loading: true,
                     onOk: () => {
-                        this.$http.delete(`/${this.urlPrefix}/${this.$route.params.model}/${id}`)
+                        this.$http.delete(`/${this.urlPrefix}/${this.$route.params.model}/${id}/delete`)
                             .then(response => {
                                 this.$Modal.remove();
                                 this.$Message.success('删除成功');
@@ -320,26 +320,6 @@
                             })
                     }
                 });
-                /*this.$confirm('确定要删除此' + this.config.title + '吗？', '提示', {
-                    type: 'warning',
-                    beforeClose: (action, instance, done) => {
-                        if (action == 'confirm') {
-                            instance.confirmButtonLoading = true;
-                            this.$http.delete('/admin/' + this.$route.params.model + '/' + id)
-                                .then(response => {
-                                    instance.confirmButtonLoading = false;
-                                    instance.close();
-                                    this.$message.success('删除成功');
-                                    this.getResults();
-                                }).catch(error => {
-                                    instance.confirmButtonLoading = false;
-                                    instance.close();
-                                })
-                        } else {
-                            done();
-                        }
-                    }
-                }).then(action => {}).catch(action => {});*/
             },
             batchDelete() {
                 if (this.selection.length == 0) {
@@ -362,29 +342,6 @@
                             })
                     }
                 });
-
-
-                /*this.$confirm('确定要执行批量删除' + this.config.title + '操作吗？', '提示',{
-                    type: 'warning',
-                    beforeClose: (action, instance, done) => {
-                        if (action == 'confirm') {
-                            instance.confirmButtonLoading = true;
-//                            instance.confirmButtonText = '执行中...';
-                            this.$http.post('/admin/' + this.$route.params.model + '/batch/destroy', {'ids': this.selection})
-                                .then(response => {
-                                    instance.confirmButtonLoading = false;
-                                    instance.close();
-                                    this.$message.success('删除成功');
-                                    this.getResults();
-                                }).catch(error => {
-                                    instance.confirmButtonLoading = false;
-                                    instance.close();
-                                })
-                        } else {
-                            done();
-                        }
-                    }
-                }).then(action => {}).catch(action => {});*/
             },
 
         }

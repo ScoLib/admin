@@ -4,7 +4,7 @@
 namespace Sco\Admin\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Sco\Admin\Traits\EntrustUserTrait;
+use Zizaco\Entrust\Traits\EntrustUserTrait;
 
 class User extends Authenticatable
 {

@@ -2,8 +2,8 @@
 
 namespace Sco\Admin\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Sco\Admin\Traits\EntrustRoleTrait;
+use Zizaco\Entrust\EntrustRole;
+
 
 /**
  * Sco\Admin\Models\Role
@@ -24,10 +24,8 @@ use Sco\Admin\Traits\EntrustRoleTrait;
  * @method static \Illuminate\Database\Query\Builder|\Sco\Admin\Models\Role whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class Role extends Model
+class Role extends EntrustRole
 {
-    use EntrustRoleTrait;
-
     protected $fillable = ['name', 'display_name', 'description'];
 
     protected $events = [

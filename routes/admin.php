@@ -212,14 +212,14 @@ Route::group([
             ->name('delete')
             ->middleware('admin.can.model:delete');
 
-        Route::post('batch/destroy', 'AdminController@batchDestroy')
+        /*Route::post('batch/destroy', 'AdminController@batchDestroy')
             ->name('batch.destroy')
             ->middleware('admin.can.model:delete');
 
         Route::delete('{id}/destroy', 'AdminController@destroy')
             ->where(['id' => '[0-9]+'])
             ->name('destroy')
-            ->middleware('admin.can.model:delete');
+            ->middleware('admin.can.model:delete');*/
 
         Route::get('/', function () {
             return view('admin::app');

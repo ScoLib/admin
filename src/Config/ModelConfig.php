@@ -94,7 +94,8 @@ class ModelConfig implements Arrayable, Jsonable, JsonSerializable
 
     public function delete($id)
     {
-
+        $info = $this->getRepository()->findOrFail($id)->delete();
+        return true;
     }
 
     protected function usePagination()

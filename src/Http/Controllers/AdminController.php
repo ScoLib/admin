@@ -36,15 +36,13 @@ class AdminController extends Controller
     {
     }
 
-    public function destroy(ConfigContract $config, $id)
+    public function delete(ConfigContract $config, $id)
     {
-        $info = $config->getModel()->findOrFail($id);
-        //dd($info);
-        $info->delete();
+        $config->getModel()->delete($id);
         return response()->json(['message' => 'ok']);
     }
 
-    public function batchDestroy()
+    public function batchDelete(ConfigContract $config)
     {
     }
 }

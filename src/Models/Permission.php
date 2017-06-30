@@ -4,11 +4,10 @@ namespace Sco\Admin\Models;
 
 use DB;
 use Cache;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Sco\Admin\Observers\PermissionObserver;
-use Sco\Admin\Traits\EntrustPermissionTrait;
 use Sco\Tree\Traits\TreeTrait;
+use Zizaco\Entrust\EntrustPermission;
 
 /**
  * Sco\Admin\Models\Permission
@@ -36,9 +35,9 @@ use Sco\Tree\Traits\TreeTrait;
  * @method static \Illuminate\Database\Query\Builder|\Sco\Admin\Models\Permission whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class Permission extends Model
+class Permission extends EntrustPermission
 {
-    use TreeTrait, EntrustPermissionTrait;
+    use TreeTrait;
 
     protected $guarded = ['created_at', 'updated_at'];
 
