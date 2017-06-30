@@ -7,7 +7,7 @@ class UsersTableSeeder extends Seeder
 {
     public function run()
     {
-        $userModelName = config('admin.user');
+        $userModelName = config('auth.providers.users.model');
         $user          = new $userModelName();
         if ($user->count() == 0) {
             $role           = Role::where('name', 'admin')->firstOrFail();

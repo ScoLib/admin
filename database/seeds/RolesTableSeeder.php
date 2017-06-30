@@ -6,14 +6,14 @@ class RolesTableSeeder extends Seeder
 {
     public function run()
     {
-        $roleModelName = config('admin.role');
+        $roleModelName = config('entrust.role');
 
         $admin               = new $roleModelName();
         $admin->name         = 'admin';
         $admin->display_name = '超级管理员';
         $admin->save();
 
-        $permissionModelName = config('admin.permission');
+        $permissionModelName = config('entrust.permission');
         $admin->attachPermissions((new $permissionModelName())->all());
 
         $test               = new $roleModelName();

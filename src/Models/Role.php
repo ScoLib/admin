@@ -33,10 +33,4 @@ class Role extends EntrustRole
         'updated'  => \Sco\ActionLog\Events\ModelWasUpdated::class,
         'deleted'  => \Sco\ActionLog\Events\ModelWasDeleted::class,
     ];
-
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->table = config('admin.roles_table');
-    }
 }

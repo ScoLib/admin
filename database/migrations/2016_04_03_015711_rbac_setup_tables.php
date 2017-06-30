@@ -14,7 +14,7 @@ class RbacSetupTables extends Migration
     {
         // Create table for storing roles
         Schema::create(
-            config('admin.roles_table'),
+            config('entrust.roles_table'),
             function (Blueprint $table) {
                 $table->engine = "InnoDB COMMENT='角色表'";
                 $table->increments('id');
@@ -36,27 +36,27 @@ class RbacSetupTables extends Migration
 
         // Create table for associating roles to users (Many-to-Many)
         Schema::create(
-            config('admin.role_user_table'),
+            config('entrust.role_user_table'),
             function (Blueprint $table) {
                 $table->engine = "InnoDB COMMENT='角色与用户对应表'";
-                $table->integer(config('admin.user_foreign_key'))
+                $table->integer(config('entrust.user_foreign_key'))
                     ->unsigned()
                     ->comment('管理员ID');
 
-                $table->integer(config('admin.role_foreign_key'))
+                $table->integer(config('entrust.role_foreign_key'))
                     ->unsigned()
                     ->comment('角色ID');
 
                 $table->primary([
-                    config('admin.user_foreign_key'),
-                    config('admin.role_foreign_key'),
+                    config('entrust.user_foreign_key'),
+                    config('entrust.role_foreign_key'),
                 ]);
             }
         );
 
         // Create table for storing permissions
         Schema::create(
-            config('admin.permissions_table'),
+            config('entrust.permissions_table'),
             function (Blueprint $table) {
                 $table->engine = "InnoDB COMMENT='权限表'";
 
@@ -79,20 +79,20 @@ class RbacSetupTables extends Migration
 
         // Create table for associating permissions to roles (Many-to-Many)
         Schema::create(
-            config('admin.permission_role_table'),
+            config('entrust.permission_role_table'),
             function (Blueprint $table) {
                 $table->engine = "InnoDB COMMENT='权限与角色对应表'";
-                $table->integer(config('admin.permission_foreign_key'))
+                $table->integer(config('entrust.permission_foreign_key'))
                     ->unsigned()
                     ->comment('权限ID');
 
-                $table->integer(config('admin.role_foreign_key'))
+                $table->integer(config('entrust.role_foreign_key'))
                     ->unsigned()
                     ->comment('角色ID');
 
                 $table->primary([
-                    config('admin.permission_foreign_key'),
-                    config('admin.role_foreign_key'),
+                    config('entrust.permission_foreign_key'),
+                    config('entrust.role_foreign_key'),
                 ]);
             }
         );
@@ -105,9 +105,9 @@ class RbacSetupTables extends Migration
      */
     public function down()
     {
-        Schema::drop(config('admin.permission_role_table'));
-        Schema::drop(config('admin.permissions_table'));
-        Schema::drop(config('admin.role_user_table'));
-        Schema::drop(config('admin.roles_table'));
+        Schema::drop(config('entrust.permission_role_table'));
+        Schema::drop(config('entrust.permissions_table'));
+        Schema::drop(config('entrust.role_user_table'));
+        Schema::drop(config('entrust.roles_table'));
     }
 }

@@ -57,14 +57,6 @@ class Permission extends EntrustPermission
         'deleted'  => \Sco\ActionLog\Events\ModelWasDeleted::class,
     ];
 
-
-    public function __construct(array $attributes = [])
-    {
-        parent::__construct($attributes);
-        $this->table = config('admin.permissions_table');
-    }
-
-
     /**
      * @return \Illuminate\Support\Collection
      */

@@ -3,7 +3,7 @@
 return [
     'title' => '角色',
     'model' => [
-        'class' => config('admin.role'),
+        'class' => config('entrust.role'),
         'perPage' => 0,
     ],
 

@@ -2,7 +2,7 @@
 
 return [
     'title' => '权限',
-    'model' => config('admin.permission'),
+    'model' => config('entrust.permission'),
 
     'permissions' => [
         'view'   => function () {

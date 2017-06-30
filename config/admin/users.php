@@ -2,7 +2,7 @@
 
 return [
     'title' => '用户',
-    'model' => config('admin.user'),
+    'model' => config('auth.providers.users.model'),
 
     'permissions' => [
         'view'   => function () {

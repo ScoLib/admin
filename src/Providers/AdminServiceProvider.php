@@ -28,7 +28,6 @@ class AdminServiceProvider extends ServiceProvider
         'admin.phptojs'   => \Sco\Admin\Http\Middleware\PHPVarToJavaScript::class,
         'admin.can.route' => \Sco\Admin\Http\Middleware\RouteAuthorize::class,
         'admin.can.model' => \Sco\Admin\Http\Middleware\ModelAuthorize::class,
-        'admin.role'      => \Sco\Admin\Http\Middleware\EntrustRole::class,
     ];
 
     protected $providers = [
