@@ -45,4 +45,16 @@ class AdminController extends Controller
     public function batchDelete(ConfigContract $config)
     {
     }
+
+    public function destroy(ConfigContract $config, $id)
+    {
+        $config->getModel()->destroy($id);
+        return response()->json(['message' => 'ok']);
+    }
+
+    public function restore(ConfigContract $config, $id)
+    {
+        $config->getModel()->restore($id);
+        return response()->json(['message' => 'ok']);
+    }
 }

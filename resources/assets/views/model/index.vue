@@ -121,27 +121,10 @@
 
 <script>
 
-    /*Vue.component('el-column', {
-        functional: true,
-        render: function(createElement, context) {
-            var props = context.props.column;
-            props['label'] = props.title;
-            props['prop'] = props.key;
-            return createElement('el-table-column', {
-                props
-            });
-        },
-        props: {
-            column: {
-                type: Object,
-                default: {}
-            }
-        }
-    });*/
-
-    import actionButtons from '../../components/actionButtons'
+    import actionColumn from '../../components/actionColumn'
 
     export default {
+        mixins: [actionColumn],
         components: {
         },
         data() {
@@ -245,18 +228,18 @@
                     columns.push(column);
                 });
 //                console.log(this.getActionButtons());
-                if (this.config.permissions.edit || this.config.permissions.delete) {
+                if (this.isActionColumn) {
                     columns.push({
                         title: '操作',
                         key: 'action',
                         width: 150,
                         align: 'center',
                         render: (h, params) => {
-                            const buttons = actionButtons(h, this, params.row);
+                            const buttons = this.getActionButtons(h, params.row);
                             return (
                                 <div class="hidden-xs btn-group">
                                 {buttons}
-                            </div>
+                                </div>
                             );
                         }
                     });
@@ -303,24 +286,7 @@
                         this.pageData = response.data;
                     }).catch(error => {})
             },
-            delete(id) {
-                this.$Modal.confirm({
-                    title: '提示',
-                    content: `确定要删除此${this.config.title}吗？`,
-                    loading: true,
-                    onOk: () => {
-                        this.$http.delete(`/${this.urlPrefix}/${this.$route.params.model}/${id}/delete`)
-                            .then(response => {
-                                this.$Modal.remove();
-                                this.$Message.success('删除成功');
-                                this.getResults();
-                            }).catch(error => {
-                                this.$Modal.remove();
 
-                            })
-                    }
-                });
-            },
             batchDelete() {
                 if (this.selection.length == 0) {
                     this.$Message.error('请选择操作对象');

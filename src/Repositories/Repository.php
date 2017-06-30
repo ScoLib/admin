@@ -45,6 +45,12 @@ class Repository implements RepositoryContract
         );
     }
 
+    public function forceDelete($id)
+    {
+        return $this->getModel()->onlyTrashed()->findOrFail($id)->forceDelete();
+    }
+
+
     public function isRestorable()
     {
         return in_array(SoftDeletes::class, class_uses_recursive($this->getClass()));

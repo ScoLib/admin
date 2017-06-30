@@ -6,12 +6,13 @@ namespace Sco\Admin\Column;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use Sco\Attributes\HasAttributesTrait;
 use Sco\Attributes\HasOriginalAndAttributesTrait;
 
 
 abstract class Column
 {
-    use HasOriginalAndAttributesTrait;
+    use HasAttributesTrait;
 
     protected $defaultsAttributes = [
         'title'    => '',

@@ -60,25 +60,15 @@ class ModelConfig implements Arrayable, Jsonable, JsonSerializable
         return $this->repository;
     }
 
-    protected function parseRows($rows)
-    {
-        $data = collect();
-        if ($rows) {
-            foreach ($rows as $row) {
-                $newRow = collect();
-                foreach ($this->configFactory->getColumns() as $column) {
-                    $newRow->put($column->getName(), $column->setModel($row)->render());
-                }
-                $data->push($newRow);
-            }
-        }
-        return $data;
-    }
-
     public function get()
     {
-        $orderBy = $this->config->get('orderBy', [$this->getRepository()->getKeyName(), 'desc']);
-        $query = $this->getRepository()->orderBy($orderBy[0], $orderBy[1]);
+        $repository = $this->getRepository();
+        $orderBy = $this->config->get('orderBy', [$repository->getKeyName(), 'desc']);
+        $query = $repository->orderBy($orderBy[0], $orderBy[1]);
+
+        if ($repository->isRestorable()) {
+            $query = $query->withTrashed();
+        }
 
         if ($this->usePagination()) {
             $data = $query->paginate($this->config->get('perPage'));
@@ -94,8 +84,34 @@ class ModelConfig implements Arrayable, Jsonable, JsonSerializable
 
     public function delete($id)
     {
-        $info = $this->getRepository()->findOrFail($id)->delete();
+        $this->getRepository()->findOrFail($id)->delete();
         return true;
+    }
+
+    public function destroy($id)
+    {
+        $this->getRepository()->forceDelete($id);
+        return true;
+    }
+
+    protected function parseRows($rows)
+    {
+        $data = collect();
+        if ($rows) {
+            foreach ($rows as $row) {
+                $newRow = collect();
+                foreach ($this->configFactory->getColumns() as $column) {
+                    $newRow->put($column->getName(), $column->setModel($row)->render());
+
+                    // whether this row has been soft deleted
+                    if ($this->getRepository()->isRestorable()) {
+                        $newRow->put('_deleted', $row->trashed() ? 1 : 0);
+                    }
+                }
+                $data->push($newRow);
+            }
+        }
+        return $data;
     }
 
     protected function usePagination()
