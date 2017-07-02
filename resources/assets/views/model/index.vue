@@ -1,3 +1,9 @@
+<style>
+    .el-table table {
+        width: 100% !important;
+    }
+</style>
+
 <template>
     <div class="row">
         <div class="col-xs-12">
@@ -46,7 +52,7 @@
                             :columns="columns">
                     </Table>
 
-                    <!--<el-table :data="pageData.data"
+                    <!--<el-table :data="tableData"
                               v-loading="tableLoading"
                               @selection-change="getSelected">
 
@@ -55,11 +61,17 @@
                                 :selectable="selectable">
                         </el-table-column>
 
-                        <el-column
+                        <component v-bind:is="$route.params.model" :column="column"
+                                   v-for="column in config.columns"
+                                   :key="column.key">
+                        </component>
+
+                        &lt;!&ndash;<el-column
                                 :column="column"
                                 v-for="column in config.columns"
                                 :key="column.key">
-                        </el-column>
+                        </el-column>&ndash;&gt;
+
 
                         &lt;!&ndash;<el-table-column
                                 :label="column.title"
@@ -102,6 +114,7 @@
                     <!--<el-pagination
                             layout="total, prev, pager, next"
                             :page-size="pageData.per_page"
+                            :current-page="pageData.current_page"
                             @current-change="getResults"
                             :total="pageData.total">
                     </el-pagination>-->
@@ -111,7 +124,8 @@
                             show-total
                             size="small"
                             @on-change="getResults"
-                            :total="pageData.total"></Page>
+                            :total="pageData.total">
+                    </Page>
                 </div>
             </div>
 
@@ -120,6 +134,24 @@
 </template>
 
 <script>
+    /*const elColumn = {
+        name: 'elColumn',
+        functional: true,
+        render: function(createElement, context) {
+            var props = context.props.column;
+            props['label'] = props.title;
+            props['prop'] = props.key;
+            return createElement('el-table-column', {
+                props
+            });
+        },
+        props: {
+            column: {
+                type: Object,
+                default: {}
+            }
+        }
+    };*/
 
     import actionColumn from '../../components/actionColumn'
 

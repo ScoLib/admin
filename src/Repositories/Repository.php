@@ -50,6 +50,11 @@ class Repository implements RepositoryContract
         return $this->getModel()->onlyTrashed()->findOrFail($id)->forceDelete();
     }
 
+    public function restore($id)
+    {
+        return $this->getModel()->onlyTrashed()->findOrFail($id)->restore();
+    }
+
 
     public function isRestorable()
     {

@@ -78,7 +78,6 @@ class ModelConfig implements Arrayable, Jsonable, JsonSerializable
             $data = $this->parseRows($query->get());
         }
 
-
         return $data;
     }
 
@@ -88,10 +87,15 @@ class ModelConfig implements Arrayable, Jsonable, JsonSerializable
         return true;
     }
 
-    public function destroy($id)
+    public function forceDelete($id)
     {
         $this->getRepository()->forceDelete($id);
         return true;
+    }
+
+    public function restore($id)
+    {
+        $this->getRepository()->restore($id);
     }
 
     protected function parseRows($rows)

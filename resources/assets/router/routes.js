@@ -138,7 +138,7 @@ export default [
                     {
                         path: ':id/edit',
                         component (resolve) {
-                            require(['../views/model/form.vue'], resolve);
+                            require(['../views/model/edit.vue'], resolve);
                         },
                         name: 'admin.model.edit',
                         meta: {
@@ -148,7 +148,7 @@ export default [
                     {
                         path: 'create',
                         component (resolve) {
-                            require(['../views/model/form.vue'], resolve);
+                            require(['../views/model/create.vue'], resolve);
                         },
                         name: 'admin.model.create',
                         meta: {

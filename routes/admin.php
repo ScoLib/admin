@@ -212,8 +212,7 @@ Route::group([
             ->name('delete')
             ->middleware('admin.can.model:delete');
 
-
-        Route::delete('{id}/destroy', 'AdminController@destroy')
+        Route::delete('{id}/destroy', 'AdminController@forceDelete')
             ->where(['id' => '[0-9]+'])
             ->name('destroy')
             ->middleware('admin.can.model:delete');

@@ -106,7 +106,7 @@ export default {
                 content: `确定要恢复此${this.config.title}吗？`,
                 loading: true,
                 onOk: () => {
-                    this.$http.delete(`/${this.urlPrefix}/${this.$route.params.model}/${id}/restore`)
+                    this.$http.post(`/${this.urlPrefix}/${this.$route.params.model}/${id}/restore`)
                         .then(response => {
                             this.$Modal.remove();
                             this.$Message.success('操作成功');

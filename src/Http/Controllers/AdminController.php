@@ -21,6 +21,7 @@ class AdminController extends Controller
 
     public function create()
     {
+        return view('admin::app');
     }
 
     public function store()
@@ -46,9 +47,9 @@ class AdminController extends Controller
     {
     }
 
-    public function destroy(ConfigContract $config, $id)
+    public function forceDelete(ConfigContract $config, $id)
     {
-        $config->getModel()->destroy($id);
+        $config->getModel()->forceDelete($id);
         return response()->json(['message' => 'ok']);
     }
 

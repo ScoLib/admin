@@ -1,39 +1,50 @@
 <template>
     <div class="form-horizontal box-body">
+        
         <div :class="['form-group', errors[field.key] ? 'has-error' : '']" v-for="field in fields">
             <label class="col-xs-12 col-sm-3 no-padding-right control-label">{{ field.title }}</label>
 
             <div class="col-xs-12 col-sm-9">
                 <slot :name="field.key" :field="field">
-                    <el-select
+                    <Select
                             placeholder="请选择"
                             :class="field.class"
                             :popper-class="field.popperClass"
                             :name="field.key"
                             v-model="info[field.key]"
                             v-if="field.type == 'select'">
-                        <el-option
+                        <Option
                                 :value="option.value"
                                 :key="option.value"
                                 :label="option.label"
                                 v-for="option in field.options">
-                        </el-option>
-                    </el-select>
+                        </Option>
+                    </Select>
 
-                    <el-radio-group
+                    <Radio-group
                             v-model="info[field.key]"
                             v-else-if="field.type == 'radio'">
-                        <el-radio-button
+                        <Radio
                                 v-for="option in field.options"
-                                :name="field.key"
                                 :key="option.value"
                                 :disabled="option.disabled"
-                                :label="option.value">
-                            {{option.label}}
-                        </el-radio-button>
-                    </el-radio-group>
+                                :label="option.label">
+                        </Radio>
+                    </Radio-group>
 
-                    <div class="checkbox" v-for="option in field.options" v-else-if="field.type == 'checkbox'">
+                    <Checkbox-group
+                            @on-change="testcheckbox"
+                            v-model="info[field.key]"
+                            v-else-if="field.type == 'checkbox'">
+                        <Checkbox
+                                :label="option.label"
+                                :key="option.value"
+                                v-for="option in field.options">
+                            {{option.label}}
+                        </Checkbox>
+                    </Checkbox-group>
+
+                    <!--<div class="checkbox" v-for="option in field.options" v-else-if="field.type == 'checkbox'">
                         <label>
                             <input
                                     type="checkbox"
@@ -43,11 +54,10 @@
                                     v-model="info[field.key]">
                             {{option.label}}
                         </label>
-                    </div>
+                    </div>-->
 
                     <template v-else-if="typeof field.type === 'undefined' || ['text', 'textarea', 'number', 'email', 'password'].indexOf(field.type) > -1">
-                        <el-input
-                                :custom-class="field.class"
+                        <Input
                                 :type="field.type"
                                 :name="field.key"
                                 :placeholder="field.placeholder ? field.placeholder : field.title"
@@ -55,7 +65,7 @@
                                 :readonly="field.readonly"
                                 :rows="field.rows"
                                 v-model="info[field.key]">
-                        </el-input>
+                        </Input>
                     </template>
 
                 </slot>
@@ -74,7 +84,15 @@
         name: 'bForm',
         data() {
             return {
+                fruit: [],
             }
+        },
+        created() {
+            console.log(this.info);
+            console.log(this.fields);
+            this.fields.forEach(f => {
+                console.log(this.info[f.key]);
+            })
         },
         props: {
             fields: {
@@ -94,6 +112,11 @@
                 default() {
                     return {}
                 }
+            }
+        },
+        methods: {
+            testcheckbox(data) {
+                console.log(data);
             }
         }
     }
