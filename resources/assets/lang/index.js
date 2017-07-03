@@ -5,11 +5,11 @@ import VueI18n from 'vue-i18n';
 import en from './en';
 import zh from './zh';
 
-// import enLocale from 'element-ui/lib/locale/lang/en';
-// import zhLocale from 'element-ui/lib/locale/lang/zh-CN';
+import enLocale from 'element-ui/lib/locale/lang/en';
+import zhLocale from 'element-ui/lib/locale/lang/zh-CN';
 
-import zhLocale from 'iview/src/locale/lang/zh-CN';
-import enLocale from 'iview/src/locale/lang/en-US';
+// import zhLocale from 'iview/src/locale/lang/zh-CN';
+// import enLocale from 'iview/src/locale/lang/en-US';
 
 Vue.config.lang = 'zh';
 if (typeof window.Admin != 'undefined') {

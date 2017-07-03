@@ -16,15 +16,15 @@
                     </div>
                 </div>
                 <!-- /.box-header -->
-                <b-form
+                <v-form
                         :fields="fields"
-                        :info="info"
+                        v-model="info"
                         :errors="errors">
-                </b-form>
+                </v-form>
 
                 <!-- /.box-body -->
                 <div class="box-footer">
-                    <Button type="primary" @click="save" :loading="buttonLoading">{{ $t('form.ok') }}</Button>
+                    <el-button type="primary" @click="save" :loading="buttonLoading">{{ $t('form.ok') }}</el-button>
                 </div>
                 <!-- /.box-footer -->
             </div>
@@ -34,7 +34,12 @@
 </template>
 
 <script>
+    import vForm from '../../components/Form.vue';
+
     export default {
+        components: {
+            vForm
+        },
         data() {
             return {
                 test: '',
@@ -132,12 +137,10 @@
         },
         methods: {
             save() {
-                console.log(this.info);
-                return false;
                 this.$http.post(`/${this.urlPrefix}/${this.$route.params.model}/store`, this.info)
                     .then(response => {
                     this.buttonLoading = false;
-                    this.$Message.success('操作成功')
+                    this.$message.success('操作成功')
                     this.$router.push({ name: 'admin.model.index', params: {model: this.$route.params.model}})
                 }).catch(error => {
                     this.buttonLoading = false;

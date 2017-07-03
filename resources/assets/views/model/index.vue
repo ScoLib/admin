@@ -45,14 +45,14 @@
                 <!-- /.box-header -->
                 <div class="box-body table-responsive">
 
-                    <Table
+                    <!--<Table
                             :data="tableData"
                             v-loading="tableLoading"
                             @on-selection-change="getSelected"
                             :columns="columns">
-                    </Table>
+                    </Table>-->
 
-                    <!--<el-table :data="tableData"
+                    <el-table :data="tableData"
                               v-loading="tableLoading"
                               @selection-change="getSelected">
 
@@ -61,29 +61,37 @@
                                 :selectable="selectable">
                         </el-table-column>
 
-                        <component v-bind:is="$route.params.model" :column="column"
+                        <!--<component v-bind:is="$route.params.model" :column="column"
                                    v-for="column in config.columns"
                                    :key="column.key">
-                        </component>
+                        </component>-->
 
-                        &lt;!&ndash;<el-column
+                        <!--<el-column
                                 :column="column"
-                                v-for="column in config.columns"
+                                v-for="column in columns"
                                 :key="column.key">
-                        </el-column>&ndash;&gt;
+                        </el-column>-->
 
 
-                        &lt;!&ndash;<el-table-column
+                        <el-table-column
                                 :label="column.title"
                                 :prop="column.key"
                                 :min-width="column.minWidth"
-                                :sortable="column.sortable"
+                                :sortable="column.sortable ? 'custom': false"
                                 :fixed="column.fixed"
-                                v-for="column in config.columns"
+                                v-for="column in columns"
                                 :key="column.key">
-                        </el-table-column>&ndash;&gt;
+                            <template scope="scope">
+                                <el-column
+                                        :renderContent="column.render"
+                                        :template="column.template"
+                                        :scope="scope"
+                                        :prop="column.key">
+                                </el-column>
+                            </template>
+                        </el-table-column>
 
-                        <el-table-column
+                        <!--<el-table-column
                                 label="操作"
                                 align="center"
                                 width="120"
@@ -105,27 +113,27 @@
                                     </button>
                                 </div>
                             </template>
-                        </el-table-column>
+                        </el-table-column>-->
 
-                    </el-table>-->
+                    </el-table>
                 </div>
                 <!-- /.box-body -->
                 <div v-if="pageData.per_page" class="box-footer clearfix">
-                    <!--<el-pagination
+                    <el-pagination
                             layout="total, prev, pager, next"
                             :page-size="pageData.per_page"
                             :current-page="pageData.current_page"
                             @current-change="getResults"
                             :total="pageData.total">
-                    </el-pagination>-->
-                    <Page
-                            :page-size="pageData.per_page"
-                            :current="pageData.current_page"
-                            show-total
-                            size="small"
-                            @on-change="getResults"
-                            :total="pageData.total">
-                    </Page>
+                    </el-pagination>
+                    <!--<Page-->
+                            <!--:page-size="pageData.per_page"-->
+                            <!--:current="pageData.current_page"-->
+                            <!--show-total-->
+                            <!--size="small"-->
+                            <!--@on-change="getResults"-->
+                            <!--:total="pageData.total">-->
+                    <!--</Page>-->
                 </div>
             </div>
 
@@ -134,30 +142,48 @@
 </template>
 
 <script>
-    /*const elColumn = {
-        name: 'elColumn',
-        functional: true,
-        render: function(createElement, context) {
-            var props = context.props.column;
-            props['label'] = props.title;
-            props['prop'] = props.key;
-            return createElement('el-table-column', {
-                props
-            });
+    const elColumn = {
+        render: function(h) {
+            const prop = this.prop;
+            const scope = this.scope;
+            const template = this.template ? this.template : '<span>{{value}}</span>'
+            var render = this.renderContent;
+
+            try {
+                if (!this.renderContent) {
+                    Vue.component(prop + 'column-render', {
+                        template: `<section>${template}</section>`,
+                        data() {
+                            return {}
+                        },
+                        props: ['row', 'value']
+                    });
+
+                    render = (h, props) => {
+                        return h(prop + 'column-render', {props});
+                    }
+                }
+
+                return render.call(this._renderProxy, h, { row: scope.row, value: scope.row[prop] });
+            } catch (e) {
+                console.log(e);
+                this.$message.error('column(' + prop +') template is wrong');
+            }
         },
         props: {
-            column: {
-                type: Object,
-                default: {}
-            }
-        }
-    };*/
+            renderContent: Function,
+            scope: Object,
+            prop: String,
+            template: String,
+        },
+    };
 
     import actionColumn from '../../components/actionColumn'
 
     export default {
         mixins: [actionColumn],
         components: {
+            elColumn
         },
         data() {
             return {
@@ -199,35 +225,17 @@
                 }
             },
             columns() {
-                let columns = [
-                    {
-                        type: 'selection',
-                        width: 60,
-                        align: 'center'
-                    }
-                ];
+                let columns = [];
                 this.config.columns.forEach(function (column) {
 //                    console.log(column.render);
-                    var self = this;
+                    /*var self = this;
                     if (typeof column.template !== 'undefined') {
-                        Vue.component(column.key + 'column-render', {
-                            template: column.template,
-                            data() {
-                                return {}
-                            },
-                            props: {
-                                item: {
-                                    type: Array | Object,
-                                    default() {
-                                        return {}
-                                    }
-                                }
-                            }
-                        });
-                        delete column.template;
+
+//                        delete column.template;
 
                         column.render = (h, params) => {
                             let renderStr;
+                            console.log(params.row[column.key]);
                             if (params.row[column.key] instanceof Array && params.row[column.key].length) {
                                 return params.row[column.key].map((item, index) => {
                                     try {
@@ -256,7 +264,7 @@
 //                            console.log(renderStr);
                             return (renderStr);
                         }
-                    }
+                    }*/
                     columns.push(column);
                 });
 //                console.log(this.getActionButtons());
@@ -276,7 +284,7 @@
                         }
                     });
                 }
-//                console.log(columns);
+                console.log(columns);
                 return columns;
             },
             urlPrefix() {
@@ -321,11 +329,33 @@
 
             batchDelete() {
                 if (this.selection.length == 0) {
-                    this.$Message.error('请选择操作对象');
+                    this.$message.error('请选择操作对象');
                     return false;
                 }
 
-                this.$Modal.confirm({
+                this.$confirm(`确定要执行批量删除${this.config.title}操作吗？`, '提示', {
+                    type: 'warning',
+                    beforeClose: (action, instance, done) => {
+                        if (action == 'confirm') {
+                            instance.confirmButtonLoading = true;
+                            //                            instance.confirmButtonText = '执行中...';
+                            this.$http.post(`/${this.urlPrefix}/${this.$route.params.model}/batch/delete`, {'ids': this.selection})
+                                .then(response => {
+                                    instance.confirmButtonLoading = false;
+                                    instance.close();
+                                    this.$message.success('删除成功');
+                                    this.getResults();
+                                }).catch(error => {
+                                    instance.confirmButtonLoading = false;
+                                    instance.close();
+                                })
+                        } else {
+                            done();
+                        }
+                    }
+                }).then(action => {}).catch(action => {});
+
+                /*this.$confirm({
                     title: '提示',
                     content: `确定要执行批量删除${this.config.title}操作吗？`,
                     loading: true,
@@ -333,13 +363,13 @@
                         this.$http.post(`/${this.urlPrefix}/${this.$route.params.model}/batch/delete`, {'ids': this.selection})
                             .then(response => {
                                 this.$Modal.remove();
-                                this.$Message.success('删除成功');
+                                this.$message.success('删除成功');
                                 this.getResults();
                             }).catch(error => {
                                 this.$Modal.remove();
                             })
                     }
-                });
+                });*/
             },
 
         }

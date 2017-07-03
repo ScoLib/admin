@@ -2,13 +2,13 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import routes from './routes'
 // import util from '../util'
-import iView from 'iview'
+// import iView from 'iview'
 
-iView.LoadingBar.config({
+/*iView.LoadingBar.config({
     color: 'rgb(143, 255, 199)',
     failedColor: 'red',
     height: 3
-});
+});*/
 
 Vue.use(VueRouter)
 
@@ -42,7 +42,7 @@ router.beforeEach((to, from, next) => {
     }
 
     if (to.fullPath != '/#') {
-        router.app.$Loading.start();
+        // router.app.$Loading.start();
 
         if (to.meta.auth) {
             // if (typeof window.Admin != 'undefined' && window.Admin.PermList) {
@@ -95,7 +95,7 @@ router.beforeEach((to, from, next) => {
 
 //路由完成后
 router.afterEach(route => {
-    router.app.$Loading.finish();
+    // router.app.$Loading.finish();
 });
 
 export default router;

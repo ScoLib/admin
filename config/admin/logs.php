@@ -29,7 +29,7 @@ return [
             'width'        => '120',
             'relationship' => 'user',
             'fields'       => 'id,name',
-            'template'     => '<span><template v-if="item.length == 0">guest / 0</template><template v-else>{{item.name}} / {{item.id}}</template></span>',
+            'template'     => '<span><template v-if="value.length == 0">guest / 0</template><template v-else>{{value.name}} / {{value.id}}</template></span>',
         ],
         'type'       => [
             'title' => 'Type',

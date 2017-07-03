@@ -34,7 +34,7 @@ return [
             'title'        => 'roles',
             'relationship' => 'roles',
             'fields'       => 'name,display_name',
-            'template'     => '<span>{{item.display_name}}[{{item.name}}]<br></span>',
+            'template'     => '<span v-for="item in value">{{item.display_name}}[{{item.name}}]<br></span>',
         ],
         'created_at' => [
             'title'  => 'created_at',

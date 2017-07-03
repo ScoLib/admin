@@ -6,43 +6,44 @@
 
             <div class="col-xs-12 col-sm-9">
                 <slot :name="field.key" :field="field">
-                    <Select
+                    <el-select
                             placeholder="请选择"
                             :class="field.class"
                             :popper-class="field.popperClass"
                             :name="field.key"
-                            v-model="info[field.key]"
+                            v-model="currentValue[field.key]"
                             v-if="field.type == 'select'">
-                        <Option
+                        <el-option
                                 :value="option.value"
                                 :key="option.value"
                                 :label="option.label"
                                 v-for="option in field.options">
-                        </Option>
-                    </Select>
+                        </el-option>
+                    </el-select>
 
-                    <Radio-group
-                            v-model="info[field.key]"
+                    <el-radio-group
+                            v-model="currentValue[field.key]"
                             v-else-if="field.type == 'radio'">
-                        <Radio
+                        <el-radio
                                 v-for="option in field.options"
                                 :key="option.value"
                                 :disabled="option.disabled"
-                                :label="option.label">
-                        </Radio>
-                    </Radio-group>
+                                :label="option.value">
+                            {{ option.label }}
+                        </el-radio>
+                    </el-radio-group>
 
-                    <Checkbox-group
-                            @on-change="testcheckbox"
-                            v-model="info[field.key]"
+                    <el-checkbox-group
+                            v-model="currentValue[field.key]"
                             v-else-if="field.type == 'checkbox'">
-                        <Checkbox
-                                :label="option.label"
+                        <el-checkbox
+                                v-for="option in field.options"
                                 :key="option.value"
-                                v-for="option in field.options">
+                                :label="option.value"
+                                :disabled="option.disabled">
                             {{option.label}}
-                        </Checkbox>
-                    </Checkbox-group>
+                        </el-checkbox>
+                    </el-checkbox-group>
 
                     <!--<div class="checkbox" v-for="option in field.options" v-else-if="field.type == 'checkbox'">
                         <label>
@@ -51,21 +52,21 @@
                                     :name="field.key"
                                     :value="option.value"
                                     :disabled="option.disabled"
-                                    v-model="info[field.key]">
+                                    v-model="currentValue[field.key]">
                             {{option.label}}
                         </label>
                     </div>-->
 
                     <template v-else-if="typeof field.type === 'undefined' || ['text', 'textarea', 'number', 'email', 'password'].indexOf(field.type) > -1">
-                        <Input
+                        <el-input
                                 :type="field.type"
                                 :name="field.key"
                                 :placeholder="field.placeholder ? field.placeholder : field.title"
                                 :disabled="field.disabled"
                                 :readonly="field.readonly"
                                 :rows="field.rows"
-                                v-model="info[field.key]">
-                        </Input>
+                                v-model="currentValue[field.key]">
+                        </el-input>
                     </template>
 
                 </slot>
@@ -81,18 +82,11 @@
 <script>
 
     export default {
-        name: 'bForm',
+        name: 'vForm',
         data() {
             return {
-                fruit: [],
+                currentValue: this.value
             }
-        },
-        created() {
-            console.log(this.info);
-            console.log(this.fields);
-            this.fields.forEach(f => {
-                console.log(this.info[f.key]);
-            })
         },
         props: {
             fields: {
@@ -101,7 +95,7 @@
                     return [];
                 }
             },
-            info: {
+            value: {
                 type: Object,
                 default() {
                     return {}
@@ -115,8 +109,15 @@
             }
         },
         methods: {
-            testcheckbox(data) {
-                console.log(data);
+        },
+        watch: {
+            value(val) {
+//                console.log('value', val);
+                this.currentValue = val;
+            },
+            currentValue(val) {
+//                console.log('current', val);
+                this.$emit('input', val);
             }
         }
     }

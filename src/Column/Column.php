@@ -58,12 +58,19 @@ abstract class Column
 
     public function toArray()
     {
-        return [
+        $column = [
             'key'      => $this->name,
             'title'    => $this->getAttribute('title'),
             'sortable' => $this->getAttribute('sortable'),
             'width'    => $this->getAttribute('width'),
         ];
+
+        $template = $this->getAttribute('template');
+        if ($template) {
+            $column['template'] = $template;
+        }
+
+        return $column;
     }
 
     protected function isRelationship()
