@@ -20,13 +20,13 @@ NPM
   "dependencies": {
     "axios": "^0.*",
     "bootstrap": "^3.3.7",
-    "element-loading": "^1.0.0",
+    "element-ui": "^1.*",
     "font-awesome": "^4.7.0",
-    "iview": "^2.0.0-rc.17",
     "jquery": "^2.2.4",
     "jquery-slimscroll": "^1.3.8",
     "vue": "^2.*",
     "vue-i18n": "^6.*",
+    "vue-progressbar": "^0.*",
     "vue-router": "^2.*",
     "vuex": "^2.*",
   }
@@ -73,7 +73,7 @@ mix.webpackConfig({
 });
 
 mix.js('resources/assets/vendor/admin/main.js', `public/${adminPublicPath}js/app.js`)
-    .extract(['vue', 'jquery', 'bootstrap', 'vue-router', 'iview'])
+    .extract(['vue', 'jquery', 'bootstrap', 'vue-router', 'element-ui'])
 
 mix.less('resources/assets/vendor/admin/less/admin.less', `public/${adminPublicPath}css/app.css`);
 

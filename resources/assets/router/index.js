@@ -10,6 +10,14 @@ import routes from './routes'
     height: 3
 });*/
 
+import VueProgressBar from 'vue-progressbar'
+
+Vue.use(VueProgressBar, {
+    color: 'rgb(143, 255, 199)',
+    // failedColor: 'red',
+    height: '3px'
+})
+
 Vue.use(VueRouter)
 
 const router = new VueRouter({
@@ -21,13 +29,17 @@ const router = new VueRouter({
     }
 });
 
+const setTitle = (title) => {
+    router.app.$store.commit('setMetaTitle', title);
+    document.title = title + ' - ' + window.Admin.Title;
+}
 
 //路由开始前
 router.beforeEach((to, from, next) => {
     // console.log('to', to);
     // console.log(from);
     // console.log(window.Admin);
-    var urlPrefix = 'admin';
+    let urlPrefix = 'admin';
     if (typeof window.Admin != 'undefined') {
         if (window.Admin.LoggedUser) {
             router.app.$store.commit('setUser', window.Admin.LoggedUser);
@@ -37,12 +49,11 @@ router.beforeEach((to, from, next) => {
     router.app.$store.commit('setUrlPrefix', urlPrefix)
 
     if (to.meta.title) {
-        router.app.$store.commit('setMetaTitle', to.meta.title);
-        document.title = router.app.$store.state.metaTitle + ' - ' + window.Admin.Title;
+        setTitle(to.meta.title);
     }
 
     if (to.fullPath != '/#') {
-        // router.app.$Loading.start();
+        router.app.$Progress.start();
 
         if (to.meta.auth) {
             // if (typeof window.Admin != 'undefined' && window.Admin.PermList) {
@@ -50,26 +61,25 @@ router.beforeEach((to, from, next) => {
             // }
 
             if (Object.keys(router.app.$store.state.user).length == 0) {
-                return next({name: 'admin.login'});
+                next({name: 'admin.login'});
             }
 
+            let models = router.app.$store.state.models;
             if ($.inArray(to.name, ['admin.model.index', 'admin.model.create', 'admin.model.edit']) != -1) {
-                if (Object.keys(router.app.$store.state.models).indexOf(to.params.model) == -1) {
+                if (Object.keys(models).indexOf(to.params.model) == -1) {
                     router.app.axios.get(`/${router.app.$store.state.urlPrefix}/${to.params.model}/config`)
                         .then(response => {
                             var data = {};
                             data[to.params.model] = response.data;
                             router.app.$store.commit('setModel', data);
-                            router.app.$store.commit('setMetaTitle', response.data.title);
-                            document.title = router.app.$store.state.metaTitle + ' - ' + window.Admin.Title;
+                            setTitle(to.meta.title + response.data.title);
                             next();
                         }).catch(error => {
                             next({name: 'admin.403'});
                         })
                 } else {
-                    to.meta.title = router.app.$store.state.models[to.params.model].title;
-                    router.app.$store.commit('setMetaTitle', to.meta.title);
-                    document.title = router.app.$store.state.metaTitle + ' - ' + window.Admin.Title;
+                    var　title = to.meta.title + models[to.params.model].title;
+                    setTitle(title)
                     next();
                 }
             } else {
@@ -78,14 +88,12 @@ router.beforeEach((to, from, next) => {
                 }
                 router.app.axios.get(`/${router.app.$store.state.urlPrefix}/check/perm/${to.name}`)
                     .then(response => {
-                        router.app.$store.commit('setMetaTitle', to.meta.title);
-                        document.title = router.app.$store.state.metaTitle + ' - ' + window.Admin.Title;
+                        setTitle(to.meta.title)
                         next();
                     }).catch(error => {
-                        return next({name: 'admin.403'});
+                        next({name: 'admin.403'});
                     })
             }
-
         } else {
             next();
         }
@@ -95,7 +103,7 @@ router.beforeEach((to, from, next) => {
 
 //路由完成后
 router.afterEach(route => {
-    // router.app.$Loading.finish();
+    router.app.$Progress.finish();
 });
 
 export default router;

@@ -43,4 +43,13 @@ return [
             'fields'       => 'id,display_name',
         ],
     ],
+
+    'fields' => [
+        'name' => [
+            'title' => 'Name',
+        ],
+        'display_name' => [
+            'title' => 'Display Name',
+        ],
+    ],
 ];

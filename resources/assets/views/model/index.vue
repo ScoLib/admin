@@ -77,17 +77,31 @@
                                 :label="column.title"
                                 :prop="column.key"
                                 :min-width="column.minWidth"
-                                :sortable="column.sortable ? 'custom': false"
+                                :sortable="column.sortable"
                                 :fixed="column.fixed"
-                                v-for="column in columns"
+                                v-for="column in config.columns"
                                 :key="column.key">
                             <template scope="scope">
-                                <el-column
+                                <v-column
                                         :renderContent="column.render"
                                         :template="column.template"
                                         :scope="scope"
                                         :prop="column.key">
-                                </el-column>
+                                </v-column>
+                            </template>
+                        </el-table-column>
+
+                        <el-table-column
+                                label="操作"
+                                align="center"
+                                width="120"
+                                column-key="action"
+                                v-if="isActionColumn">
+                            <template scope="scope">
+                                <action-column
+                                        :scope="scope"
+                                        @change="getResults">
+                                </action-column>
                             </template>
                         </el-table-column>
 
@@ -126,14 +140,14 @@
                             @current-change="getResults"
                             :total="pageData.total">
                     </el-pagination>
-                    <!--<Page-->
-                            <!--:page-size="pageData.per_page"-->
-                            <!--:current="pageData.current_page"-->
-                            <!--show-total-->
-                            <!--size="small"-->
-                            <!--@on-change="getResults"-->
-                            <!--:total="pageData.total">-->
-                    <!--</Page>-->
+                    <!--<Page
+                            :page-size="pageData.per_page"
+                            :current="pageData.current_page"
+                            show-total
+                            size="small"
+                            @on-change="getResults"
+                            :total="pageData.total">
+                    </Page>-->
                 </div>
             </div>
 
@@ -142,48 +156,13 @@
 </template>
 
 <script>
-    const elColumn = {
-        render: function(h) {
-            const prop = this.prop;
-            const scope = this.scope;
-            const template = this.template ? this.template : '<span>{{value}}</span>'
-            var render = this.renderContent;
-
-            try {
-                if (!this.renderContent) {
-                    Vue.component(prop + 'column-render', {
-                        template: `<section>${template}</section>`,
-                        data() {
-                            return {}
-                        },
-                        props: ['row', 'value']
-                    });
-
-                    render = (h, props) => {
-                        return h(prop + 'column-render', {props});
-                    }
-                }
-
-                return render.call(this._renderProxy, h, { row: scope.row, value: scope.row[prop] });
-            } catch (e) {
-                console.log(e);
-                this.$message.error('column(' + prop +') template is wrong');
-            }
-        },
-        props: {
-            renderContent: Function,
-            scope: Object,
-            prop: String,
-            template: String,
-        },
-    };
-
-    import actionColumn from '../../components/actionColumn'
+    import vColumn from '../../components/Column'
+    import ActionColumn from '../../components/ActionColumn.vue'
 
     export default {
-        mixins: [actionColumn],
         components: {
-            elColumn
+            vColumn,
+            ActionColumn
         },
         data() {
             return {
@@ -224,68 +203,9 @@
                     return models[model];
                 }
             },
-            columns() {
-                let columns = [];
-                this.config.columns.forEach(function (column) {
-//                    console.log(column.render);
-                    /*var self = this;
-                    if (typeof column.template !== 'undefined') {
-
-//                        delete column.template;
-
-                        column.render = (h, params) => {
-                            let renderStr;
-                            console.log(params.row[column.key]);
-                            if (params.row[column.key] instanceof Array && params.row[column.key].length) {
-                                return params.row[column.key].map((item, index) => {
-                                    try {
-                                        return h(column.key + 'column-render', {
-                                            props: {
-                                                item
-                                            }
-                                        });
-                                    } catch (e) {
-                                        console.log(e);
-                                        self.$Message.error('column(' + column.key +') template is wrong');
-                                    }
-                                });
-                            } else {
-                                try {
-                                    return h(column.key + 'column-render', {
-                                        props: {
-                                            item: params.row[column.key]
-                                        }
-                                    });
-                                } catch (e) {
-                                    console.log(e);
-                                    self.$Message.error('column(' + column.key +') template is wrong');
-                                }
-                            }
-//                            console.log(renderStr);
-                            return (renderStr);
-                        }
-                    }*/
-                    columns.push(column);
-                });
-//                console.log(this.getActionButtons());
-                if (this.isActionColumn) {
-                    columns.push({
-                        title: '操作',
-                        key: 'action',
-                        width: 150,
-                        align: 'center',
-                        render: (h, params) => {
-                            const buttons = this.getActionButtons(h, params.row);
-                            return (
-                                <div class="hidden-xs btn-group">
-                                {buttons}
-                                </div>
-                            );
-                        }
-                    });
-                }
-                console.log(columns);
-                return columns;
+            isActionColumn() {
+                var permissions = this.config.permissions;
+                return permissions.edit || permissions.delete || permissions.restore;
             },
             urlPrefix() {
                 return this.$store.state.urlPrefix;
@@ -339,16 +259,17 @@
                         if (action == 'confirm') {
                             instance.confirmButtonLoading = true;
                             //                            instance.confirmButtonText = '执行中...';
-                            this.$http.post(`/${this.urlPrefix}/${this.$route.params.model}/batch/delete`, {'ids': this.selection})
-                                .then(response => {
-                                    instance.confirmButtonLoading = false;
-                                    instance.close();
-                                    this.$message.success('删除成功');
-                                    this.getResults();
-                                }).catch(error => {
-                                    instance.confirmButtonLoading = false;
-                                    instance.close();
-                                })
+                            this.$http.post(`/${this.urlPrefix}/${this.$route.params.model}/batch/delete`, {
+                                'ids': this.selection
+                            }).then(response => {
+                                instance.confirmButtonLoading = false;
+                                instance.close();
+                                this.$message.success('删除成功');
+                                this.getResults();
+                            }).catch(error => {
+                                instance.confirmButtonLoading = false;
+                                instance.close();
+                            })
                         } else {
                             done();
                         }

@@ -143,6 +143,7 @@ export default [
                         name: 'admin.model.edit',
                         meta: {
                             auth: true,
+                            title: '编辑',
                         },
                     },
                     {
@@ -153,6 +154,7 @@ export default [
                         name: 'admin.model.create',
                         meta: {
                             auth: true,
+                            title: '创建',
                         },
                     },
                     {
@@ -163,6 +165,7 @@ export default [
                         name: 'admin.model.index',
                         meta: {
                             auth: true,
+                            title: '',
                         }
                     },
                 ],
