@@ -47,7 +47,7 @@
 
                     <el-date-picker
                             :value="currentValue[field.key]"
-                            type="datetime"
+                            type="datetimerange"
                             format="yyyy-MM-dd HH:mm:ss"
                             placeholder="选择日期时间"
                             @input="handleDateChange($event, field.key)"
@@ -122,8 +122,15 @@
                 if (date instanceof Date) {
                     this.currentValue[key] = date.toLocaleString();
                 }
-
-                console.log(typeof date);
+                if (date instanceof Array) {
+                    console.log(date);
+                    this.currentValue[key] = [];
+                    date.forEach(d => {
+                        if (d instanceof Date) {
+                            this.currentValue[key].push(d.toLocaleString());
+                        }
+                    })
+                }
             },
         },
         watch: {
