@@ -45,6 +45,15 @@
                         </el-checkbox>
                     </el-checkbox-group>
 
+                    <el-date-picker
+                            :value="currentValue[field.key]"
+                            type="datetime"
+                            format="yyyy-MM-dd HH:mm:ss"
+                            placeholder="选择日期时间"
+                            @input="handleDateChange($event, field.key)"
+                            v-else-if="field.type == 'date'">
+                    </el-date-picker>
+
                     <!--<div class="checkbox" v-for="option in field.options" v-else-if="field.type == 'checkbox'">
                         <label>
                             <input
@@ -109,6 +118,13 @@
             }
         },
         methods: {
+            handleDateChange(date, key) {
+                if (date instanceof Date) {
+                    this.currentValue[key] = date.toLocaleString();
+                }
+
+                console.log(typeof date);
+            },
         },
         watch: {
             value(val) {

@@ -12,6 +12,16 @@ class ElColumn extends Column implements ColumnContract, Arrayable, Jsonable, Js
 {
     protected $defaults = [
         'minWidth' => '100',
-        'fixed' => false,
+        'fixed'    => false,
     ];
+
+    public function toArray()
+    {
+        $column = [
+            'fixed'    => $this->getAttribute('fixed'),
+            'minWidth' => $this->getAttribute('minWidth'),
+        ];
+
+        return array_merge(parent::toArray(), $column);
+    }
 }

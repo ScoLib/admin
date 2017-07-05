@@ -51,5 +51,9 @@ return [
         'display_name' => [
             'title' => 'Display Name',
         ],
+        'date' => [
+            'title' => 'Display Name',
+            'type' => 'date',
+        ],
     ],
 ];

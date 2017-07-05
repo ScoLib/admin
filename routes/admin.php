@@ -199,7 +199,8 @@ Route::group([
             ->name('edit')
             ->middleware('admin.can.model:edit');
 
-        Route::post('update', 'AdminController@update')
+        Route::post('{id}/edit', 'AdminController@update')
+            ->where(['id' => '[0-9]+'])
             ->name('update')
             ->middleware('admin.can.model:edit');
 

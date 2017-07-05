@@ -17,7 +17,7 @@
                 </div>
                 <!-- /.box-header -->
                 <v-form
-                        :fields="fields"
+                        :fields="config.fields"
                         v-model="info"
                         :errors="errors">
                 </v-form>
@@ -64,7 +64,7 @@
             },
             info() {
                 let info = {};
-                this.fields.forEach(field => {
+                this.config.fields.forEach(field => {
                     info[field.key] = '';
                     if (field.type == 'checkbox') {
                         info[field.key] = [];
@@ -72,62 +72,6 @@
                 });
 //                console.log(info);
                 return info;
-            },
-            fields() {
-                return [
-                    {
-                        key: 'input',
-                        title: 'Input',
-                    },
-                    {
-                        key: 'password',
-                        title: 'password',
-                        type: 'password',
-                    },
-                    {
-                        key: 'textarea',
-                        title: 'textarea',
-                        type: 'textarea',
-                    },
-                    {
-                        key: 'radio',
-                        title: 'radio',
-                        type: 'radio',
-                        options: [
-                            {
-                                value: '1',
-                                label: '值1',
-                            },
-                            {
-                                value: '2',
-                                label: 'V2',
-                            },
-                            {
-                                value: '3',
-                                label: 'V3',
-                            }
-                        ],
-                    },
-                    {
-                        key: 'checkbox',
-                        title: 'checkbox',
-                        type: 'checkbox',
-                        options: [
-                            {
-                                value: '1',
-                                label: '值1',
-                            },
-                            {
-                                value: '2',
-                                label: 'V2',
-                            },
-                            {
-                                value: '3',
-                                label: 'V3',
-                            }
-                        ],
-                    }
-                ];
             },
             urlPrefix() {
                 return this.$store.state.urlPrefix;
@@ -137,6 +81,8 @@
         },
         methods: {
             save() {
+                console.log(this.info);
+//                return false;
                 this.$http.post(`/${this.urlPrefix}/${this.$route.params.model}/store`, this.info)
                     .then(response => {
                     this.buttonLoading = false;

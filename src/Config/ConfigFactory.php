@@ -9,11 +9,11 @@ use Illuminate\Config\Repository as ConfigRepository;
 use Illuminate\Foundation\Application;
 use Sco\Admin\Column\Columns;
 use Sco\Admin\Contracts\Config as ConfigContract;
-use Sco\Attributes\HasOriginalAndAttributesTrait;
+use Sco\Attributes\HasAttributesTrait;
 
 class ConfigFactory implements ConfigContract, Arrayable, Jsonable, JsonSerializable
 {
-    use HasOriginalAndAttributesTrait;
+    use HasAttributesTrait;
 
     protected $app;
     protected $name;
@@ -23,6 +23,7 @@ class ConfigFactory implements ConfigContract, Arrayable, Jsonable, JsonSerializ
     protected $permissions;
     protected $columns;
     protected $model;
+    protected $fields;
 
     public function __construct(Application $app, $name)
     {
@@ -86,17 +87,14 @@ class ConfigFactory implements ConfigContract, Arrayable, Jsonable, JsonSerializ
 
     protected function getFields()
     {
-        $fields = $this->getAttribute('fields', collect());
-        if ($fields->isEmpty()) {
-            $options = $this->getOriginal('fields');
-
-            foreach ($options as $option) {
-                $fields->push($option);
-            }
-            $this->setAttribute('columns', $fields);
+        if (!$this->fields) {
+            $config = $this->config->get('fields');
+            $this->fields = collect($config)->mapWithKeys(function ($item, $key) {
+                return [$key => array_merge($item, ['key' => $key])];
+            });
         }
 
-        return $fields;
+        return $this->fields;
     }
 
     /**
@@ -112,16 +110,14 @@ class ConfigFactory implements ConfigContract, Arrayable, Jsonable, JsonSerializ
 
     public function getConfigs()
     {
-        $this->setAttribute([
-            'primaryKey' => $this->getModel()->getRepository()->getKeyName(),
+        return [
+            'primaryKey'  => $this->getModel()->getRepository()->getKeyName(),
             'title'       => $this->getTitle(),
             'permissions' => $this->getPermissions(),
             'columns'     => $this->getColumns()->values(),
-        ]);
-
-        return $this->getAttributes();
+            'fields'      => $this->getFields()->values(),
+        ];
     }
-
 
     public function __toString()
     {
