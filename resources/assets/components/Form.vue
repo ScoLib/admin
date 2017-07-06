@@ -54,18 +54,6 @@
                             v-else-if="field.type == 'date'">
                     </el-date-picker>
 
-                    <!--<div class="checkbox" v-for="option in field.options" v-else-if="field.type == 'checkbox'">
-                        <label>
-                            <input
-                                    type="checkbox"
-                                    :name="field.key"
-                                    :value="option.value"
-                                    :disabled="option.disabled"
-                                    v-model="currentValue[field.key]">
-                            {{option.label}}
-                        </label>
-                    </div>-->
-
                     <template v-else-if="typeof field.type === 'undefined' || ['text', 'textarea', 'number', 'email', 'password'].indexOf(field.type) > -1">
                         <el-input
                                 :type="field.type"

@@ -2,6 +2,7 @@
 
 namespace Sco\Admin\Config;
 
+use AdminField;
 use JsonSerializable;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
@@ -90,7 +91,7 @@ class ConfigFactory implements ConfigContract, Arrayable, Jsonable, JsonSerializ
         if (!$this->fields) {
             $config = $this->config->get('fields');
             $this->fields = collect($config)->mapWithKeys(function ($item, $key) {
-                return [$key => array_merge($item, ['key' => $key])];
+                return [$key => AdminField::text($key, $item['title'])];
             });
         }
 

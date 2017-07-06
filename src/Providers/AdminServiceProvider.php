@@ -9,9 +9,12 @@ use Illuminate\Support\ServiceProvider;
 use Laracasts\Utilities\JavaScript\JavaScriptServiceProvider;
 use Sco\ActionLog\LaravelServiceProvider;
 use Sco\Admin\Admin;
+use Sco\Admin\Contracts\FieldFactory as FieldFactoryContract;
 use Sco\Admin\Contracts\Repository as RepositoryContract;
 use Sco\Admin\Exceptions\Handler;
 use Sco\Admin\Facades\AdminFacade;
+use Sco\Admin\Facades\AdminFieldFacade;
+use Sco\Admin\Fields\FieldFactory;
 use Sco\Admin\Repositories\Repository;
 
 /**
@@ -38,6 +41,7 @@ class AdminServiceProvider extends ServiceProvider
 
     protected $aliases = [
         'Admin' => AdminFacade::class,
+        'AdminField' => AdminFieldFacade::class,
         //'AdminConfig' => ConfigFacade::class,
     ];
 
@@ -92,6 +96,9 @@ class AdminServiceProvider extends ServiceProvider
             'admin'
         );
 
+        $this->app->instance('admin.field.factory', $this->app->make(FieldFactory::class));
+        //$this->app->alias('admin.field.factory', FieldFactoryContract::class);
+
         $this->registerExceptionHandler();
         $this->registerAdmin();
         $this->registerAliases();
@@ -99,6 +106,7 @@ class AdminServiceProvider extends ServiceProvider
         $this->bindRouteModel();
 
         $this->app->bind(RepositoryContract::class, Repository::class);
+
 
         $this->commands($this->commands);
 

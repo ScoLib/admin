@@ -3,7 +3,7 @@
 return [
     'title' => '角色',
     'model' => [
-        'class' => config('entrust.role'),
+        'class'   => config('entrust.role'),
         'perPage' => 0,
     ],
 
@@ -45,15 +45,20 @@ return [
     ],
 
     'fields' => [
-        'name' => [
+        'name'         => [
             'title' => 'Name',
         ],
         'display_name' => [
             'title' => 'Display Name',
         ],
-        'date' => [
-            'title' => 'Display Name',
-            'type' => 'date',
+        'description'  => [
+            'title' => 'Description',
+        ],
+        'perms'        => [
+            'title'        => 'Permission',
+            'type'         => 'select',
+            'relationship' => 'perms',
+            'fields'       => 'display_name',
         ],
     ],
 ];
