@@ -9,8 +9,6 @@ use Sco\Admin\Exceptions\BadMethodCallException;
 
 /**
  * Class ElementFactory
- *
- *
  * @method Text text($name, $title)
  * @method Select select($name, $title)
  */
@@ -19,7 +17,8 @@ class ElementFactory implements FieldFactoryContract
     protected $app;
 
     protected $aliases = [
-        'text' => Text::class,
+        'text'   => Text::class,
+        'select' => Select::class,
     ];
 
     public function __construct(Application $app)
@@ -46,7 +45,7 @@ class ElementFactory implements FieldFactoryContract
 
     /**
      * @param string $alias
-     * @param array $arguments
+     * @param array  $arguments
      *
      * @return object
      */

@@ -32,31 +32,6 @@ Route::group([
             return view('admin::app');
         })->name('403');
 
-        $spaRoutes = [
-            // 控制台
-            //'dashboard'         => '/',
-            // 403
-            //'403'               => '403',
-            // 操作日志
-            //'system.log'        => 'system/log',
-            // 菜单管理
-            //'system.menu'       => 'system/menu',
-            // 用户
-            //'users'        => 'users',
-            // 角色管理
-            //'users.role'        => 'users/role',
-            // 创建角色
-            //'users.role.create' => 'users/role/create',
-            // 编辑角色
-            //'users.role.edit'   => 'users/role/{id}/edit',
-
-        ];
-
-        foreach ($spaRoutes as $name => $route) {
-            Route::get($route, function () {
-                return view('admin::app');
-            })->name($name);
-        }
     });
 
     Route::group(['middleware' => ['auth']], function () {
@@ -64,16 +39,6 @@ Route::group([
             $menus = Admin::getMenus();
             return response()->json($menus);
         })->name('menu');
-
-        /*Route::get('permissions', function () {
-            $permissions = request()->attributes->get('admin.permissions');
-            return response()->json($permissions);
-        })->name('permissions')
-            ->middleware('admin.permissions');*/
-
-        // 操作日志
-        /*Route::get('system/log/list', 'System\ActionLogController@getList')
-            ->name('system.log.list');*/
 
         Route::get('check/perm/{name}', function ($name) {
             if (Auth::user()->can($name)) {

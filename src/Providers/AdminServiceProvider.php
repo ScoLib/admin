@@ -9,12 +9,12 @@ use Illuminate\Support\ServiceProvider;
 use Laracasts\Utilities\JavaScript\JavaScriptServiceProvider;
 use Sco\ActionLog\LaravelServiceProvider;
 use Sco\Admin\Admin;
+use Sco\Admin\Contracts\Config as ConfigContract;
 use Sco\Admin\Contracts\Repository as RepositoryContract;
 use Sco\Admin\Elements\ElementFactory;
 use Sco\Admin\Exceptions\Handler;
 use Sco\Admin\Facades\AdminFacade;
 use Sco\Admin\Facades\AdminElementFacade;
-use Sco\Admin\Fields\FieldFactory;
 use Sco\Admin\Repositories\Repository;
 
 /**
@@ -40,9 +40,8 @@ class AdminServiceProvider extends ServiceProvider
     ];
 
     protected $aliases = [
-        'Admin' => AdminFacade::class,
+        'Admin'        => AdminFacade::class,
         'AdminElement' => AdminElementFacade::class,
-        //'AdminConfig' => ConfigFacade::class,
     ];
 
     public function getBasePath()
@@ -95,7 +94,6 @@ class AdminServiceProvider extends ServiceProvider
             $this->getBasePath() . '/config/admin.php',
             'admin'
         );
-
 
         $this->registerExceptionHandler();
         $this->registerAdmin();
@@ -151,7 +149,11 @@ class AdminServiceProvider extends ServiceProvider
     protected function bindRouteModel()
     {
         $this->app['router']->bind('model', function ($value) {
-            return $this->app['admin.instance']->getConfig($value);
+            $config = $this->app['admin.instance']->getConfig($value);
+
+            $this->app->instance(ConfigContract::class, $config);
+
+            return $config;
         });
     }
 }

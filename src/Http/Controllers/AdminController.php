@@ -5,6 +5,7 @@ namespace Sco\Admin\Http\Controllers;
 
 use Illuminate\Routing\Controller;
 use Sco\Admin\Contracts\Config as ConfigContract;
+use Sco\Admin\Http\Requests\StoreRequest;
 
 class AdminController extends Controller
 {
@@ -24,8 +25,9 @@ class AdminController extends Controller
         return view('admin::app');
     }
 
-    public function store()
+    public function store(ConfigContract $config, StoreRequest $request)
     {
+        dd($request);
     }
 
     public function edit(ConfigContract $config, $id)

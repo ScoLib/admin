@@ -90,7 +90,7 @@ class Handler implements ExceptionHandlerContract
         } elseif ($exception instanceof AuthorizationException) {
             $exception = new HttpException(
                 403,
-                $exception->getMessage() ?: 'Forbidden'
+                $exception->getMessage() ?: Response::$statusTexts[403]
             );
         }
 
@@ -140,7 +140,7 @@ class Handler implements ExceptionHandlerContract
     protected function isAdmin($request)
     {
         $route = $request->route();
-        return $route && strpos($route->getPrefix(), 'admin') === 0;
+        return $route && strpos($route->getPrefix(), config('admin.url_prefix')) === 0;
     }
 
     /**
@@ -152,7 +152,7 @@ class Handler implements ExceptionHandlerContract
     protected function renderAdminException($request, AdminException $exception)
     {
         if ($request->expectsJson()) {
-            return response($exception->getMessage() ?: 'Internal Server Error', 500);
+            return response($exception->getMessage() ?: Response::$statusTexts[500], 500);
         }
     }
 }

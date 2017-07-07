@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Validation\Rule;
+
 return [
     'title' => '权限',
     'model' => config('entrust.permission'),
@@ -41,6 +43,15 @@ return [
         ],
         'description'  => [
             'title' => 'Description',
+        ],
+    ],
+    'rules' => [
+        'name'     => [
+            'bail',
+            'required',
+            'regex:/^[a-z][a-z0-9]+$/i',
+            'between:4,20',
+            Rule::unique(config('entrust.permissions_table'))
         ],
     ],
 ];

@@ -4,6 +4,7 @@ namespace Sco\Admin\Config;
 
 use Illuminate\Config\Repository as ConfigRepository;
 use Illuminate\Foundation\Application;
+use Illuminate\Http\Request;
 use JsonSerializable;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
@@ -79,6 +80,11 @@ class ModelConfig implements Arrayable, Jsonable, JsonSerializable
         }
 
         return $data;
+    }
+
+    public function store(Request $request)
+    {
+
     }
 
     public function delete($id)
