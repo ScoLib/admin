@@ -1,31 +1,31 @@
 <template>
     <div class="form-horizontal box-body">
         
-        <div :class="['form-group', errors[field.key] ? 'has-error' : '']" v-for="field in fields">
-            <label class="col-xs-12 col-sm-3 no-padding-right control-label">{{ field.title }}</label>
+        <div :class="['form-group', errors[element.key] ? 'has-error' : '']" v-for="element in elements">
+            <label class="col-xs-12 col-sm-3 no-padding-right control-label">{{ element.title }}</label>
 
             <div class="col-xs-12 col-sm-9">
-                <slot :name="field.key" :field="field">
+                <slot :name="element.key" :element="element">
                     <el-select
                             placeholder="请选择"
-                            :class="field.class"
-                            :popper-class="field.popperClass"
-                            :name="field.key"
-                            v-model="currentValue[field.key]"
-                            v-if="field.type == 'select'">
+                            :class="element.class"
+                            :popper-class="element.popperClass"
+                            :name="element.key"
+                            v-model="currentValue[element.key]"
+                            v-if="element.type == 'select'">
                         <el-option
                                 :value="option.value"
                                 :key="option.value"
                                 :label="option.label"
-                                v-for="option in field.options">
+                                v-for="option in element.options">
                         </el-option>
                     </el-select>
 
                     <el-radio-group
-                            v-model="currentValue[field.key]"
-                            v-else-if="field.type == 'radio'">
+                            v-model="currentValue[element.key]"
+                            v-else-if="element.type == 'radio'">
                         <el-radio
-                                v-for="option in field.options"
+                                v-for="option in element.options"
                                 :key="option.value"
                                 :disabled="option.disabled"
                                 :label="option.value">
@@ -34,10 +34,10 @@
                     </el-radio-group>
 
                     <el-checkbox-group
-                            v-model="currentValue[field.key]"
-                            v-else-if="field.type == 'checkbox'">
+                            v-model="currentValue[element.key]"
+                            v-else-if="element.type == 'checkbox'">
                         <el-checkbox
-                                v-for="option in field.options"
+                                v-for="option in element.options"
                                 :key="option.value"
                                 :label="option.value"
                                 :disabled="option.disabled">
@@ -46,29 +46,29 @@
                     </el-checkbox-group>
 
                     <el-date-picker
-                            :value="currentValue[field.key]"
+                            :value="currentValue[element.key]"
                             type="datetimerange"
                             format="yyyy-MM-dd HH:mm:ss"
                             placeholder="选择日期时间"
-                            @input="handleDateChange($event, field.key)"
-                            v-else-if="field.type == 'date'">
+                            @input="handleDateChange($event, element.key)"
+                            v-else-if="element.type == 'date'">
                     </el-date-picker>
 
-                    <template v-else-if="typeof field.type === 'undefined' || ['text', 'textarea', 'number', 'email', 'password'].indexOf(field.type) > -1">
+                    <template v-else-if="typeof element.type === 'undefined' || ['text', 'textarea', 'number', 'email', 'password'].indexOf(element.type) > -1">
                         <el-input
-                                :type="field.type"
-                                :name="field.key"
-                                :placeholder="field.placeholder ? field.placeholder : field.title"
-                                :disabled="field.disabled"
-                                :readonly="field.readonly"
-                                :rows="field.rows"
-                                v-model="currentValue[field.key]">
+                                :type="element.type"
+                                :name="element.key"
+                                :placeholder="element.placeholder ? element.placeholder : element.title"
+                                :disabled="element.disabled"
+                                :readonly="element.readonly"
+                                :rows="element.rows"
+                                v-model="currentValue[element.key]">
                         </el-input>
                     </template>
 
                 </slot>
-                <span class="help-block" v-if="errors[field.key]">
-                    <template v-for="e in errors[field.key]"> {{ e }} </template>
+                <span class="help-block" v-if="errors[element.key]">
+                    <template v-for="e in errors[element.key]"> {{ e }} </template>
                 </span>
             </div>
         </div>
@@ -86,7 +86,7 @@
             }
         },
         props: {
-            fields: {
+            elements: {
                 type: Array,
                 default () {
                     return [];

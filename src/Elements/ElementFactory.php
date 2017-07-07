@@ -1,13 +1,20 @@
 <?php
 
 
-namespace Sco\Admin\Fields;
+namespace Sco\Admin\Elements;
 
 use Illuminate\Foundation\Application;
-use Sco\Admin\Contracts\FieldFactory as FieldFactoryContract;
+use Sco\Admin\Contracts\ElementFactory as FieldFactoryContract;
 use Sco\Admin\Exceptions\BadMethodCallException;
 
-class FieldFactory implements FieldFactoryContract
+/**
+ * Class ElementFactory
+ *
+ *
+ * @method Text text($name, $title)
+ * @method Select select($name, $title)
+ */
+class ElementFactory implements FieldFactoryContract
 {
     protected $app;
 
@@ -53,7 +60,7 @@ class FieldFactory implements FieldFactoryContract
     public function __call($method, $parameters)
     {
         if (!$this->hasAlias($method)) {
-            throw new BadMethodCallException("Not Found {$method} Field");
+            throw new BadMethodCallException("Not Found {$method} Element");
         }
 
         return $this->makeClass($method, $parameters);

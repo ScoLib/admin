@@ -17,7 +17,7 @@
                 </div>
                 <!-- /.box-header -->
                 <v-form
-                        :fields="config.fields"
+                        :elements="config.elements"
                         v-model="info"
                         :errors="errors">
                 </v-form>
@@ -64,10 +64,10 @@
             },
             info() {
                 let info = {};
-                this.config.fields.forEach(field => {
-                    info[field.key] = '';
-                    if (field.type == 'checkbox') {
-                        info[field.key] = [];
+                this.config.elements.forEach(el => {
+                    info[el.key] = '';
+                    if (el.type == 'checkbox') {
+                        info[el.key] = [];
                     }
                 });
 //                console.log(info);

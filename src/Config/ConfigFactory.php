@@ -24,7 +24,7 @@ class ConfigFactory implements ConfigContract, Arrayable, Jsonable, JsonSerializ
     protected $permissions;
     protected $columns;
     protected $model;
-    protected $fields;
+    protected $elements;
 
     public function __construct(Application $app, $name)
     {
@@ -86,16 +86,17 @@ class ConfigFactory implements ConfigContract, Arrayable, Jsonable, JsonSerializ
         return $this->columns;
     }
 
-    protected function getFields()
+    protected function getElements()
     {
-        if (!$this->fields) {
-            $config = $this->config->get('fields');
-            $this->fields = collect($config)->mapWithKeys(function ($item, $key) {
-                return [$key => AdminField::text($key, $item['title'])];
+        if (!$this->elements) {
+            $config = $this->config->get('elements');
+            $this->elements = collect($config)->mapWithKeys(function ($item, $key) {
+                $type = isset($item['type']) ? $item['type'] : 'text';
+                return [$key => AdminElement::{$type}($key, $item['title'])];
             });
         }
 
-        return $this->fields;
+        return $this->elements;
     }
 
     /**
@@ -116,7 +117,7 @@ class ConfigFactory implements ConfigContract, Arrayable, Jsonable, JsonSerializ
             'title'       => $this->getTitle(),
             'permissions' => $this->getPermissions(),
             'columns'     => $this->getColumns()->values(),
-            'fields'      => $this->getFields()->values(),
+            'elements'      => $this->getElements()->values(),
         ];
     }
 

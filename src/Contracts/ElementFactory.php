@@ -4,6 +4,6 @@
 namespace Sco\Admin\Contracts;
 
 
-interface Field
+interface ElementFactory
 {
 }

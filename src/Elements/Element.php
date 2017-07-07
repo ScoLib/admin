@@ -1,14 +1,14 @@
 <?php
 
 
-namespace Sco\Admin\Fields;
+namespace Sco\Admin\Elements;
 
 use JsonSerializable;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
-use Sco\Admin\Contracts\Field as FieldContract;
+use Sco\Admin\Contracts\Element as ElementContract;
 
-abstract class Field implements FieldContract, Arrayable, Jsonable, JsonSerializable
+abstract class Element implements ElementContract, Arrayable, Jsonable, JsonSerializable
 {
     protected $type;
 

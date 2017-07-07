@@ -32,4 +32,15 @@ return [
             'title' => 'created_at',
         ],
     ],
+    'elements' => [
+        'name'         => [
+            'title' => 'Name',
+        ],
+        'display_name' => [
+            'title' => 'Display Name',
+        ],
+        'description'  => [
+            'title' => 'Description',
+        ],
+    ],
 ];

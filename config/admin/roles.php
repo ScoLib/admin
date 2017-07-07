@@ -44,7 +44,7 @@ return [
         ],
     ],
 
-    'fields' => [
+    'elements' => [
         'name'         => [
             'title' => 'Name',
         ],
