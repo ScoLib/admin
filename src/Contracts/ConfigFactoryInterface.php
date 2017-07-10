@@ -30,7 +30,7 @@ interface ConfigFactoryInterface
     public function getConfigRepository();
 
     /**
-     * @return \Sco\Admin\Config\ModelConfig
+     * @return \Sco\Admin\Config\ModelFactory
      */
     public function getModel();
 }

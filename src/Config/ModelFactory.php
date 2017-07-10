@@ -9,13 +9,11 @@ use JsonSerializable;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
 use Sco\Admin\Contracts\ConfigFactoryInterface;
+use Sco\Admin\Contracts\ModelFactoryInterface;
 use Sco\Admin\Contracts\RepositoryInterface;
-use Sco\Attributes\HasAttributesTrait;
 
-class ModelConfig implements Arrayable, Jsonable, JsonSerializable
+class ModelFactory implements ModelFactoryInterface
 {
-    use HasAttributesTrait;
-
     /**
      * @var \Illuminate\Foundation\Application
      */
@@ -41,7 +39,6 @@ class ModelConfig implements Arrayable, Jsonable, JsonSerializable
     {
         $this->app = $app;
         $this->configFactory = $factory;
-        //$this->model = $model;
         $this->config = new ConfigRepository(
             $this->getConfigValues()
         );
@@ -54,11 +51,19 @@ class ModelConfig implements Arrayable, Jsonable, JsonSerializable
     }
 
     /**
-     * @return mixed|\Sco\Admin\Repositories\Repository
+     * {@inheritdoc}
      */
     public function getRepository()
     {
         return $this->repository;
+    }
+
+    /**
+     * @return \Sco\Admin\Contracts\ConfigFactoryInterface
+     */
+    public function getConfigFactory()
+    {
+        return $this->configFactory;
     }
 
     public function get()
@@ -85,6 +90,10 @@ class ModelConfig implements Arrayable, Jsonable, JsonSerializable
     public function store()
     {
         $this->validate();
+    }
+
+    public function update()
+    {
     }
 
     public function delete($id)
@@ -148,33 +157,4 @@ class ModelConfig implements Arrayable, Jsonable, JsonSerializable
     {
         $this->app->make(Factory::class)->validate($data, $rules, $messages, $customAttributes);
     }
-
-    /**
-     * Handle dynamic method calls into the model.
-     *
-     * @param  string  $method
-     * @param  array  $parameters
-     * @return mixed
-     */
-    /*public function __call($method, $parameters)
-    {
-        if (in_array($method, ['getKeyName'])) {
-            return $this->model->$method(...$parameters);
-        }
-
-        $this->model = $this->model->$method(...$parameters);
-        return $this;
-    }*/
-
-    /**
-     * Handle dynamic static method calls into the method.
-     *
-     * @param  string  $method
-     * @param  array  $parameters
-     * @return mixed
-     */
-    /*public static function __callStatic($method, $parameters)
-    {
-        return (new static)->$method(...$parameters);
-    }*/
 }

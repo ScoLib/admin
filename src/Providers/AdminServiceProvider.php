@@ -102,8 +102,10 @@ class AdminServiceProvider extends ServiceProvider
         $this->registerMiddleware();
         $this->bindRouteModel();
 
-        $this->app->bind(ConfigFactoryInterface::class, ConfigFactory::class);
         $this->app->bind(RepositoryInterface::class, Repository::class);
+        $this->app->singleton(ConfigFactoryInterface::class, function () {
+            return new ConfigFactory($this->app);
+        });
         $this->app->singleton('admin.element.factory', function () {
             return new ElementFactory($this->app);
         });
@@ -151,7 +153,7 @@ class AdminServiceProvider extends ServiceProvider
     protected function bindRouteModel()
     {
         $this->app['router']->bind('model', function ($value) {
-            return $this->app[ConfigFactoryInterface::class]->make($value);
+            return $this->app[ConfigFactoryInterface::class]->make($value)->getModel();
         });
     }
 }

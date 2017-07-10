@@ -1,22 +1,21 @@
 <?php
 
-
 namespace Sco\Admin\Http\Controllers;
 
 use Illuminate\Routing\Controller;
 use Sco\Admin\Contracts\ConfigFactoryInterface;
+use Sco\Admin\Contracts\ModelFactoryInterface;
 
 class AdminController extends Controller
 {
-    public function getList(ConfigFactoryInterface $config)
+    public function getList(ModelFactoryInterface $modelFactory)
     {
-        $model = $config->getModel();
-        return $model->get();
+        return $modelFactory->get();
     }
 
-    public function config(ConfigFactoryInterface $config)
+    public function config()
     {
-        return $config->getConfigs();
+        return app(ConfigFactoryInterface::class)->getConfigs();
     }
 
     public function create()
@@ -24,39 +23,39 @@ class AdminController extends Controller
         return view('admin::app');
     }
 
-    public function store(ConfigFactoryInterface $config)
+    public function store(ModelFactoryInterface $modelFactory)
     {
-        $config->getModel()->store();
+        $modelFactory->store();
     }
 
-    public function edit(ConfigFactoryInterface $config, $id)
+    public function edit(ModelFactoryInterface $modelFactory, $id)
     {
-        dd($config->getModel()->find($id)) ;
+        dd($modelFactory->find($id));
     }
 
     public function update()
     {
     }
 
-    public function delete(ConfigFactoryInterface $config, $id)
+    public function delete(ModelFactoryInterface $modelFactory, $id)
     {
-        $config->getModel()->delete($id);
+        $modelFactory->delete($id);
         return response()->json(['message' => 'ok']);
     }
 
-    public function batchDelete(ConfigFactoryInterface $config)
+    public function batchDelete(ModelFactoryInterface $modelFactory)
     {
     }
 
-    public function forceDelete(ConfigFactoryInterface $config, $id)
+    public function forceDelete(ModelFactoryInterface $modelFactory, $id)
     {
-        $config->getModel()->forceDelete($id);
+        $modelFactory->forceDelete($id);
         return response()->json(['message' => 'ok']);
     }
 
-    public function restore(ConfigFactoryInterface $config, $id)
+    public function restore(ModelFactoryInterface $modelFactory, $id)
     {
-        $config->getModel()->restore($id);
+        $modelFactory->restore($id);
         return response()->json(['message' => 'ok']);
     }
 }

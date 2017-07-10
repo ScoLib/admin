@@ -113,7 +113,7 @@ class ConfigFactory implements ConfigFactoryInterface, Arrayable, Jsonable, Json
     public function getModel()
     {
         if (!$this->model) {
-            $this->model = new ModelConfig($this->app, $this);
+            $this->model = new ModelFactory($this->app, $this);
         }
         return $this->model;
     }

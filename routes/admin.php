@@ -141,7 +141,6 @@ Route::group([
         'prefix' => '{model}',
         'as' => 'model.',
     ], function () {
-
         Route::get('list', 'AdminController@getList')
             ->name('list')
             ->middleware('admin.can.model:view');

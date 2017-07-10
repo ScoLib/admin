@@ -4,8 +4,8 @@ namespace Sco\Admin\Http\Middleware;
 
 use Closure;
 use Illuminate\Auth\Access\AuthorizationException;
-use Route;
 use Illuminate\Contracts\Auth\Factory as Auth;
+use Sco\Admin\Contracts\ConfigFactoryInterface;
 
 class ModelAuthorize
 {
@@ -41,7 +41,7 @@ class ModelAuthorize
             $permissions = explode(self::DELIMITER, $permissions);
         }
 
-        if ($this->auth->guest() || !$request->route('model')->getPermissions()->can($permissions)) {
+        if ($this->auth->guest() || !app(ConfigFactoryInterface::class)->getPermissions()->can($permissions)) {
             throw new AuthorizationException();
         }
 
