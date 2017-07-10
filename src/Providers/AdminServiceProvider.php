@@ -9,8 +9,8 @@ use Illuminate\Support\ServiceProvider;
 use Laracasts\Utilities\JavaScript\JavaScriptServiceProvider;
 use Sco\ActionLog\LaravelServiceProvider;
 use Sco\Admin\Admin;
-use Sco\Admin\Contracts\Config as ConfigContract;
-use Sco\Admin\Contracts\Repository as RepositoryContract;
+use Sco\Admin\Contracts\ConfigFactoryInterface;
+use Sco\Admin\Contracts\RepositoryInterface;
 use Sco\Admin\Elements\ElementFactory;
 use Sco\Admin\Exceptions\Handler;
 use Sco\Admin\Facades\AdminFacade;
@@ -101,7 +101,7 @@ class AdminServiceProvider extends ServiceProvider
         $this->registerMiddleware();
         $this->bindRouteModel();
 
-        $this->app->bind(RepositoryContract::class, Repository::class);
+        $this->app->bind(RepositoryInterface::class, Repository::class);
         $this->app->singleton('admin.element.factory', function () {
             return new ElementFactory($this->app);
         });
@@ -151,7 +151,7 @@ class AdminServiceProvider extends ServiceProvider
         $this->app['router']->bind('model', function ($value) {
             $config = $this->app['admin.instance']->getConfig($value);
 
-            $this->app->instance(ConfigContract::class, $config);
+            $this->app->instance(ConfigFactoryInterface::class, $config);
 
             return $config;
         });

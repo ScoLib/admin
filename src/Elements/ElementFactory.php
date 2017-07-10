@@ -4,7 +4,7 @@
 namespace Sco\Admin\Elements;
 
 use Illuminate\Foundation\Application;
-use Sco\Admin\Contracts\ElementFactory as FieldFactoryContract;
+use Sco\Admin\Contracts\ElementFactoryInterface;
 use Sco\Admin\Exceptions\BadMethodCallException;
 
 /**
@@ -12,7 +12,7 @@ use Sco\Admin\Exceptions\BadMethodCallException;
  * @method Text text($name, $title)
  * @method Select select($name, $title)
  */
-class ElementFactory implements FieldFactoryContract
+class ElementFactory implements ElementFactoryInterface
 {
     protected $app;
 

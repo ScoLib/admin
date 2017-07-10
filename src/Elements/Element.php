@@ -6,9 +6,9 @@ namespace Sco\Admin\Elements;
 use JsonSerializable;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
-use Sco\Admin\Contracts\Element as ElementContract;
+use Sco\Admin\Contracts\ElementInterface;
 
-abstract class Element implements ElementContract, Arrayable, Jsonable, JsonSerializable
+abstract class Element implements ElementInterface, Arrayable, Jsonable, JsonSerializable
 {
     protected $type;
 

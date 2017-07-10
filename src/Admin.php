@@ -9,10 +9,10 @@ use Route;
 use Illuminate\Foundation\Application;
 use Sco\Admin\Config\ConfigFactory;
 use Sco\Admin\Config\ModelFactory;
-use Sco\Admin\Contracts\Admin as AdminContract;
 use Illuminate\Config\Repository as ConfigRepository;
+use Sco\Admin\Contracts\AdminInterface;
 
-class Admin implements AdminContract
+class Admin implements AdminInterface
 {
     /**
      * @var \Illuminate\Foundation\Application
@@ -28,7 +28,7 @@ class Admin implements AdminContract
 
     public function __construct(Application $app)
     {
-        $this->app = $app;
+        $this->app    = $app;
         $this->config = new ConfigRepository(
             $this->app['config']->get('admin', [])
         );
@@ -38,7 +38,7 @@ class Admin implements AdminContract
 
     public function getMenus($list = null)
     {
-        $list = $list ?: $this->config->get('menus');
+        $list  = $list ?: $this->config->get('menus');
         $menus = collect();
         foreach ($list as $key => $items) {
             if (is_string($items)) {
@@ -55,7 +55,10 @@ class Admin implements AdminContract
                     if ($config && $config->getPermissions()->isViewable()) {
                         $menus->push([
                             'title' => $config->getTitle(),
-                            'url'   => route('admin.model.index', ['model' => $items], false),
+                            'url'   => route(
+                                'admin.model.index',
+                                ['model' => $items],
+                                false),
                             'child' => [],
                         ]);
                     }
@@ -78,7 +81,7 @@ class Admin implements AdminContract
     /**
      * @param $name
      *
-     * @return \Sco\Admin\Contracts\Config
+     * @return \Sco\Admin\Contracts\ConfigFactoryInterface
      */
     public function getConfig($name)
     {

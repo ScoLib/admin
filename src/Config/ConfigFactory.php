@@ -9,10 +9,10 @@ use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Config\Repository as ConfigRepository;
 use Illuminate\Foundation\Application;
 use Sco\Admin\Column\Columns;
-use Sco\Admin\Contracts\Config as ConfigContract;
+use Sco\Admin\Contracts\ConfigFactoryInterface;
 use Sco\Attributes\HasAttributesTrait;
 
-class ConfigFactory implements ConfigContract, Arrayable, Jsonable, JsonSerializable
+class ConfigFactory implements ConfigFactoryInterface, Arrayable, Jsonable, JsonSerializable
 {
     use HasAttributesTrait;
 

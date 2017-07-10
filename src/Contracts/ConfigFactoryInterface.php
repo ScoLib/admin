@@ -3,7 +3,7 @@
 
 namespace Sco\Admin\Contracts;
 
-interface Config
+interface ConfigFactoryInterface
 {
     /**
      * @return \Illuminate\Support\Collection

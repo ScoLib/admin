@@ -3,13 +3,13 @@
 namespace Sco\Admin\Config;
 
 use Illuminate\Config\Repository as ConfigRepository;
+use Illuminate\Contracts\Validation\Factory;
 use Illuminate\Foundation\Application;
-use Illuminate\Http\Request;
 use JsonSerializable;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
-use Sco\Admin\Contracts\Config as ConfigContract;
-use Sco\Admin\Contracts\Repository as RepositoryContract;
+use Sco\Admin\Contracts\ConfigFactoryInterface;
+use Sco\Admin\Contracts\RepositoryInterface;
 use Sco\Attributes\HasAttributesTrait;
 
 class ModelConfig implements Arrayable, Jsonable, JsonSerializable
@@ -37,7 +37,7 @@ class ModelConfig implements Arrayable, Jsonable, JsonSerializable
 
     protected $config;
 
-    public function __construct(Application $app, ConfigContract $factory)
+    public function __construct(Application $app, ConfigFactoryInterface $factory)
     {
         $this->app = $app;
         $this->configFactory = $factory;
@@ -46,7 +46,7 @@ class ModelConfig implements Arrayable, Jsonable, JsonSerializable
             $this->getConfigValues()
         );
 
-        $this->repository = $this->app->make(RepositoryContract::class);
+        $this->repository = $this->app->make(RepositoryInterface::class);
 
         $this->repository->setClass(
             $this->config->get('class')
@@ -82,8 +82,9 @@ class ModelConfig implements Arrayable, Jsonable, JsonSerializable
         return $data;
     }
 
-    public function store(Request $request)
+    public function store()
     {
+        $this->validate();
 
     }
 
@@ -142,6 +143,11 @@ class ModelConfig implements Arrayable, Jsonable, JsonSerializable
             'perPage' => 10,
         ], $config);
         return $config;
+    }
+
+    protected function validate()
+    {
+        $this->app->make(Factory::class)->validate($data, $rules, $messages, $customAttributes);
     }
 
     /**

@@ -6,7 +6,7 @@ namespace Sco\Admin\Contracts;
 
 use Illuminate\Database\Eloquent\Model;
 
-interface Repository
+interface RepositoryInterface
 {
     /**
      * @return Model

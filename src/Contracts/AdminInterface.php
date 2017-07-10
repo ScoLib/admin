@@ -3,7 +3,6 @@
 
 namespace Sco\Admin\Contracts;
 
-
-interface Element
+interface AdminInterface
 {
 }

@@ -4,18 +4,17 @@
 namespace Sco\Admin\Http\Controllers;
 
 use Illuminate\Routing\Controller;
-use Sco\Admin\Contracts\Config as ConfigContract;
-use Sco\Admin\Http\Requests\StoreRequest;
+use Sco\Admin\Contracts\ConfigFactoryInterface;
 
 class AdminController extends Controller
 {
-    public function getList(ConfigContract $config)
+    public function getList(ConfigFactoryInterface $config)
     {
         $model = $config->getModel();
         return $model->get();
     }
 
-    public function config(ConfigContract $config)
+    public function config(ConfigFactoryInterface $config)
     {
         return $config->getConfigs();
     }
@@ -25,12 +24,12 @@ class AdminController extends Controller
         return view('admin::app');
     }
 
-    public function store(ConfigContract $config, StoreRequest $request)
+    public function store(ConfigFactoryInterface $config)
     {
-        dd($request);
+        $config->getModel()->store();
     }
 
-    public function edit(ConfigContract $config, $id)
+    public function edit(ConfigFactoryInterface $config, $id)
     {
         dd($config->getModel()->find($id)) ;
     }
@@ -39,23 +38,23 @@ class AdminController extends Controller
     {
     }
 
-    public function delete(ConfigContract $config, $id)
+    public function delete(ConfigFactoryInterface $config, $id)
     {
         $config->getModel()->delete($id);
         return response()->json(['message' => 'ok']);
     }
 
-    public function batchDelete(ConfigContract $config)
+    public function batchDelete(ConfigFactoryInterface $config)
     {
     }
 
-    public function forceDelete(ConfigContract $config, $id)
+    public function forceDelete(ConfigFactoryInterface $config, $id)
     {
         $config->getModel()->forceDelete($id);
         return response()->json(['message' => 'ok']);
     }
 
-    public function restore(ConfigContract $config, $id)
+    public function restore(ConfigFactoryInterface $config, $id)
     {
         $config->getModel()->restore($id);
         return response()->json(['message' => 'ok']);
