@@ -3,7 +3,6 @@
 
 namespace Sco\Admin\Contracts;
 
-
 use Illuminate\Database\Eloquent\Model;
 
 interface RepositoryInterface

@@ -31,7 +31,6 @@ Route::group([
         Route::get('403', function () {
             return view('admin::app');
         })->name('403');
-
     });
 
     Route::group(['middleware' => ['auth']], function () {

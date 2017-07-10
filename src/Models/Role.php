@@ -4,7 +4,6 @@ namespace Sco\Admin\Models;
 
 use Zizaco\Entrust\EntrustRole;
 
-
 /**
  * Sco\Admin\Models\Role
  *

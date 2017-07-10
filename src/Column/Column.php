@@ -9,7 +9,6 @@ use Illuminate\Support\Collection;
 use Sco\Attributes\HasAttributesTrait;
 use Sco\Attributes\HasOriginalAndAttributesTrait;
 
-
 abstract class Column
 {
     use HasAttributesTrait;

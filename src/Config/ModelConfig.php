@@ -85,7 +85,6 @@ class ModelConfig implements Arrayable, Jsonable, JsonSerializable
     public function store()
     {
         $this->validate();
-
     }
 
     public function delete($id)

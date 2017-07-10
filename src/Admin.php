@@ -7,10 +7,10 @@ use Auth;
 use Illuminate\Support\Collection;
 use Route;
 use Illuminate\Foundation\Application;
-use Sco\Admin\Config\ConfigFactory;
 use Sco\Admin\Config\ModelFactory;
 use Illuminate\Config\Repository as ConfigRepository;
 use Sco\Admin\Contracts\AdminInterface;
+use Sco\Admin\Contracts\ConfigFactoryInterface;
 
 class Admin implements AdminInterface
 {
@@ -51,14 +51,15 @@ class Admin implements AdminInterface
                         ]);
                     }
                 } else {
-                    $config = $this->getConfig($items);
+                    $config = $this->app[ConfigFactoryInterface::class]->make($items);
                     if ($config && $config->getPermissions()->isViewable()) {
                         $menus->push([
                             'title' => $config->getTitle(),
                             'url'   => route(
                                 'admin.model.index',
                                 ['model' => $items],
-                                false),
+                                false
+                            ),
                             'child' => [],
                         ]);
                     }
@@ -76,19 +77,5 @@ class Admin implements AdminInterface
             }
         }
         return $menus;
-    }
-
-    /**
-     * @param $name
-     *
-     * @return \Sco\Admin\Contracts\ConfigFactoryInterface
-     */
-    public function getConfig($name)
-    {
-        if (!$this->models->has($name)) {
-            $this->models->put($name, new ConfigFactory($this->app, $name));
-        }
-
-        return $this->models->get($name);
     }
 }

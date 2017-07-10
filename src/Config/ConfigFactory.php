@@ -26,14 +26,23 @@ class ConfigFactory implements ConfigFactoryInterface, Arrayable, Jsonable, Json
     protected $model;
     protected $elements;
 
-    public function __construct(Application $app, $name)
+    public function __construct(Application $app)
     {
-        $this->app  = $app;
+        $this->app = $app;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function make($name)
+    {
         $this->name = $name;
 
         $this->configRepository = new ConfigRepository(
             $this->app['files']->getRequire($this->getConfigFile())
         );
+
+        return $this;
     }
 
     private function getConfigFile()
@@ -48,7 +57,6 @@ class ConfigFactory implements ConfigFactoryInterface, Arrayable, Jsonable, Json
         return $this->configRepository;
     }
 
-
     public function getTitle()
     {
         if (!$this->title) {
@@ -59,7 +67,7 @@ class ConfigFactory implements ConfigFactoryInterface, Arrayable, Jsonable, Json
     }
 
     /**
-     * @return \Sco\Admin\Config\PermissionsConfig
+     * {@inheritdoc}
      */
     public function getPermissions()
     {
@@ -89,7 +97,7 @@ class ConfigFactory implements ConfigFactoryInterface, Arrayable, Jsonable, Json
     protected function getElements()
     {
         if (!$this->elements) {
-            $config = $this->configRepository->get('elements');
+            $config         = $this->configRepository->get('elements');
             $this->elements = collect($config)->mapWithKeys(function ($item, $key) {
                 $type = isset($item['type']) ? $item['type'] : 'text';
                 return [$key => AdminElement::{$type}($key, $item['title'])];
@@ -100,7 +108,7 @@ class ConfigFactory implements ConfigFactoryInterface, Arrayable, Jsonable, Json
     }
 
     /**
-     * @return \Sco\Admin\Config\ModelConfig
+     * {@inheritdoc}
      */
     public function getModel()
     {
@@ -115,6 +123,9 @@ class ConfigFactory implements ConfigFactoryInterface, Arrayable, Jsonable, Json
         return $this->configRepository->get('rules');
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getConfigs()
     {
         return [
@@ -122,7 +133,7 @@ class ConfigFactory implements ConfigFactoryInterface, Arrayable, Jsonable, Json
             'title'       => $this->getTitle(),
             'permissions' => $this->getPermissions(),
             'columns'     => $this->getColumns()->values(),
-            'elements'      => $this->getElements()->values(),
+            'elements'    => $this->getElements()->values(),
         ];
     }
 

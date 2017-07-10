@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Sco\Admin\Contracts\RepositoryInterface;
 use Sco\Admin\Exceptions\RepositoryException;
 
-
 /**
  * @method static \Illuminate\Database\Eloquent\Model getKeyName()
  */

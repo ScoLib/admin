@@ -6,6 +6,13 @@ namespace Sco\Admin\Contracts;
 interface ConfigFactoryInterface
 {
     /**
+     * @param string $name
+     *
+     * @return $this;
+     */
+    public function make($name);
+
+    /**
      * @return \Illuminate\Support\Collection
      */
     public function getConfigs();

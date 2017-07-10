@@ -9,6 +9,7 @@ use Illuminate\Support\ServiceProvider;
 use Laracasts\Utilities\JavaScript\JavaScriptServiceProvider;
 use Sco\ActionLog\LaravelServiceProvider;
 use Sco\Admin\Admin;
+use Sco\Admin\Config\ConfigFactory;
 use Sco\Admin\Contracts\ConfigFactoryInterface;
 use Sco\Admin\Contracts\RepositoryInterface;
 use Sco\Admin\Elements\ElementFactory;
@@ -101,6 +102,7 @@ class AdminServiceProvider extends ServiceProvider
         $this->registerMiddleware();
         $this->bindRouteModel();
 
+        $this->app->bind(ConfigFactoryInterface::class, ConfigFactory::class);
         $this->app->bind(RepositoryInterface::class, Repository::class);
         $this->app->singleton('admin.element.factory', function () {
             return new ElementFactory($this->app);
@@ -149,11 +151,7 @@ class AdminServiceProvider extends ServiceProvider
     protected function bindRouteModel()
     {
         $this->app['router']->bind('model', function ($value) {
-            $config = $this->app['admin.instance']->getConfig($value);
-
-            $this->app->instance(ConfigFactoryInterface::class, $config);
-
-            return $config;
+            return $this->app[ConfigFactoryInterface::class]->make($value);
         });
     }
 }
