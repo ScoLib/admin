@@ -19,6 +19,7 @@
     "require": {
         "php": "~5.6|~7.0",
         "illuminate/support": "^5.4",
+        "kodicomponents/navigation": "^0.*",
         "laracasts/utilities": "~2.0",
         "scolib/attributes": "~1.0",
         "scolib/entrust": "^2.0",

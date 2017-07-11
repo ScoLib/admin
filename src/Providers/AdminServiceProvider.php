@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\ServiceProvider;
+use KodiComponents\Navigation\NavigationServiceProvider;
 use Laracasts\Utilities\JavaScript\JavaScriptServiceProvider;
 use Sco\ActionLog\LaravelServiceProvider;
 use Sco\Admin\Admin;
@@ -38,6 +39,7 @@ class AdminServiceProvider extends ServiceProvider
         LaravelServiceProvider::class,
         JavaScriptServiceProvider::class,
         PublishServiceProvider::class,
+        NavigationServiceProvider::class,
     ];
 
     protected $aliases = [
