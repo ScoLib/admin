@@ -9,6 +9,7 @@ use JsonSerializable;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
 use Sco\Admin\Contracts\ConfigFactoryInterface;
+use Sco\Admin\Contracts\ConfigManagerInterface;
 use Sco\Admin\Contracts\ModelFactoryInterface;
 use Sco\Admin\Contracts\RepositoryInterface;
 
@@ -20,9 +21,10 @@ class ModelFactory implements ModelFactoryInterface
     protected $app;
 
     /**
-     * @var \Sco\Admin\Contracts\Config
+     * @var \Sco\Admin\Contracts\ConfigManagerInterface
      */
-    protected $configFactory;
+    protected $configManager;
+
     /**
      * @var \Illuminate\Database\Eloquent\Model
      */
@@ -35,10 +37,10 @@ class ModelFactory implements ModelFactoryInterface
 
     protected $config;
 
-    public function __construct(Application $app, ConfigFactoryInterface $factory)
+    public function __construct(Application $app, ConfigManagerInterface $configManager)
     {
         $this->app = $app;
-        $this->configFactory = $factory;
+        $this->configManager = $configManager;
         $this->config = new ConfigRepository(
             $this->getConfigValues()
         );
@@ -59,11 +61,11 @@ class ModelFactory implements ModelFactoryInterface
     }
 
     /**
-     * @return \Sco\Admin\Contracts\ConfigFactoryInterface
+     * {@inheritdoc}
      */
-    public function getConfigFactory()
+    public function getConfigManager()
     {
-        return $this->configFactory;
+        return $this->configManager;
     }
 
     public function get()
@@ -115,22 +117,20 @@ class ModelFactory implements ModelFactoryInterface
 
     protected function parseRows($rows)
     {
-        $data = collect();
         if ($rows) {
-            foreach ($rows as $row) {
-                $newRow = collect();
-                foreach ($this->configFactory->getColumns() as $column) {
-                    $newRow->put($column->getName(), $column->setModel($row)->render());
+            return $rows->map(function ($row) {
+                $newRow = $this->configManager->getColumns()->mapWithKeys(function ($column) use ($row) {
+                    return [$column->getName() => $column->setModel($row)->render()];
+                });
 
-                    // whether this row has been soft deleted
-                    if ($this->getRepository()->isRestorable()) {
-                        $newRow->put('_deleted', $row->trashed() ? 1 : 0);
-                    }
+                // whether this row has been soft deleted
+                if ($this->getRepository()->isRestorable()) {
+                    $newRow->put('_deleted', $row->trashed() ? 1 : 0);
                 }
-                $data->push($newRow);
-            }
+                return $newRow;
+            });
         }
-        return $data;
+        return collect();
     }
 
     protected function usePagination()
@@ -140,7 +140,7 @@ class ModelFactory implements ModelFactoryInterface
 
     protected function getConfigValues()
     {
-        $config = $this->configFactory->getConfigRepository()->get('model');
+        $config = $this->configManager->getConfigRepository()->get('model');
         if (is_string($config)) {
             $config = [
                 'class' => $config

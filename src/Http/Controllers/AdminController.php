@@ -3,7 +3,6 @@
 namespace Sco\Admin\Http\Controllers;
 
 use Illuminate\Routing\Controller;
-use Sco\Admin\Contracts\ConfigFactoryInterface;
 use Sco\Admin\Contracts\ModelFactoryInterface;
 
 class AdminController extends Controller
@@ -13,9 +12,9 @@ class AdminController extends Controller
         return $modelFactory->get();
     }
 
-    public function config()
+    public function config(ModelFactoryInterface $modelFactory)
     {
-        return app(ConfigFactoryInterface::class)->getConfigs();
+        return $modelFactory->getConfigManager();
     }
 
     public function create()

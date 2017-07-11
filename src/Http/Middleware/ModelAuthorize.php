@@ -41,7 +41,8 @@ class ModelAuthorize
             $permissions = explode(self::DELIMITER, $permissions);
         }
 
-        if ($this->auth->guest() || !app(ConfigFactoryInterface::class)->getPermissions()->can($permissions)) {
+        $configManager = $request->route('model')->getConfigManager();
+        if ($this->auth->guest() || !$configManager->getPermissions()->can($permissions)) {
             throw new AuthorizationException();
         }
 

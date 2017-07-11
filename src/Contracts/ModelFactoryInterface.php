@@ -11,6 +11,11 @@ interface ModelFactoryInterface
     public function getRepository();
 
     /**
+     * @return \Sco\Admin\Contracts\ConfigManagerInterface
+     */
+    public function getConfigManager();
+
+    /**
      * @return mixed
      */
     public function get();
