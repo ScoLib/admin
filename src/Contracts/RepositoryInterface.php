@@ -18,6 +18,15 @@ interface RepositoryInterface
 
     public function setClass($class);
 
+
+    public function store();
+
+    public function update();
+
+    public function forceDelete($id);
+
+    public function restore($id);
+
     /**
      * @return bool
      */

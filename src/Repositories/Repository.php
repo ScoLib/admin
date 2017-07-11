@@ -25,6 +25,9 @@ class Repository implements RepositoryInterface
     public function setModel(Model $model)
     {
         $this->model = $model;
+        $this->class = get_class($model);
+
+        return $this;
     }
 
     public function getClass()
@@ -42,16 +45,41 @@ class Repository implements RepositoryInterface
         $this->setModel(
             new $class()
         );
+
+        return $this;
     }
+
+    /**
+     * @param $id
+     *
+     * @return Model
+     */
+    public function findOnlyTrashed($id)
+    {
+        return $this->getModel()->onlyTrashed()->findOrFail($id);
+    }
+
+
+    public function store()
+    {
+
+    }
+
+    public function update()
+    {
+
+    }
+
+
 
     public function forceDelete($id)
     {
-        return $this->getModel()->onlyTrashed()->findOrFail($id)->forceDelete();
+        return $this->findOnlyTrashed($id)->forceDelete();
     }
 
     public function restore($id)
     {
-        return $this->getModel()->onlyTrashed()->findOrFail($id)->restore();
+        return $this->findOnlyTrashed($id)->restore();
     }
 
 

@@ -92,6 +92,8 @@ class ModelFactory implements ModelFactoryInterface
     public function store()
     {
         $this->validate();
+
+        $this->getRepository()->save();
     }
 
     public function update()
