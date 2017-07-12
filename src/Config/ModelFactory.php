@@ -5,6 +5,7 @@ namespace Sco\Admin\Config;
 use Illuminate\Config\Repository as ConfigRepository;
 use Illuminate\Contracts\Validation\Factory;
 use Illuminate\Foundation\Application;
+use Illuminate\Support\Collection;
 use JsonSerializable;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
@@ -81,7 +82,7 @@ class ModelFactory implements ModelFactoryInterface
         if ($this->usePagination()) {
             $data = $query->paginate($this->config->get('perPage'));
 
-            $data->setCollection($this->parseRows($data->items()));
+            $data->setCollection($this->parseRows($data->getCollection()));
         } else {
             $data = $this->parseRows($query->get());
         }
@@ -117,7 +118,7 @@ class ModelFactory implements ModelFactoryInterface
         $this->getRepository()->restore($id);
     }
 
-    protected function parseRows($rows)
+    protected function parseRows(Collection $rows)
     {
         if ($rows) {
             return $rows->map(function ($row) {

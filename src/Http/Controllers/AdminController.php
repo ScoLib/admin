@@ -7,6 +7,11 @@ use Sco\Admin\Contracts\ModelFactoryInterface;
 
 class AdminController extends Controller
 {
+    public function index()
+    {
+        return view('admin::app');
+    }
+
     public function getList(ModelFactoryInterface $modelFactory)
     {
         return $modelFactory->get();

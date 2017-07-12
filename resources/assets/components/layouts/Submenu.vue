@@ -4,9 +4,9 @@
 
         <router-link
                 tag="li"
-                v-for="child in childs"
-                :to="child.url"
-                :class="activeClass(child.child)"
+                v-for="child in Object.values(childs)"
+                :to="child.url ? child.url : '/#'"
+                :class="activeClass(child.pages)"
                 :key="child.id"
                 exact>
             <a>
@@ -14,11 +14,20 @@
                 <span v-if="isTop"> {{ child.title }} </span>
                 <template v-else>{{ child.title }}</template>
 
-                <span class="pull-right-container" v-if="Object.keys(child.child).length > 0">
-                    <i class="fa fa-angle-left pull-right"></i>
+                <span
+                        class="pull-right-container"
+                        v-if="Object.keys(child.pages).length > 0 || child.badges.length">
+                    <i class="fa fa-angle-left pull-right"
+                       v-if="Object.keys(child.pages).length > 0"></i>
+                    <small
+                            v-if="child.badges.length"
+                            v-for="badge in child.badges"
+                            :class="badge.class">
+                        {{ badge.value }}
+                    </small>
                 </span>
             </a>
-            <Submenu v-if="Object.keys(child.child).length > 0" :childs="child.child"></Submenu>
+            <Submenu v-if="Object.keys(child.pages).length > 0" :childs="child.pages"></Submenu>
         </router-link>
     </ul>
 
@@ -30,9 +39,9 @@
         name: 'Submenu',
         props: {
             childs: {
-                type: Object|Array,
+                type: Object,
                 default () {
-                    return [];
+                    return {};
                 }
             },
             isTop: {

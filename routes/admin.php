@@ -10,9 +10,10 @@ Route::group([
     // 登录
     Route::group(['namespace' => 'Auth'], function () {
         //登录页
-        Route::get('login', 'LoginController@showLoginForm')
-            ->name('login')
-            ->middleware('admin.phptojs');
+        Route::get('login', [
+            'as' => 'login',
+            'uses' => 'LoginController@showLoginForm',
+        ])->middleware('admin.phptojs');
 
         //登录提交
         Route::post('login', 'LoginController@login')
@@ -35,8 +36,7 @@ Route::group([
 
     Route::group(['middleware' => ['auth']], function () {
         Route::get('menu', function () {
-            $menus = Admin::getMenus();
-            return response()->json($menus);
+            return response()->json(AdminNavigation::getPages());
         })->name('menu');
 
         Route::get('check/perm/{name}', function ($name) {
@@ -186,9 +186,9 @@ Route::group([
             ->name('restore')
             ->middleware('admin.can.model:restore');
 
-        Route::get('/', function () {
-            return view('admin::app');
-        })->name('index')
-            ->middleware('admin.can.model:view');
+        Route::get('/', [
+            'as' => 'index',
+            'uses' => 'AdminController@index'
+        ])->middleware('admin.can.model:view');
     });
 });

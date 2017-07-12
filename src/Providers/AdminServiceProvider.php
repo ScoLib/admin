@@ -6,6 +6,10 @@ use Carbon\Carbon;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\ServiceProvider;
+use KodiComponents\Navigation\Contracts\BadgeInterface;
+use KodiComponents\Navigation\Contracts\NavigationInterface;
+use KodiComponents\Navigation\Contracts\PageInterface;
+use KodiComponents\Navigation\Navigation;
 use KodiComponents\Navigation\NavigationServiceProvider;
 use Laracasts\Utilities\JavaScript\JavaScriptServiceProvider;
 use Sco\ActionLog\LaravelServiceProvider;
@@ -17,6 +21,9 @@ use Sco\Admin\Elements\ElementFactory;
 use Sco\Admin\Exceptions\Handler;
 use Sco\Admin\Facades\AdminFacade;
 use Sco\Admin\Facades\AdminElementFacade;
+use Sco\Admin\Facades\AdminNavigationFacade;
+use Sco\Admin\Navigation\Badge;
+use Sco\Admin\Navigation\Page;
 use Sco\Admin\Repositories\Repository;
 
 /**
@@ -39,12 +46,13 @@ class AdminServiceProvider extends ServiceProvider
         LaravelServiceProvider::class,
         JavaScriptServiceProvider::class,
         PublishServiceProvider::class,
-        NavigationServiceProvider::class,
+        //NavigationServiceProvider::class,
     ];
 
     protected $aliases = [
-        'Admin'        => AdminFacade::class,
-        'AdminElement' => AdminElementFacade::class,
+        'Admin'           => AdminFacade::class,
+        'AdminElement'    => AdminElementFacade::class,
+        'AdminNavigation' => AdminNavigationFacade::class,
     ];
 
     public function getBasePath()
@@ -78,6 +86,8 @@ class AdminServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->loadMigrationsFrom($this->getBasePath() . '/database/migrations');
         }
+
+        $this->app->call([$this, 'registerNavigation']);
     }
 
     protected function loadRoutes()
@@ -103,6 +113,9 @@ class AdminServiceProvider extends ServiceProvider
         $this->registerAliases();
         $this->registerMiddleware();
         $this->bindRouteModel();
+        $this->registerProviders();
+        $this->registerCoreContainerAliases();
+
 
         $this->app->bind(RepositoryInterface::class, Repository::class);
         $this->app->singleton(ConfigFactoryInterface::class, function () {
@@ -112,9 +125,16 @@ class AdminServiceProvider extends ServiceProvider
             return new ElementFactory($this->app);
         });
 
+
+        // overwrite Navigation Page Bind
+        $this->app->singleton('admin.navigation', function () {
+            return new Navigation();
+        });
+        $this->app->bind(PageInterface::class, Page::class);
+        $this->app->bind(BadgeInterface::class, Badge::class);
+
         $this->commands($this->commands);
 
-        $this->registerProviders();
     }
 
     protected function registerMiddleware()
@@ -157,5 +177,26 @@ class AdminServiceProvider extends ServiceProvider
         $this->app['router']->bind('model', function ($value) {
             return $this->app[ConfigFactoryInterface::class]->make($value)->getModel();
         });
+    }
+
+    protected function registerCoreContainerAliases()
+    {
+        $aliases = [
+            'admin.navigation' => [Navigation::class, NavigationInterface::class],
+        ];
+
+        foreach ($aliases as $key => $aliases) {
+            foreach ($aliases as $alias) {
+                $this->app->alias($key, $alias);
+            }
+        }
+    }
+
+    /**
+     * @param NavigationInterface $navigation
+     */
+    public function registerNavigation(NavigationInterface $navigation)
+    {
+        require $this->getBasePath() . '/src/navigation.php';
     }
 }
