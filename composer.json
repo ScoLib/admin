@@ -23,8 +23,7 @@
         "laracasts/utilities": "~2.0",
         "scolib/attributes": "~1.0",
         "scolib/entrust": "^2.0",
-        "scolib/laravel-action-log": "~1.0",
-        "scolib/tree": "~1.0"
+        "scolib/laravel-action-log": "~1.0"
     },
     "require-dev": {
         "laravel/framework": "^5.4",
