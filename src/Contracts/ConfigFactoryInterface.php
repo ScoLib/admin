@@ -16,5 +16,4 @@ interface ConfigFactoryInterface
      * @return \Illuminate\Config\Repository
      */
     public function getConfigRepository();
-
 }

@@ -125,16 +125,14 @@ class AdminServiceProvider extends ServiceProvider
             return new ElementFactory($this->app);
         });
 
-
-        // overwrite Navigation Page Bind
         $this->app->singleton('admin.navigation', function () {
             return new Navigation();
         });
+        // overwrite Navigation Page Bind
         $this->app->bind(PageInterface::class, Page::class);
         $this->app->bind(BadgeInterface::class, Badge::class);
 
         $this->commands($this->commands);
-
     }
 
     protected function registerMiddleware()

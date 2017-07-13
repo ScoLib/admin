@@ -86,13 +86,14 @@ router.beforeEach((to, from, next) => {
                 if (typeof to.name == 'undefined' || to.name == '') {
                     return next({name: 'admin.403'});
                 }
-                router.app.axios.get(`/${router.app.$store.state.urlPrefix}/check/perm/${to.name}`)
+                next();
+                /*router.app.axios.get(`/${router.app.$store.state.urlPrefix}/check/perm/${to.name}`)
                     .then(response => {
                         setTitle(to.meta.title)
                         next();
                     }).catch(error => {
                         next({name: 'admin.403'});
-                    })
+                    })*/
             }
         } else {
             next();

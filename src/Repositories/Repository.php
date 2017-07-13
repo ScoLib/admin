@@ -5,6 +5,7 @@ namespace Sco\Admin\Repositories;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Foundation\Application;
 use Sco\Admin\Contracts\RepositoryInterface;
 use Sco\Admin\Exceptions\RepositoryException;
 
@@ -13,9 +14,16 @@ use Sco\Admin\Exceptions\RepositoryException;
  */
 class Repository implements RepositoryInterface
 {
+    protected $app;
+
     protected $model;
 
     protected $class;
+
+    public function __construct(Application $app)
+    {
+        $this->app = $app;
+    }
 
     public function getModel()
     {
@@ -62,12 +70,10 @@ class Repository implements RepositoryInterface
 
     public function store()
     {
-
     }
 
     public function update()
     {
-
     }
 
 

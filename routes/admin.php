@@ -11,40 +11,58 @@ Route::group([
     Route::group(['namespace' => 'Auth'], function () {
         //登录页
         Route::get('login', [
-            'as' => 'login',
-            'uses' => 'LoginController@showLoginForm',
-        ])->middleware('admin.phptojs');
+            'as'         => 'login',
+            'uses'       => 'LoginController@showLoginForm',
+            'middleware' => 'admin.phptojs',
+        ]);
 
         //登录提交
-        Route::post('login', 'LoginController@login')
-            ->name('login.submit');
+        Route::post('login', [
+            'as'   => 'login.submit',
+            'uses' => 'LoginController@login',
+        ]);
+
         //退出
-        Route::get('logout', 'LoginController@logout')
-            ->name('logout');
+        Route::get('logout', [
+            'as'   => 'logout',
+            'uses' => 'LoginController@logout',
+        ]);
     });
 
     Route::group(['middleware' => ['auth', 'admin.phptojs']], function () {
-        Route::get('/', function () {
-            return view('admin::app');
-        })->name('dashboard')
-            ->middleware('admin.can.route');
+        Route::get('/', [
+            'as'         => 'dashboard',
+            'uses'       => function () {
+                return view('admin::app');
+            },
+            'middleware' => 'admin.can.route',
+        ]);
 
-        Route::get('403', function () {
-            return view('admin::app');
-        })->name('403');
+        Route::get('403', [
+            'as'   => '403',
+            'uses' => function () {
+                return view('admin::app');
+            },
+        ]);
     });
 
     Route::group(['middleware' => ['auth']], function () {
-        Route::get('menu', function () {
-            return response()->json(AdminNavigation::getPages());
-        })->name('menu');
+        Route::get('menu', [
+            'as'   => 'menu',
+            'uses' => function () {
+                return response()->json(AdminNavigation::getPages());
+            },
+        ]);
 
-        Route::get('check/perm/{name}', function ($name) {
-            if (Auth::user()->can($name)) {
-                return response()->json(['message' => 'ok']);
+        /*Route::get('check/perm/{name}', [
+            'as' => 'checkperm',
+            'uses' => function ($name) {
+                if (Auth::user()->can($name)) {
+                    return response()->json(['message' => 'ok']);
+                }
+                throw new \Illuminate\Auth\Access\AuthorizationException();
             }
-            throw new \Illuminate\Auth\Access\AuthorizationException();
-        });
+        ]);*/
     });
 
     /*Route::group(['middleware' => ['auth']], function () {
@@ -138,57 +156,76 @@ Route::group([
     Route::pattern('model', '[a-z_/]+');
     Route::group([
         'middleware' => ['auth', 'admin.phptojs'],
-        'prefix' => '{model}',
-        'as' => 'model.',
+        'prefix'     => '{model}',
+        'as'         => 'model.',
     ], function () {
-        Route::get('list', 'AdminController@getList')
-            ->name('list')
-            ->middleware('admin.can.model:view');
+        Route::get('list', [
+            'as'   => 'list',
+            'uses' => 'AdminController@getList',
+        ])->middleware('admin.can.model:view');
 
-        Route::get('config', 'AdminController@config')
-            ->name('config')
-            ->middleware('admin.can.model:view');
+        Route::get('config', [
+            'as'   => 'config',
+            'uses' => 'AdminController@config',
+        ])->middleware('admin.can.model:view');
 
-        Route::get('create', 'AdminController@create')
-            ->name('create')
-            ->middleware('admin.can.model:create');
+        Route::get('create', [
+            'as'         => 'create',
+            'uses'       => 'AdminController@create',
+            'middleware' => 'admin.can.model:create',
+        ]);
 
-        Route::post('store', 'AdminController@store')
-            ->name('store')
-            ->middleware('admin.can.model:create');
+        Route::post('store', [
+            'as'         => 'store',
+            'uses'       => 'AdminController@store',
+            'middleware' => 'admin.can.model:create',
+        ]);
 
-        Route::get('{id}/edit', 'AdminController@edit')
-            ->where(['id' => '[0-9]+'])
-            ->name('edit')
-            ->middleware('admin.can.model:edit');
+        Route::get('{id}/edit', [
+            'as'         => 'edit',
+            'uses'       => 'AdminController@edit',
+            'middleware' => 'admin.can.model:edit',
+            'where'      => ['id' => '[0-9]+'],
+        ]);
 
-        Route::post('{id}/edit', 'AdminController@update')
-            ->where(['id' => '[0-9]+'])
-            ->name('update')
-            ->middleware('admin.can.model:edit');
+        Route::post('{id}/edit', [
+            'as'         => 'update',
+            'uses'       => 'AdminController@update',
+            'middleware' => 'admin.can.model:edit',
+            'where'      => ['id' => '[0-9]+'],
+        ]);
 
-        Route::post('batch/delete', 'AdminController@batchDelete')
-            ->name('batch.delete')
-            ->middleware('admin.can.model:delete');
+        Route::post('batch/delete', [
+            'as'         => 'batch.delete',
+            'uses'       => 'AdminController@batchDelete',
+            'middleware' => 'admin.can.model:delete',
+        ]);
 
-        Route::delete('{id}/delete', 'AdminController@delete')
-            ->where(['id' => '[0-9]+'])
-            ->name('delete')
-            ->middleware('admin.can.model:delete');
+        Route::delete('{id}/delete', [
+            'as'         => 'delete',
+            'uses'       => 'AdminController@delete',
+            'middleware' => 'admin.can.model:delete',
+            'where'      => ['id' => '[0-9]+'],
+        ]);
 
-        Route::delete('{id}/destroy', 'AdminController@forceDelete')
-            ->where(['id' => '[0-9]+'])
-            ->name('destroy')
-            ->middleware('admin.can.model:delete');
+        Route::delete('{id}/destroy', [
+            'as'         => 'destroy',
+            'uses'       => 'AdminController@forceDelete',
+            'middleware' => 'admin.can.model:delete',
+            'where'      => ['id' => '[0-9]+'],
+        ]);
 
-        Route::post('{id}/restore', 'AdminController@restore')
-            ->where(['id' => '[0-9]+'])
-            ->name('restore')
-            ->middleware('admin.can.model:restore');
+        Route::post('{id}/restore', [
+            'as'         => 'restore',
+            'uses'       => 'AdminController@restore',
+            'middleware' => 'admin.can.model:restore',
+            'where'      => ['id' => '[0-9]+'],
+        ]);
 
         Route::get('/', [
-            'as' => 'index',
-            'uses' => 'AdminController@index'
-        ])->middleware('admin.can.model:view');
+            'as'         => 'index',
+            'uses'       => 'AdminController@index',
+            'middleware' => 'admin.can.model:view',
+        ]);
     });
 });

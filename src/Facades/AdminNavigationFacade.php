@@ -3,7 +3,6 @@
 
 namespace Sco\Admin\Facades;
 
-
 use Illuminate\Support\Facades\Facade;
 
 class AdminNavigationFacade extends Facade

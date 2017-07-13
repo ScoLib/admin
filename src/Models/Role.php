@@ -25,8 +25,6 @@ use Zizaco\Entrust\EntrustRole;
  */
 class Role extends EntrustRole
 {
-    protected $fillable = ['name', 'display_name', 'description'];
-
     protected $events = [
         'created'  => \Sco\ActionLog\Events\ModelWasCreated::class,
         'updated'  => \Sco\ActionLog\Events\ModelWasUpdated::class,

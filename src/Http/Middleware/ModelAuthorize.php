@@ -5,7 +5,6 @@ namespace Sco\Admin\Http\Middleware;
 use Closure;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Auth\Factory as Auth;
-use Sco\Admin\Contracts\ConfigFactoryInterface;
 
 class ModelAuthorize
 {
