@@ -14,6 +14,7 @@ use KodiComponents\Navigation\NavigationServiceProvider;
 use Laracasts\Utilities\JavaScript\JavaScriptServiceProvider;
 use Sco\ActionLog\LaravelServiceProvider;
 use Sco\Admin\Admin;
+use Sco\Admin\Component\Component;
 use Sco\Admin\Config\ConfigFactory;
 use Sco\Admin\Contracts\ConfigFactoryInterface;
 use Sco\Admin\Contracts\RepositoryInterface;
@@ -68,6 +69,7 @@ class AdminServiceProvider extends ServiceProvider
     public function boot()
     {
         Carbon::setLocale($this->app['config']->get('app.locale'));
+        Component::setEventDispatcher($this->app['events']);
 
         // 路由文件
         $this->loadRoutes();
