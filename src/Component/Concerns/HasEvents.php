@@ -11,8 +11,9 @@ trait HasEvents
     /**
      * Register a component event with the dispatcher.
      *
-     * @param  string  $event
-     * @param  \Closure|string  $callback
+     * @param  string          $event
+     * @param  \Closure|string $callback
+     *
      * @return void
      */
     protected static function registerEvent($event, $callback)
@@ -32,7 +33,7 @@ trait HasEvents
 
         $method = $halt ? 'until' : 'fire';
         return static::$dispatcher->{$method}(
-            "admin.component.{$event}: ".static::class, $this
+            "admin.component.{$event}: " . static::class, $this
         );
     }
 
@@ -49,7 +50,8 @@ trait HasEvents
     /**
      * Set the event dispatcher instance.
      *
-     * @param  \Illuminate\Contracts\Events\Dispatcher  $dispatcher
+     * @param  \Illuminate\Contracts\Events\Dispatcher $dispatcher
+     *
      * @return void
      */
     public static function setEventDispatcher(Dispatcher $dispatcher)
