@@ -5,8 +5,6 @@ namespace Sco\Admin\Component\Concerns;
 
 trait HasPermission
 {
-    protected $permObserve;
-
     protected $permissions;
 
     protected $permMethods = [
@@ -46,24 +44,7 @@ trait HasPermission
 
     public function isRestorableModel()
     {
-        $this->getRepository()->isRestorable();
-    }
-
-    public static function bootHasPermission()
-    {
-        $instance = new static;
-
-        $instance->initPermissions();
-        if ($instance->permObserve) {
-            $instance->registerObserver($instance->permObserve);
-        }
-    }
-
-    public function initPermissions()
-    {
-        foreach ($this->permMethods as $method) {
-            $this->registerPermission($method, true);
-        }
+        return $this->getRepository()->isRestorable();
     }
 
     public function registerObserver($class = null)
@@ -88,14 +69,10 @@ trait HasPermission
 
     public function can($permission)
     {
-        if (!isset($this->permissions[$permission])) {
-            return false;
-        }
         if (is_callable($this->permissions[$permission])) {
             return call_user_func_array($this->permissions[$permission], $this);
-        } else {
-            return $this->permissions[$permission] ? true : false;
         }
+        return $this->permissions[$permission] ? true : false;
     }
 
     public function getPermissions()

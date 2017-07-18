@@ -160,14 +160,16 @@ Route::group([
         'as'         => 'model.',
     ], function () {
         Route::get('list', [
-            'as'   => 'list',
-            'uses' => 'AdminController@getList',
-        ])->middleware('admin.can.model:view');
+            'as'         => 'list',
+            'uses'       => 'AdminController@getList',
+            'middleware' => 'admin.can.model:view',
+        ]);
 
         Route::get('config', [
-            'as'   => 'config',
-            'uses' => 'AdminController@config',
-        ])->middleware('admin.can.model:view');
+            'as'         => 'config',
+            'uses'       => 'AdminController@config',
+            //'middleware' => 'admin.can.model:view',
+        ]);
 
         Route::get('create', [
             'as'         => 'create',

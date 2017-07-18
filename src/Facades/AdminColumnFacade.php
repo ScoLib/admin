@@ -6,11 +6,7 @@ namespace Sco\Admin\Facades;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @method static \Sco\Admin\View\Columns\Text text($name, $label)
- * @method static \Sco\Admin\View\Columns\DateTime datetime($name, $label)
- * @method static \Sco\Admin\View\Columns\Image image($name, $label)
- * @method static \Sco\Admin\View\Columns\Link link($name, $label)
- * @method static \Sco\Admin\View\Columns\Custom custom($name, $label)
+ * @mixin \Sco\Admin\View\Columns\ColumnFactory
  */
 class AdminColumnFacade extends Facade
 {

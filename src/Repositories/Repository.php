@@ -46,7 +46,7 @@ class Repository implements RepositoryInterface
     public function setClass($class)
     {
         if (!class_exists($class)) {
-            throw new RepositoryException("Class {$class} not found.");
+            throw new RepositoryException("Model class {$class} not found.");
         }
 
         $this->class = $class;

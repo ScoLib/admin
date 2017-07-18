@@ -7,6 +7,7 @@ use KodiComponents\Navigation\Contracts\BadgeInterface;
 use Sco\Admin\Component\Concerns\HasEvents;
 use Sco\Admin\Component\Concerns\HasPermission;
 use Sco\Admin\Contracts\ComponentInterface;
+use Sco\Admin\Contracts\RepositoryInterface;
 use Sco\Admin\Navigation\Badge;
 use Sco\Admin\Navigation\Page;
 
@@ -14,27 +15,66 @@ abstract class Component implements ComponentInterface
 {
     use HasEvents, HasPermission;
 
+    protected $name;
+
     protected $app;
 
     protected $title;
 
-    protected $booted = false;
+    protected $repository;
+
+    protected $model;
+
+    protected static $booted = [];
 
     /**
      * @var \Illuminate\Contracts\Events\Dispatcher
      */
     protected static $dispatcher;
 
-    public function __construct(Application $app)
+    public function __construct(Application $app = null, $modelClass = null)
     {
         $this->app = $app;
 
+        $this->repository = $this->app->make(RepositoryInterface::class);
+        $this->repository->setClass($modelClass);
+
+        $this->model = $this->repository->getModel();
+        if (!$this->name) {
+            $this->setDefaultName();
+        }
+
         $this->bootIfNotBooted();
+    }
+
+    protected function setDefaultName()
+    {
+        $this->name = $this->getModelClassName();
+    }
+
+    protected function getModelClassName()
+    {
+        return snake_case(str_plural(class_basename(get_class($this->getModel()))));
+    }
+
+    public function getName()
+    {
+        return $this->name;
     }
 
     public function getTitle()
     {
         return $this->title;
+    }
+
+    public function getModel()
+    {
+        return $this->model;
+    }
+
+    public function getRepository()
+    {
+        return $this->repository;
     }
 
     /**
@@ -43,11 +83,11 @@ abstract class Component implements ComponentInterface
     public function getConfigs()
     {
         return collect([
-            'primaryKey'  => $this->getModel()->getRepository()->getKeyName(),
+            'primaryKey'  => $this->getModel()->getKeyName(),
             'title'       => $this->getTitle(),
             'permissions' => $this->getPermissions(),
-            'columns'     => $this->getColumns()->values(),
-            'elements'    => $this->getElements()->values(),
+            //'columns'     => $this->getColumns()->values(),
+            //'elements'    => $this->getElements()->values(),
         ]);
     }
 
@@ -98,19 +138,17 @@ abstract class Component implements ComponentInterface
 
     protected function bootIfNotBooted()
     {
-        if ($this->booted) {
-            return;
+        if (!isset(static::$booted[static::class])) {
+            static::$booted[static::class] = true;
+
+            $this->fireEvent('booting', false);
+
+            //static::bootTraits();
+
+            $this->boot();
+
+            $this->fireEvent('booted', false);
         }
-
-        $this->fireEvent('booting', false);
-
-        $this->bootTraits();
-
-        $this->boot();
-
-        $this->fireEvent('booted', false);
-
-        $this->booted = true;
     }
 
     public function boot()
@@ -122,9 +160,9 @@ abstract class Component implements ComponentInterface
      *
      * @return void
      */
-    protected function bootTraits()
+    protected static function bootTraits()
     {
-        $class = get_class($this);
+        $class = static::class;
 
         foreach (class_uses_recursive($class) as $trait) {
             if (method_exists($class, $method = 'boot' . class_basename($trait))) {

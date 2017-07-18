@@ -5,7 +5,7 @@ namespace Sco\Admin\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
-class PublishServiceProvider extends ServiceProvider
+class ResourcesServiceProvider extends ServiceProvider
 {
     public function getBasePath()
     {
@@ -14,6 +14,20 @@ class PublishServiceProvider extends ServiceProvider
 
     public function boot()
     {
+        // 路由文件
+        $this->loadRoutes();
+
+        // 后台模板目录
+        $this->loadViewsFrom(
+            $this->getBasePath() . '/resources/views',
+            'admin'
+        );
+        // 后台语言包目录
+        $this->loadTranslationsFrom(
+            $this->getBasePath() . '/resources/lang',
+            'admin'
+        );
+
         if ($this->app->runningInConsole()) {
             $this->publishAssets();
             $this->publishConfig();
@@ -60,5 +74,11 @@ class PublishServiceProvider extends ServiceProvider
         $this->publishes([
             $this->getBasePath() . '/routes/admin.php' => base_path('routes/admin.php'),
         ], 'routes');
+    }
+
+    protected function loadRoutes()
+    {
+        $routesFile = $this->getBasePath() . '/routes/admin.php';
+        $this->loadRoutesFrom($routesFile);
     }
 }

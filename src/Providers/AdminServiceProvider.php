@@ -13,7 +13,6 @@ use KodiComponents\Navigation\Navigation;
 use Laracasts\Utilities\JavaScript\JavaScriptServiceProvider;
 use Sco\ActionLog\LaravelServiceProvider;
 use Sco\Admin\Admin;
-use Sco\Admin\Component\Component;
 use Sco\Admin\Config\ConfigFactory;
 use Sco\Admin\Contracts\ColumnFactoryInterface;
 use Sco\Admin\Contracts\ConfigFactoryInterface;
@@ -51,7 +50,8 @@ class AdminServiceProvider extends ServiceProvider
     protected $providers = [
         LaravelServiceProvider::class,
         JavaScriptServiceProvider::class,
-        PublishServiceProvider::class,
+        ResourcesServiceProvider::class,
+        ComponentServiceProvider::class,
         //NavigationServiceProvider::class,
     ];
 
@@ -68,33 +68,12 @@ class AdminServiceProvider extends ServiceProvider
     public function boot()
     {
         Carbon::setLocale($this->app['config']->get('app.locale'));
-        Component::setEventDispatcher($this->app['events']);
-
-        // 路由文件
-        $this->loadRoutes();
-
-        // 后台模板目录
-        $this->loadViewsFrom(
-            $this->getBasePath() . '/resources/views',
-            'admin'
-        );
-        // 后台语言包目录
-        $this->loadTranslationsFrom(
-            $this->getBasePath() . '/resources/lang',
-            'admin'
-        );
 
         if ($this->app->runningInConsole()) {
             $this->loadMigrationsFrom($this->getBasePath() . '/database/migrations');
         }
 
         $this->app->call([$this, 'registerNavigation']);
-    }
-
-    protected function loadRoutes()
-    {
-        $routesFile = $this->getBasePath() . '/routes/admin.php';
-        $this->loadRoutesFrom($routesFile);
     }
 
     /**
@@ -113,9 +92,6 @@ class AdminServiceProvider extends ServiceProvider
         $this->registerAdmin();
         $this->registerAliases();
         $this->registerMiddleware();
-        $this->bindRouteModel();
-        $this->registerProviders();
-        $this->registerCoreContainerAliases();
 
         $this->app->bind(RepositoryInterface::class, Repository::class);
         $this->app->singleton(ConfigFactoryInterface::class, function () {
@@ -140,6 +116,8 @@ class AdminServiceProvider extends ServiceProvider
         $this->app->bind(PageInterface::class, Page::class);
         $this->app->bind(BadgeInterface::class, Badge::class);
 
+        $this->registerProviders();
+        $this->registerCoreContainerAliases();
         $this->commands($this->commands);
     }
 
@@ -182,13 +160,6 @@ class AdminServiceProvider extends ServiceProvider
     protected function registerAdmin()
     {
         $this->app->instance('admin.instance', new Admin($this->app));
-    }
-
-    protected function bindRouteModel()
-    {
-        $this->app['router']->bind('model', function ($value) {
-            return $this->app[ConfigFactoryInterface::class]->make($value)->getModel();
-        });
     }
 
     protected function registerCoreContainerAliases()
