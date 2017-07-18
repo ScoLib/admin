@@ -10,22 +10,27 @@ use KodiComponents\Navigation\Contracts\BadgeInterface;
 use KodiComponents\Navigation\Contracts\NavigationInterface;
 use KodiComponents\Navigation\Contracts\PageInterface;
 use KodiComponents\Navigation\Navigation;
-use KodiComponents\Navigation\NavigationServiceProvider;
 use Laracasts\Utilities\JavaScript\JavaScriptServiceProvider;
 use Sco\ActionLog\LaravelServiceProvider;
 use Sco\Admin\Admin;
 use Sco\Admin\Component\Component;
 use Sco\Admin\Config\ConfigFactory;
+use Sco\Admin\Contracts\ColumnFactoryInterface;
 use Sco\Admin\Contracts\ConfigFactoryInterface;
 use Sco\Admin\Contracts\RepositoryInterface;
+use Sco\Admin\Contracts\ViewFactoryInterface;
 use Sco\Admin\Elements\ElementFactory;
 use Sco\Admin\Exceptions\Handler;
+use Sco\Admin\Facades\AdminColumnFacade;
 use Sco\Admin\Facades\AdminFacade;
 use Sco\Admin\Facades\AdminElementFacade;
 use Sco\Admin\Facades\AdminNavigationFacade;
+use Sco\Admin\Facades\AdminViewFacade;
 use Sco\Admin\Navigation\Badge;
 use Sco\Admin\Navigation\Page;
 use Sco\Admin\Repositories\Repository;
+use Sco\Admin\View\Columns\ColumnFactory;
+use Sco\Admin\View\ViewFactory;
 
 /**
  *
@@ -48,12 +53,6 @@ class AdminServiceProvider extends ServiceProvider
         JavaScriptServiceProvider::class,
         PublishServiceProvider::class,
         //NavigationServiceProvider::class,
-    ];
-
-    protected $aliases = [
-        'Admin'           => AdminFacade::class,
-        'AdminElement'    => AdminElementFacade::class,
-        'AdminNavigation' => AdminNavigationFacade::class,
     ];
 
     public function getBasePath()
@@ -118,13 +117,20 @@ class AdminServiceProvider extends ServiceProvider
         $this->registerProviders();
         $this->registerCoreContainerAliases();
 
-
         $this->app->bind(RepositoryInterface::class, Repository::class);
         $this->app->singleton(ConfigFactoryInterface::class, function () {
             return new ConfigFactory($this->app);
         });
         $this->app->singleton('admin.element.factory', function () {
             return new ElementFactory($this->app);
+        });
+
+        $this->app->singleton('admin.view.factory', function () {
+            return new ViewFactory();
+        });
+
+        $this->app->singleton('admin.column.factory', function () {
+            return new ColumnFactory();
         });
 
         $this->app->singleton('admin.navigation', function () {
@@ -146,7 +152,13 @@ class AdminServiceProvider extends ServiceProvider
 
     protected function registerAliases()
     {
-        AliasLoader::getInstance($this->aliases);
+        AliasLoader::getInstance([
+            'Admin'           => AdminFacade::class,
+            'AdminElement'    => AdminElementFacade::class,
+            'AdminNavigation' => AdminNavigationFacade::class,
+            'AdminColumn'     => AdminColumnFacade::class,
+            'AdminView'       => AdminViewFacade::class,
+        ]);
     }
 
     protected function registerProviders()
@@ -182,7 +194,13 @@ class AdminServiceProvider extends ServiceProvider
     protected function registerCoreContainerAliases()
     {
         $aliases = [
-            'admin.navigation' => [Navigation::class, NavigationInterface::class],
+            'admin.navigation'     => [Navigation::class, NavigationInterface::class],
+            'admin.column.factory' => [
+                ColumnFactory::class, ColumnFactoryInterface::class,
+            ],
+            'admin.view.factory'   => [
+                ViewFactory::class, ViewFactoryInterface::class,
+            ],
         ];
 
         foreach ($aliases as $key => $aliases) {

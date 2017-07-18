@@ -3,7 +3,6 @@
 
 namespace Sco\Admin\Component\Concerns;
 
-
 use Illuminate\Contracts\Events\Dispatcher;
 
 trait HasEvents

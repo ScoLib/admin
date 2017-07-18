@@ -2,6 +2,7 @@
 
 namespace Sco\Admin\Http\Controllers;
 
+use AdminColumn;
 use Illuminate\Routing\Controller;
 use Sco\Admin\Contracts\ModelFactoryInterface;
 

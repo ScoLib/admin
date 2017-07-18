@@ -53,7 +53,6 @@ abstract class Column implements ColumnInterface, Arrayable, Jsonable, JsonSeria
         $this->sortable = 'custom';
         // TODO
         // register sort route
-
     }
 
     public function isFixed()

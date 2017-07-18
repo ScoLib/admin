@@ -3,7 +3,6 @@
 
 namespace Sco\Admin\Traits;
 
-
 use Sco\Admin\Exceptions\BadMethodCallException;
 
 trait AliasBinder

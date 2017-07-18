@@ -3,7 +3,6 @@
 
 namespace Sco\Admin\Component\Concerns;
 
-
 trait HasPermission
 {
     protected $permObserve;
