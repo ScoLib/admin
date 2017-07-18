@@ -7,7 +7,11 @@ use Sco\Admin\Contracts\ColumnFactoryInterface;
 use Sco\Admin\Traits\AliasBinder;
 
 /**
- * @method static Text text($name, $label)
+ * @method static \Sco\Admin\View\Columns\Text text($name, $label)
+ * @method static \Sco\Admin\View\Columns\DateTime datetime($name, $label)
+ * @method static \Sco\Admin\View\Columns\Image image($name, $label)
+ * @method static \Sco\Admin\View\Columns\Link link($name, $label)
+ * @method static \Sco\Admin\View\Columns\Custom custom($name, $label)
  */
 class ColumnFactory implements ColumnFactoryInterface
 {
@@ -15,9 +19,12 @@ class ColumnFactory implements ColumnFactoryInterface
 
     public function __construct()
     {
-
         $this->registerAliases([
-            'text' => Text::class,
+            'text'     => Text::class,
+            'datetime' => DateTime::class,
+            'image'    => Image::class,
+            'link'     => Link::class,
+            'custom'   => Custom::class,
         ]);
     }
 }

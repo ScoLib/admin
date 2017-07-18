@@ -7,7 +7,7 @@ use Sco\Admin\Contracts\ViewFactoryInterface;
 use Sco\Admin\Traits\AliasBinder;
 
 /**
- * @method static Table table()
+ * @method static \Sco\Admin\View\Table table()
  */
 class ViewFactory implements ViewFactoryInterface
 {
