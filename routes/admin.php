@@ -162,7 +162,7 @@ Route::group([
         Route::get('list', [
             'as'         => 'list',
             'uses'       => 'AdminController@getList',
-            'middleware' => 'admin.can.model:view',
+            //'middleware' => 'admin.can.model:view',
         ]);
 
         Route::get('config', [
@@ -227,7 +227,7 @@ Route::group([
         Route::get('/', [
             'as'         => 'index',
             'uses'       => 'AdminController@index',
-            'middleware' => 'admin.can.model:view',
+            //'middleware' => 'admin.can.model:view',
         ]);
     });
 });

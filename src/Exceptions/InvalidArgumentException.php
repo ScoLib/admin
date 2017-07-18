@@ -2,6 +2,8 @@
 
 namespace Sco\Admin\Exceptions;
 
-class InvalidArgumentException extends \InvalidArgumentException implements AdminException
+use Sco\Admin\Contracts\ExceptionInterface;
+
+class InvalidArgumentException extends \InvalidArgumentException implements ExceptionInterface
 {
 }

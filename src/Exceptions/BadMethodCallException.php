@@ -2,6 +2,8 @@
 
 namespace Sco\Admin\Exceptions;
 
-class BadMethodCallException extends \BadMethodCallException implements AdminException
+use Sco\Admin\Contracts\ExceptionInterface;
+
+class BadMethodCallException extends \BadMethodCallException implements ExceptionInterface
 {
 }

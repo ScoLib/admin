@@ -32,7 +32,7 @@ abstract class Component implements ComponentInterface
      */
     protected static $dispatcher;
 
-    public function __construct(Application $app = null, $modelClass = null)
+    public function __construct(Application $app, $modelClass)
     {
         $this->app = $app;
 
@@ -75,6 +75,16 @@ abstract class Component implements ComponentInterface
     public function getRepository()
     {
         return $this->repository;
+    }
+
+    public function get()
+    {
+        if (!method_exists($this, 'callView')) {
+            return;
+        }
+
+        $view = $this->app->call([$this, 'callView']);
+
     }
 
     /**
@@ -143,8 +153,6 @@ abstract class Component implements ComponentInterface
 
             $this->fireEvent('booting', false);
 
-            //static::bootTraits();
-
             $this->boot();
 
             $this->fireEvent('booted', false);
@@ -153,21 +161,6 @@ abstract class Component implements ComponentInterface
 
     public function boot()
     {
-    }
-
-    /**
-     * Boot all of the bootable traits on the model.
-     *
-     * @return void
-     */
-    protected static function bootTraits()
-    {
-        $class = static::class;
-
-        foreach (class_uses_recursive($class) as $trait) {
-            if (method_exists($class, $method = 'boot' . class_basename($trait))) {
-                forward_static_call([$class, $method]);
-            }
-        }
+        return true;
     }
 }

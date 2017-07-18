@@ -8,6 +8,7 @@ use Illuminate\Auth\AuthenticationException;
 use Illuminate\Contracts\Debug\ExceptionHandler as ExceptionHandlerContract;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Response;
+use Sco\Admin\Contracts\ExceptionInterface;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -49,7 +50,7 @@ class Handler implements ExceptionHandlerContract
             $response = $this->unauthenticated($request, $exception);
         } elseif ($exception instanceof HttpException) {
             $response = $this->renderHttpException($request, $exception);
-        } elseif ($exception instanceof AdminException) {
+        } elseif ($exception instanceof ExceptionInterface) {
             $response = $this->renderAdminException($request, $exception);
         }
 
@@ -130,7 +131,10 @@ class Handler implements ExceptionHandlerContract
     {
         $status = $exception->getStatusCode();
         if ($request->expectsJson()) {
-            return response($exception->getMessage() ?: Response::$statusTexts[$status], $status);
+            return response(
+                $exception->getMessage() ?: Response::$statusTexts[$status],
+                $status
+            );
         }
         if ($this->isAdmin($request)) {
             //return response()->view('admin::app', ['exception' => $exception], $status, $exception->getHeaders());
@@ -144,15 +148,19 @@ class Handler implements ExceptionHandlerContract
     }
 
     /**
-     * @param \Illuminate\Http\Request             $request
-     * @param \Sco\Admin\Exceptions\AdminException $exception
+     * @param \Illuminate\Http\Request                $request
+     * @param \Sco\Admin\Contracts\ExceptionInterface $exception
      *
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
      */
-    protected function renderAdminException($request, AdminException $exception)
-    {
+    protected function renderAdminException(
+        $request, ExceptionInterface $exception
+    ) {
         if ($request->expectsJson()) {
-            return response($exception->getMessage() ?: Response::$statusTexts[500], 500);
+            return response(
+                $exception->getMessage() ?: Response::$statusTexts[500],
+                500
+            );
         }
     }
 }

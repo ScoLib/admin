@@ -13,9 +13,9 @@ class AdminController extends Controller
         return view('admin::app');
     }
 
-    public function getList(ModelFactoryInterface $modelFactory)
+    public function getList(ComponentInterface $component)
     {
-        return $modelFactory->get();
+        return $component->get();
     }
 
     /*public function config(ModelFactoryInterface $modelFactory)

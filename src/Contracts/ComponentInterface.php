@@ -20,4 +20,6 @@ interface ComponentInterface
      * @return \Illuminate\Support\Collection
      */
     public function getConfigs();
+
+    public function get();
 }
