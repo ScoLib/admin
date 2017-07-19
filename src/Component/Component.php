@@ -3,26 +3,35 @@
 namespace Sco\Admin\Component;
 
 use Illuminate\Foundation\Application;
-use KodiComponents\Navigation\Contracts\BadgeInterface;
 use Sco\Admin\Component\Concerns\HasEvents;
 use Sco\Admin\Component\Concerns\HasPermission;
 use Sco\Admin\Contracts\ComponentInterface;
 use Sco\Admin\Contracts\RepositoryInterface;
-use Sco\Admin\Navigation\Badge;
-use Sco\Admin\Navigation\Page;
 
 abstract class Component implements ComponentInterface
 {
     use HasEvents, HasPermission;
 
+    /**
+     * @var
+     */
     protected $name;
 
+    /**
+     * @var \Illuminate\Foundation\Application
+     */
     protected $app;
 
     protected $title;
 
+    /**
+     * @var mixed|\Sco\Admin\Contracts\RepositoryInterface
+     */
     protected $repository;
 
+    /**
+     * @var \Illuminate\Database\Eloquent\Model
+     */
     protected $model;
 
     protected static $booted = [];
@@ -31,6 +40,11 @@ abstract class Component implements ComponentInterface
      * @var \Illuminate\Contracts\Events\Dispatcher
      */
     protected static $dispatcher;
+
+    /**
+     * @return array
+     */
+    abstract public function getColumns();
 
     public function __construct(Application $app, $modelClass)
     {
@@ -43,6 +57,8 @@ abstract class Component implements ComponentInterface
         if (!$this->name) {
             $this->setDefaultName();
         }
+
+        $this->registerObserver($this->permissionObserver);
 
         $this->bootIfNotBooted();
     }
@@ -84,7 +100,9 @@ abstract class Component implements ComponentInterface
         }
 
         $view = $this->app->call([$this, 'callView']);
+        $view->setRepository($this->getRepository());
 
+        return $view->get();
     }
 
     /**
@@ -96,54 +114,9 @@ abstract class Component implements ComponentInterface
             'primaryKey'  => $this->getModel()->getKeyName(),
             'title'       => $this->getTitle(),
             'permissions' => $this->getPermissions(),
-            //'columns'     => $this->getColumns()->values(),
+            'columns'     => $this->getColumns(),
             //'elements'    => $this->getElements()->values(),
         ]);
-    }
-
-    /**
-     * @return \KodiComponents\Navigation\Contracts\NavigationInterface
-     */
-    public function getNavigation()
-    {
-        return $this->app['admin.navigation'];
-    }
-
-    /**
-     * 添加菜单
-     *
-     * @param int  $priority
-     * @param null $badge
-     *
-     * @return \Sco\Admin\Navigation\Page
-     */
-    public function addToNavigation($priority = 100, $badge = null)
-    {
-        $page = $this->makePage($priority, $badge);
-        $this->getNavigation()->addPage($page);
-        return $page;
-    }
-
-    /**
-     * page
-     *
-     * @param int  $priority
-     * @param null $badge
-     *
-     * @return \Sco\Admin\Navigation\Page
-     */
-    protected function makePage($priority = 100, $badge = null)
-    {
-        $page = new Page($this->getTitle());
-        $page->setPriority($priority);
-        if ($badge) {
-            if (!($badge instanceof BadgeInterface)) {
-                $badge = new Badge($badge);
-            }
-            $page->addBadge($badge);
-        }
-
-        return $page;
     }
 
     protected function bootIfNotBooted()

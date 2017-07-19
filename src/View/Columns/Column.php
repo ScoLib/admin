@@ -3,6 +3,7 @@
 
 namespace Sco\Admin\View\Columns;
 
+use Illuminate\Database\Eloquent\Model;
 use JsonSerializable;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
@@ -22,6 +23,8 @@ abstract class Column implements ColumnInterface, Arrayable, Jsonable, JsonSeria
 
     protected $fixed = false;
 
+    protected $model;
+
     public function __construct($name, $label)
     {
         $this->name  = $name;
@@ -36,16 +39,22 @@ abstract class Column implements ColumnInterface, Arrayable, Jsonable, JsonSeria
     public function setWidth($width)
     {
         $this->width = $width;
+
+        return $this;
     }
 
     public function setMinWidth($width)
     {
         $this->minWidth = $width;
+
+        return $this;
     }
 
     public function isSortable()
     {
         $this->sortable = true;
+
+        return $this;
     }
 
     public function isCustomSortable()
@@ -53,11 +62,26 @@ abstract class Column implements ColumnInterface, Arrayable, Jsonable, JsonSeria
         $this->sortable = 'custom';
         // TODO
         // register sort route
+
+        return $this;
     }
 
     public function isFixed()
     {
         $this->fixed = true;
+
+        return $this;
+    }
+
+    public function getModel()
+    {
+        return $this->model;
+    }
+
+    public function setModel(Model $model)
+    {
+        $this->model = $model;
+        return $this;
     }
 
     public function toArray()
@@ -70,6 +94,11 @@ abstract class Column implements ColumnInterface, Arrayable, Jsonable, JsonSeria
             'minWidth' => $this->minWidth,
             'sortable' => $this->sortable,
         ];
+    }
+
+    public function getModelValue()
+    {
+        return $this->getModel()->{$this->getName()};
     }
 
     public function jsonSerialize()

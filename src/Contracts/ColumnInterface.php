@@ -2,6 +2,8 @@
 
 namespace Sco\Admin\Contracts;
 
+use Illuminate\Database\Eloquent\Model;
+
 interface ColumnInterface
 {
     public function getName();
@@ -15,4 +17,18 @@ interface ColumnInterface
     public function isCustomSortable();
 
     public function isFixed();
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    public function getModel();
+
+    /**
+     * @param \Illuminate\Database\Eloquent\Model $model
+     *
+     * @return $this
+     */
+    public function setModel(Model $model);
+
+    public function getModelValue();
 }

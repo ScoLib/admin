@@ -5,6 +5,11 @@ namespace Sco\Admin\Component\Concerns;
 
 trait HasPermission
 {
+    /**
+     * @var string
+     */
+    protected $permissionObserver;
+
     protected $permissions;
 
     protected $permMethods = [
@@ -57,7 +62,7 @@ trait HasPermission
 
         foreach ($this->permMethods as $method) {
             if (method_exists($class, $method)) {
-                $this->registerPermission($method, [$className, $method]);
+                $this->registerPermission($method, [$this->app->make($className), $method]);
             }
         }
     }
@@ -70,7 +75,7 @@ trait HasPermission
     public function can($permission)
     {
         if (is_callable($this->permissions[$permission])) {
-            return call_user_func_array($this->permissions[$permission], $this);
+            return call_user_func_array($this->permissions[$permission], [$this]);
         }
         return $this->permissions[$permission] ? true : false;
     }

@@ -154,7 +154,8 @@ class Handler implements ExceptionHandlerContract
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
      */
     protected function renderAdminException(
-        $request, ExceptionInterface $exception
+        $request,
+        ExceptionInterface $exception
     ) {
         if ($request->expectsJson()) {
             return response(

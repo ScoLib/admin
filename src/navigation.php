@@ -8,6 +8,7 @@ $navigation->setFromArray([
         'title'    => '系统管理',
         'icon'     => 'fa fa-edit',
         'priority' => 500,
+        'id'       => 'system',
         'pages'    => [
             [
                 'title' => '操作日志',
@@ -20,23 +21,7 @@ $navigation->setFromArray([
         'icon'     => 'fa fa-users',
         'priority' => 600,
         'badge'    => 'New',
-        'pages'    => [
-            [
-                'title' => '用户',
-                'icon'  => 'fa fa-user',
-                'url'   => route('admin.model.index', ['model' => 'users'], false),
-            ],
-            [
-                'title' => '角色',
-                'icon'  => 'fa fa-user-plus',
-                'url'   => route('admin.model.index', ['model' => 'roles'], false),
-            ],
-            [
-                'title' => '权限',
-                'icon'  => 'fa fa-user',
-                'url'   => route('admin.model.index', ['model' => 'permissions'], false),
-            ],
-        ],
+        'id'       => 'users',
     ],
     [
         'title'    => 'test',

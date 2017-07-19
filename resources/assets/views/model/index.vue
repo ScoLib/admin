@@ -74,19 +74,19 @@
 
 
                         <el-table-column
-                                :label="column.title"
-                                :prop="column.key"
+                                :label="column.label"
+                                :prop="column.name"
                                 :min-width="column.minWidth"
                                 :sortable="column.sortable"
                                 :fixed="column.fixed"
                                 v-for="column in config.columns"
-                                :key="column.key">
+                                :key="column.name">
                             <template scope="scope">
                                 <v-column
                                         :renderContent="column.render"
                                         :template="column.template"
                                         :scope="scope"
-                                        :prop="column.key">
+                                        :prop="column.name">
                                 </v-column>
                             </template>
                         </el-table-column>

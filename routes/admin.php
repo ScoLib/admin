@@ -50,7 +50,7 @@ Route::group([
         Route::get('menu', [
             'as'   => 'menu',
             'uses' => function () {
-                return response()->json(AdminNavigation::getPages());
+                return response()->json(AdminNavigation::getPages()->filterByAccessRights());
             },
         ]);
 
