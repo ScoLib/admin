@@ -117,7 +117,6 @@ abstract class Column implements ColumnInterface, Arrayable, Jsonable, JsonSeria
 
     protected function getValueFromObject($instance, $name)
     {
-
         $parts = explode('.', $name);
         $part = array_shift($parts);
 

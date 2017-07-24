@@ -43,7 +43,7 @@ class Table extends View
      */
     public function paginate($perPage = 25, $pageName = 'page')
     {
-        $this->perPage = (int) $perPage;
+        $this->perPage = (int)$perPage;
         $this->pageName = $pageName;
 
         return $this;
@@ -99,9 +99,13 @@ class Table extends View
     {
         if ($rows) {
             return $rows->map(function ($row) {
-                    $newRow = $this->getColumns()->mapWithKeys(function (ColumnInterface $column) use ($row) {
-                        return [$column->getName() => $column->setModel($row)->getModelValue()];
-                    });
+                $newRow = $this->getColumns()->mapWithKeys(function (
+                    ColumnInterface $column
+                ) use ($row) {
+                    return [
+                        $column->getName() => $column->setModel($row)->getModelValue()
+                    ];
+                });
 
                 // whether this row has been soft deleted
                 if ($this->getRepository()->isRestorable()) {

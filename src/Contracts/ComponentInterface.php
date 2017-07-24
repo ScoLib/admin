@@ -5,7 +5,6 @@ namespace Sco\Admin\Contracts;
 
 interface ComponentInterface
 {
-
     public function boot();
 
     public function getName();
