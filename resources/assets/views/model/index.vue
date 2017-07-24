@@ -77,9 +77,10 @@
                                 :label="column.label"
                                 :prop="column.name"
                                 :min-width="column.minWidth"
+                                :width="column.width"
                                 :sortable="column.sortable"
                                 :fixed="column.fixed"
-                                v-for="column in config.columns"
+                                v-for="column in config.view.columns"
                                 :key="column.name">
                             <template scope="scope">
                                 <v-column

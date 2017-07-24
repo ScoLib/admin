@@ -5,9 +5,8 @@ namespace Sco\Admin\View;
 
 use Illuminate\Support\Collection;
 use Sco\Admin\Contracts\ColumnInterface;
-use Sco\Admin\Contracts\RepositoryInterface;
 
-class Table
+class Table extends View
 {
     protected $perPage = 20;
 
@@ -21,10 +20,10 @@ class Table
     }
 
     /**
-     * @var RepositoryInterface
+     * @param array $columns
+     *
+     * @return $this
      */
-    protected $repository;
-
     public function setColumns(array $columns)
     {
         foreach ($columns as $column) {
@@ -39,23 +38,8 @@ class Table
         return $this->columns;
     }
 
-    public function setRepository(RepositoryInterface $repository)
-    {
-        $this->repository = $repository;
-
-        return $this;
-    }
-
-    public function getRepository()
-    {
-        return $this->repository;
-    }
-
     /**
-     * @param int    $perPage
-     * @param string $pageName
-     *
-     * @return $this
+     * {@inheritdoc}
      */
     public function paginate($perPage = 25, $pageName = 'page')
     {
@@ -66,7 +50,7 @@ class Table
     }
 
     /**
-     * @return $this
+     * {@inheritdoc}
      */
     public function disablePagination()
     {
@@ -87,10 +71,10 @@ class Table
     {
         $repository = $this->getRepository();
         //$orderBy = $this->config->get('orderBy', [$repository->getKeyName(), 'desc']);
-        $query = $repository->getModel();
+        $query = $repository->getQuery();
 
         if ($repository->isRestorable()) {
-            $query = $query->withTrashed();
+            $query->withTrashed();
         }
 
         if ($this->usePagination()) {
@@ -102,6 +86,13 @@ class Table
         }
 
         return $data;
+    }
+
+    public function toArray()
+    {
+        return parent::toArray() + [
+            'columns' => $this->getColumns(),
+        ];
     }
 
     protected function parseRows(Collection $rows)

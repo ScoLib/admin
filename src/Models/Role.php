@@ -2,6 +2,7 @@
 
 namespace Sco\Admin\Models;
 
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Zizaco\Entrust\EntrustRole;
 
 /**
@@ -25,6 +26,8 @@ use Zizaco\Entrust\EntrustRole;
  */
 class Role extends EntrustRole
 {
+    use SoftDeletes;
+
     protected $events = [
         'created'  => \Sco\ActionLog\Events\ModelWasCreated::class,
         'updated'  => \Sco\ActionLog\Events\ModelWasUpdated::class,

@@ -4,13 +4,17 @@ namespace Sco\Admin\Component;
 
 use Illuminate\Foundation\Application;
 use Sco\Admin\Component\Concerns\HasEvents;
+use Sco\Admin\Component\Concerns\HasNavigation;
 use Sco\Admin\Component\Concerns\HasPermission;
 use Sco\Admin\Contracts\ComponentInterface;
 use Sco\Admin\Contracts\RepositoryInterface;
+use Sco\Admin\Exceptions\BadMethodCallException;
 
 abstract class Component implements ComponentInterface
 {
-    use HasEvents, HasPermission;
+    use HasEvents,
+        HasPermission,
+        HasNavigation;
 
     /**
      * @var
@@ -40,11 +44,6 @@ abstract class Component implements ComponentInterface
      * @var \Illuminate\Contracts\Events\Dispatcher
      */
     protected static $dispatcher;
-
-    /**
-     * @return array
-     */
-    abstract public function getColumns();
 
     public function __construct(Application $app, $modelClass)
     {
@@ -95,15 +94,15 @@ abstract class Component implements ComponentInterface
 
     public function get()
     {
-        if (!method_exists($this, 'callView')) {
-            return;
-        }
+        $view = $this->fireView();
 
-        $view = $this->app->call([$this, 'callView']);
+        $this->getRepository();
+
         $view->setRepository($this->getRepository());
 
         return $view->get();
     }
+
 
     /**
      * {@inheritdoc}
@@ -114,9 +113,22 @@ abstract class Component implements ComponentInterface
             'primaryKey'  => $this->getModel()->getKeyName(),
             'title'       => $this->getTitle(),
             'permissions' => $this->getPermissions(),
-            'columns'     => $this->getColumns(),
+            'view'        => $this->fireView(),
             //'elements'    => $this->getElements()->values(),
         ]);
+    }
+
+    /**
+     * @return \Sco\Admin\Contracts\ViewInterface
+     */
+    protected function fireView()
+    {
+        if (!method_exists($this, 'callView')) {
+            throw new BadMethodCallException('Not Found Method "callView"');
+        }
+
+        $view = $this->app->call([$this, 'callView']);
+        return $view;
     }
 
     protected function bootIfNotBooted()

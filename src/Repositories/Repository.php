@@ -20,6 +20,8 @@ class Repository implements RepositoryInterface
 
     protected $class;
 
+    protected $with = [];
+
     public function __construct(Application $app)
     {
         $this->app = $app;
@@ -34,6 +36,21 @@ class Repository implements RepositoryInterface
     {
         $this->model = $model;
         $this->class = get_class($model);
+
+        return $this;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getWith()
+    {
+        return $this->with;
+    }
+
+    public function with($relations)
+    {
+        $this->with = array_flatten(func_get_args());
 
         return $this;
     }
@@ -58,15 +75,22 @@ class Repository implements RepositoryInterface
     }
 
     /**
-     * @param $id
-     *
-     * @return Model
+     * {@inheritdoc}
+     */
+    public function getQuery()
+    {
+        return $this->getModel()
+            ->query()
+            ->with($this->getWith());
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function findOnlyTrashed($id)
     {
-        return $this->getModel()->onlyTrashed()->findOrFail($id);
+        return $this->getQuery()->onlyTrashed()->findOrFail($id);
     }
-
 
     public function store()
     {
@@ -75,7 +99,6 @@ class Repository implements RepositoryInterface
     public function update()
     {
     }
-
 
 
     public function forceDelete($id)
@@ -92,31 +115,5 @@ class Repository implements RepositoryInterface
     public function isRestorable()
     {
         return in_array(SoftDeletes::class, class_uses_recursive($this->getClass()));
-    }
-
-    /**
-     * Handle dynamic method calls into the model.
-     *
-     * @param  string $method
-     * @param  array  $parameters
-     *
-     * @return mixed
-     */
-    public function __call($method, $parameters)
-    {
-        return $this->getModel()->$method(...$parameters);
-    }
-
-    /**
-     * Handle dynamic static method calls into the method.
-     *
-     * @param  string $method
-     * @param  array  $parameters
-     *
-     * @return mixed
-     */
-    public static function __callStatic($method, $parameters)
-    {
-        return (new static)->$method(...$parameters);
     }
 }

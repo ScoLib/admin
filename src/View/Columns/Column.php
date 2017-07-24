@@ -4,6 +4,7 @@
 namespace Sco\Admin\View\Columns;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use JsonSerializable;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
@@ -24,6 +25,8 @@ abstract class Column implements ColumnInterface, Arrayable, Jsonable, JsonSeria
     protected $fixed = false;
 
     protected $model;
+
+    protected $template = '<span>{{value}}</span>';
 
     public function __construct($name, $label)
     {
@@ -84,6 +87,16 @@ abstract class Column implements ColumnInterface, Arrayable, Jsonable, JsonSeria
         return $this;
     }
 
+    public function getTemplate()
+    {
+        return $this->template;
+    }
+
+    public function setTemplate($template)
+    {
+        $this->template = $template;
+    }
+
     public function toArray()
     {
         return [
@@ -93,12 +106,32 @@ abstract class Column implements ColumnInterface, Arrayable, Jsonable, JsonSeria
             'fixed'    => $this->fixed,
             'minWidth' => $this->minWidth,
             'sortable' => $this->sortable,
+            'template' => $this->getTemplate(),
         ];
     }
 
     public function getModelValue()
     {
-        return $this->getModel()->{$this->getName()};
+        return $this->getValueFromObject($this->getModel(), $this->getName());
+    }
+
+    protected function getValueFromObject($instance, $name)
+    {
+
+        $parts = explode('.', $name);
+        $part = array_shift($parts);
+
+        if ($instance instanceof Collection) {
+            $instance = $instance->pluck($part);
+        } elseif (!is_null($instance)) {
+            $instance = $instance->getAttribute($part);
+        }
+
+        if (!empty($parts) && !is_null($instance)) {
+            return $this->getValueFromObject($instance, implode('.', $parts));
+        }
+
+        return $instance;
     }
 
     public function jsonSerialize()

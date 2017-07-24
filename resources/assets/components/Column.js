@@ -8,8 +8,8 @@ export default {
 
         try {
             if (!this.renderContent) {
-                Vue.component(prop + 'column-render', {
-                    template: `<section>${template}</section>`,
+                Vue.component('column-render', {
+                    template: this.template,
                     data() {
                         return {}
                     },
@@ -17,7 +17,7 @@ export default {
                 });
 
                 render = (h, props) => {
-                    return h(prop + 'column-render', {props});
+                    return h('column-render', {props});
                 }
             }
 

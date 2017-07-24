@@ -12,6 +12,7 @@ use Sco\Admin\Traits\AliasBinder;
  * @method static \Sco\Admin\View\Columns\Image image($name, $label)
  * @method static \Sco\Admin\View\Columns\Link link($name, $label)
  * @method static \Sco\Admin\View\Columns\Custom custom($name, $label)
+ * @method static \Sco\Admin\View\Columns\Lists lists($name, $label)
  */
 class ColumnFactory implements ColumnFactoryInterface
 {
@@ -24,6 +25,7 @@ class ColumnFactory implements ColumnFactoryInterface
             'datetime' => DateTime::class,
             'image'    => Image::class,
             'link'     => Link::class,
+            'lists'    => Lists::class,
             'custom'   => Custom::class,
         ]);
     }
