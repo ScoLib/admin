@@ -171,56 +171,67 @@ Route::group([
             //'middleware' => 'admin.can.model:view',
         ]);
 
+        Route::get('create/info', [
+            'as'         => 'getCreate',
+            'uses'       => 'AdminController@getCreate',
+        ]);
+
         Route::get('create', [
             'as'         => 'create',
             'uses'       => 'AdminController@create',
-            'middleware' => 'admin.can.model:create',
+            //'middleware' => 'admin.can.model:create',
         ]);
 
         Route::post('store', [
             'as'         => 'store',
             'uses'       => 'AdminController@store',
-            'middleware' => 'admin.can.model:create',
+            //'middleware' => 'admin.can.model:create',
         ]);
 
         Route::get('{id}/edit', [
             'as'         => 'edit',
             'uses'       => 'AdminController@edit',
-            'middleware' => 'admin.can.model:edit',
+            //'middleware' => 'admin.can.model:edit',
+            'where'      => ['id' => '[0-9]+'],
+        ]);
+
+        Route::get('{id}/edit/info', [
+            'as'         => 'getEdit',
+            'uses'       => 'AdminController@getEdit',
             'where'      => ['id' => '[0-9]+'],
         ]);
 
         Route::post('{id}/edit', [
             'as'         => 'update',
             'uses'       => 'AdminController@update',
-            'middleware' => 'admin.can.model:edit',
+            //'middleware' => 'admin.can.model:edit',
             'where'      => ['id' => '[0-9]+'],
         ]);
 
         Route::post('batch/delete', [
             'as'         => 'batch.delete',
             'uses'       => 'AdminController@batchDelete',
-            'middleware' => 'admin.can.model:delete',
+            //'middleware' => 'admin.can.model:delete',
         ]);
 
         Route::delete('{id}/delete', [
             'as'         => 'delete',
             'uses'       => 'AdminController@delete',
-            'middleware' => 'admin.can.model:delete',
+            //'middleware' => 'admin.can.model:delete',
             'where'      => ['id' => '[0-9]+'],
         ]);
 
         Route::delete('{id}/destroy', [
             'as'         => 'destroy',
             'uses'       => 'AdminController@forceDelete',
-            'middleware' => 'admin.can.model:delete',
+            //'middleware' => 'admin.can.model:delete',
             'where'      => ['id' => '[0-9]+'],
         ]);
 
         Route::post('{id}/restore', [
             'as'         => 'restore',
             'uses'       => 'AdminController@restore',
-            'middleware' => 'admin.can.model:restore',
+            //'middleware' => 'admin.can.model:restore',
             'where'      => ['id' => '[0-9]+'],
         ]);
 

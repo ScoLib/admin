@@ -64,12 +64,12 @@
             },
             info() {
                 let info = {};
-                this.config.elements.forEach(el => {
+                /*this.config.elements.forEach(el => {
                     info[el.key] = '';
                     if (el.type == 'checkbox') {
                         info[el.key] = [];
                     }
-                });
+                });*/
 //                console.log(info);
                 return info;
             },
@@ -78,6 +78,7 @@
             }
         },
         created () {
+            console.log(this);
         },
         methods: {
             save() {

@@ -2,6 +2,7 @@
 
 namespace Sco\Admin\Http\Controllers;
 
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Routing\Controller;
 use Sco\Admin\Contracts\ComponentInterface;
 use Sco\Admin\Contracts\ModelFactoryInterface;
@@ -15,17 +16,26 @@ class AdminController extends Controller
 
     public function getList(ComponentInterface $component)
     {
+        if (!$component->isView()) {
+            throw new AuthorizationException();
+        }
+
         return $component->get();
     }
 
-    /*public function config(ModelFactoryInterface $modelFactory)
-    {
-        return $modelFactory->getConfigManager();
-    }*/
 
     public function config(ComponentInterface $component)
     {
+        if (!$component->isView()) {
+            throw new AuthorizationException();
+        }
+
         return $component->getConfigs();
+    }
+
+    public function getCreate(ComponentInterface $component)
+    {
+
     }
 
     public function create()
@@ -33,14 +43,22 @@ class AdminController extends Controller
         return view('admin::app');
     }
 
-    public function store(ModelFactoryInterface $modelFactory)
+    public function store(ComponentInterface $component)
     {
-        $modelFactory->store();
+        $component->store();
     }
 
-    public function edit(ModelFactoryInterface $modelFactory, $id)
+    public function getEdit(ComponentInterface $component, $id)
     {
-        dd($modelFactory->find($id));
+        if ((!$id && !$component->isCreate()) || ($id && !$component->isEdit())) {
+            throw new AuthorizationException();
+        }
+
+    }
+
+    public function edit(ComponentInterface $component, $id)
+    {
+        dd($component->find($id));
     }
 
     public function update()
