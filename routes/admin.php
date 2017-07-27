@@ -172,8 +172,8 @@ Route::group([
         ]);
 
         Route::get('create/info', [
-            'as'         => 'getCreate',
-            'uses'       => 'AdminController@getCreate',
+            'as'         => 'create.info',
+            'uses'       => 'AdminController@getCreateInfo',
         ]);
 
         Route::get('create', [
@@ -196,8 +196,8 @@ Route::group([
         ]);
 
         Route::get('{id}/edit/info', [
-            'as'         => 'getEdit',
-            'uses'       => 'AdminController@getEdit',
+            'as'         => 'edit.info',
+            'uses'       => 'AdminController@getEditInfo',
             'where'      => ['id' => '[0-9]+'],
         ]);
 

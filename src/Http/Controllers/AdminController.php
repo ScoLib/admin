@@ -33,24 +33,35 @@ class AdminController extends Controller
         return $component->getConfigs();
     }
 
-    public function getCreate(ComponentInterface $component)
+    public function getCreateInfo(ComponentInterface $component)
     {
-
+        if (!$component->isCreate()) {
+            throw new AuthorizationException();
+        }
+        
     }
 
-    public function create()
+    public function create(ComponentInterface $component)
     {
+        if (!$component->isCreate()) {
+            throw new AuthorizationException();
+        }
+
         return view('admin::app');
     }
 
     public function store(ComponentInterface $component)
     {
+        if (!$component->isCreate()) {
+            throw new AuthorizationException();
+        }
+
         $component->store();
     }
 
-    public function getEdit(ComponentInterface $component, $id)
+    public function getEditInfo(ComponentInterface $component, $id)
     {
-        if ((!$id && !$component->isCreate()) || ($id && !$component->isEdit())) {
+        if (!$component->isEdit()) {
             throw new AuthorizationException();
         }
 
@@ -58,6 +69,10 @@ class AdminController extends Controller
 
     public function edit(ComponentInterface $component, $id)
     {
+        if (!$component->isEdit()) {
+            throw new AuthorizationException();
+        }
+
         dd($component->find($id));
     }
 
