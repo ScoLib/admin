@@ -4,7 +4,7 @@
 namespace Sco\Admin\View;
 
 use Illuminate\Support\Collection;
-use Sco\Admin\Contracts\ColumnInterface;
+use Sco\Admin\Contracts\View\ColumnInterface;
 
 class Table extends View
 {

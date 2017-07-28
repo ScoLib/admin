@@ -38,7 +38,9 @@ class AdminController extends Controller
         if (!$component->isCreate()) {
             throw new AuthorizationException();
         }
-        
+
+        $form = $component->fireCreate();
+
     }
 
     public function create(ComponentInterface $component)

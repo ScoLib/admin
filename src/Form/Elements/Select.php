@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Sco\Admin\Elements;
+namespace Sco\Admin\Form\Elements;
 
 class Select extends Element
 {

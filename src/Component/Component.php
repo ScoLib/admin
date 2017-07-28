@@ -131,7 +131,7 @@ abstract class Component implements ComponentInterface
     /**
      * @return \Sco\Admin\Contracts\ViewInterface
      */
-    protected function fireView()
+    public function fireView()
     {
         if (!method_exists($this, 'callView')) {
             throw new BadMethodCallException('Not Found Method "callView"');
@@ -140,6 +140,18 @@ abstract class Component implements ComponentInterface
         $view = $this->app->call([$this, 'callView']);
         return $view;
     }
+
+    public function fireCreate()
+    {
+        if (!method_exists($this, 'callCreate')) {
+            return;
+        }
+
+        $form = $this->app->call([$this, 'callCreate']);
+
+        return $form;
+    }
+
 
     protected function bootIfNotBooted()
     {
@@ -225,7 +237,7 @@ abstract class Component implements ComponentInterface
     public function getPermissions()
     {
         $data = collect();
-        foreach ($this->permissions as $perm) {
+        foreach ($this->permissionMethods as $perm) {
             $method = 'is' . ucfirst($perm);
             if (!method_exists($this, $method)) {
                 $method = 'can';

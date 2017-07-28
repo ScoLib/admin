@@ -1,6 +1,8 @@
 <?php
 
-namespace Sco\Admin\Contracts;
+namespace Sco\Admin\Contracts\View;
+
+use Sco\Admin\Contracts\RepositoryInterface;
 
 interface ViewInterface
 {

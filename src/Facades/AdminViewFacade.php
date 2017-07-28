@@ -6,7 +6,7 @@ namespace Sco\Admin\Facades;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @method static \Sco\Admin\View\Table table()
+ * @mixin \Sco\Admin\View\ViewFactory
  */
 class AdminViewFacade extends Facade
 {

@@ -8,12 +8,7 @@ use Sco\Admin\Elements\Text;
 use Sco\Admin\Elements\Select;
 
 /**
- * Class AdminFieldFacade
- *
- * @package Sco\Admin\Facades
- *
- * @method static Text text($name, $title)
- * @method static Select select($name, $title)
+ * @mixin \Sco\Admin\Form\Elements\ElementFactory
  */
 class AdminElementFacade extends Facade
 {

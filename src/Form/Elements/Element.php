@@ -1,12 +1,12 @@
 <?php
 
 
-namespace Sco\Admin\Elements;
+namespace Sco\Admin\Form\Elements;
 
 use JsonSerializable;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
-use Sco\Admin\Contracts\ElementInterface;
+use Sco\Admin\Contracts\Form\Elements\ElementInterface;
 
 abstract class Element implements ElementInterface, Arrayable, Jsonable, JsonSerializable
 {

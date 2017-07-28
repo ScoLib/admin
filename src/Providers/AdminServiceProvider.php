@@ -14,13 +14,13 @@ use Sco\Admin\Contracts\ColumnFactoryInterface;
 use Sco\Admin\Contracts\ConfigFactoryInterface;
 use Sco\Admin\Contracts\RepositoryInterface;
 use Sco\Admin\Contracts\ViewFactoryInterface;
-use Sco\Admin\Elements\ElementFactory;
+use Sco\Admin\Form\Elements\ElementFactory;
 use Sco\Admin\Exceptions\Handler;
 use Sco\Admin\Facades\AdminColumnFacade;
-use Sco\Admin\Facades\AdminFacade;
 use Sco\Admin\Facades\AdminElementFacade;
 use Sco\Admin\Facades\AdminNavigationFacade;
 use Sco\Admin\Facades\AdminViewFacade;
+use Sco\Admin\Form\FormFactory;
 use Sco\Admin\Repositories\Repository;
 use Sco\Admin\View\Columns\ColumnFactory;
 use Sco\Admin\View\ViewFactory;
@@ -81,7 +81,6 @@ class AdminServiceProvider extends ServiceProvider
         );
 
         $this->registerExceptionHandler();
-        $this->registerAdmin();
         $this->registerAliases();
         $this->registerMiddleware();
 
@@ -89,17 +88,8 @@ class AdminServiceProvider extends ServiceProvider
         $this->app->singleton(ConfigFactoryInterface::class, function () {
             return new ConfigFactory($this->app);
         });
-        $this->app->singleton('admin.element.factory', function () {
-            return new ElementFactory($this->app);
-        });
 
-        $this->app->singleton('admin.view.factory', function () {
-            return new ViewFactory();
-        });
-
-        $this->app->singleton('admin.column.factory', function () {
-            return new ColumnFactory();
-        });
+        $this->registerFactory();
 
         $this->registerProviders();
         $this->registerCoreContainerAliases();
@@ -116,7 +106,6 @@ class AdminServiceProvider extends ServiceProvider
     protected function registerAliases()
     {
         AliasLoader::getInstance([
-            'Admin'           => AdminFacade::class,
             'AdminElement'    => AdminElementFacade::class,
             'AdminNavigation' => AdminNavigationFacade::class,
             'AdminColumn'     => AdminColumnFacade::class,
@@ -142,11 +131,6 @@ class AdminServiceProvider extends ServiceProvider
         );
     }
 
-    protected function registerAdmin()
-    {
-        $this->app->instance('admin.instance', new Admin($this->app));
-    }
-
     protected function registerCoreContainerAliases()
     {
         $aliases = [
@@ -163,5 +147,24 @@ class AdminServiceProvider extends ServiceProvider
                 $this->app->alias($key, $alias);
             }
         }
+    }
+
+    protected function registerFactory()
+    {
+        $this->app->singleton('admin.form.factory', function () {
+            return new FormFactory($this->app);
+        });
+
+        $this->app->singleton('admin.element.factory', function () {
+            return new ElementFactory($this->app);
+        });
+
+        $this->app->singleton('admin.view.factory', function () {
+            return new ViewFactory();
+        });
+
+        $this->app->singleton('admin.column.factory', function () {
+            return new ColumnFactory();
+        });
     }
 }

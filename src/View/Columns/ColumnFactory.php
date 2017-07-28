@@ -3,7 +3,7 @@
 
 namespace Sco\Admin\View\Columns;
 
-use Sco\Admin\Contracts\ColumnFactoryInterface;
+use Sco\Admin\Contracts\View\ColumnFactoryInterface;
 use Sco\Admin\Traits\AliasBinder;
 
 /**

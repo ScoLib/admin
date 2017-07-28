@@ -8,7 +8,7 @@ use Illuminate\Support\Collection;
 use JsonSerializable;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
-use Sco\Admin\Contracts\ColumnInterface;
+use Sco\Admin\Contracts\View\ColumnInterface;
 
 abstract class Column implements ColumnInterface, Arrayable, Jsonable, JsonSerializable
 {

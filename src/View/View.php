@@ -4,7 +4,7 @@ namespace Sco\Admin\View;
 
 use Illuminate\Contracts\Support\Arrayable;
 use Sco\Admin\Contracts\RepositoryInterface;
-use Sco\Admin\Contracts\ViewInterface;
+use Sco\Admin\Contracts\View\ViewInterface;
 
 abstract class View implements ViewInterface, Arrayable
 {

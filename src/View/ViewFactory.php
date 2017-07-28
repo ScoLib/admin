@@ -3,7 +3,7 @@
 
 namespace Sco\Admin\View;
 
-use Sco\Admin\Contracts\ViewFactoryInterface;
+use Sco\Admin\Contracts\View\ViewFactoryInterface;
 use Sco\Admin\Traits\AliasBinder;
 
 /**

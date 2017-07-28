@@ -1,6 +1,6 @@
 <?php
 
-namespace Sco\Admin\Contracts;
+namespace Sco\Admin\Contracts\View;
 
 use Illuminate\Database\Eloquent\Model;
 
