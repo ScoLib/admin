@@ -1,10 +1,12 @@
 <?php
 
 
-namespace Sco\Admin\Form\Elements;
+namespace Sco\Admin\Form;
 
 use Illuminate\Foundation\Application;
 use Sco\Admin\Contracts\Form\Elements\ElementFactoryInterface;
+use Sco\Admin\Form\Elements\Select;
+use Sco\Admin\Form\Elements\Text;
 use Sco\Admin\Traits\AliasBinder;
 
 /**

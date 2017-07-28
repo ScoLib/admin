@@ -8,7 +8,7 @@ use Sco\Admin\Elements\Text;
 use Sco\Admin\Elements\Select;
 
 /**
- * @mixin \Sco\Admin\Form\Elements\ElementFactory
+ * @mixin \Sco\Admin\Form\ElementFactory
  */
 class AdminElementFacade extends Facade
 {
