@@ -7,12 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Application;
 use Sco\Admin\Contracts\RepositoryInterface;
+use Sco\Admin\Contracts\WithModel;
 use Sco\Admin\Exceptions\RepositoryException;
 
-/**
- * @method static \Illuminate\Database\Eloquent\Model getKeyName()
- */
-class Repository implements RepositoryInterface
+class Repository implements RepositoryInterface, WithModel
 {
     protected $app;
 

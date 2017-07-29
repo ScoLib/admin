@@ -9,8 +9,14 @@ use JsonSerializable;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
 use Sco\Admin\Contracts\View\ColumnInterface;
+use Sco\Admin\Contracts\WithModel;
 
-abstract class Column implements ColumnInterface, Arrayable, Jsonable, JsonSerializable
+abstract class Column implements
+    ColumnInterface,
+    WithModel,
+    Arrayable,
+    Jsonable,
+    JsonSerializable
 {
     protected $name;
 
@@ -84,6 +90,7 @@ abstract class Column implements ColumnInterface, Arrayable, Jsonable, JsonSeria
     public function setModel(Model $model)
     {
         $this->model = $model;
+
         return $this;
     }
 

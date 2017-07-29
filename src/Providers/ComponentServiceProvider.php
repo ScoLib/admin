@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
 use Sco\Admin\Component\Component;
+use Sco\Admin\Contracts\Initializable;
 use Sco\Admin\Contracts\WithNavigation;
 
 class ComponentServiceProvider extends ServiceProvider
@@ -38,6 +39,10 @@ class ComponentServiceProvider extends ServiceProvider
     {
         foreach (config('admin.components', []) as $model => $component) {
             $class = new $component($this->app, $model);
+            if ($class instanceof Initializable) {
+                $class->initialize();
+            }
+
             if ($class instanceof WithNavigation) {
                 $class->addToNavigation();
             }

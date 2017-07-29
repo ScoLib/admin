@@ -3,17 +3,29 @@
 
 namespace Sco\Admin\Form\Elements;
 
+use Illuminate\Database\Eloquent\Model;
 use JsonSerializable;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
 use Sco\Admin\Contracts\Form\Elements\ElementInterface;
+use Sco\Admin\Contracts\WithModel;
 
-abstract class Element implements ElementInterface, Arrayable, Jsonable, JsonSerializable
+abstract class Element implements
+    ElementInterface,
+    WithModel,
+    Arrayable,
+    Jsonable,
+    JsonSerializable
 {
     protected $type;
 
     protected $name;
     protected $title;
+
+    /**
+     * @var \Illuminate\Database\Eloquent\Model
+     */
+    protected $model;
 
     public function __construct($name, $title)
     {
@@ -24,6 +36,18 @@ abstract class Element implements ElementInterface, Arrayable, Jsonable, JsonSer
     public function isRelationship()
     {
         return !empty($this->relationship);
+    }
+
+    public function getModel()
+    {
+        return $this->model;
+    }
+
+    public function setModel(Model $model)
+    {
+        $this->model = $model;
+
+        return $this;
     }
 
     public function toArray()

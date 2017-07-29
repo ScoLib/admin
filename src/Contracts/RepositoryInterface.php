@@ -7,13 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 interface RepositoryInterface
 {
-    /**
-     * @return Model
-     */
-    public function getModel();
-
-    public function setModel(Model $model);
-
     public function getClass();
 
     public function setClass($class);
