@@ -129,7 +129,7 @@ abstract class Component implements ComponentInterface
     }
 
     /**
-     * @return \Sco\Admin\Contracts\ViewInterface
+     * {@inheritdoc}
      */
     public function fireView()
     {
@@ -141,6 +141,9 @@ abstract class Component implements ComponentInterface
         return $view;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function fireCreate()
     {
         if (!method_exists($this, 'callCreate')) {
@@ -148,6 +151,20 @@ abstract class Component implements ComponentInterface
         }
 
         $form = $this->app->call([$this, 'callCreate']);
+
+        return $form;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function fireEdit($id)
+    {
+        if (!method_exists($this, 'callEdit')) {
+            return;
+        }
+
+        $form = $this->app->call([$this, 'callEdit'], ['id' => $id]);
 
         return $form;
     }
@@ -216,7 +233,8 @@ abstract class Component implements ComponentInterface
 
         foreach ($this->permissionMethods as $method) {
             if (method_exists($class, $method)) {
-                $this->registerPermission($method, [$this->app->make($className), $method]);
+                $this->registerPermission($method,
+                    [$this->app->make($className), $method]);
             }
         }
     }

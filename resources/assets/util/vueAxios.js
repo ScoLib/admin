@@ -37,4 +37,41 @@ axios.interceptors.response.use(null, error => {
     return Promise.reject(error);
 })
 
-export default axios
+/**
+ * Install plugin
+ * @param Vue
+ */
+function plugin(Vue) {
+    if (plugin.installed) {
+        return
+    }
+    plugin.installed = true
+
+    if (!axios) {
+        console.error('You have to install axios')
+        return
+    }
+
+    Vue.axios = axios
+
+    Object.defineProperties(Vue.prototype, {
+        axios: {
+            get() {
+                return axios
+            }
+        },
+        $http: {
+            get() {
+                return axios
+            }
+        }
+    })
+}
+
+if (typeof exports == "object") {
+    module.exports = plugin
+} else if (typeof define == "function" && define.amd) {
+    define([], function(){ return plugin })
+} else if (window.Vue && window.axios) {
+    Vue.use(plugin)
+}

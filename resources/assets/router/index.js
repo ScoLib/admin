@@ -39,14 +39,12 @@ router.beforeEach((to, from, next) => {
     // console.log('to', to);
     // console.log(from);
     // console.log(window.Admin);
-    let urlPrefix = 'admin';
+
     if (typeof window.Admin != 'undefined') {
         if (window.Admin.LoggedUser) {
             router.app.$store.commit('setUser', window.Admin.LoggedUser);
         }
-        urlPrefix = window.Admin.UrlPrefix;
     }
-    router.app.$store.commit('setUrlPrefix', urlPrefix)
 
     if (to.meta.title) {
         setTitle(to.meta.title);
@@ -67,7 +65,7 @@ router.beforeEach((to, from, next) => {
             let models = router.app.$store.state.models;
             if ($.inArray(to.name, ['admin.model.index', 'admin.model.create', 'admin.model.edit']) != -1) {
                 if (Object.keys(models).indexOf(to.params.model) == -1) {
-                    router.app.axios.get(`/${router.app.$store.state.urlPrefix}/${to.params.model}/config`)
+                    router.app.axios.get(`/${router.app.getUrlPrefix()}/${to.params.model}/config`)
                         .then(response => {
                             var data = {};
                             data[to.params.model] = response.data;

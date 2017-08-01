@@ -73,9 +73,6 @@
 //                console.log(info);
                 return info;
             },
-            urlPrefix() {
-                return this.$store.state.urlPrefix;
-            }
         },
         created () {
             console.log(this);
@@ -84,7 +81,7 @@
             save() {
                 console.log(this.info);
 //                return false;
-                this.$http.post(`/${this.urlPrefix}/${this.$route.params.model}/store`, this.info)
+                this.$http.post(`/${this.getUrlPrefix()}/${this.$route.params.model}/store`, this.info)
                     .then(response => {
                     this.buttonLoading = false;
                     this.$message.success('操作成功')
@@ -97,6 +94,5 @@
                 })
             },
         }
-
     }
 </script>

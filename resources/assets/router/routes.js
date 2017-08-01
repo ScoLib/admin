@@ -1,10 +1,11 @@
+import Vue from 'vue'
+import getUrlPrefix from '../util/urlPrefix'
 import Parent from '../views/parent.vue'
 import Blank from '../views/blank.vue'
 
-var UrlPrefix = 'admin';
-if (typeof window.Admin != 'undefined') {
-    UrlPrefix = window.Admin.UrlPrefix;
-}
+Vue.use(getUrlPrefix);
+
+let UrlPrefix = Vue.getUrlPrefix();
 
 export default [
     {

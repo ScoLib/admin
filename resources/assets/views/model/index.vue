@@ -208,9 +208,6 @@
                 var permissions = this.config.permissions;
                 return permissions.edit || permissions.delete || permissions.restore;
             },
-            urlPrefix() {
-                return this.$store.state.urlPrefix;
-            }
         },
         created () {
             this.fetchData();
@@ -241,7 +238,7 @@
                 }
                 this.pageData = {};
                 this.tableLoading = true;
-                this.$http.get(`/${this.urlPrefix}/${this.$route.params.model}/list`, {params: {'page': page}})
+                this.$http.get(`/${this.getUrlPrefix()}/${this.$route.params.model}/list`, {params: {'page': page}})
                     .then(response => {
                         this.tableLoading = false;
                         this.pageData = response.data;
@@ -260,7 +257,7 @@
                         if (action == 'confirm') {
                             instance.confirmButtonLoading = true;
                             //                            instance.confirmButtonText = '执行中...';
-                            this.$http.post(`/${this.urlPrefix}/${this.$route.params.model}/batch/delete`, {
+                            this.$http.post(`/${this.getUrlPrefix()}/${this.$route.params.model}/batch/delete`, {
                                 'ids': this.selection
                             }).then(response => {
                                 instance.confirmButtonLoading = false;

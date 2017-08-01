@@ -20,6 +20,23 @@ interface ComponentInterface
      */
     public function getConfigs();
 
+    /**
+     * @return \Sco\Admin\Contracts\ViewInterface
+     */
+    public function fireView();
+
+    /**
+     * @return \Sco\Admin\Contracts\Form\FormInterface
+     */
+    public function fireCreate();
+
+    /**
+     * @param $id
+     *
+     * @return \Sco\Admin\Contracts\Form\FormInterface
+     */
+    public function fireEdit($id);
+
     public function get();
 
     public function isView();

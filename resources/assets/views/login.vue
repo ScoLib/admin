@@ -78,7 +78,7 @@
             login () {
                 this.errors = {};
                 this.buttonLoading = true;
-                this.$http.post(`/${this.$store.state.urlPrefix}/login`, this.info).then(response => {
+                this.$http.post(`/${this.getUrlPrefix()}/login`, this.info).then(response => {
 //                    this.buttonLoading = false;
                     this.$store.commit('setUser', response.data);
                     this.$router.push({name: 'admin.dashboard'});
