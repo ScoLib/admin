@@ -166,6 +166,11 @@ abstract class Component implements ComponentInterface
 
         $form = $this->app->call([$this, 'callEdit'], ['id' => $id]);
 
+        $model = $this->getRepository()->findOrFail($id);
+
+
+        $form->setModel($model);
+
         return $form;
     }
 
@@ -233,8 +238,10 @@ abstract class Component implements ComponentInterface
 
         foreach ($this->permissionMethods as $method) {
             if (method_exists($class, $method)) {
-                $this->registerPermission($method,
-                    [$this->app->make($className), $method]);
+                $this->registerPermission(
+                    $method,
+                    [$this->app->make($className), $method]
+                );
             }
         }
     }

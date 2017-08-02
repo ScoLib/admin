@@ -1,15 +1,15 @@
 import Vue from 'vue'
-import getUrlPrefix from '../util/urlPrefix'
+import UrlPrefix from '../util/url-prefix'
 import Parent from '../views/parent.vue'
 import Blank from '../views/blank.vue'
 
-Vue.use(getUrlPrefix);
+Vue.use(UrlPrefix);
 
-let UrlPrefix = Vue.getUrlPrefix();
+let prefix = Vue.getUrlPrefix();
 
 export default [
     {
-        path: `/${UrlPrefix}/login`,
+        path: `/${prefix}/login`,
         component (resolve) {
             require(['../views/login.vue'], resolve);
         },
@@ -20,7 +20,7 @@ export default [
         },
     },
     {
-        path: `/${UrlPrefix}/403`,
+        path: `/${prefix}/403`,
         component (resolve) {
             require(['../views/errors/403.vue'], resolve);
         },
@@ -31,7 +31,7 @@ export default [
         },
     },
     {
-        path: `/${UrlPrefix}`,
+        path: `/${prefix}`,
         component: Parent,
         meta: {
             title: '首页'

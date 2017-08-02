@@ -13,6 +13,7 @@ use Sco\Admin\Contracts\ColumnFactoryInterface;
 use Sco\Admin\Contracts\ConfigFactoryInterface;
 use Sco\Admin\Contracts\RepositoryInterface;
 use Sco\Admin\Contracts\ViewFactoryInterface;
+use Sco\Admin\Facades\AdminFormFacade;
 use Sco\Admin\Form\ElementFactory;
 use Sco\Admin\Exceptions\Handler;
 use Sco\Admin\Facades\AdminColumnFacade;
@@ -109,6 +110,7 @@ class AdminServiceProvider extends ServiceProvider
             'AdminNavigation' => AdminNavigationFacade::class,
             'AdminColumn'     => AdminColumnFacade::class,
             'AdminView'       => AdminViewFacade::class,
+            'AdminForm'       => AdminFormFacade::class,
         ]);
     }
 

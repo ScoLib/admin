@@ -32,6 +32,6 @@ if (typeof exports == "object") {
     module.exports = plugin
 } else if (typeof define == "function" && define.amd) {
     define([], function(){ return plugin })
-} else if (window.Vue && window.axios) {
+} else if (window.Vue) {
     Vue.use(plugin)
 }

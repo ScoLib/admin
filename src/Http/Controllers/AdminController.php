@@ -40,7 +40,7 @@ class AdminController extends Controller
         }
 
         $form = $component->fireCreate();
-
+        return $form;
     }
 
     public function create(ComponentInterface $component)
@@ -66,7 +66,6 @@ class AdminController extends Controller
         if (!$component->isEdit()) {
             throw new AuthorizationException();
         }
-
     }
 
     public function edit(ComponentInterface $component, $id)

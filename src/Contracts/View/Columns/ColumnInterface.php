@@ -2,7 +2,6 @@
 
 namespace Sco\Admin\Contracts\View;
 
-
 interface ColumnInterface
 {
     public function getName();

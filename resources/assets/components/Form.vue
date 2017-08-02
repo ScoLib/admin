@@ -54,7 +54,15 @@
                             v-else-if="element.type == 'date'">
                     </el-date-picker>
 
-                    <template v-else-if="typeof element.type === 'undefined' || ['text', 'textarea', 'number', 'email', 'password'].indexOf(element.type) > -1">
+                    <el-input-number
+                            v-model="currentValue[element.key]"
+                            :disabled="element.disabled"
+                            :min="element.min"
+                            :max="element.max"
+                            v-else-if="element.type == 'number'">
+                    </el-input-number>
+
+                    <template v-else-if="typeof element.type === 'undefined' || ['text', 'textarea', 'email', 'password'].indexOf(element.type) > -1">
                         <el-input
                                 :type="element.type"
                                 :name="element.key"

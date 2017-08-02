@@ -11,6 +11,20 @@ interface RepositoryInterface
 
     public function setClass($class);
 
+    /**
+     * @param $id
+     *
+     * @return Model
+     */
+    public function find($id);
+
+    /**
+     * @param $id
+     *
+     * @return Model
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
+     */
+    public function findOrFail($id);
 
     public function store();
 

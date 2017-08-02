@@ -9,8 +9,8 @@ import i18n from './lang';
 import store from './store';
 import router from './router';
 import App from './components/App.vue'
-import VueAxios from './util/vueAxios'
-import getUrlPrefix from './util/urlPrefix'
+import VueAxios from './util/vue-axios'
+import UrlPrefix from './util/url-prefix'
 
 // import util from './util';
 // import ElLoading from 'element-loading'
@@ -28,7 +28,7 @@ Vue.use(ElementUI, {
 })
 
 Vue.use(VueAxios);
-Vue.use(getUrlPrefix);
+Vue.use(UrlPrefix);
 
 // Vue.use(util);
 

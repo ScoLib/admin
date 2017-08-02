@@ -2,12 +2,20 @@
 
 namespace Sco\Admin\Form;
 
+use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Database\Eloquent\Model;
+use JsonSerializable;
 use Sco\Admin\Contracts\Form\Elements\ElementInterface;
 use Sco\Admin\Contracts\Form\FormInterface;
 use Sco\Admin\Contracts\WithModel;
 
-class Form implements FormInterface, WithModel
+class Form implements
+    FormInterface,
+    WithModel,
+    Jsonable,
+    Arrayable,
+    JsonSerializable
 {
     /**
      * @var \Sco\Admin\Form\ElementsCollection
@@ -79,10 +87,37 @@ class Form implements FormInterface, WithModel
     {
         $this->elements->each(function (ElementInterface $element) use ($model) {
             //if ($element instanceof WithModel) {
-                $element->setModel($model);
+            $element->setModel($model);
             //}
         });
 
         return $this;
+    }
+
+    public function getValues()
+    {
+    }
+
+    public function toArray()
+    {
+        return [
+            'elements' => $this->getElements(),
+            'values'   => $this->getValues(),
+        ];
+    }
+
+    public function jsonSerialize()
+    {
+        return $this->toArray();
+    }
+
+    public function toJson($options = 0)
+    {
+        return json_encode($this->jsonSerialize(), $options);
+    }
+
+    public function __toString()
+    {
+        return $this->toJson();
     }
 }

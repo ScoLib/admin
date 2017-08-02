@@ -33,11 +33,6 @@ abstract class Element implements
         $this->title = $title;
     }
 
-    public function isRelationship()
-    {
-        return !empty($this->relationship);
-    }
-
     public function getModel()
     {
         return $this->model;

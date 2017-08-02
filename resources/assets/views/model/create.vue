@@ -17,8 +17,9 @@
                 </div>
                 <!-- /.box-header -->
                 <v-form
-                        :elements="config.elements"
-                        v-model="info"
+                        :elements="info.elements"
+                        v-model="info.value"
+                        v-loading="formLoading"
                         :errors="errors">
                 </v-form>
 
@@ -35,47 +36,36 @@
 
 <script>
     import vForm from '../../components/Form.vue';
+    import mixins from './model-mixins'
 
     export default {
+        mixins: [
+            mixins
+        ],
         components: {
             vForm
         },
         data() {
             return {
                 test: '',
-//                info: {},
+                info: {},
                 errors: {},
+                formLoading: false,
                 buttonLoading: false,
             }
         },
         computed: {
-            config() {
-                let models = this.$store.state.models;
-                let model = this.$route.params.model;
-//                console.log(models[model]);
-//                console.log(model);
-//                console.log(Object.keys(models).indexOf(model));
-                if (Object.keys(models).indexOf(model) == -1) {
-                    return {};
-                } else {
-//                    console.log(models[model]);
-                    return models[model];
-                }
-            },
-            info() {
-                let info = {};
-                /*this.config.elements.forEach(el => {
-                    info[el.key] = '';
-                    if (el.type == 'checkbox') {
-                        info[el.key] = [];
-                    }
-                });*/
-//                console.log(info);
-                return info;
-            },
+
         },
         created () {
-            console.log(this);
+            this.formLoading = true;
+            this.$http.get(`/${this.getUrlPrefix()}/${this.$route.params.model}/create/info`)
+                .then(response => {
+                    this.formLoading = false;
+                    this.info = response.data;
+                }).catch(error => {
+                    this.$message.error(error.response.data)
+            })
         },
         methods: {
             save() {

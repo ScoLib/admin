@@ -82,6 +82,26 @@ class Repository implements RepositoryInterface, WithModel
             ->with($this->getWith());
     }
 
+    public function find($id)
+    {
+        $query = $this->getQuery();
+        if ($this->isRestorable()) {
+            $query->withTrashed();
+        }
+
+        return $query->find($id);
+    }
+
+    public function findOrFail($id)
+    {
+        $query = $this->getQuery();
+        if ($this->isRestorable()) {
+            $query->withTrashed();
+        }
+
+        return $query->findOrFail($id);
+    }
+
     /**
      * {@inheritdoc}
      */

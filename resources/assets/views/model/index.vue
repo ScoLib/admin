@@ -1,5 +1,6 @@
 <style>
-    .el-table table {
+    .el-table table,
+    .el-table__empty-block {
         width: 100% !important;
     }
 </style>
@@ -159,8 +160,12 @@
 <script>
     import vColumn from '../../components/Column'
     import ActionColumn from '../../components/ActionColumn.vue'
+    import mixins from './model-mixins'
 
     export default {
+        mixins: [
+            mixins
+        ],
         components: {
             vColumn,
             ActionColumn
@@ -191,19 +196,7 @@
                 }
                 return this.pageData;
             },
-            config() {
-                let models = this.$store.state.models;
-                let model = this.$route.params.model;
-//                console.log(models[model]);
-//                console.log(model);
-//                console.log(Object.keys(models).indexOf(model));
-                if (Object.keys(models).indexOf(model) == -1) {
-                    return {};
-                } else {
-//                    console.log(models[model]);
-                    return models[model];
-                }
-            },
+
             isActionColumn() {
                 var permissions = this.config.permissions;
                 return permissions.edit || permissions.delete || permissions.restore;

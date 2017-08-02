@@ -3,7 +3,7 @@
 
 namespace Sco\Admin\Form\Elements;
 
-class Text extends Element
+class Text extends Input
 {
     protected $type = 'text';
 }

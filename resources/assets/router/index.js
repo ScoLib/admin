@@ -62,28 +62,12 @@ router.beforeEach((to, from, next) => {
                 next({name: 'admin.login'});
             }
 
-            let models = router.app.$store.state.models;
-            if ($.inArray(to.name, ['admin.model.index', 'admin.model.create', 'admin.model.edit']) != -1) {
-                if (Object.keys(models).indexOf(to.params.model) == -1) {
-                    router.app.axios.get(`/${router.app.getUrlPrefix()}/${to.params.model}/config`)
-                        .then(response => {
-                            var data = {};
-                            data[to.params.model] = response.data;
-                            router.app.$store.commit('setModel', data);
-                            setTitle(to.meta.title + response.data.title);
-                            next();
-                        }).catch(error => {
-                            next({name: 'admin.403'});
-                        })
-                } else {
-                    var　title = to.meta.title + models[to.params.model].title;
-                    setTitle(title)
-                    next();
-                }
-            } else {
-                if (typeof to.name == 'undefined' || to.name == '') {
-                    return next({name: 'admin.403'});
-                }
+            if (typeof to.name == 'undefined' || to.name == '') {
+                return next({name: 'admin.403'});
+            }
+
+            // if (to.name.indexOf('admin.model.') == -1) {
+
                 next();
                 /*router.app.axios.get(`/${router.app.$store.state.urlPrefix}/check/perm/${to.name}`)
                     .then(response => {
@@ -92,7 +76,7 @@ router.beforeEach((to, from, next) => {
                     }).catch(error => {
                         next({name: 'admin.403'});
                     })*/
-            }
+            // }
         } else {
             next();
         }
