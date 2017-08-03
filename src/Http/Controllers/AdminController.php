@@ -66,6 +66,9 @@ class AdminController extends Controller
         if (!$component->isEdit()) {
             throw new AuthorizationException();
         }
+
+        $form = $component->fireEdit($id);
+        return $form;
     }
 
     public function edit(ComponentInterface $component, $id)

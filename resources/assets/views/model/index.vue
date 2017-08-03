@@ -160,7 +160,7 @@
 <script>
     import vColumn from '../../components/Column'
     import ActionColumn from '../../components/ActionColumn.vue'
-    import mixins from './model-mixins'
+    import mixins from './mixins'
 
     export default {
         mixins: [

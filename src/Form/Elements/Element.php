@@ -23,6 +23,11 @@ abstract class Element implements
     protected $title;
 
     /**
+     * @var mixed
+     */
+    protected $defaultValue;
+
+    /**
      * @var \Illuminate\Database\Eloquent\Model
      */
     protected $model;
@@ -31,6 +36,30 @@ abstract class Element implements
     {
         $this->name  = $name;
         $this->title = $title;
+    }
+
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    public function setName($value)
+    {
+        $this->name = $value;
+
+        return $this;
+    }
+
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    public function setTitle($value)
+    {
+        $this->title = $value;
+
+        return $this;
     }
 
     public function getModel()
@@ -43,6 +72,41 @@ abstract class Element implements
         $this->model = $model;
 
         return $this;
+    }
+
+    public function getValue()
+    {
+        return $this->getModelValue();
+    }
+
+    protected function getModelValue()
+    {
+        $model = $this->getModel();
+        $value = $this->getDefaultValue();
+        if (is_null($model) || !$model->exists) {
+            return $value;
+        }
+
+        $relations = explode('.', $this->getName(), 2);
+        $count = count($relations);
+
+        if ($count == 1) {
+            return $model->getAttribute($this->getName());
+        }
+
+        foreach ($relations as $relation) {
+            if ($model->{$relation} instanceof Model) {
+                $model = $model->{$relation};
+                continue;
+            }
+
+            return $model->getAttribute($relation);
+        }
+    }
+
+    protected function getDefaultValue()
+    {
+        return $this->defaultValue;
     }
 
     public function toArray()

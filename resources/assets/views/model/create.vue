@@ -18,7 +18,7 @@
                 <!-- /.box-header -->
                 <v-form
                         :elements="info.elements"
-                        v-model="info.value"
+                        v-model="info.values"
                         v-loading="formLoading"
                         :errors="errors">
                 </v-form>
@@ -36,7 +36,7 @@
 
 <script>
     import vForm from '../../components/Form.vue';
-    import mixins from './model-mixins'
+    import mixins from './mixins'
 
     export default {
         mixins: [
