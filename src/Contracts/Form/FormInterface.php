@@ -32,4 +32,19 @@ interface FormInterface
      * @return $this
      */
     public function setElementModel(Model $model);
+
+    /**
+     * @param array $data
+     *
+     * @return $this
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    public function validate(array $data = []);
+
+    public function save();
+
+    /**
+     * @return \Illuminate\Support\Collection
+     */
+    public function getValues();
 }

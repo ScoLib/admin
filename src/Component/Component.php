@@ -3,6 +3,7 @@
 namespace Sco\Admin\Component;
 
 use Illuminate\Foundation\Application;
+use Illuminate\Http\Request;
 use Sco\Admin\Component\Concerns\HasEvents;
 use Sco\Admin\Component\Concerns\HasNavigation;
 use Sco\Admin\Contracts\ComponentInterface;
@@ -152,7 +153,28 @@ abstract class Component implements ComponentInterface
 
         $form = $this->app->call([$this, 'callCreate']);
 
+        $form->setModel($this->getModel());
+
         return $form;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function store()
+    {
+        $form = $this->fireCreate();
+
+        $form->validate()->save();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function update($id)
+    {
+        $form = $this->fireEdit($id);
+        $form->validate()->save();
     }
 
     /**
@@ -167,7 +189,6 @@ abstract class Component implements ComponentInterface
         $form = $this->app->call([$this, 'callEdit'], ['id' => $id]);
 
         $model = $this->getRepository()->findOrFail($id);
-
 
         $form->setModel($model);
 

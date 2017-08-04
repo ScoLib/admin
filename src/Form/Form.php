@@ -94,6 +94,30 @@ class Form implements
         return $this;
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function validate(array $data = [])
+    {
+        $data = empty($data) ? request()->all() : $data;
+        \Validator::validate(
+            $data,
+            $this->getRules(),
+            $this->getMessage(),
+            $this->getCustomAttributes()
+        );
+
+        return $this;
+    }
+
+    public function save()
+    {
+
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getValues()
     {
         return $this->elements->mapWithKeys(function (ElementInterface $element) {

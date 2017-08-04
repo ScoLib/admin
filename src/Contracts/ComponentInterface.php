@@ -3,6 +3,8 @@
 
 namespace Sco\Admin\Contracts;
 
+use Illuminate\Http\Request;
+
 interface ComponentInterface
 {
     public function boot();
@@ -38,6 +40,18 @@ interface ComponentInterface
     public function fireEdit($id);
 
     public function get();
+
+    /**
+     * @return mixed
+     */
+    public function store();
+
+    /**
+     * @param mixed $id
+     *
+     * @return mixed
+     */
+    public function update($id);
 
     public function isView();
 

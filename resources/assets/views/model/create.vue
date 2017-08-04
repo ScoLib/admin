@@ -69,9 +69,9 @@
         },
         methods: {
             save() {
-                console.log(this.info);
+                console.log(this.info.values);
 //                return false;
-                this.$http.post(`/${this.getUrlPrefix()}/${this.$route.params.model}/store`, this.info)
+                this.$http.post(`/${this.getUrlPrefix()}/${this.$route.params.model}/store`, this.info.values)
                     .then(response => {
                     this.buttonLoading = false;
                     this.$message.success('操作成功')

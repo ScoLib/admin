@@ -70,6 +70,8 @@
                                 :disabled="element.disabled"
                                 :readonly="element.readonly"
                                 :rows="element.rows"
+                                :minlength="element.minlength"
+                                :maxlength="element.maxlength"
                                 v-model="currentValue[element.key]">
                         </el-input>
                     </template>
