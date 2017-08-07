@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use JsonSerializable;
 use Sco\Admin\Contracts\Form\Elements\ElementInterface;
 use Sco\Admin\Contracts\Form\FormInterface;
+use Sco\Admin\Contracts\Validable;
 use Sco\Admin\Contracts\WithModel;
 
 class Form implements
@@ -15,7 +16,8 @@ class Form implements
     WithModel,
     Jsonable,
     Arrayable,
-    JsonSerializable
+    JsonSerializable,
+    Validable
 {
     /**
      * @var \Sco\Admin\Form\ElementsCollection
@@ -26,6 +28,10 @@ class Form implements
      * @var \Illuminate\Database\Eloquent\Model
      */
     protected $model;
+
+    protected $validationRules = [];
+
+    protected $validationMessages = [];
 
     public function __construct(array $elements = [])
     {
@@ -102,13 +108,39 @@ class Form implements
         $data = empty($data) ? request()->all() : $data;
         \Validator::validate(
             $data,
-            $this->getRules(),
-            $this->getMessage(),
-            $this->getCustomAttributes()
+            $this->getValidationRules(),
+            $this->getValidationMessages(),
+            $this->getValidationTitles()
         );
 
         return $this;
     }
+
+    public function getValidationRules()
+    {
+
+    }
+
+    public function getValidationMessages()
+    {
+
+    }
+
+    public function getValidationTitles()
+    {
+
+    }
+
+    /*public function addValidationRule($rule, $message = null)
+    {
+        $this->validationRules[] = $rule;
+
+        if (is_null($message)) {
+            return $this;
+        }
+
+        return $this->addValidationMessage($message);
+    }*/
 
     public function save()
     {

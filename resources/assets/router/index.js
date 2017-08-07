@@ -40,11 +40,11 @@ router.beforeEach((to, from, next) => {
     // console.log(from);
     // console.log(window.Admin);
 
-    if (typeof window.Admin != 'undefined') {
+    /*if (typeof window.Admin != 'undefined') {
         if (window.Admin.LoggedUser) {
             router.app.$store.commit('setUser', window.Admin.LoggedUser);
         }
-    }
+    }*/
 
     if (to.meta.title) {
         setTitle(to.meta.title);

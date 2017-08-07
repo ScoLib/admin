@@ -42,6 +42,13 @@ Vue.use(UrlPrefix);
     require('./components/Input.vue')
 );*/
 
+// 设置当前登录用户
+if (typeof window.Admin != 'undefined') {
+    if (window.Admin.LoggedUser) {
+        store.commit('setUser', window.Admin.LoggedUser);
+    }
+}
+
 const app = new Vue({
     router,
     store,

@@ -8,6 +8,7 @@ export default new Vuex.Store({
         user: {},
         models: {},
         metaTitle: '',
+        modelCreateInfo: {},
     },
     mutations: {
         setUser(state, user) {
@@ -19,5 +20,8 @@ export default new Vuex.Store({
         setMetaTitle(state, title) {
             state.metaTitle = title ? title : '';
         },
+        setModelCreateInfo(state, data) {
+            state.modelCreateInfo = Object.assign(state.modelCreateInfo, data);
+        }
     }
 });

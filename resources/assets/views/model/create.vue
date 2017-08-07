@@ -59,13 +59,21 @@
         },
         created () {
             this.formLoading = true;
-            this.$http.get(`/${this.getUrlPrefix()}/${this.$route.params.model}/create/info`)
-                .then(response => {
-                    this.formLoading = false;
-                    this.info = response.data;
-                }).catch(error => {
+            if (Object.keys(this.$store.state.modelCreateInfo).indexOf(this.$route.params.model) == -1) {
+                this.$http.get(`/${this.getUrlPrefix()}/${this.$route.params.model}/create/info`)
+                    .then(response => {
+                        this.formLoading = false;
+                        this.info = response.data;
+                        var data = {};
+                        data[this.$route.params.model] = this.info;
+                        this.$store.commit('setModelCreateInfo', data);
+                    }).catch(error => {
                     this.$message.error(error.response.data)
-            })
+                })
+            } else {
+                this.formLoading = false;
+                this.info = this.$store.state.modelCreateInfo[this.$route.params.model];
+            }
         },
         methods: {
             save() {
