@@ -32,6 +32,10 @@ abstract class Element implements
      */
     protected $model;
 
+    protected $validationRules = [];
+
+    protected $validationMessages = [];
+
     public function __construct($name, $title)
     {
         $this->name  = $name;
@@ -116,6 +120,17 @@ abstract class Element implements
             'title' => $this->title,
             'type'  => $this->type,
         ];
+    }
+
+    public function addValidationRule($rule, $message = null)
+    {
+        $this->validationRules[] = $rule;
+
+        if (is_null($message)) {
+            return $this;
+        }
+
+        return $this->addValidationMessage($message);
     }
 
     public function jsonSerialize()

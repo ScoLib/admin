@@ -29,10 +29,6 @@ class Form implements
      */
     protected $model;
 
-    protected $validationRules = [];
-
-    protected $validationMessages = [];
-
     public function __construct(array $elements = [])
     {
         $this->setElements($elements);
@@ -130,17 +126,6 @@ class Form implements
     {
 
     }
-
-    /*public function addValidationRule($rule, $message = null)
-    {
-        $this->validationRules[] = $rule;
-
-        if (is_null($message)) {
-            return $this;
-        }
-
-        return $this->addValidationMessage($message);
-    }*/
 
     public function save()
     {
