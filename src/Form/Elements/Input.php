@@ -59,9 +59,8 @@ class Input extends Element
     public function toArray()
     {
         $data = [];
-            $data['minlength'] = $this->getMin();
-
-            $data['maxlength'] = $this->getMax();
+        $data['minlength'] = $this->getMin();
+        $data['maxlength'] = $this->getMax();
 
         return parent::toArray() + $data;
     }

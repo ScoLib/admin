@@ -134,7 +134,7 @@
                     </el-table>
                 </div>
                 <!-- /.box-body -->
-                <div v-if="pageData.per_page" class="box-footer clearfix">
+                <div v-if="pageData.total" class="box-footer clearfix">
                     <el-pagination
                             layout="total, prev, pager, next"
                             :page-size="pageData.per_page"
