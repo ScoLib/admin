@@ -3,18 +3,19 @@
 namespace Sco\Admin\Form\Elements;
 
 use DB;
+use Doctrine\DBAL\Types\Type;
 
 class Input extends Element
 {
     protected $defaultValue = '';
 
-    protected $maxLength;
-    protected $minLength = 0;
+    protected $max;
+    protected $min;
 
-    public function getMaxLength()
+    public function getMax()
     {
-        if ($this->maxLength) {
-            return $this->maxLength;
+        if ($this->max) {
+            return $this->max;
         }
 
         return $this->getModelFieldLength();
@@ -22,7 +23,11 @@ class Input extends Element
 
     protected function getModelFieldLength()
     {
-        return $this->getModelColumn()->getLength();
+        $column = $this->getModelColumn();
+        if ($column->getType()->getName() == Type::STRING) {
+            return $column->getLength();
+        }
+        return;
     }
 
     protected function getModelColumn()
@@ -32,21 +37,21 @@ class Input extends Element
         return DB::getDoctrineColumn($table, $column);
     }
 
-    public function setMaxLength($value)
+    public function setMax($value)
     {
-        $this->maxLength = intval($value);
+        $this->max = intval($value);
 
         return $this;
     }
 
-    public function getMinLength()
+    public function getMin()
     {
-        return $this->minLength;
+        return $this->min;
     }
 
-    public function setMinLength($value)
+    public function setMin($value)
     {
-        $this->minLength = intval($value);
+        $this->min = intval($value);
 
         return $this;
     }
@@ -54,9 +59,9 @@ class Input extends Element
     public function toArray()
     {
         $data = [];
-            $data['minlength'] = $this->getMinLength();
+            $data['minlength'] = $this->getMin();
 
-            $data['maxlength'] = $this->getMaxLength();
+            $data['maxlength'] = $this->getMax();
 
         return parent::toArray() + $data;
     }

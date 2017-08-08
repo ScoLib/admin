@@ -114,17 +114,26 @@ class Form implements
 
     public function getValidationRules()
     {
-
+        return $this->getElementsValidationRules();
     }
 
     public function getValidationMessages()
     {
-
+        return $this->getElementsValidationMessages();
     }
 
     public function getValidationTitles()
     {
+        return $this->getElementsValidationTitles();
+    }
 
+    protected function getElementsValidationRules()
+    {
+        return $this->elements->mapWithKeys(function (ElementInterface $element) {
+            if ($element instanceof Validable) {
+                return $element->getValidationRules();
+            }
+        });
     }
 
     public function save()

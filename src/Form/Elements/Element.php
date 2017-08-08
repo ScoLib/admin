@@ -8,6 +8,7 @@ use JsonSerializable;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
 use Sco\Admin\Contracts\Form\Elements\ElementInterface;
+use Sco\Admin\Contracts\Validable;
 use Sco\Admin\Contracts\WithModel;
 
 abstract class Element implements
@@ -15,7 +16,8 @@ abstract class Element implements
     WithModel,
     Arrayable,
     Jsonable,
-    JsonSerializable
+    JsonSerializable,
+    Validable
 {
     protected $type;
 
@@ -130,7 +132,33 @@ abstract class Element implements
             return $this;
         }
 
-        return $this->addValidationMessage($message);
+        return $this->addValidationMessage($rule, $message);
+    }
+
+    public function addValidationMessage($rule, $message)
+    {
+        if (($pos = strpos($rule, ':')) !== false) {
+            $rule = substr($rule, 0, $pos);
+        }
+
+        $this->validationMessages[$rule] = $message;
+
+        return $this;
+    }
+
+    public function getValidationMessages()
+    {
+        return $this->validationMessages;
+    }
+
+    public function getValidationRules()
+    {
+        return $this->validationRules;
+    }
+
+    public function getValidationTitles()
+    {
+        return [$this->getName() => $this->getTitle()];
     }
 
     public function jsonSerialize()
