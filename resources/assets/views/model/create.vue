@@ -25,11 +25,15 @@
 
                 <!-- /.box-body -->
                 <div class="box-footer">
-                    <el-button type="primary" @click="save" :loading="buttonLoading">{{ $t('form.ok') }}</el-button>
+                    <el-button
+                            type="primary"
+                            @click="save"
+                            :loading="buttonLoading">
+                        {{ $t('form.ok') }}
+                    </el-button>
                 </div>
                 <!-- /.box-footer -->
             </div>
-
         </div>
     </div>
 </template>
@@ -65,7 +69,7 @@
                         this.formLoading = false;
                         this.info = response.data;
                         var data = {};
-                        data[this.$route.params.model] = this.info;
+                        data[this.$route.params.model] = response.data;
                         this.$store.commit('setModelCreateInfo', data);
                     }).catch(error => {
                     this.$message.error(error.response.data)

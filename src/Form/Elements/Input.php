@@ -5,7 +5,7 @@ namespace Sco\Admin\Form\Elements;
 use DB;
 use Doctrine\DBAL\Types\Type;
 
-class Input extends Element
+class Input extends NamedElement
 {
     protected $defaultValue = '';
 

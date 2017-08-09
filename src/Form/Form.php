@@ -10,6 +10,7 @@ use Sco\Admin\Contracts\Form\Elements\ElementInterface;
 use Sco\Admin\Contracts\Form\FormInterface;
 use Sco\Admin\Contracts\Validable;
 use Sco\Admin\Contracts\WithModel;
+use Validator;
 
 class Form implements
     FormInterface,
@@ -102,7 +103,7 @@ class Form implements
     public function validate(array $data = [])
     {
         $data = empty($data) ? request()->all() : $data;
-        \Validator::validate(
+        Validator::validate(
             $data,
             $this->getValidationRules(),
             $this->getValidationMessages(),
@@ -129,11 +130,35 @@ class Form implements
 
     protected function getElementsValidationRules()
     {
-        return $this->elements->mapWithKeys(function (ElementInterface $element) {
+        $rules = [];
+        $this->elements->each(function (ElementInterface $element) use (&$rules) {
             if ($element instanceof Validable) {
-                return $element->getValidationRules();
+                $rules += $element->getValidationRules();
             }
         });
+        return $rules;
+    }
+
+    protected function getElementsValidationMessages()
+    {
+        $messages = [];
+        $this->elements->each(function (ElementInterface $element) use (&$messages) {
+            if ($element instanceof Validable) {
+                $messages += $element->getValidationMessages();
+            }
+        });
+        return $messages;
+    }
+
+    protected function getElementsValidationTitles()
+    {
+        $titles = [];
+        $this->elements->each(function (ElementInterface $element) use (&$titles) {
+            if ($element instanceof Validable) {
+                $titles += $element->getValidationTitles();
+            }
+        });
+        return $titles;
     }
 
     public function save()
