@@ -36,14 +36,11 @@ NPM
 In your `webpack.mix.js`:
 ```javascript
 var adminPublicPath = 'vendor/admin/';
-mix.autoload({
-    jquery: ['$', 'window.jQuery', 'jQuery'],
-    vue: ['Vue']
-});
-
 mix.webpackConfig({
     output: {
-        chunkFilename: `${adminPublicPath}js/[name]${mix.config.inProduction ? '.[chunkhash].chunk.js' : '.chunk.js'}`,
+        chunkFilename: `${adminPublicPath}js/[name]${
+            mix.config.inProduction ? '.[chunkhash].chunk.js' : '.chunk.js'
+        }`,
         publicPath: '/',
     },
     module: {
@@ -69,13 +66,28 @@ mix.webpackConfig({
                 ]
             },
         ],
-    },
-});
-
-mix.js('resources/assets/vendor/admin/main.js', `public/${adminPublicPath}js/app.js`)
-    .extract(['vue', 'jquery', 'bootstrap', 'vue-router', 'element-ui'])
-
-mix.less('resources/assets/vendor/admin/less/admin.less', `public/${adminPublicPath}css/app.css`);
+    }
+})
+    .js('resources/assets/vendor/admin/main.js', `public/${adminPublicPath}js/app.js`)
+    .extract([
+        'vue',
+        'axios',
+        'jquery',
+        'bootstrap',
+        'vue-router',
+        'element-ui',
+        'jquery-slimscroll',
+        'vue-i18n',
+        'vuex'
+    ])
+    .autoload({
+        jquery: ['$', 'window.jQuery', 'jQuery', 'jquery'],
+        vue: 'Vue'
+    })
+    .less(
+        'resources/assets/vendor/admin/less/admin.less',
+        `public/${adminPublicPath}css/app.css`
+    );
 
 if (mix.config.inProduction) {
     mix.version();
