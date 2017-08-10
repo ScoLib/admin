@@ -103,6 +103,7 @@ class Form implements
     public function validate(array $data = [])
     {
         $data = empty($data) ? request()->all() : $data;
+
         Validator::validate(
             $data,
             $this->getValidationRules(),
@@ -120,7 +121,10 @@ class Form implements
 
     public function getValidationMessages()
     {
-        return $this->getElementsValidationMessages();
+        return array_merge(
+            trans('admin::validation'),
+            $this->getElementsValidationMessages()
+        );
     }
 
     public function getValidationTitles()
@@ -161,8 +165,21 @@ class Form implements
         return $titles;
     }
 
+    protected function saveElements()
+    {
+        $this->getElements()->each(function (ElementInterface $element) {
+            $element->save(request());
+        });
+    }
+
     public function save()
     {
+        $this->saveElements();
+
+        $model = $this->getModel();
+        $model->save();
+
+        return true;
     }
 
     /**

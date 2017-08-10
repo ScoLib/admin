@@ -51,7 +51,6 @@
         },
         data() {
             return {
-                test: '',
                 info: {},
                 errors: {},
                 formLoading: false,
@@ -68,12 +67,13 @@
                     .then(response => {
                         this.formLoading = false;
                         this.info = response.data;
-                        var data = {};
-                        data[this.$route.params.model] = response.data;
-                        this.$store.commit('setModelCreateInfo', data);
+                        this.$store.commit('setModelCreateInfo', {
+                            key: this.$route.params.model,
+                            value: response.data
+                        });
                     }).catch(error => {
-                    this.$message.error(error.response.data)
-                })
+                        this.$message.error(error.response.data)
+                    })
             } else {
                 this.formLoading = false;
                 this.info = this.$store.state.modelCreateInfo[this.$route.params.model];
@@ -83,8 +83,11 @@
             save() {
                 console.log(this.info.values);
 //                return false;
-                this.$http.post(`/${this.getUrlPrefix()}/${this.$route.params.model}/store`, this.info.values)
-                    .then(response => {
+                this.buttonLoading = true;
+                this.$http.post(
+                    `/${this.getUrlPrefix()}/${this.$route.params.model}/store`,
+                    this.info.values
+                ).then(response => {
                     this.buttonLoading = false;
                     this.$message.success('操作成功')
                     this.$router.push({ name: 'admin.model.index', params: {model: this.$route.params.model}})

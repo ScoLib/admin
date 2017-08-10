@@ -4,6 +4,7 @@
 namespace Sco\Admin\Form\Elements;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 use JsonSerializable;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
@@ -66,6 +67,24 @@ abstract class Element implements
         $this->title = $value;
 
         return $this;
+    }
+
+    public function save(Request $request)
+    {
+        $this->setModelAttribute(
+            $this->getValueFromRequest($request)
+        );
+    }
+
+    protected function setModelAttribute($value)
+    {
+        $model = $this->getModel();
+        $model->setAttribute($this->getName(), $value);
+    }
+
+    protected function getValueFromRequest(Request $request)
+    {
+        return $request->input($this->getName());
     }
 
     public function getModel()

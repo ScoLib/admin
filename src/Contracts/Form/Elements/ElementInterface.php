@@ -3,6 +3,8 @@
 
 namespace Sco\Admin\Contracts\Form\Elements;
 
+use Illuminate\Http\Request;
+
 interface ElementInterface
 {
     public function getValue();
@@ -24,4 +26,6 @@ interface ElementInterface
      * @return $this
      */
     public function setTitle($value);
+
+    public function save(Request $request);
 }

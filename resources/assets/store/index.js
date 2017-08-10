@@ -15,13 +15,13 @@ export default new Vuex.Store({
             state.user = user;
         },
         setModel(state, data) {
-            state.models = Object.assign(state.models, data);
+            state.models[data.key] = data.value;
         },
         setMetaTitle(state, title) {
             state.metaTitle = title ? title : '';
         },
         setModelCreateInfo(state, data) {
-            state.modelCreateInfo = Object.assign(state.modelCreateInfo, data);
+            state.modelCreateInfo[data.key] = JSON.parse(JSON.stringify(data.value));
         }
     }
 });

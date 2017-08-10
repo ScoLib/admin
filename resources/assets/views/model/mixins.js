@@ -12,9 +12,10 @@ const getConfigs = (to, from, next) => {
     if (Object.keys(models).indexOf(to.params.model) == -1) {
         vm.$http.get(`/${vm.getUrlPrefix()}/${to.params.model}/config`)
             .then(response => {
-                var data = {};
-                data[to.params.model] = response.data;
-                store.commit('setModel', data);
+                store.commit('setModel', {
+                    key: to.params.model,
+                    value: response.data
+                });
                 setTitle(to.meta.title + response.data.title);
                 next();
             }).catch(error => {
