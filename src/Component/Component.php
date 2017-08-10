@@ -8,9 +8,12 @@ use Sco\Admin\Component\Concerns\HasEvents;
 use Sco\Admin\Component\Concerns\HasNavigation;
 use Sco\Admin\Contracts\ComponentInterface;
 use Sco\Admin\Contracts\RepositoryInterface;
+use Sco\Admin\Contracts\WithNavigation;
 use Sco\Admin\Exceptions\BadMethodCallException;
 
-abstract class Component implements ComponentInterface
+abstract class Component implements
+    ComponentInterface,
+    WithNavigation
 {
     use HasEvents,
         HasNavigation;

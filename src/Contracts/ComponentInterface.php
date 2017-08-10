@@ -3,8 +3,6 @@
 
 namespace Sco\Admin\Contracts;
 
-use Illuminate\Http\Request;
-
 interface ComponentInterface
 {
     public function boot();

@@ -9,7 +9,7 @@ use Sco\Admin\Navigation\Page;
 trait HasNavigation
 {
     /**
-     * @return \KodiComponents\Navigation\Contracts\NavigationInterface
+     * {@inheritdoc}
      */
     public function getNavigation()
     {
@@ -17,12 +17,7 @@ trait HasNavigation
     }
 
     /**
-     * 添加菜单
-     *
-     * @param int  $priority
-     * @param null $badge
-     *
-     * @return \Sco\Admin\Navigation\Page
+     * {@inheritdoc}
      */
     public function addToNavigation($priority = 100, $badge = null)
     {
@@ -62,7 +57,7 @@ trait HasNavigation
      *
      * @return string
      */
-    public function getViewUrl(array $parameters = [])
+    protected function getViewUrl(array $parameters = [])
     {
         array_unshift($parameters, $this->getName());
 
