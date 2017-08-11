@@ -21,6 +21,8 @@
                                 :class="element.class"
                                 :popper-class="element.popperClass"
                                 :name="element.key"
+                                :size="element.size"
+                                filterable
                                 v-model="currentValue[element.key]"
                                 v-if="element.type == 'select'">
                             <el-option

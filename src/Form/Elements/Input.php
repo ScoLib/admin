@@ -7,7 +7,6 @@ use Doctrine\DBAL\Types\Type;
 
 class Input extends NamedElement
 {
-    protected $defaultValue = '';
 
     protected $max;
     protected $min;

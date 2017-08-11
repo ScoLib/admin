@@ -111,8 +111,9 @@ abstract class Element implements
         if (is_null($model) || !$model->exists) {
             return $value;
         }
+        return $model->getAttribute($this->getName());
 
-        $relations = explode('.', $this->getName(), 2);
+        /*$relations = explode('.', $this->getName(), 2);
         $count = count($relations);
 
         if ($count == 1) {
@@ -126,7 +127,7 @@ abstract class Element implements
             }
 
             return $model->getAttribute($relation);
-        }
+        }*/
     }
 
     protected function getDefaultValue()

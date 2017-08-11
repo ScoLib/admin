@@ -4,6 +4,8 @@ namespace Sco\Admin\Form\Elements;
 
 class NamedElement extends Element
 {
+    protected $defaultValue = '';
+
     public function required($message = null)
     {
         $this->addValidationRule('required', $message);

@@ -14,7 +14,7 @@ use Sco\Admin\Traits\AliasBinder;
 
 /**
  * @method Text text($name, $title)
- * @method Select select($name, $title)
+ * @method Select select($name, $title, $options)
  * @method Textarea textarea($name, $title)
  * @method Number number($name, $title)
  * @method Hidden hidden($name)
