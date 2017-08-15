@@ -5,13 +5,19 @@
                 <div class="box-header clearfix">
                     <h3 class="box-title">创建 {{ config.title }}</h3>
 
-                    <div class="btn-group btn-group-sm pull-right margin-r-5">
+                    <div class="btn-group btn-group-sm pull-right">
                         <button
                                 type="button"
                                 class="btn btn-default"
                                 @click.prevent="$router.push({ name: 'admin.model.index', params: {model: $route.params.model}})">
                             <i class="fa fa-reply bigger-120"></i>
                             {{ $t('form.back') }}
+                        </button>
+                    </div>
+                    <div class="btn-group btn-group-sm pull-right margin-r-5">
+                        <button type="button" class="btn btn-primary" @click.prevent="refresh">
+                            <i class="fa fa-refresh"></i>
+                            {{ $t('table.refresh') }}
                         </button>
                     </div>
                 </div>
@@ -61,21 +67,9 @@
 
         },
         created () {
-            this.formLoading = true;
             if (Object.keys(this.$store.state.modelCreateInfo).indexOf(this.$route.params.model) == -1) {
-                this.$http.get(`/${this.getUrlPrefix()}/${this.$route.params.model}/create/info`)
-                    .then(response => {
-                        this.formLoading = false;
-                        this.info = response.data;
-                        this.$store.commit('setModelCreateInfo', {
-                            key: this.$route.params.model,
-                            value: response.data
-                        });
-                    }).catch(error => {
-                        this.$message.error(error.response.data)
-                    })
+                this.getCreateInfo();
             } else {
-                this.formLoading = false;
                 this.info = this.$store.state.modelCreateInfo[this.$route.params.model];
             }
         },
@@ -98,6 +92,24 @@
                     }
                 })
             },
+            getCreateInfo() {
+                this.formLoading = true;
+                this.info = {};
+                this.$http.get(`/${this.getUrlPrefix()}/${this.$route.params.model}/create/info`)
+                    .then(response => {
+                        this.formLoading = false;
+                        this.info = response.data;
+                        this.$store.commit('setModelCreateInfo', {
+                            key: this.$route.params.model,
+                            value: response.data
+                        });
+                    }).catch(error => {
+                    this.$message.error(error.response.data)
+                })
+            },
+            refresh() {
+                this.getCreateInfo();
+            }
         }
     }
 </script>
