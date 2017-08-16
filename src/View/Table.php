@@ -3,6 +3,7 @@
 
 namespace Sco\Admin\View;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Sco\Admin\Contracts\View\ColumnInterface;
 
@@ -98,7 +99,7 @@ class Table extends View
     protected function parseRows(Collection $rows)
     {
         if ($rows) {
-            return $rows->map(function ($row) {
+            return $rows->map(function (Model $row) {
                 $newRow = $this->getColumns()->mapWithKeys(function (
                     ColumnInterface $column
                 ) use ($row) {

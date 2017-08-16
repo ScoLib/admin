@@ -26,7 +26,7 @@ export default [
         },
         name: 'admin.403',
         meta: {
-            title: '403',
+            title: '403 Forbidden',
             auth: false,
         },
     },
@@ -47,6 +47,17 @@ export default [
                     title: '控制台',
                     auth: true,
                 }
+            },
+            {
+                path: `/${prefix}/500`,
+                component (resolve) {
+                    require(['../views/errors/500.vue'], resolve);
+                },
+                name: 'admin.500',
+                meta: {
+                    title: '500 Error Page',
+                    auth: false,
+                },
             },
 /*            {
                 path: 'system',

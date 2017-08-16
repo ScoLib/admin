@@ -44,6 +44,13 @@ Route::group([
                 return view('admin::app');
             },
         ]);
+
+        Route::get('500', [
+            'as'   => '500',
+            'uses' => function () {
+                return view('admin::app');
+            },
+        ]);
     });
 
     Route::group(['middleware' => ['auth']], function () {

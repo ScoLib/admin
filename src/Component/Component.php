@@ -7,9 +7,12 @@ use Illuminate\Http\Request;
 use Sco\Admin\Component\Concerns\HasEvents;
 use Sco\Admin\Component\Concerns\HasNavigation;
 use Sco\Admin\Contracts\ComponentInterface;
+use Sco\Admin\Contracts\Form\FormInterface;
 use Sco\Admin\Contracts\RepositoryInterface;
+use Sco\Admin\Contracts\View\ViewInterface;
 use Sco\Admin\Contracts\WithNavigation;
 use Sco\Admin\Exceptions\BadMethodCallException;
+use Sco\Admin\Exceptions\InvalidArgumentException;
 
 abstract class Component implements
     ComponentInterface,
@@ -106,18 +109,6 @@ abstract class Component implements
         return $this->repository;
     }
 
-    public function get()
-    {
-        $view = $this->fireView();
-
-        $this->getRepository();
-
-        $view->setRepository($this->getRepository());
-
-        return $view->get();
-    }
-
-
     /**
      * {@inheritdoc}
      */
@@ -142,7 +133,23 @@ abstract class Component implements
         }
 
         $view = $this->app->call([$this, 'callView']);
+
+        if (!$view instanceof ViewInterface) {
+            throw new InvalidArgumentException('callView must be instanced of Sco\Admin\Contracts\View\ViewInterface');
+        }
+
         return $view;
+    }
+
+    public function get()
+    {
+        $view = $this->fireView();
+
+        $this->getRepository();
+
+        $view->setRepository($this->getRepository());
+
+        return $view->get();
     }
 
     /**
@@ -155,6 +162,9 @@ abstract class Component implements
         }
 
         $form = $this->app->call([$this, 'callCreate']);
+        if (!$form instanceof FormInterface) {
+            throw new InvalidArgumentException('callCreate must be instanced of Sco\Admin\Contracts\Form\FormInterface');
+        }
 
         $form->setModel($this->getModel());
 
@@ -174,15 +184,6 @@ abstract class Component implements
     /**
      * {@inheritdoc}
      */
-    public function update($id)
-    {
-        $form = $this->fireEdit($id);
-        $form->validate()->save();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function fireEdit($id)
     {
         if (!method_exists($this, 'callEdit')) {
@@ -191,6 +192,10 @@ abstract class Component implements
 
         $form = $this->app->call([$this, 'callEdit'], ['id' => $id]);
 
+        if (!$form instanceof ViewInterface) {
+            throw new InvalidArgumentException('callEdit must be instanced of Sco\Admin\Contracts\View\ViewInterface');
+        }
+
         $model = $this->getRepository()->findOrFail($id);
 
         $form->setModel($model);
@@ -198,6 +203,32 @@ abstract class Component implements
         return $form;
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function update($id)
+    {
+        $form = $this->fireEdit($id);
+        $form->validate()->save();
+    }
+
+    public function delete($id)
+    {
+        $this->getRepository()->findOrFail($id)->delete();
+        return true;
+    }
+
+    public function forceDelete($id)
+    {
+        $this->getRepository()->forceDelete($id);
+        return true;
+    }
+
+    public function restore($id)
+    {
+        $this->getRepository()->restore($id);
+        return true;
+    }
 
     protected function bootIfNotBooted()
     {

@@ -70,12 +70,13 @@
             if (Object.keys(this.$store.state.modelCreateInfo).indexOf(this.$route.params.model) == -1) {
                 this.getCreateInfo();
             } else {
-                this.info = this.$store.state.modelCreateInfo[this.$route.params.model];
+                let info = $.extend(true, {}, this.$store.state.modelCreateInfo[this.$route.params.model]);
+                this.info = info;
             }
         },
         methods: {
             save() {
-                console.log(this.info.values);
+//                console.log(this.info.values);
 //                return false;
                 this.buttonLoading = true;
                 this.$http.post(
@@ -98,13 +99,15 @@
                 this.$http.get(`/${this.getUrlPrefix()}/${this.$route.params.model}/create/info`)
                     .then(response => {
                         this.formLoading = false;
-                        this.info = response.data;
+                        this.info = $.extend(true, {}, response.data);
                         this.$store.commit('setModelCreateInfo', {
                             key: this.$route.params.model,
                             value: response.data
                         });
                     }).catch(error => {
-                    this.$message.error(error.response.data)
+                        if (error.response) {
+                            this.$message.error(error.response.data)
+                        }
                 })
             },
             refresh() {

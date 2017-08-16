@@ -9,6 +9,10 @@ axios.defaults.withCredentials = true;
 
 axios.interceptors.response.use(null, error => {
     if (error.response) {
+        if (error.response.status == 500) {
+            router.push({name: 'admin.500'})
+            return;
+        }
         if (error.response.status == 403) {
             router.push({name: 'admin.403'})
             return;
@@ -22,7 +26,7 @@ axios.interceptors.response.use(null, error => {
         if (typeof error.response.data == 'object') {
             return Promise.reject(error);
         } else {
-            router.app.$Message.error(error.response.data);
+            router.app.$message.error(error.response.data);
         }
     } else if (error.request) {
         // The request was made but no response was received
@@ -32,7 +36,7 @@ axios.interceptors.response.use(null, error => {
     } else {
         console.log('axios message', error.message);
         // Something happened in setting up the request that triggered an Error
-        router.app.$Message.error(error.message);
+        router.app.$message.error(error.message);
     }
     return Promise.reject(error);
 })

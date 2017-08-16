@@ -21,14 +21,21 @@ interface ComponentInterface
     public function getConfigs();
 
     /**
-     * @return \Sco\Admin\Contracts\ViewInterface
+     * @return \Sco\Admin\Contracts\View\ViewInterface
      */
     public function fireView();
+
+    public function get();
 
     /**
      * @return \Sco\Admin\Contracts\Form\FormInterface
      */
     public function fireCreate();
+
+    /**
+     * @return mixed
+     */
+    public function store();
 
     /**
      * @param $id
@@ -37,19 +44,19 @@ interface ComponentInterface
      */
     public function fireEdit($id);
 
-    public function get();
-
-    /**
-     * @return mixed
-     */
-    public function store();
-
     /**
      * @param mixed $id
      *
      * @return mixed
      */
     public function update($id);
+
+    public function delete($id);
+
+    public function forceDelete($id);
+
+    public function restore($id);
+
 
     public function isView();
 

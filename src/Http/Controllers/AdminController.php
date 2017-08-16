@@ -90,9 +90,13 @@ class AdminController extends Controller
         $component->update($id);
     }
 
-    public function delete(ModelFactoryInterface $modelFactory, $id)
+    public function delete(ComponentInterface $component, $id)
     {
-        $modelFactory->delete($id);
+        if (!$component->isDelete()) {
+            throw new AuthorizationException();
+        }
+
+        $component->delete($id);
         return response()->json(['message' => 'ok']);
     }
 
@@ -100,15 +104,22 @@ class AdminController extends Controller
     {
     }
 
-    public function forceDelete(ModelFactoryInterface $modelFactory, $id)
+    public function forceDelete(ComponentInterface $component, $id)
     {
-        $modelFactory->forceDelete($id);
+        if (!$component->isDestroy()) {
+            throw new AuthorizationException();
+        }
+
+        $component->forceDelete($id);
         return response()->json(['message' => 'ok']);
     }
 
-    public function restore(ModelFactoryInterface $modelFactory, $id)
+    public function restore(ComponentInterface $component, $id)
     {
-        $modelFactory->restore($id);
+        if (!$component->isRestore()) {
+            throw new AuthorizationException();
+        }
+        $component->restore($id);
         return response()->json(['message' => 'ok']);
     }
 }

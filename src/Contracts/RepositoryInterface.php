@@ -26,9 +26,9 @@ interface RepositoryInterface
      */
     public function findOrFail($id);
 
-    public function store();
+    //public function store();
 
-    public function update();
+    //public function update();
 
     public function forceDelete($id);
 

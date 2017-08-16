@@ -32,27 +32,17 @@
 </template>
 
 <script>
+    import mixins from './mixins'
+
     export default {
+        mixins: [
+            mixins
+        ],
         data() {
             return {}
         },
         computed: {
-            config() {
-                let models = this.$store.state.models;
-                let model = this.$route.params.model;
-//                console.log(models[model]);
-//                console.log(model);
-//                console.log(Object.keys(models).indexOf(model));
-                if (Object.keys(models).indexOf(model) == -1) {
-                    return {};
-                } else {
-//                    console.log(models[model]);
-                    return models[model];
-                }
-            },
-            urlPrefix() {
-                return this.$store.state.urlPrefix;
-            }
+
         },
         props: {
             scope: Object
@@ -64,7 +54,7 @@
                     beforeClose: (action, instance, done) => {
                         if (action == 'confirm') {
                             instance.confirmButtonLoading = true;
-                            this.$http.delete(`/${this.urlPrefix}/${this.$route.params.model}/${id}/delete`)
+                            this.$http.delete(`/${this.getUrlPrefix()}/${this.$route.params.model}/${id}/delete`)
                                 .then(response => {
 //                                    console.log(response);
                                     instance.confirmButtonLoading = false;
@@ -103,7 +93,7 @@
                     beforeClose: (action, instance, done) => {
                         if (action == 'confirm') {
                             instance.confirmButtonLoading = true;
-                            this.$http.delete(`/${this.urlPrefix}/${this.$route.params.model}/${id}/destroy`)
+                            this.$http.delete(`/${this.getUrlPrefix()}/${this.$route.params.model}/${id}/destroy`)
                                 .then(response => {
                                     instance.confirmButtonLoading = false;
                                     instance.close();
@@ -124,7 +114,7 @@
                     content: `确定要彻底删除此${this.config.title}吗？`,
                     loading: true,
                     onOk: () => {
-                        this.$http.delete(`/${this.urlPrefix}/${this.$route.params.model}/${id}/destroy`)
+                        this.$http.delete(`/${this.getUrlPrefix()}/${this.$route.params.model}/${id}/destroy`)
                             .then(response => {
                                 this.$Modal.remove();
                                 this.$Message.success('删除成功');
@@ -141,7 +131,7 @@
                     beforeClose: (action, instance, done) => {
                         if (action == 'confirm') {
                             instance.confirmButtonLoading = true;
-                            this.$http.post(`/${this.urlPrefix}/${this.$route.params.model}/${id}/restore`)
+                            this.$http.post(`/${this.getUrlPrefix()}/${this.$route.params.model}/${id}/restore`)
                                 .then(response => {
                                     instance.confirmButtonLoading = false;
                                     instance.close();
@@ -162,7 +152,7 @@
                     content: `确定要恢复此${this.config.title}吗？`,
                     loading: true,
                     onOk: () => {
-                        this.$http.post(`/${this.urlPrefix}/${this.$route.params.model}/${id}/restore`)
+                        this.$http.post(`/${this.getUrlPrefix()}/${this.$route.params.model}/${id}/restore`)
                             .then(response => {
                                 this.$Modal.remove();
                                 this.$Message.success('操作成功');

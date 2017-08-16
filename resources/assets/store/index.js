@@ -21,7 +21,7 @@ export default new Vuex.Store({
             state.metaTitle = title ? title : '';
         },
         setModelCreateInfo(state, data) {
-            state.modelCreateInfo[data.key] = JSON.parse(JSON.stringify(data.value));
+            state.modelCreateInfo[data.key] = data.value;
         }
     }
 });

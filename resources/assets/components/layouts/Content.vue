@@ -9,7 +9,10 @@
             </h1>
             <ol class="breadcrumb">
                 <li v-for="(entry, key) in breads">
-                    <a href="#"><i class="fa fa-dashboard" v-if="key == 0"></i>{{ entry.title }}</a>
+                    <router-link :to="{name: 'admin.dashboard'}" v-if="key == 0">
+                        <i class="fa fa-dashboard"></i>{{ entry.title }}
+                    </router-link>
+                    <a href="#" v-else>{{ entry.title }}</a>
                 </li>
 
                 <li class="active">{{ title }}</li>

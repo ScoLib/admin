@@ -110,13 +110,13 @@ class Repository implements RepositoryInterface, WithModel
         return $this->getQuery()->onlyTrashed()->findOrFail($id);
     }
 
-    public function store()
+    /*public function store()
     {
     }
 
     public function update()
     {
-    }
+    }*/
 
 
     public function forceDelete($id)
