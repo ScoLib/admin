@@ -6,6 +6,7 @@ export default {
     updated_at: 'Updated At',
     action: 'Action',
     refresh: 'Refresh',
+    reset: 'Reset',
 
     edit: 'Edit',
     create: 'Create',

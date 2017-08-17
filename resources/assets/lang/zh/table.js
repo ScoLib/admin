@@ -7,6 +7,7 @@ export default {
     updated_at: '更新时间',
     action: '操作',
     refresh: '刷新',
+    reset: '重置',
 
     edit: '编辑',
     create: '创建',

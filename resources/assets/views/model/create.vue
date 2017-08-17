@@ -15,10 +15,7 @@
                         </button>
                     </div>
                     <div class="btn-group btn-group-sm pull-right margin-r-5">
-                        <button type="button" class="btn btn-primary" @click.prevent="refresh">
-                            <i class="fa fa-refresh"></i>
-                            {{ $t('table.refresh') }}
-                        </button>
+
                     </div>
                 </div>
                 <!-- /.box-header -->
@@ -37,6 +34,13 @@
                             :loading="buttonLoading">
                         {{ $t('form.ok') }}
                     </el-button>
+
+                    <el-button
+                            class="btn btn-primary"
+                            @click.prevent="refresh">
+                        {{ $t('table.reset') }}
+                    </el-button>
+
                 </div>
                 <!-- /.box-footer -->
             </div>

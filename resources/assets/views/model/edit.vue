@@ -31,6 +31,11 @@
                             :loading="buttonLoading">
                         {{ $t('form.ok') }}
                     </el-button>
+                    <el-button
+                            class="btn btn-primary"
+                            @click.prevent="refresh">
+                        {{ $t('table.reset') }}
+                    </el-button>
                 </div>
                 <!-- /.box-footer -->
             </div>
@@ -61,15 +66,7 @@
 
         },
         created () {
-            this.formLoading = true;
-            this.$http.get(
-                `/${this.getUrlPrefix()}/${this.$route.params.model}/${this.$route.params.id}/edit/info`
-            ).then(response => {
-                    this.formLoading = false;
-                    this.info = response.data;
-                }).catch(error => {
-                this.$message.error(error.response.data)
-            })
+            this.getEditInfo();
         },
         methods: {
             save() {
@@ -88,6 +85,22 @@
                     }
                 })
             },
+            getEditInfo() {
+                this.formLoading = true;
+                this.info = {};
+
+                this.$http.get(
+                    `/${this.getUrlPrefix()}/${this.$route.params.model}/${this.$route.params.id}/edit/info`
+                ).then(response => {
+                    this.formLoading = false;
+                    this.info = response.data;
+                }).catch(error => {
+                    this.$message.error(error.response.data)
+                })
+            },
+            refresh() {
+                this.getEditInfo();
+            }
         }
     }
 </script>
