@@ -42,7 +42,7 @@
 
 <script>
 
-    import Submenu from './Submenu.vue';
+    import Submenu from './submenu.vue';
 
     export default {
         name: 'AppSidebar',

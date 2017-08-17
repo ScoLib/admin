@@ -39,7 +39,7 @@
 </template>
 
 <script>
-    import vForm from '../../components/Form.vue';
+    import vForm from '../../components/form.vue';
     import mixins from './mixins'
 
     export default {

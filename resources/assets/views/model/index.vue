@@ -11,29 +11,6 @@
             <div class="box">
                 <div class="box-header clearfix">
                     <div class="btn-group btn-group-sm">
-                        <button type="button" class="btn btn-default">批量操作</button>
-                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                            <span class="caret"></span>
-                            <span class="sr-only">Toggle Dropdown</span>
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li v-if="config.permissions.delete">
-                                <a href="#" @click.prevent="batchDelete">
-                                    <i class="fa fa-trash-o bigger-120"></i> 删除
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div class="btn-group btn-group-sm">
-                        <button type="button" class="btn btn-primary" @click.prevent="fetchData">
-                            <i class="fa fa-refresh"></i>
-                            {{ $t('table.refresh') }}
-                        </button>
-                    </div>
-
-
-                    <div class="btn-group btn-group-sm pull-right margin-r-5">
                         <router-link
                                 :to="{ name: 'admin.model.create', params: {model: $route.params.model}}"
                                 v-if="config.permissions.create"
@@ -42,37 +19,23 @@
                             创建 {{ config.title }}
                         </router-link>
                     </div>
+                    <div class="btn-group btn-group-sm margin-r-5">
+                        <button type="button" class="btn btn-primary" @click.prevent="fetchData">
+                            <i class="fa fa-refresh"></i>
+                            {{ $t('table.refresh') }}
+                        </button>
+                    </div>
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body table-responsive">
-
-                    <!--<Table
-                            :data="tableData"
-                            v-loading="tableLoading"
-                            @on-selection-change="getSelected"
-                            :columns="columns">
-                    </Table>-->
-
                     <el-table :data="tableData"
                               v-loading="tableLoading"
                               @selection-change="getSelected">
 
-                        <el-table-column
+                        <!--<el-table-column
                                 type="selection"
                                 :selectable="selectable">
-                        </el-table-column>
-
-                        <!--<component v-bind:is="$route.params.model" :column="column"
-                                   v-for="column in config.columns"
-                                   :key="column.key">
-                        </component>-->
-
-                        <!--<el-column
-                                :column="column"
-                                v-for="column in columns"
-                                :key="column.key">
-                        </el-column>-->
-
+                        </el-table-column>-->
 
                         <el-table-column
                                 :label="column.label"
@@ -107,29 +70,6 @@
                             </template>
                         </el-table-column>
 
-                        <!--<el-table-column
-                                label="操作"
-                                align="center"
-                                width="120"
-                                column-key="index">
-                            <template scope="scope">
-                                <div class="hidden-xs btn-group">
-                                    <router-link
-                                            class="btn btn-xs btn-info"
-                                            v-if="config.permissions.edit"
-                                            :to="{name:'admin.model.edit', params:{model:$route.params.model,id:scope.row[config.primaryKey]}}"
-                                            title="编辑">
-                                        <i class="fa fa-pencil bigger-120"></i>
-                                    </router-link>
-                                    <button class="btn btn-xs btn-danger"
-                                            @click.prevent="destroy(scope.row[config.primaryKey])"
-                                            v-if="config.permissions.delete"
-                                            title="删除">
-                                        <i class="fa fa-trash-o bigger-120"></i>
-                                    </button>
-                                </div>
-                            </template>
-                        </el-table-column>-->
 
                     </el-table>
                 </div>
@@ -142,14 +82,6 @@
                             @current-change="getResults"
                             :total="pageData.total">
                     </el-pagination>
-                    <!--<Page
-                            :page-size="pageData.per_page"
-                            :current="pageData.current_page"
-                            show-total
-                            size="small"
-                            @on-change="getResults"
-                            :total="pageData.total">
-                    </Page>-->
                 </div>
             </div>
 
@@ -158,8 +90,8 @@
 </template>
 
 <script>
-    import vColumn from '../../components/Column'
-    import ActionColumn from './ActionColumn.vue'
+    import vColumn from '../../components/column'
+    import ActionColumn from './action-column.vue'
     import mixins from './mixins'
 
     export default {

@@ -8,7 +8,7 @@ import ElementUI from 'element-ui';
 import i18n from './lang';
 import store from './store';
 import router from './router';
-import App from './components/App.vue'
+import App from './components/app.vue'
 import VueAxios from './util/vue-axios'
 import UrlPrefix from './util/url-prefix'
 
