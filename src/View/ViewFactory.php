@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Sco\Admin\View;
 
 use Sco\Admin\Contracts\View\ViewFactoryInterface;

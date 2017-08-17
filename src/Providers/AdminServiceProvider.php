@@ -8,11 +8,11 @@ use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\ServiceProvider;
 use Laracasts\Utilities\JavaScript\JavaScriptServiceProvider;
 use Sco\ActionLog\LaravelServiceProvider;
-use Sco\Admin\Config\ConfigFactory;
-use Sco\Admin\Contracts\ColumnFactoryInterface;
-use Sco\Admin\Contracts\ConfigFactoryInterface;
+use Sco\Admin\Contracts\Form\ElementFactoryInterface;
+use Sco\Admin\Contracts\Form\FormFactoryInterface;
 use Sco\Admin\Contracts\RepositoryInterface;
-use Sco\Admin\Contracts\ViewFactoryInterface;
+use Sco\Admin\Contracts\View\ColumnFactoryInterface;
+use Sco\Admin\Contracts\View\ViewFactoryInterface;
 use Sco\Admin\Facades\AdminFormFacade;
 use Sco\Admin\Form\ElementFactory;
 use Sco\Admin\Exceptions\Handler;
@@ -22,7 +22,7 @@ use Sco\Admin\Facades\AdminNavigationFacade;
 use Sco\Admin\Facades\AdminViewFacade;
 use Sco\Admin\Form\FormFactory;
 use Sco\Admin\Repositories\Repository;
-use Sco\Admin\View\Columns\ColumnFactory;
+use Sco\Admin\View\ColumnFactory;
 use Sco\Admin\View\ViewFactory;
 
 /**
@@ -38,7 +38,6 @@ class AdminServiceProvider extends ServiceProvider
         'admin.guest'     => \Sco\Admin\Http\Middleware\RedirectIfAuthenticated::class,
         'admin.phptojs'   => \Sco\Admin\Http\Middleware\PHPVarToJavaScript::class,
         'admin.can.route' => \Sco\Admin\Http\Middleware\RouteAuthorize::class,
-        'admin.can.model' => \Sco\Admin\Http\Middleware\ModelAuthorize::class,
     ];
 
     protected $providers = [
@@ -83,16 +82,9 @@ class AdminServiceProvider extends ServiceProvider
         $this->registerExceptionHandler();
         $this->registerAliases();
         $this->registerMiddleware();
-
-        $this->app->bind(RepositoryInterface::class, Repository::class);
-        $this->app->singleton(ConfigFactoryInterface::class, function () {
-            return new ConfigFactory($this->app);
-        });
-
         $this->registerFactory();
-
         $this->registerProviders();
-        $this->registerCoreContainerAliases();
+        $this->app->bind(RepositoryInterface::class, Repository::class);
         $this->commands($this->commands);
     }
 
@@ -106,11 +98,14 @@ class AdminServiceProvider extends ServiceProvider
     protected function registerAliases()
     {
         AliasLoader::getInstance([
-            'AdminElement'    => AdminElementFacade::class,
             'AdminNavigation' => AdminNavigationFacade::class,
-            'AdminColumn'     => AdminColumnFacade::class,
-            'AdminView'       => AdminViewFacade::class,
-            'AdminForm'       => AdminFormFacade::class,
+
+            'AdminView'   => AdminViewFacade::class,
+            'AdminColumn' => AdminColumnFacade::class,
+
+            'AdminForm'    => AdminFormFacade::class,
+            'AdminElement' => AdminElementFacade::class,
+
         ]);
     }
 
@@ -132,40 +127,27 @@ class AdminServiceProvider extends ServiceProvider
         );
     }
 
-    protected function registerCoreContainerAliases()
-    {
-        $aliases = [
-            'admin.column.factory' => [
-                ColumnFactory::class, ColumnFactoryInterface::class,
-            ],
-            'admin.view.factory'   => [
-                ViewFactory::class, ViewFactoryInterface::class,
-            ],
-        ];
-
-        foreach ($aliases as $key => $aliases) {
-            foreach ($aliases as $alias) {
-                $this->app->alias($key, $alias);
-            }
-        }
-    }
-
     protected function registerFactory()
     {
         $this->app->singleton('admin.form.factory', function () {
             return new FormFactory($this->app);
         });
+        $this->app->alias('admin.form.factory', FormFactoryInterface::class);
 
         $this->app->singleton('admin.element.factory', function () {
             return new ElementFactory($this->app);
         });
+        $this->app->alias('admin.element.factory', ElementFactoryInterface::class);
+
 
         $this->app->singleton('admin.view.factory', function () {
             return new ViewFactory();
         });
+        $this->app->alias('admin.view.factory', ViewFactoryInterface::class);
 
         $this->app->singleton('admin.column.factory', function () {
             return new ColumnFactory();
         });
+        $this->app->alias('admin.column.factory', ColumnFactoryInterface::class);
     }
 }

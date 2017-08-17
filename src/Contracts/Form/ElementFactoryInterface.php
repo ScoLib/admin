@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Sco\Admin\Contracts\Form\Elements;
+namespace Sco\Admin\Contracts\Form;
 
 interface ElementFactoryInterface
 {

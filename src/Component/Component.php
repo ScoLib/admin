@@ -163,7 +163,7 @@ abstract class Component implements
 
         $form = $this->app->call([$this, 'callCreate']);
         if (!$form instanceof FormInterface) {
-            throw new InvalidArgumentException('callCreate must be instanced of Sco\Admin\Contracts\Form\FormInterface');
+            throw new InvalidArgumentException('callCreate must be instanced of \Sco\Admin\Contracts\Form\FormInterface');
         }
 
         $form->setModel($this->getModel());
@@ -192,8 +192,8 @@ abstract class Component implements
 
         $form = $this->app->call([$this, 'callEdit'], ['id' => $id]);
 
-        if (!$form instanceof ViewInterface) {
-            throw new InvalidArgumentException('callEdit must be instanced of Sco\Admin\Contracts\View\ViewInterface');
+        if (!$form instanceof FormInterface) {
+            throw new InvalidArgumentException('callEdit must be instanced of \Sco\Admin\Contracts\Form\FormInterface');
         }
 
         $model = $this->getRepository()->findOrFail($id);

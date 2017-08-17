@@ -100,10 +100,6 @@ class AdminController extends Controller
         return response()->json(['message' => 'ok']);
     }
 
-    public function batchDelete(ModelFactoryInterface $modelFactory)
-    {
-    }
-
     public function forceDelete(ComponentInterface $component, $id)
     {
         if (!$component->isDestroy()) {

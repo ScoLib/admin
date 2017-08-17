@@ -1,10 +1,9 @@
 <?php
 
-
 namespace Sco\Admin\Form;
 
 use Illuminate\Foundation\Application;
-use Sco\Admin\Contracts\Form\Elements\ElementFactoryInterface;
+use Sco\Admin\Contracts\Form\ElementFactoryInterface;
 use Sco\Admin\Form\Elements\Hidden;
 use Sco\Admin\Form\Elements\Number;
 use Sco\Admin\Form\Elements\Select;
@@ -13,11 +12,11 @@ use Sco\Admin\Form\Elements\Textarea;
 use Sco\Admin\Traits\AliasBinder;
 
 /**
- * @method Text text($name, $title)
- * @method Select select($name, $title, $options)
- * @method Textarea textarea($name, $title)
- * @method Number number($name, $title)
- * @method Hidden hidden($name)
+ * @method \Sco\Admin\Form\Elements\Text text($name, $title)
+ * @method \Sco\Admin\Form\Elements\Select select($name, $title, $options)
+ * @method \Sco\Admin\Form\Elements\Textarea textarea($name, $title)
+ * @method \Sco\Admin\Form\Elements\Number number($name, $title)
+ * @method \Sco\Admin\Form\Elements\Hidden hidden($name)
  */
 class ElementFactory implements ElementFactoryInterface
 {

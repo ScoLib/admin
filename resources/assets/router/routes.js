@@ -57,6 +57,7 @@ export default [
                 meta: {
                     title: '500 Error Page',
                     auth: false,
+                    msg: '',
                 },
             },
 /*            {

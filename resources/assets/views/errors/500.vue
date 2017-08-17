@@ -6,8 +6,7 @@
             <h3><i class="fa fa-warning text-red"></i> Oops! Something went wrong.</h3>
 
             <p>
-                We will work on fixing that right away.
-                Meanwhile, you may <a href="../../index.html">return to dashboard</a> or try using the search form.
+                {{ msg }} <br>
             </p>
 
         </div>
@@ -18,7 +17,14 @@
 <script>
     export default {
         data() {
-            return {}
-        }
+            return {
+                defaultMsg: 'Internal Server Error'
+            }
+        },
+        computed: {
+            msg() {
+                return this.$store.state.errorMsg ? this.$store.state.errorMsg : this.defaultMsg;
+            }
+        },
     }
 </script>

@@ -10,6 +10,7 @@ axios.defaults.withCredentials = true;
 axios.interceptors.response.use(null, error => {
     if (error.response) {
         if (error.response.status == 500) {
+            router.app.$store.commit('setErrorMsg', error.response.data);
             router.push({name: 'admin.500'})
             return;
         }

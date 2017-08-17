@@ -9,6 +9,7 @@ export default new Vuex.Store({
         models: {},
         metaTitle: '',
         modelCreateInfo: {},
+        errorMsg: '',
     },
     mutations: {
         setUser(state, user) {
@@ -22,6 +23,9 @@ export default new Vuex.Store({
         },
         setModelCreateInfo(state, data) {
             state.modelCreateInfo[data.key] = data.value;
+        },
+        setErrorMsg(state, msg) {
+            state.errorMsg = msg;
         }
     }
 });

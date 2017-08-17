@@ -1,10 +1,15 @@
 <?php
 
-
-namespace Sco\Admin\View\Columns;
+namespace Sco\Admin\View;
 
 use Sco\Admin\Contracts\View\ColumnFactoryInterface;
 use Sco\Admin\Traits\AliasBinder;
+use Sco\Admin\View\Columns\Custom;
+use Sco\Admin\View\Columns\DateTime;
+use Sco\Admin\View\Columns\Image;
+use Sco\Admin\View\Columns\Link;
+use Sco\Admin\View\Columns\Lists;
+use Sco\Admin\View\Columns\Text;
 
 /**
  * @method static \Sco\Admin\View\Columns\Text text($name, $label)

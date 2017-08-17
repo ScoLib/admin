@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Sco\Admin\View;
 
 use Illuminate\Database\Eloquent\Model;

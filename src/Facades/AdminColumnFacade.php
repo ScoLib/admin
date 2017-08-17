@@ -6,7 +6,7 @@ namespace Sco\Admin\Facades;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @mixin \Sco\Admin\View\Columns\ColumnFactory
+ * @mixin \Sco\Admin\View\ColumnFactory
  */
 class AdminColumnFacade extends Facade
 {
