@@ -2,23 +2,16 @@
 
 namespace Sco\Admin\Form;
 
-use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\Contracts\Support\Jsonable;
+
 use Illuminate\Database\Eloquent\Model;
-use JsonSerializable;
 use Sco\Admin\Contracts\Form\Elements\ElementInterface;
 use Sco\Admin\Contracts\Form\FormInterface;
-use Sco\Admin\Contracts\Validable;
-use Sco\Admin\Contracts\WithModel;
+use Sco\Admin\Contracts\Validatable;
 use Validator;
 
 class Form implements
     FormInterface,
-    WithModel,
-    Jsonable,
-    Arrayable,
-    JsonSerializable,
-    Validable
+    Validatable
 {
     /**
      * @var \Sco\Admin\Form\ElementsCollection
@@ -136,7 +129,7 @@ class Form implements
     {
         $rules = [];
         $this->elements->each(function (ElementInterface $element) use (&$rules) {
-            if ($element instanceof Validable) {
+            if ($element instanceof Validatable) {
                 $rules += $element->getValidationRules();
             }
         });
@@ -147,7 +140,7 @@ class Form implements
     {
         $messages = [];
         $this->elements->each(function (ElementInterface $element) use (&$messages) {
-            if ($element instanceof Validable) {
+            if ($element instanceof Validatable) {
                 $messages += $element->getValidationMessages();
             }
         });
@@ -158,7 +151,7 @@ class Form implements
     {
         $titles = [];
         $this->elements->each(function (ElementInterface $element) use (&$titles) {
-            if ($element instanceof Validable) {
+            if ($element instanceof Validatable) {
                 $titles += $element->getValidationTitles();
             }
         });

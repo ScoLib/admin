@@ -2,7 +2,16 @@
 
 namespace Sco\Admin\Contracts\View;
 
-interface ColumnInterface
+use Sco\Admin\Contracts\WithModel;
+use JsonSerializable;
+use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Contracts\Support\Jsonable;
+
+interface ColumnInterface extends
+    WithModel,
+    Arrayable,
+    Jsonable,
+    JsonSerializable
 {
     public function getName();
 
@@ -17,4 +26,13 @@ interface ColumnInterface
     public function isFixed();
 
     public function getModelValue();
+
+    public function getTemplate();
+
+    /**
+     * @param string $template
+     *
+     * @return $this
+     */
+    public function setTemplate($template);
 }

@@ -2,7 +2,7 @@
 
 namespace Sco\Admin\Contracts;
 
-interface Validable
+interface Validatable
 {
     public function getValidationRules();
 

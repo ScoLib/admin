@@ -5,18 +5,9 @@ namespace Sco\Admin\View\Columns;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
-use JsonSerializable;
-use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\Contracts\Support\Jsonable;
 use Sco\Admin\Contracts\View\ColumnInterface;
-use Sco\Admin\Contracts\WithModel;
 
-abstract class Column implements
-    ColumnInterface,
-    WithModel,
-    Arrayable,
-    Jsonable,
-    JsonSerializable
+abstract class Column implements ColumnInterface
 {
     protected $name;
 
@@ -102,6 +93,8 @@ abstract class Column implements
     public function setTemplate($template)
     {
         $this->template = $template;
+
+        return $this;
     }
 
     public function toArray()

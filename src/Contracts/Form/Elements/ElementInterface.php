@@ -1,11 +1,18 @@
 <?php
 
-
 namespace Sco\Admin\Contracts\Form\Elements;
 
 use Illuminate\Http\Request;
+use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Contracts\Support\Jsonable;
+use JsonSerializable;
+use Sco\Admin\Contracts\WithModel;
 
-interface ElementInterface
+interface ElementInterface extends
+    WithModel,
+    Arrayable,
+    Jsonable,
+    JsonSerializable
 {
     public function getValue();
 

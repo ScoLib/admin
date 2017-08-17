@@ -1,24 +1,15 @@
 <?php
 
-
 namespace Sco\Admin\Form\Elements;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
-use JsonSerializable;
-use Illuminate\Contracts\Support\Arrayable;
-use Illuminate\Contracts\Support\Jsonable;
 use Sco\Admin\Contracts\Form\Elements\ElementInterface;
-use Sco\Admin\Contracts\Validable;
-use Sco\Admin\Contracts\WithModel;
+use Sco\Admin\Contracts\Validatable;
 
 abstract class Element implements
     ElementInterface,
-    WithModel,
-    Arrayable,
-    Jsonable,
-    JsonSerializable,
-    Validable
+    Validatable
 {
     protected $type;
 

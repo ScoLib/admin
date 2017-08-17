@@ -5,7 +5,7 @@ namespace Sco\Admin\View\Columns;
 
 class Link extends Column
 {
-    protected $template = '<router-link to="value.url">{{value.title}}</router-link>';
+    protected $template = '<router-link :to="value.url">{{value.title}}</router-link>';
 
     private $url;
 
@@ -15,8 +15,8 @@ class Link extends Column
             return $this->url;
         }
         $model = app('admin.components')->get(get_class($this->getModel()))->getName();
-        $id = $this->getModel()->getKey();
-        return route('admin.model.edit', [$model, $id]);
+        $id    = $this->getModel()->getKey();
+        return route('admin.model.edit', [$model, $id], false);
     }
 
     public function setUrl($value)
@@ -26,13 +26,11 @@ class Link extends Column
         return $this;
     }
 
-    public function toArray()
+    public function getModelValue()
     {
-        return parent::toArray() + [
-                'value' => [
-                    'url'   => $this->getUrl(),
-                    'title' => $this->getModelValue(),
-                ],
-            ];
+        return [
+            'url'   => $this->getUrl(),
+            'title' => parent::getModelValue(),
+        ];
     }
 }

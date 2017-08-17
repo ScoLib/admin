@@ -2,10 +2,18 @@
 
 namespace Sco\Admin\Contracts\Form;
 
+use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Database\Eloquent\Model;
+use JsonSerializable;
 use Sco\Admin\Contracts\Form\Elements\ElementInterface;
+use Sco\Admin\Contracts\WithModel;
 
-interface FormInterface
+interface FormInterface extends
+    WithModel,
+    Arrayable,
+    Jsonable,
+    JsonSerializable
 {
     /**
      * @return \Sco\Admin\Form\ElementsCollection
