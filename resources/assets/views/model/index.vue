@@ -3,6 +3,9 @@
     .el-table__empty-block {
         width: 100% !important;
     }
+    .fullscreen-v-img {
+        z-index: 1031;
+    }
 </style>
 
 <template>
@@ -93,6 +96,9 @@
     import vColumn from '../../components/column'
     import ActionColumn from './action-column.vue'
     import mixins from './mixins'
+    import VueImg from 'v-img';
+
+    Vue.use(VueImg);
 
     export default {
         mixins: [

@@ -1,3 +1,32 @@
+<style>
+    .avatar-uploader .el-upload {
+        border: 1px dashed #d9d9d9;
+        border-radius: 6px;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+    }
+    .avatar-uploader .el-upload:hover {
+        border-color: #20a0ff;
+    }
+    .avatar-uploader-icon {
+        font-size: 28px;
+        color: #8c939d;
+        width: 178px;
+        height: 178px;
+        line-height: 178px;
+        text-align: center;
+    }
+    .avatar {
+        width: 178px;
+        height: 178px;
+        display: block;
+    }
+    .el-upload__input{
+        display:none!important;
+    }
+</style>
+
 <template>
     <div class="form-horizontal box-body">
 
@@ -74,7 +103,17 @@
                                 v-else-if="element.type == 'number'">
                         </el-input-number>
 
-                        <template v-else-if="typeof element.type === 'undefined' || ['text', 'textarea', 'email', 'password'].indexOf(element.type) > -1">
+                        <el-upload
+                                class="avatar-uploader"
+                                :action="element.action"
+                                :show-file-list="false"
+                                :name="element.key"
+                                v-else-if="element.type == 'upload'">
+                            <img v-if="currentValue[element.key]" :src="currentValue[element.key]" class="avatar">
+                            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                        </el-upload>
+
+                        <template v-else-if="typeof element.type === 'undefined' || ['text', 'textarea', 'email', 'password', 'file'].indexOf(element.type) > -1">
                             <el-input
                                     :type="element.type"
                                     :name="element.key"

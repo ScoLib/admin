@@ -74,7 +74,7 @@ class DateTime extends Column
         return $this->getFormatValue($value);
     }
 
-    public function getFormatValue($date)
+    protected function getFormatValue($date)
     {
         if (!is_null($date)) {
             if (!$date instanceof Carbon) {
