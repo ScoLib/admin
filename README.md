@@ -24,6 +24,7 @@ NPM
     "font-awesome": "^4.7.0",
     "jquery": "^2.2.4",
     "jquery-slimscroll": "^1.3.8",
+    "v-img": "^0.*",
     "vue": "^2.*",
     "vue-i18n": "^6.*",
     "vue-progressbar": "^0.*",
