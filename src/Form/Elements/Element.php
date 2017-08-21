@@ -5,11 +5,8 @@ namespace Sco\Admin\Form\Elements;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Sco\Admin\Contracts\Form\Elements\ElementInterface;
-use Sco\Admin\Contracts\Validatable;
 
-abstract class Element implements
-    ElementInterface,
-    Validatable
+abstract class Element implements ElementInterface
 {
     protected $type;
 
@@ -25,10 +22,6 @@ abstract class Element implements
      * @var \Illuminate\Database\Eloquent\Model
      */
     protected $model;
-
-    protected $validationRules = [];
-
-    protected $validationMessages = [];
 
     public function __construct($name, $title)
     {
@@ -90,12 +83,15 @@ abstract class Element implements
         return $this;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getValue()
     {
-        return $this->getModelValue();
+        return $this->getValueFromModel();
     }
 
-    protected function getModelValue()
+    protected function getValueFromModel()
     {
         $model = $this->getModel();
         $value = $this->getDefaultValue();
@@ -133,43 +129,6 @@ abstract class Element implements
             'title' => $this->title,
             'type'  => $this->type,
         ];
-    }
-
-    public function addValidationRule($rule, $message = null)
-    {
-        $this->validationRules[] = $rule;
-
-        if (is_null($message)) {
-            return $this;
-        }
-
-        return $this->addValidationMessage($rule, $message);
-    }
-
-    public function addValidationMessage($rule, $message)
-    {
-        if (($pos = strpos($rule, ':')) !== false) {
-            $rule = substr($rule, 0, $pos);
-        }
-
-        $this->validationMessages[$rule] = $message;
-
-        return $this;
-    }
-
-    public function getValidationMessages()
-    {
-        return $this->validationMessages;
-    }
-
-    public function getValidationRules()
-    {
-        return $this->validationRules;
-    }
-
-    public function getValidationTitles()
-    {
-        return [$this->getName() => $this->getTitle()];
     }
 
     public function jsonSerialize()

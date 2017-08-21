@@ -37,7 +37,7 @@ class Input extends NamedElement
 
     public function setMax($value)
     {
-        $this->max = intval($value);
+        $this->max = $value;
 
         return $this;
     }
@@ -57,8 +57,8 @@ class Input extends NamedElement
     public function toArray()
     {
         $data = [];
-        $data['minlength'] = $this->getMin();
-        $data['maxlength'] = $this->getMax();
+        $data['minLength'] = $this->getMin();
+        $data['maxLength'] = $this->getMax();
 
         return parent::toArray() + $data;
     }

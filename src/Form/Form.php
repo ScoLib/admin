@@ -181,7 +181,9 @@ class Form implements
     public function getValues()
     {
         return $this->elements->mapWithKeys(function (ElementInterface $element) {
-            return [$element->getName() => $element->getValue()];
+            return [
+                $element->getName() => $element->getValue()
+            ];
         });
     }
 

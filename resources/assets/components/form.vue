@@ -1,27 +1,4 @@
 <style>
-    .avatar-uploader .el-upload {
-        border: 1px dashed #d9d9d9;
-        border-radius: 6px;
-        cursor: pointer;
-        position: relative;
-        overflow: hidden;
-    }
-    .avatar-uploader .el-upload:hover {
-        border-color: #20a0ff;
-    }
-    .avatar-uploader-icon {
-        font-size: 28px;
-        color: #8c939d;
-        width: 178px;
-        height: 178px;
-        line-height: 178px;
-        text-align: center;
-    }
-    .avatar {
-        width: 178px;
-        height: 178px;
-        display: block;
-    }
     .el-upload__input{
         display:none!important;
     }
@@ -103,17 +80,20 @@
                                 v-else-if="element.type == 'number'">
                         </el-input-number>
 
-                        <el-upload
-                                class="avatar-uploader"
-                                :action="element.action"
-                                :show-file-list="false"
-                                :name="element.key"
+                        <upload-file
+                                :element="element"
+                                v-model="currentValue[element.key]"
                                 v-else-if="element.type == 'upload'">
-                            <img v-if="currentValue[element.key]" :src="currentValue[element.key]" class="avatar">
-                            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                        </el-upload>
+                        </upload-file>
 
-                        <template v-else-if="typeof element.type === 'undefined' || ['text', 'textarea', 'email', 'password', 'file'].indexOf(element.type) > -1">
+                        <el-input
+                                :type="element.type"
+                                :name="element.key"
+                                @change="getFile($event)"
+                                v-else-if="element.type == 'file'">
+                        </el-input>
+
+                        <template v-else-if="typeof element.type === 'undefined' || ['text', 'textarea', 'email', 'password'].indexOf(element.type) > -1">
                             <el-input
                                     :type="element.type"
                                     :name="element.key"
@@ -121,8 +101,8 @@
                                     :disabled="element.disabled"
                                     :readonly="element.readonly"
                                     :rows="element.rows"
-                                    :minlength="element.minlength"
-                                    :maxlength="element.maxlength"
+                                    :minlength="element.minLength"
+                                    :maxlength="element.maxLength"
                                     v-model="currentValue[element.key]">
                             </el-input>
                         </template>
@@ -140,6 +120,7 @@
 </template>
 
 <script>
+    import UploadFile from './elements/upload-file'
 
     export default {
         name: 'vForm',
@@ -147,6 +128,9 @@
             return {
                 currentValue: this.value
             }
+        },
+        components: {
+            UploadFile
         },
         props: {
             elements: {
@@ -183,6 +167,10 @@
                     })
                 }
             },
+            getFile(e) {
+                console.log('sssss')
+                console.log(e);
+            }
         },
         watch: {
             value(val) {

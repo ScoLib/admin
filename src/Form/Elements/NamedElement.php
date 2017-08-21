@@ -2,9 +2,15 @@
 
 namespace Sco\Admin\Form\Elements;
 
-class NamedElement extends Element
+use Sco\Admin\Contracts\Validatable;
+
+class NamedElement extends Element implements Validatable
 {
     protected $defaultValue = '';
+
+    protected $validationRules = [];
+
+    protected $validationMessages = [];
 
     public function required($message = null)
     {
@@ -25,7 +31,7 @@ class NamedElement extends Element
 
     public function getValidationRules()
     {
-        $rules = parent::getValidationRules();
+        $rules = $this->validationRules;
 
         foreach ($rules as &$rule) {
             if ($rule !== '_unique') {
@@ -50,7 +56,7 @@ class NamedElement extends Element
      */
     public function getValidationMessages()
     {
-        $messages = parent::getValidationMessages();
+        $messages = $this->validationMessages;
 
         foreach ($messages as $rule => $message) {
             $messages[$this->getName().'.'.$rule] = $message;
@@ -58,5 +64,32 @@ class NamedElement extends Element
         }
 
         return $messages;
+    }
+
+    public function getValidationTitles()
+    {
+        return [$this->getName() => $this->getTitle()];
+    }
+
+    public function addValidationRule($rule, $message = null)
+    {
+        $this->validationRules[] = $rule;
+
+        if (is_null($message)) {
+            return $this;
+        }
+
+        return $this->addValidationMessage($rule, $message);
+    }
+
+    public function addValidationMessage($rule, $message)
+    {
+        if (($pos = strpos($rule, ':')) !== false) {
+            $rule = substr($rule, 0, $pos);
+        }
+
+        $this->validationMessages[$rule] = $message;
+
+        return $this;
     }
 }

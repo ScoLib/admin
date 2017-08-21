@@ -14,6 +14,11 @@ interface ElementInterface extends
     Jsonable,
     JsonSerializable
 {
+    /**
+     * Get Element Value
+     *
+     * @return mixed
+     */
     public function getValue();
 
     public function getName();
