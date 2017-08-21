@@ -83,15 +83,8 @@
                         <upload-file
                                 :element="element"
                                 v-model="currentValue[element.key]"
-                                v-else-if="element.type == 'upload'">
-                        </upload-file>
-
-                        <el-input
-                                :type="element.type"
-                                :name="element.key"
-                                @change="getFile($event)"
                                 v-else-if="element.type == 'file'">
-                        </el-input>
+                        </upload-file>
 
                         <template v-else-if="typeof element.type === 'undefined' || ['text', 'textarea', 'email', 'password'].indexOf(element.type) > -1">
                             <el-input

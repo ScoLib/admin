@@ -12,7 +12,6 @@ use Sco\Admin\Form\Elements\Password;
 use Sco\Admin\Form\Elements\Select;
 use Sco\Admin\Form\Elements\Text;
 use Sco\Admin\Form\Elements\Textarea;
-use Sco\Admin\Form\Elements\Upload;
 use Sco\Admin\Traits\AliasBinder;
 
 /**
@@ -23,7 +22,6 @@ use Sco\Admin\Traits\AliasBinder;
  * @method \Sco\Admin\Form\Elements\Number number($name, $title)
  * @method \Sco\Admin\Form\Elements\Password password($name, $title)
  * @method \Sco\Admin\Form\Elements\File file($name, $title)
- * @method \Sco\Admin\Form\Elements\Upload upload($name, $title)
  * @method \Sco\Admin\Form\Elements\Hidden hidden($name)
  */
 class ElementFactory implements ElementFactoryInterface
@@ -45,7 +43,6 @@ class ElementFactory implements ElementFactoryInterface
             'password' => Password::class,
             'email'    => Email::class,
             'file'     => File::class,
-            'upload'   => Upload::class,
         ]);
     }
 }
