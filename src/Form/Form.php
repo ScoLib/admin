@@ -2,7 +2,6 @@
 
 namespace Sco\Admin\Form;
 
-
 use Illuminate\Database\Eloquent\Model;
 use Sco\Admin\Contracts\Form\Elements\ElementInterface;
 use Sco\Admin\Contracts\Form\FormInterface;
