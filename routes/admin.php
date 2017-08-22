@@ -232,6 +232,11 @@ Route::group([
             'where'      => ['id' => '[0-9]+'],
         ]);
 
+        Route::post('upload/{field}/{id?}', [
+            'as'         => 'upload.file',
+            'uses'       => 'UploadController@formElement',
+        ]);
+
         Route::get('/', [
             'as'         => 'index',
             'uses'       => 'AdminController@index',

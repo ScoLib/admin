@@ -10,6 +10,8 @@ return [
 
     'datetimeFormat' => 'Y-m-d H:i:s',
 
+    'defaultFileExts' => ['jpg', 'jpeg', 'png'],
+
     'components' => [
     ],
 ];

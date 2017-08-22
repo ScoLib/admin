@@ -14,6 +14,12 @@ class File extends Element
 
     protected $withCredentials = false;
 
+    protected $fileSizeLimit = 0;
+
+    protected $fileUploadsLimit = 0;
+
+    protected $fileExts;
+
     public function getValue()
     {
         $value = parent::getValue();
@@ -34,7 +40,19 @@ class File extends Element
         if ($this->actionUrl) {
             return $this->actionUrl;
         }
-        route('admin.dashboard');
+        $model = app('admin.components')->get(get_class($this->getModel()));
+
+        $params       = [
+            'model' => $model->getName(),
+            'field' => $this->getName(),
+        ];
+        $params['id'] = null;
+        if ($this->getModel()->exists) {
+            $params['id'] = $this->getModel()->getKey();
+        }
+        $params['_token'] = csrf_token();
+
+        return route('admin.model.upload.file', $params);
     }
 
     public function setActionUrl($value)
@@ -57,13 +75,13 @@ class File extends Element
     }
 
     /**
-     * Do not show file list
+     * Show file list
      *
      * @return $this
      */
-    public function hideFileList()
+    public function disableFileList()
     {
-        $this->showFileList = true;
+        $this->showFileList = false;
 
         return $this;
     }
@@ -81,9 +99,52 @@ class File extends Element
         return $this;
     }
 
-    public function setMaxSize($value)
+    /**
+     * The maximum size allowed for a file upload. (KB)
+     *
+     * @param int $value
+     *
+     * @return $this
+     */
+    public function setFileSizeLimit($value)
     {
-        $this->addValidationRule('max:' . $value);
+        $this->fileSizeLimit = intval($value);
+        return $this;
+    }
+
+    public function getFileExts()
+    {
+        if ($this->fileExts) {
+            return $this->fileExts;
+        }
+
+        return config('admin.defaultFileExts');
+    }
+
+    /**
+     * A list of allowable extensions that can be uploaded.
+     *
+     * @param array|string $value
+     *
+     * @return $this
+     */
+    public function setFileExts($value)
+    {
+        $this->fileExts = is_array($value) ? $value : explode(',', $value);
+
+        return $this;
+    }
+
+    /**
+     * The maximum number of files that can be uploaded.
+     *
+     * @param int $value
+     *
+     * @return $this
+     */
+    public function setFileUploadsLimit($value)
+    {
+        $this->fileUploadsLimit = intval($value);
 
         return $this;
     }
@@ -91,9 +152,12 @@ class File extends Element
     public function toArray()
     {
         return parent::toArray() + [
-                'action'       => $this->getActionUrl(),
-                'showFileList' => $this->showFileList,
-                'multiple'     => $this->multiple,
+                'action'           => $this->getActionUrl(),
+                'showFileList'     => $this->showFileList,
+                'multiple'         => $this->multiple,
+                'fileSizeLimit'    => $this->fileSizeLimit,
+                'fileUploadsLimit' => $this->fileUploadsLimit,
+                'fileExts'         => $this->getFileExts(),
             ];
     }
 }

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Sco\Admin\Contracts\Form\Elements\ElementInterface;
 use Sco\Admin\Contracts\Form\FormInterface;
 use Sco\Admin\Contracts\Validatable;
+use Sco\Admin\Exceptions\InvalidArgumentException;
 use Validator;
 
 class Form implements
@@ -34,6 +35,18 @@ class Form implements
     public function getElements()
     {
         return $this->elements;
+    }
+
+    public function getElement($name)
+    {
+        $key = $this->getElements()->search(function (ElementInterface $item) use ($name
+        ) {
+            return $item->getName() == $name;
+        });
+        if ($key === false) {
+            throw new InvalidArgumentException('Not found element');
+        }
+        return $this->getElements()->get($key);
     }
 
     /**
@@ -182,7 +195,7 @@ class Form implements
     {
         return $this->elements->mapWithKeys(function (ElementInterface $element) {
             return [
-                $element->getName() => $element->getValue()
+                $element->getName() => $element->getValue(),
             ];
         });
     }
