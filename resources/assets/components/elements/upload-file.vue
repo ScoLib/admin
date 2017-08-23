@@ -3,6 +3,7 @@
             class="upload-file"
             ref="upload"
             :action="element.action"
+            :name="element.key"
             :on-preview="handlePreview"
             :on-remove="handleRemove"
             :on-change="handleChange"
@@ -10,14 +11,17 @@
             :on-error="handleError"
             :before-upload="beforeUpload"
             :show-file-list="element.showFileList"
-            :multiple="element.multiple"
+            :multiple="element.multiSelect"
             :drag="element.drag"
             :accept="element.accept"
             :with-credentials="element.withCredentials"
-            :file-list="currentValue">
-        <el-button size="small" type="primary">点击上传</el-button>
+            :list-type="element.listType"
+            :disabled="element.disabled"
+            :file-list="uploadList">
+        <el-button size="small" type="primary" v-if="element.listType == 'text'">点击上传</el-button>
+        <i class="el-icon-plus" v-else></i>
         <div slot="tip" class="el-upload__tip">
-            只能上传 {{ element.fileExts.join(',') }} 文件
+            只能上传 {{ element.fileExtensions.join(',') }} 文件
             <template v-if="element.fileSizeLimit">
                 ，且不超过 {{ (element.fileSizeLimit/1024).toFixed(2) }} MB
             </template>
@@ -30,13 +34,26 @@
         name: 'UploadFile',
         data() {
             return {
-                currentValue: this.value,
+                currentValue: [],
+                uploadList: [],
             }
+        },
+        created() {
+            const _this = this;
+            this.value.forEach(function (url) {
+                _this.uploadList.push({
+                    'name': url.substring(url.lastIndexOf('/') + 1),
+                    'url': url,
+                });
+            })
         },
         methods: {
             handleSuccess(response, file, fileList) {
 //                file.id = response.id;
 //                this.currentValue.push(file);
+                console.log(fileList);
+                this.uploadList = fileList;
+                this.currentValue = this.parseFileList(fileList);
             },
             handleError(err, file, fileList) {
 //                console.log(err, file, fileList);
@@ -46,7 +63,9 @@
                 if (file && file.uid) {
 //                    delete this.uploadList[file.uid];
                 }
-//                console.log(this.uploadList);
+                console.log(fileList);
+                this.uploadList = fileList;
+                this.currentValue = this.parseFileList(fileList);
             },
             handlePreview(file) {
                 console.log(file);
@@ -55,7 +74,7 @@
 //                console.log('handleProgress', event, file, fileList);
 //            },
             handleChange(file, fileList) {
-                this.currentValue = fileList;
+//                this.currentValue = fileList;
                 /*console.log('handleChange', file, fileList);
                 if (this.element.fileUploadsLimit && this.element.fileUploadsLimit < fileList.length) {
                     this.$message.error('最多只能上传 ' + this.element.fileUploadsLimit +' 个文件');
@@ -82,10 +101,18 @@
                 }
 
                 var imgType=file.name.substring(file.name.lastIndexOf(".") + 1).toLowerCase();
-                if ($.inArray(imgType, this.element.fileExts) == -1) {
+                if ($.inArray(imgType, this.element.fileExtensions) == -1) {
                     this.$message.error('文件格式有误');
                     return false;
                 }
+            },
+            parseFileList(fileList) {
+                const values = [];
+                fileList.forEach(function (file) {
+                    values.push(file.response.path);
+                })
+
+                return values;
             }
         },
         props: {

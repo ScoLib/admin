@@ -28,6 +28,7 @@
                                 :popper-class="element.popperClass"
                                 :name="element.key"
                                 :size="element.size"
+                                :disabled="element.disabled"
                                 filterable
                                 v-model="currentValue[element.key]"
                                 v-if="element.type == 'select'">
@@ -65,7 +66,8 @@
 
                         <el-date-picker
                                 :value="currentValue[element.key]"
-                                type="datetimerange"
+                                type="datetime"
+                                :disabled="element.disabled"
                                 format="yyyy-MM-dd HH:mm:ss"
                                 placeholder="选择日期时间"
                                 @input="handleDateChange($event, element.key)"

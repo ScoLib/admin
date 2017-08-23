@@ -12,6 +12,8 @@ class Image extends Column
      */
     protected $imageWidth = '80px';
 
+    protected $disk;
+
     /**
      * @return string
      */
@@ -32,11 +34,29 @@ class Image extends Column
         return $this;
     }
 
+    public function getDisk()
+    {
+        if ($this->disk) {
+            return $this->disk;
+        }
+    }
+
+    public function setDisk($value)
+    {
+        $this->disk = $value;
+
+        return $this;
+    }
+
     public function getModelValue()
     {
         $value = parent::getModelValue();
         if (!empty($value) && (strpos($value, '://') === false)) {
-            $value = asset($value);
+            if (($disk = $this->getDisk())) {
+                $value = \Storage::disk($disk)->url($value);
+            } else {
+                $value = asset($value);
+            }
         }
 
         return [

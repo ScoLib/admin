@@ -21,6 +21,15 @@ interface FormInterface extends
     public function getElements();
 
     /**
+     * get element
+     *
+     * @param string $name
+     *
+     * @return ElementInterface
+     */
+    public function getElement($name);
+
+    /**
      * @param array $elements
      *
      * @return $this

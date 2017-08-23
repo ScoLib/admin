@@ -13,6 +13,8 @@ abstract class Element implements ElementInterface
     protected $name;
     protected $title;
 
+    protected $disabled = false;
+
     /**
      * @var mixed
      */
@@ -63,12 +65,25 @@ abstract class Element implements ElementInterface
     protected function setModelAttribute($value)
     {
         $model = $this->getModel();
-        $model->setAttribute($this->getName(), $value);
+        $model->setAttribute(
+            $this->getName(),
+            $this->prepareValue($value)
+        );
     }
 
     protected function getValueFromRequest(Request $request)
     {
         return $request->input($this->getName());
+    }
+
+    /**
+     * @param mixed $value
+     *
+     * @return mixed
+     */
+    protected function prepareValue($value)
+    {
+        return $value;
     }
 
     public function getModel()
@@ -122,12 +137,25 @@ abstract class Element implements ElementInterface
         return $this->defaultValue;
     }
 
+    public function isDisabled()
+    {
+        return $this->disabled;
+    }
+
+    public function setDisabled()
+    {
+        $this->disabled = true;
+
+        return $this;
+    }
+
     public function toArray()
     {
         return [
-            'key'   => $this->name,
-            'title' => $this->title,
-            'type'  => $this->type,
+            'key'      => $this->name,
+            'title'    => $this->title,
+            'type'     => $this->type,
+            'disabled' => $this->isDisabled(),
         ];
     }
 

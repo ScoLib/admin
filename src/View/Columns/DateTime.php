@@ -26,7 +26,7 @@ class DateTime extends Column
     public function getFormat()
     {
         if (is_null($this->format)) {
-            $this->format = config('admin.datetimeFormat');
+            $this->format = config('admin.datetime_format');
         }
 
         return $this->format;

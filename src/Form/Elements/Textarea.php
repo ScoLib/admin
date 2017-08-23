@@ -2,7 +2,7 @@
 
 namespace Sco\Admin\Form\Elements;
 
-class Textarea extends Input
+class Textarea extends NamedElement
 {
     protected $type = 'textarea';
 

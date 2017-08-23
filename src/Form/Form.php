@@ -36,6 +36,9 @@ class Form implements
         return $this->elements;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getElement($name)
     {
         $key = $this->getElements()->search(function (ElementInterface $item) use ($name

@@ -2,13 +2,18 @@
 
 namespace Sco\Admin\Form\Elements;
 
+use Illuminate\Http\UploadedFile;
+use Storage;
+
 class File extends Element
 {
     protected $type = 'file';
 
     protected $actionUrl;
 
-    protected $multiple = false;
+    protected $multiSelect = false;
+
+    protected $multiFile = true;
 
     protected $showFileList = true;
 
@@ -18,7 +23,13 @@ class File extends Element
 
     protected $fileUploadsLimit = 0;
 
-    protected $fileExts;
+    protected $fileExtensions;
+
+    protected $listType = 'text';
+
+    protected $disk;
+
+    protected $uploadPath;
 
     public function getValue()
     {
@@ -26,12 +37,14 @@ class File extends Element
         if (empty($value)) {
             return [];
         }
+        if ($this->isMultiFile()) {
+            return collect(explode(',', $value))->map(function ($item) {
+                return $this->getFileUrl($item);
+            });
+        }
 
         return [
-            [
-                'name' => '',
-                'url'  => asset('vendor/admin/images/1200.jpg'),
-            ],
+            $this->getFileUrl($value),
         ];
     }
 
@@ -62,14 +75,26 @@ class File extends Element
         return $this;
     }
 
-    /**
-     * Allow multiple selection files
-     *
-     * @return $this
-     */
-    public function isMultiple()
+    public function isMultiSelect()
     {
-        $this->multiple = true;
+        return $this->multiSelect;
+    }
+
+    public function enableMultiSelect()
+    {
+        $this->multiSelect = true;
+
+        return $this;
+    }
+
+    public function isMultiFile()
+    {
+        return $this->multiFile;
+    }
+
+    public function disableMultiFile()
+    {
+        $this->multiFile = false;
 
         return $this;
     }
@@ -112,13 +137,13 @@ class File extends Element
         return $this;
     }
 
-    public function getFileExts()
+    public function getFileExtensions()
     {
-        if ($this->fileExts) {
-            return $this->fileExts;
+        if ($this->fileExtensions) {
+            return $this->fileExtensions;
         }
 
-        return config('admin.defaultFileExts');
+        return config('admin.upload.extensions');
     }
 
     /**
@@ -128,11 +153,20 @@ class File extends Element
      *
      * @return $this
      */
-    public function setFileExts($value)
+    public function setFileExtensions($value)
     {
-        $this->fileExts = is_array($value) ? $value : explode(',', $value);
+        $this->fileExtensions = is_array($value) ? $value : explode(',', $value);
 
         return $this;
+    }
+
+    public function getFileUploadsLimit()
+    {
+        if (!$this->isMultiFile()) {
+            return 1;
+        }
+
+        return $this->fileUploadsLimit;
     }
 
     /**
@@ -149,15 +183,94 @@ class File extends Element
         return $this;
     }
 
+    public function getListType()
+    {
+        return $this->listType;
+    }
+
+    public function pictureListType()
+    {
+        $this->listType = 'picture';
+
+        return $this;
+    }
+
+    public function pictureCardListType()
+    {
+        $this->listType = 'picture-card';
+
+        return $this;
+    }
+
     public function toArray()
     {
         return parent::toArray() + [
                 'action'           => $this->getActionUrl(),
                 'showFileList'     => $this->showFileList,
-                'multiple'         => $this->multiple,
+                'multiSelect'      => $this->isMultiSelect(),
                 'fileSizeLimit'    => $this->fileSizeLimit,
-                'fileUploadsLimit' => $this->fileUploadsLimit,
-                'fileExts'         => $this->getFileExts(),
+                'fileUploadsLimit' => $this->getFileUploadsLimit(),
+                'fileExtensions'   => $this->getFileExtensions(),
+                'listType'         => $this->getListType(),
             ];
+    }
+
+    public function getDisk()
+    {
+        if ($this->disk) {
+            return $this->disk;
+        }
+
+        return config('admin.upload.disk', 'public');
+    }
+
+    public function setDisk($value)
+    {
+        $this->disk = $value;
+
+        return $this;
+    }
+
+    public function getUploadPath()
+    {
+        if ($this->uploadPath) {
+            return $this->uploadPath;
+        }
+        return config('admin.upload.directory', 'admin/uploads');
+    }
+
+    public function setUploadPath($value)
+    {
+        $this->uploadPath = $value;
+
+        return $this;
+    }
+
+    public function saveFile(UploadedFile $file)
+    {
+        $path = $file->store($this->getUploadPath(), $this->getDisk());
+
+        return [
+            'path' => $path,
+            'url'  => $this->getFileUrl($path),
+        ];
+    }
+
+    protected function prepareValue($value)
+    {
+        if (empty($value) && !is_array($value)) {
+            return $value;
+        }
+
+        if ($this->isMultiFile()) {
+            return implode(',', $value);
+        } else {
+            return $value[0];
+        }
+    }
+
+    protected function getFileUrl($path)
+    {
+        return Storage::disk($this->getDisk())->url($path);
     }
 }

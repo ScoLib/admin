@@ -100,6 +100,7 @@
             getCreateInfo() {
                 this.formLoading = true;
                 this.info = {};
+                this.errors = {};
                 this.$http.get(`/${this.getUrlPrefix()}/${this.$route.params.model}/create/info`)
                     .then(response => {
                         this.formLoading = false;

@@ -8,9 +8,13 @@ return [
 
     'url_prefix' => 'admin',
 
-    'datetimeFormat' => 'Y-m-d H:i:s',
+    'datetime_format' => 'Y-m-d H:i:s',
 
-    'defaultFileExts' => ['jpg', 'jpeg', 'png'],
+    'upload' => [
+        'disk' => 'public',
+        'extensions' => ['jpg', 'jpeg', 'png'],
+        'directory' => 'admin/uploads',
+    ],
 
     'components' => [
     ],

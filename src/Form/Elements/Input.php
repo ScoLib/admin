@@ -7,17 +7,8 @@ use Doctrine\DBAL\Types\Type;
 
 class Input extends NamedElement
 {
-    protected $max;
-    protected $min;
-
-    public function getMax()
-    {
-        if ($this->max) {
-            return $this->max;
-        }
-
-        return $this->getModelFieldLength();
-    }
+    protected $maxLength;
+    protected $minLength = 0;
 
     protected function getModelFieldLength()
     {
@@ -30,36 +21,44 @@ class Input extends NamedElement
 
     protected function getModelColumn()
     {
-        $table = DB::getTablePrefix() . $this->getModel()->getTable();
+        $table  = DB::getTablePrefix() . $this->getModel()->getTable();
         $column = $this->getName();
         return DB::getDoctrineColumn($table, $column);
     }
 
-    public function setMax($value)
+    public function getMaxLength()
     {
-        $this->max = $value;
+        if ($this->maxLength) {
+            return $this->maxLength;
+        }
+
+        return $this->getModelFieldLength();
+    }
+
+    public function setMaxLength($value)
+    {
+        $this->maxLength = (int)$value;
 
         return $this;
     }
 
-    public function getMin()
+    public function getMinLength()
     {
-        return $this->min;
+        return $this->minLength;
     }
 
-    public function setMin($value)
+    public function setMinLength($value)
     {
-        $this->min = intval($value);
+        $this->minLength = (int)$value;
 
         return $this;
     }
 
     public function toArray()
     {
-        $data = [];
-        $data['minLength'] = $this->getMin();
-        $data['maxLength'] = $this->getMax();
-
-        return parent::toArray() + $data;
+        return parent::toArray() + [
+                'minLength' => $this->getMinLength(),
+                'maxLength' => $this->getMaxLength(),
+            ];
     }
 }
