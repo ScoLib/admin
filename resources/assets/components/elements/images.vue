@@ -1,6 +1,6 @@
 <template>
     <el-upload
-            class="upload-file"
+            class="upload-images"
             ref="upload"
             :action="element.action"
             :name="element.key"
@@ -18,14 +18,15 @@
             :list-type="element.listType"
             :disabled="element.disabled"
             :file-list="uploadList">
-        <el-button size="small" type="primary">点击上传</el-button>
+        <el-button size="small" type="primary" v-if="element.listType === 'picture'">点击上传</el-button>
+        <i class="el-icon-plus" v-else></i>
         <div slot="tip" class="el-upload__tip">
-            只能上传 {{ element.fileExtensions.join(',') }} 文件
+            只能上传 {{ element.fileExtensions.join(',') }} 图片
             <template v-if="element.fileSizeLimit">
                 ，不超过 {{ (element.fileSizeLimit/1024).toFixed(2) }} MB
             </template>
             <template v-if="element.fileUploadsLimit">
-                ，不超过 {{ element.fileUploadsLimit }} 个文件
+                ，不超过 {{ element.fileUploadsLimit }} 张图片
             </template>
 
         </div>

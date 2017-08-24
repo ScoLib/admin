@@ -5,7 +5,7 @@ namespace Sco\Admin\Form\Elements;
 use Illuminate\Http\UploadedFile;
 use Storage;
 
-class File extends Element
+class File extends NamedElement
 {
     protected $type = 'file';
 
@@ -37,15 +37,9 @@ class File extends Element
         if (empty($value)) {
             return [];
         }
-        if ($this->isMultiFile()) {
-            return collect(explode(',', $value))->map(function ($item) {
-                return $this->getFileUrl($item);
-            });
-        }
-
-        return [
-            $this->getFileUrl($value),
-        ];
+        return collect(explode(',', $value))->map(function ($item) {
+            return $this->getFileUrl($item);
+        });
     }
 
     public function getActionUrl()
@@ -83,18 +77,6 @@ class File extends Element
     public function enableMultiSelect()
     {
         $this->multiSelect = true;
-
-        return $this;
-    }
-
-    public function isMultiFile()
-    {
-        return $this->multiFile;
-    }
-
-    public function disableMultiFile()
-    {
-        $this->multiFile = false;
 
         return $this;
     }
@@ -155,17 +137,14 @@ class File extends Element
      */
     public function setFileExtensions($value)
     {
-        $this->fileExtensions = is_array($value) ? $value : explode(',', $value);
+        $this->fileExtensions = is_array($value) ? $value : explode(',',
+            $value);
 
         return $this;
     }
 
     public function getFileUploadsLimit()
     {
-        if (!$this->isMultiFile()) {
-            return 1;
-        }
-
         return $this->fileUploadsLimit;
     }
 
@@ -186,20 +165,6 @@ class File extends Element
     public function getListType()
     {
         return $this->listType;
-    }
-
-    public function pictureListType()
-    {
-        $this->listType = 'picture';
-
-        return $this;
-    }
-
-    public function pictureCardListType()
-    {
-        $this->listType = 'picture-card';
-
-        return $this;
     }
 
     public function toArray()
@@ -262,11 +227,7 @@ class File extends Element
             return $value;
         }
 
-        if ($this->isMultiFile()) {
-            return implode(',', $value);
-        } else {
-            return $value[0];
-        }
+        return implode(',', $value);
     }
 
     protected function getFileUrl($path)

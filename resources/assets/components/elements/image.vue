@@ -1,13 +1,13 @@
 <style>
-    .thumbnail {
+    .upload-image .thumbnail {
         width: 100%;
         height: 100%;
     }
-    .el-upload .el-progress {
+    .upload-image .el-upload .el-progress {
         margin: 10px auto;
     }
 
-    .el-upload--text {
+    .upload-image .el-upload--text {
         background-color: #fbfdff;
         border: 1px dashed #c0ccda;
         border-radius: 6px;
@@ -19,11 +19,11 @@
         line-height: 146px;
         vertical-align: top;
     }
-    .el-upload--text:hover {
+    .upload-image .el-upload--text:hover {
         border-color: #20a0ff;
         color: #20a0ff;
     }
-    .el-upload--text i {
+    .upload-image .el-upload--text i {
         font-size: 28px;
         color: #8c939d;
     }
@@ -53,12 +53,9 @@
         <img v-else-if="imageUrl" :src="imageUrl" class="thumbnail">
         <i class="el-icon-plus" v-else></i>
         <div slot="tip" class="el-upload__tip">
-            只能上传 {{ element.fileExtensions.join(',') }} 文件
+            只能上传 {{ element.fileExtensions.join(',') }} 图片
             <template v-if="element.fileSizeLimit">
                 ，不超过 {{ (element.fileSizeLimit/1024).toFixed(2) }} MB
-            </template>
-            <template v-if="element.fileUploadsLimit">
-                ，不超过 {{ element.fileUploadsLimit }} 张图片
             </template>
         </div>
     </el-upload>

@@ -94,6 +94,12 @@
                                 v-else-if="element.type == 'image'">
                         </v-image>
 
+                        <v-images
+                                :element="element"
+                                v-model="currentValue[element.key]"
+                                v-else-if="element.type == 'images'">
+                        </v-images>
+
                         <template v-else-if="typeof element.type === 'undefined' || ['text', 'textarea', 'email', 'password'].indexOf(element.type) > -1">
                             <el-input
                                     :type="element.type"
@@ -123,6 +129,7 @@
 <script>
     import vFile from './elements/file'
     import vImage from './elements/image'
+    import vImages from './elements/images'
 
     export default {
         name: 'vForm',
@@ -134,6 +141,7 @@
         components: {
             vFile,
             vImage,
+            vImages,
         },
         props: {
             elements: {
