@@ -7,6 +7,8 @@ use Sco\Admin\Contracts\Form\ElementFactoryInterface;
 use Sco\Admin\Form\Elements\Email;
 use Sco\Admin\Form\Elements\File;
 use Sco\Admin\Form\Elements\Hidden;
+use Sco\Admin\Form\Elements\Image;
+use Sco\Admin\Form\Elements\Images;
 use Sco\Admin\Form\Elements\Number;
 use Sco\Admin\Form\Elements\Password;
 use Sco\Admin\Form\Elements\Select;
@@ -22,6 +24,8 @@ use Sco\Admin\Traits\AliasBinder;
  * @method \Sco\Admin\Form\Elements\Number number($name, $title)
  * @method \Sco\Admin\Form\Elements\Password password($name, $title)
  * @method \Sco\Admin\Form\Elements\File file($name, $title)
+ * @method \Sco\Admin\Form\Elements\Image image($name, $title)
+ * @method \Sco\Admin\Form\Elements\Images images($name, $title)
  * @method \Sco\Admin\Form\Elements\Hidden hidden($name)
  */
 class ElementFactory implements ElementFactoryInterface
@@ -43,6 +47,8 @@ class ElementFactory implements ElementFactoryInterface
             'password' => Password::class,
             'email'    => Email::class,
             'file'     => File::class,
+            'image'    => Image::class,
+            'images'   => Images::class,
         ]);
     }
 }

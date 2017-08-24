@@ -82,11 +82,17 @@
                                 v-else-if="element.type == 'number'">
                         </el-input-number>
 
-                        <upload-file
+                        <v-file
                                 :element="element"
                                 v-model="currentValue[element.key]"
                                 v-else-if="element.type == 'file'">
-                        </upload-file>
+                        </v-file>
+
+                        <v-image
+                                :element="element"
+                                v-model="currentValue[element.key]"
+                                v-else-if="element.type == 'image'">
+                        </v-image>
 
                         <template v-else-if="typeof element.type === 'undefined' || ['text', 'textarea', 'email', 'password'].indexOf(element.type) > -1">
                             <el-input
@@ -115,7 +121,8 @@
 </template>
 
 <script>
-    import UploadFile from './elements/upload-file'
+    import vFile from './elements/file'
+    import vImage from './elements/image'
 
     export default {
         name: 'vForm',
@@ -125,7 +132,8 @@
             }
         },
         components: {
-            UploadFile
+            vFile,
+            vImage,
         },
         props: {
             elements: {

@@ -8,7 +8,7 @@ class NamedElement extends Element implements Validatable
 {
     protected $defaultValue = '';
 
-    protected $validationRules = [];
+    protected $validationRules = ['bail'];
 
     protected $validationMessages = [];
 
