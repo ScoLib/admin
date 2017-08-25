@@ -6,14 +6,9 @@ export default {
     },
     methods: {
         handleError(err, file, fileList) {
-
-//                console.log(err, file, fileList);
+            this.$message.error('上传失败！')
+            console.log(err);
         },
-
-        handlePreview(file) {
-            console.log(file);
-        },
-
         beforeUpload(file) {
 //                var filesLength = Object.keys(this.uploadList).length;
 //                if (this.element.multiple) {

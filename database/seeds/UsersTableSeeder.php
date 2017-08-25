@@ -13,7 +13,7 @@ class UsersTableSeeder extends Seeder
             $role           = Role::where('name', 'admin')->firstOrFail();
             $user->name     = 'admin';
             $user->email    = 'admin@admin.com';
-            $user->password = bcrypt('123456');
+            $user->password = '123456';
             $user->save();
             $user->attachRole($role);
         }

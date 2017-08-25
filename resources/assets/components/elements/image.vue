@@ -34,7 +34,6 @@
             ref="upload"
             :action="element.action"
             :name="element.key"
-            :on-preview="handlePreview"
             :on-success="handleSuccess"
             :on-error="handleError"
             :on-progress="handleProgress"

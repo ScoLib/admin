@@ -4,7 +4,6 @@
             ref="upload"
             :action="element.action"
             :name="element.key"
-            :on-preview="handlePreview"
             :on-remove="handleRemove"
             :on-change="handleChange"
             :on-success="handleSuccess"
@@ -34,11 +33,13 @@
 
 <script>
     import mixins from './mixins'
+    import methods from './methods'
 
     export default {
         name: 'vFile',
         mixins: [
-            mixins
+            mixins,
+            methods
         ],
         data() {
             return {
@@ -48,57 +49,11 @@
         created() {
             const _this = this;
             this.value.forEach(function (file) {
-                _this.uploadList.push({
-                    'name': file.path.substring(file.path.lastIndexOf('/') + 1),
-                    'url': file.url,
-                });
+                _this.uploadList.push(file);
             })
         },
         methods: {
-            handleSuccess(response, file, fileList) {
-//                file.id = response.id;
-//                this.currentValue.push(file);
-//                console.log(fileList);
-                if (this.element.fileUploadsLimit && this.element.fileUploadsLimit < fileList.length) {
-//                    this.$message.error('最多只能上传 ' + this.element.fileUploadsLimit +' 个文件');
-                    var rfile = fileList.shift();
-//                    this.uploadList = fileList;
-//                    this.currentValue = this.parseFileList(fileList);
-                }
-                this.uploadList = fileList;
-                this.currentValue = this.parseFileList(fileList);
-            },
-            handleChange(file, fileList) {
-//                this.currentValue = fileList;
-//             console.log('handleChange', file, fileList);
-                /*if (this.element.fileUploadsLimit && this.element.fileUploadsLimit < fileList.length) {
-//                    this.$message.error('最多只能上传 ' + this.element.fileUploadsLimit +' 个文件');
-                    fileList.shift();
-                    console.log(fileList);
-                    this.uploadList = fileList;
-                    this.currentValue = this.parseFileList(fileList);
-                }*/
-                // console.log('handleChange', file, fileList);
-            },
-            handleRemove(file, fileList) {
-//                console.log(file, fileList);
-//                if (file && file.uid) {
-//                    delete this.uploadList[file.uid];
-//                }
-                console.log(fileList);
-//                this.uploadList = fileList;
-//                this.currentValue = this.parseFileList(fileList);
-            },
-            parseFileList(fileList) {
-                const values = [];
-                fileList.forEach(function (file) {
-                    if (file.response) {
-                        values.push(file.response);
-                    }
-                })
 
-                return values;
-            }
         },
         props: {
 

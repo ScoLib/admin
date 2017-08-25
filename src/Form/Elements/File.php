@@ -5,6 +5,7 @@ namespace Sco\Admin\Form\Elements;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
 use Storage;
+use Validator;
 
 class File extends NamedElement
 {
@@ -49,10 +50,7 @@ class File extends NamedElement
         return collect(explode(',', $value))->filter(function ($item) {
             return $this->existsFile($item);
         })->map(function ($item) {
-            return [
-                'path' => $item,
-                'url' => $this->getFileUrl($item),
-            ];
+            return $this->getFileInfo($item);
         });
     }
 
@@ -284,16 +282,20 @@ class File extends NamedElement
 
     public function saveFile(UploadedFile $file)
     {
+        Validator::validate(
+            [$this->getName() => $file],
+            $this->getValidationRules(),
+            $this->getValidationMessages(),
+            $this->getValidationTitles()
+        );
+
         $path = $file->storeAs(
             $this->getUploadPath($file),
             $this->getUploadFileName($file),
             $this->getDisk()
         );
 
-        return [
-            'path' => $path,
-            'url'  => $this->getFileUrl($path),
-        ];
+        return $this->getFileInfo($path);
     }
 
     protected function prepareValue($value)
@@ -312,5 +314,14 @@ class File extends NamedElement
     protected function getFileUrl($path)
     {
         return Storage::disk($this->getDisk())->url($path);
+    }
+
+    protected function getFileInfo($path)
+    {
+        return [
+            'name' => substr($path, strrpos($path, '/') + 1),
+            'path' => $path,
+            'url' => $this->getFileUrl($path),
+        ];
     }
 }
