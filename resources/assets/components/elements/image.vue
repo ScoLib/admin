@@ -53,9 +53,9 @@
         <img v-else-if="imageUrl" :src="imageUrl" class="thumbnail">
         <i class="el-icon-plus" v-else></i>
         <div slot="tip" class="el-upload__tip">
-            只能上传 {{ element.fileExtensions.join(',') }} 图片
-            <template v-if="element.fileSizeLimit">
-                ，不超过 {{ (element.fileSizeLimit/1024).toFixed(2) }} MB
+            只能上传 {{ element.fileExtensions }} 图片
+            <template v-if="element.maxFileSize">
+                ，不超过 {{ (element.maxFileSize / 1024 / 1024).toFixed(2) }} MB
             </template>
         </div>
     </el-upload>
@@ -76,6 +76,9 @@
             }
         },
         created() {
+            if (this.value.length) {
+                this.imageUrl = this.value[0].url;
+            }
         },
         methods: {
             parsePercentage(val) {
@@ -84,7 +87,7 @@
             handleSuccess(response, file, fileList) {
 //                console.log(fileList);
 //                this.loading = false;
-                this.currentValue = [response.path];
+                this.currentValue = [response];
                 this.imageUrl = response.url;
             },
             handleProgress(event, file, fileList) {

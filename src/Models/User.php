@@ -23,4 +23,12 @@ class User extends Authenticatable
         'updated'  => \Sco\ActionLog\Events\ModelWasUpdated::class,
         'deleted'  => \Sco\ActionLog\Events\ModelWasDeleted::class,
     ];
+
+    public function setPasswordAttribute($value)
+    {
+        if (empty($value)) {
+            return;
+        }
+        $this->attributes['password'] = bcrypt($value);
+    }
 }

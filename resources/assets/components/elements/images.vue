@@ -21,9 +21,9 @@
         <el-button size="small" type="primary" v-if="element.listType === 'picture'">点击上传</el-button>
         <i class="el-icon-plus" v-else></i>
         <div slot="tip" class="el-upload__tip">
-            只能上传 {{ element.fileExtensions.join(',') }} 图片
-            <template v-if="element.fileSizeLimit">
-                ，不超过 {{ (element.fileSizeLimit/1024).toFixed(2) }} MB
+            只能上传 {{ element.fileExtensions }} 图片
+            <template v-if="element.maxFileSize">
+                ，不超过 {{ (element.maxFileSize / 1024 / 1024).toFixed(2) }} MB
             </template>
             <template v-if="element.fileUploadsLimit">
                 ，不超过 {{ element.fileUploadsLimit }} 张图片
@@ -48,10 +48,10 @@
         },
         created() {
             const _this = this;
-            this.value.forEach(function (url) {
+            this.value.forEach(function (file) {
                 _this.uploadList.push({
-                    'name': url.substring(url.lastIndexOf('/') + 1),
-                    'url': url,
+                    'name': file.path.substring(file.path.lastIndexOf('/') + 1),
+                    'url': file.url,
                 });
             })
         },
@@ -63,9 +63,9 @@
                 if (this.element.fileUploadsLimit && this.element.fileUploadsLimit < fileList.length) {
 //                    this.$message.error('最多只能上传 ' + this.element.fileUploadsLimit +' 个文件');
                     var rfile = fileList.shift();
-                    this.$refs.upload.$emit('remove', rfile)
-                    console.log(this.$refs.upload);
-                    console.log(rfile);
+//                    this.$refs.upload.$emit('remove', rfile)
+//                    console.log(this.$refs.upload);
+//                    console.log(rfile);
 //                    this.uploadList = fileList;
 //                    this.currentValue = this.parseFileList(fileList);
                 }
@@ -97,7 +97,7 @@
                 const values = [];
                 fileList.forEach(function (file) {
                     if (file.response) {
-                        values.push(file.response.path);
+                        values.push(file.response);
                     }
                 })
 

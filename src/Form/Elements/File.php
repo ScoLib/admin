@@ -3,6 +3,7 @@
 namespace Sco\Admin\Form\Elements;
 
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Str;
 use Storage;
 
 class File extends NamedElement
@@ -19,7 +20,7 @@ class File extends NamedElement
 
     protected $withCredentials = false;
 
-    protected $fileSizeLimit = 0;
+    protected $maxFileSize;
 
     protected $fileUploadsLimit = 0;
 
@@ -29,7 +30,15 @@ class File extends NamedElement
 
     protected $disk;
 
+    /**
+     * @var string|\Closure|null
+     */
     protected $uploadPath;
+
+    /**
+     * @var \Closure|null
+     */
+    protected $uploadFileNameRule;
 
     public function getValue()
     {
@@ -37,8 +46,13 @@ class File extends NamedElement
         if (empty($value)) {
             return [];
         }
-        return collect(explode(',', $value))->map(function ($item) {
-            return $this->getFileUrl($item);
+        return collect(explode(',', $value))->filter(function ($item) {
+            return $this->existsFile($item);
+        })->map(function ($item) {
+            return [
+                'path' => $item,
+                'url' => $this->getFileUrl($item),
+            ];
         });
     }
 
@@ -107,15 +121,30 @@ class File extends NamedElement
     }
 
     /**
-     * The maximum size allowed for a file upload. (KB)
+     * The maximum size of an uploaded file in bytes
+     * If didn't set maximum size, return maximum size as configured in php.ini.
+     *
+     * @return int
+     */
+    public function getMaxFileSize()
+    {
+        if ($this->maxFileSize) {
+            return $this->maxFileSize;
+        }
+        return UploadedFile::getMaxFilesize();
+    }
+
+    /**
+     * The maximum size allowed for an uploaded file in bytes
      *
      * @param int $value
      *
      * @return $this
      */
-    public function setFileSizeLimit($value)
+    public function setMaxFileSize($value)
     {
-        $this->fileSizeLimit = intval($value);
+        $this->maxFileSize = intval($value);
+
         return $this;
     }
 
@@ -125,22 +154,26 @@ class File extends NamedElement
             return $this->fileExtensions;
         }
 
-        return config('admin.upload.extensions');
+        return $this->getDefaultExtensions();
     }
 
     /**
      * A list of allowable extensions that can be uploaded.
      *
-     * @param array|string $value
+     * @param string $value
      *
      * @return $this
      */
     public function setFileExtensions($value)
     {
-        $this->fileExtensions = is_array($value) ? $value : explode(',',
-            $value);
+        $this->fileExtensions = $value;
 
         return $this;
+    }
+
+    protected function getDefaultExtensions()
+    {
+        return config('admin.upload.extensions.file');
     }
 
     public function getFileUploadsLimit()
@@ -173,7 +206,7 @@ class File extends NamedElement
                 'action'           => $this->getActionUrl(),
                 'showFileList'     => $this->showFileList,
                 'multiSelect'      => $this->isMultiSelect(),
-                'fileSizeLimit'    => $this->fileSizeLimit,
+                'maxFileSize'      => $this->getMaxFileSize(),
                 'fileUploadsLimit' => $this->getFileUploadsLimit(),
                 'fileExtensions'   => $this->getFileExtensions(),
                 'listType'         => $this->getListType(),
@@ -196,14 +229,30 @@ class File extends NamedElement
         return $this;
     }
 
-    public function getUploadPath()
+    protected function getDefaultUploadPath(UploadedFile $file)
     {
-        if ($this->uploadPath) {
-            return $this->uploadPath;
-        }
         return config('admin.upload.directory', 'admin/uploads');
     }
 
+    public function getUploadPath(UploadedFile $file)
+    {
+        if (!($path = $this->uploadPath)) {
+            $path = $this->getDefaultUploadPath($file);
+        }
+        if (is_callable($path)) {
+            return call_user_func($path, $file);
+        }
+
+        return $path;
+    }
+
+    /**
+     * The path of file save
+     *
+     * @param string|\Closure $value
+     *
+     * @return $this
+     */
     public function setUploadPath($value)
     {
         $this->uploadPath = $value;
@@ -211,9 +260,35 @@ class File extends NamedElement
         return $this;
     }
 
+    public function getUploadFileName(UploadedFile $file)
+    {
+        if (is_callable($this->uploadFileNameRule)) {
+            return call_user_func($this->uploadFileNameRule, $file);
+        }
+
+        return $this->getDefaultFileName($file);
+    }
+
+    protected function getDefaultFileName(UploadedFile $file)
+    {
+        $hash = Str::random(40);
+        return $hash . '.' . $file->guessExtension();
+    }
+
+    public function setUploadFileNameRule(\Closure $value)
+    {
+        $this->uploadFileNameRule = $value;
+
+        return $this;
+    }
+
     public function saveFile(UploadedFile $file)
     {
-        $path = $file->store($this->getUploadPath(), $this->getDisk());
+        $path = $file->storeAs(
+            $this->getUploadPath($file),
+            $this->getUploadFileName($file),
+            $this->getDisk()
+        );
 
         return [
             'path' => $path,
@@ -223,11 +298,15 @@ class File extends NamedElement
 
     protected function prepareValue($value)
     {
-        if (empty($value) && !is_array($value)) {
-            return $value;
+        if (empty($value) || !is_array($value)) {
+            return '';
         }
+        return collect($value)->implode('path', ',');
+    }
 
-        return implode(',', $value);
+    protected function existsFile($path)
+    {
+        return Storage::disk($this->getDisk())->exists($path);
     }
 
     protected function getFileUrl($path)

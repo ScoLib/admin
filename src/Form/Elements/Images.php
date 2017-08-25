@@ -14,4 +14,9 @@ class Images extends File
 
         return $this;
     }
+
+    protected function getDefaultExtensions()
+    {
+        return config('admin.upload.extensions.image');
+    }
 }

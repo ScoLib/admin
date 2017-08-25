@@ -17,6 +17,7 @@ class UploadController extends Controller
         if (is_null($file) || !($file instanceof UploadedFile)) {
             throw new InvalidArgumentException('must upload file');
         }
+
         if (is_null($id)) {
             $form = $component->fireCreate();
         } else {

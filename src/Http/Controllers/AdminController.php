@@ -88,6 +88,7 @@ class AdminController extends Controller
         }
 
         $component->update($id);
+        return response()->json(['message' => 'ok']);
     }
 
     public function delete(ComponentInterface $component, $id)
