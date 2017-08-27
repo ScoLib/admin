@@ -56,14 +56,7 @@ class NamedElement extends Element implements Validatable
      */
     public function getValidationMessages()
     {
-        $messages = $this->validationMessages;
-
-        foreach ($messages as $rule => $message) {
-            $messages[$this->getName().'.'.$rule] = $message;
-            unset($messages[$rule]);
-        }
-
-        return $messages;
+        return $this->validationMessages;
     }
 
     public function getValidationTitles()
@@ -88,7 +81,7 @@ class NamedElement extends Element implements Validatable
             $rule = substr($rule, 0, $pos);
         }
 
-        $this->validationMessages[$rule] = $message;
+        $this->validationMessages[$this->getName().'.'.$rule] = $message;
 
         return $this;
     }

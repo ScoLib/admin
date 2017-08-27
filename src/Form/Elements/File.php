@@ -41,6 +41,10 @@ class File extends NamedElement
      */
     protected $uploadFileNameRule;
 
+    protected $uploadValidationRules = ['bail', 'file'];
+
+    protected $uploadValidationMessages = [];
+
     public function getValue()
     {
         $value = parent::getValue();
@@ -126,10 +130,12 @@ class File extends NamedElement
      */
     public function getMaxFileSize()
     {
+        $size = UploadedFile::getMaxFilesize();
         if ($this->maxFileSize) {
-            return $this->maxFileSize;
+            $size = $this->maxFileSize;
         }
-        return UploadedFile::getMaxFilesize();
+        $this->addValidationRule('max:' . $size);
+        return $size;
     }
 
     /**
@@ -148,11 +154,12 @@ class File extends NamedElement
 
     public function getFileExtensions()
     {
+        $exts = $this->getDefaultExtensions();
         if ($this->fileExtensions) {
-            return $this->fileExtensions;
+            $exts = $this->fileExtensions;
         }
-
-        return $this->getDefaultExtensions();
+        $this->addValidationRule('mimes:' . $exts);
+        return $exts;
     }
 
     /**
@@ -284,9 +291,9 @@ class File extends NamedElement
     {
         Validator::validate(
             [$this->getName() => $file],
-            $this->getValidationRules(),
-            $this->getValidationMessages(),
-            $this->getValidationTitles()
+            $this->getUploadValidationRules(),
+            $this->getUploadValidationMessages(),
+            $this->getUploadValidationTitles()
         );
 
         $path = $file->storeAs(
@@ -323,5 +330,52 @@ class File extends NamedElement
             'path' => $path,
             'url' => $this->getFileUrl($path),
         ];
+    }
+
+    public function addValidationRule($rule, $message = null)
+    {
+        $uploadRules = ['image', 'mimes', 'size', 'dimensions', 'max', 'min', 'between'];
+        list($name,) = explode(':', $rule, 2);
+        if (in_array($name, $uploadRules)) {
+            return $this->addUploadValidationRule($rule, $message);
+        }
+
+        return parent::addValidationRule($rule, $message);
+    }
+
+    public function addUploadValidationRule($rule, $message = null)
+    {
+        $this->uploadValidationRules[] = $rule;
+
+        if (is_null($message)) {
+            return $this;
+        }
+        return $this->addUploadValidationMessage($rule, $message);
+    }
+
+    public function addUploadValidationMessage($rule, $message)
+    {
+        if (($pos = strpos($rule, ':')) !== false) {
+            $rule = substr($rule, 0, $pos);
+        }
+
+        $this->uploadValidationMessages[$this->getName() . '.' . $rule] = $message;
+
+        return $this;
+    }
+
+    public function getUploadValidationRules()
+    {
+        return [$this->getName() => $this->uploadValidationRules];
+    }
+
+    public function getUploadValidationMessages()
+    {
+        return $this->uploadValidationMessages;
+    }
+
+    public function getUploadValidationTitles()
+    {
+        return $this->getValidationTitles();
     }
 }
