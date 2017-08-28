@@ -3,7 +3,6 @@
 namespace Sco\Admin\Form\Elements;
 
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Str;
 use Storage;
 use Validator;
 

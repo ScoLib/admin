@@ -5,6 +5,7 @@
                 ref="upload"
                 :action="element.action"
                 :name="element.key"
+                :headers="headerInfo"
                 :on-preview="handlePreview"
                 :on-remove="handleRemove"
                 :on-change="handleChange"
@@ -24,7 +25,7 @@
             <div slot="tip" class="el-upload__tip">
                 只能上传 {{ element.fileExtensions }} 图片
                 <template v-if="element.maxFileSize">
-                    ，不超过 {{ (element.maxFileSize / 1024 / 1024).toFixed(2) }} MB
+                    ，不超过 {{ (element.maxFileSize / 1024).toFixed(2) }} MB
                 </template>
                 <template v-if="element.fileUploadsLimit">
                     ，不超过 {{ element.fileUploadsLimit }} 张图片

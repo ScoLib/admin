@@ -34,6 +34,7 @@
             ref="upload"
             :action="element.action"
             :name="element.key"
+            :headers="headerInfo"
             :on-success="handleSuccess"
             :on-error="handleError"
             :on-progress="handleProgress"
@@ -54,7 +55,7 @@
         <div slot="tip" class="el-upload__tip">
             只能上传 {{ element.fileExtensions }} 图片
             <template v-if="element.maxFileSize">
-                ，不超过 {{ (element.maxFileSize / 1024 / 1024).toFixed(2) }} MB
+                ，不超过 {{ (element.maxFileSize / 1024).toFixed(2) }} MB
             </template>
         </div>
     </el-upload>
@@ -84,7 +85,7 @@
                 return parseInt(val, 10);
             },
             handleSuccess(response, file, fileList) {
-//                console.log(fileList);
+                console.log('handleSuccess', response);
 //                this.loading = false;
                 this.currentValue = [response];
                 this.imageUrl = response.url;

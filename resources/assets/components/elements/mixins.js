@@ -2,11 +2,15 @@ export default {
     data() {
         return {
             currentValue: [],
+            headerInfo: {
+                'Accept': '/json'
+            },
         }
     },
     methods: {
         handleError(err, file, fileList) {
-            this.$message.error('上传失败！')
+            this.$message.error('上传失败！');
+
             console.log(err);
         },
         beforeUpload(file) {
@@ -20,9 +24,9 @@ export default {
 //                    return false;
 //                }
             // file.size is Byte
-            if (this.element.maxFileSize && this.element.maxFileSize <= file.size) {
+            if (this.element.maxFileSize && (this.element.maxFileSize * 1024) <= file.size) {
                 var msg = '文件 ' + file.name + ' 太大，不能超过 '
-                    + (this.element.maxFileSize / 1024 / 1024).toFixed(2) + ' MB';
+                    + (this.element.maxFileSize / 1024).toFixed(2) + ' MB';
                 this.$message.error(msg);
                 return false;
             }
