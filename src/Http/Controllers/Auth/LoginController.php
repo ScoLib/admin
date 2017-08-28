@@ -50,7 +50,7 @@ class LoginController extends Controller
         $this->validate($request, [
             $this->username() => 'required|string',
             'password'        => 'required|string',
-        ], trans('admin::validation'), trans('admin::validation.attributes'));
+        ]);
     }
 
     protected function sendFailedLoginResponse(Request $request)

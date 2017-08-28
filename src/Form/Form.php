@@ -129,10 +129,7 @@ class Form implements
 
     public function getValidationMessages()
     {
-        return array_merge(
-            trans('admin::validation'),
-            $this->getElementsValidationMessages()
-        );
+        return $this->getElementsValidationMessages();
     }
 
     public function getValidationTitles()

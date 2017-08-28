@@ -8,7 +8,7 @@ class NamedElement extends Element implements Validatable
 {
     protected $defaultValue = '';
 
-    protected $validationRules = ['bail'];
+    protected $validationRules = [];
 
     protected $validationMessages = [];
 
@@ -20,35 +20,37 @@ class NamedElement extends Element implements Validatable
 
     public function unique($message = null)
     {
-        $this->addValidationRule('_unique');
-
-        if (!is_null($message)) {
-            $this->addValidationMessage('unique', $message);
-        }
+        $this->addValidationRule('unique', $message);
 
         return $this;
     }
 
     public function getValidationRules()
     {
-        $rules = $this->validationRules;
+        $rules = array_merge(
+            $this->getDefaultValidationRules(),
+            $this->validationRules
+        );
 
-        foreach ($rules as &$rule) {
-            if ($rule !== '_unique') {
-                continue;
-            }
-
+        if (isset($rules['unique']) && $rules['unique'] == 'unique') {
             $model = $this->getModel();
             $table = $model->getTable();
 
-            $rule = 'unique:'.$table.','.$this->getName();
+            $rule = 'unique:' . $table . ',' . $this->getName();
             if ($model->exists) {
-                $rule .= ','.$model->getKey();
+                $rule .= ',' . $model->getKey();
             }
+            $rules['unique'] = $rule;
         }
-        unset($rule);
 
-        return [$this->getName() => $rules];
+        return [$this->getName() => array_values($rules)];
+    }
+
+    protected function getDefaultValidationRules()
+    {
+        return [
+            'bail' => 'bail',
+        ];
     }
 
     /**
@@ -66,7 +68,7 @@ class NamedElement extends Element implements Validatable
 
     public function addValidationRule($rule, $message = null)
     {
-        $this->validationRules[] = $rule;
+        $this->validationRules[$this->getValidationRuleName($rule)] = $rule;
 
         if (is_null($message)) {
             return $this;
@@ -77,12 +79,16 @@ class NamedElement extends Element implements Validatable
 
     public function addValidationMessage($rule, $message)
     {
-        if (($pos = strpos($rule, ':')) !== false) {
-            $rule = substr($rule, 0, $pos);
-        }
+        $key = $this->getName() . '.' . $this->getValidationRuleName($rule);
 
-        $this->validationMessages[$this->getName().'.'.$rule] = $message;
+        $this->validationMessages[$key] = $message;
 
         return $this;
+    }
+
+    protected function getValidationRuleName($rule)
+    {
+        list($name,) = explode(':', (string)$rule, 2);
+        return $name;
     }
 }

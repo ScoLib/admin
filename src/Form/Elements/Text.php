@@ -14,9 +14,16 @@ class Text extends Input
         return $this->size;
     }
 
-    public function setSize($value)
+    public function largeSize()
     {
-        $this->size = $value;
+        $this->size = 'large';
+
+        return $this;
+    }
+
+    public function miniSize()
+    {
+        $this->size = 'mini';
 
         return $this;
     }

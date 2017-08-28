@@ -41,7 +41,7 @@ class File extends NamedElement
      */
     protected $uploadFileNameRule;
 
-    protected $uploadValidationRules = ['bail', 'file'];
+    protected $uploadValidationRules = [];
 
     protected $uploadValidationMessages = [];
 
@@ -97,8 +97,13 @@ class File extends NamedElement
         return $this;
     }
 
+    public function isShowFileList()
+    {
+        return $this->showFileList;
+    }
+
     /**
-     * Show file list
+     * Disable file list
      *
      * @return $this
      */
@@ -123,23 +128,26 @@ class File extends NamedElement
     }
 
     /**
-     * The maximum size of an uploaded file in bytes
-     * If didn't set maximum size, return maximum size as configured in php.ini.
+     * The maximum size of an uploaded file in kilobytes
      *
      * @return int
      */
     public function getMaxFileSize()
     {
-        $size = UploadedFile::getMaxFilesize();
         if ($this->maxFileSize) {
-            $size = $this->maxFileSize;
+            return $this->maxFileSize;
         }
-        $this->addValidationRule('max:' . $size);
-        return $size;
+
+        return $this->getDefaultMaxFileSize();
+    }
+
+    protected function getDefaultMaxFileSize()
+    {
+        return UploadedFile::getMaxFilesize() / 1024;
     }
 
     /**
-     * The maximum size allowed for an uploaded file in bytes
+     * The maximum size allowed for an uploaded file in kilobytes
      *
      * @param int $value
      *
@@ -149,17 +157,17 @@ class File extends NamedElement
     {
         $this->maxFileSize = intval($value);
 
+        $this->addValidationRule('max:' . $this->maxFileSize);
+
         return $this;
     }
 
     public function getFileExtensions()
     {
-        $exts = $this->getDefaultExtensions();
         if ($this->fileExtensions) {
-            $exts = $this->fileExtensions;
+            return $this->fileExtensions;
         }
-        $this->addValidationRule('mimes:' . $exts);
-        return $exts;
+        return $this->getDefaultExtensions();
     }
 
     /**
@@ -172,6 +180,8 @@ class File extends NamedElement
     public function setFileExtensions($value)
     {
         $this->fileExtensions = $value;
+
+        $this->addValidationRule('mimes:' . $value);
 
         return $this;
     }
@@ -209,7 +219,7 @@ class File extends NamedElement
     {
         return parent::toArray() + [
                 'action'           => $this->getActionUrl(),
-                'showFileList'     => $this->showFileList,
+                'showFileList'     => $this->isShowFileList(),
                 'multiSelect'      => $this->isMultiSelect(),
                 'maxFileSize'      => $this->getMaxFileSize(),
                 'fileUploadsLimit' => $this->getFileUploadsLimit(),
@@ -265,6 +275,13 @@ class File extends NamedElement
         return $this;
     }
 
+    /**
+     * Get a filename for the upload file.
+     *
+     * @param \Illuminate\Http\UploadedFile $file
+     *
+     * @return mixed|string
+     */
     public function getUploadFileName(UploadedFile $file)
     {
         if (is_callable($this->uploadFileNameRule)) {
@@ -276,10 +293,16 @@ class File extends NamedElement
 
     protected function getDefaultFileName(UploadedFile $file)
     {
-        $hash = Str::random(40);
-        return $hash . '.' . $file->guessExtension();
+        return $file->hashName();
     }
 
+    /**
+     * Set the generation rule for the filename of the uploaded file
+     *
+     * @param \Closure $value
+     *
+     * @return $this
+     */
     public function setUploadFileNameRule(\Closure $value)
     {
         $this->uploadFileNameRule = $value;
@@ -328,24 +351,27 @@ class File extends NamedElement
         return [
             'name' => substr($path, strrpos($path, '/') + 1),
             'path' => $path,
-            'url' => $this->getFileUrl($path),
+            'url'  => $this->getFileUrl($path),
         ];
     }
 
     public function addValidationRule($rule, $message = null)
     {
-        $uploadRules = ['image', 'mimes', 'size', 'dimensions', 'max', 'min', 'between'];
-        list($name,) = explode(':', $rule, 2);
-        if (in_array($name, $uploadRules)) {
+        $uploadRules = [
+            'image', 'mimes', 'mimetypes', 'size',
+            'dimensions', 'max', 'min', 'between'
+        ];
+
+        if (in_array($this->getValidationRuleName($rule), $uploadRules)) {
             return $this->addUploadValidationRule($rule, $message);
         }
 
         return parent::addValidationRule($rule, $message);
     }
 
-    public function addUploadValidationRule($rule, $message = null)
+    protected function addUploadValidationRule($rule, $message = null)
     {
-        $this->uploadValidationRules[] = $rule;
+        $this->uploadValidationRules[$this->getValidationRuleName($rule)] = $rule;
 
         if (is_null($message)) {
             return $this;
@@ -353,28 +379,41 @@ class File extends NamedElement
         return $this->addUploadValidationMessage($rule, $message);
     }
 
-    public function addUploadValidationMessage($rule, $message)
+    protected function addUploadValidationMessage($rule, $message)
     {
-        if (($pos = strpos($rule, ':')) !== false) {
-            $rule = substr($rule, 0, $pos);
-        }
+        $key = $this->getName() . '.' . $this->getValidationRuleName($rule);
 
-        $this->uploadValidationMessages[$this->getName() . '.' . $rule] = $message;
+        $this->uploadValidationMessages[$key] = $message;
 
         return $this;
     }
 
-    public function getUploadValidationRules()
+    protected function getUploadValidationRules()
     {
-        return [$this->getName() => $this->uploadValidationRules];
+        $rules = array_merge(
+            $this->getDefaultUploadValidationRules(),
+            $this->uploadValidationRules
+        );
+
+        return [$this->getName() => array_values($rules)];
     }
 
-    public function getUploadValidationMessages()
+    protected function getDefaultUploadValidationRules()
+    {
+        return [
+            'bail'  => 'bail',
+            'file'  => 'file',
+            'mimes' => 'mimes:' . $this->getDefaultExtensions(),
+            'max'   => 'max:' . $this->getDefaultMaxFileSize(),
+        ];
+    }
+
+    protected function getUploadValidationMessages()
     {
         return $this->uploadValidationMessages;
     }
 
-    public function getUploadValidationTitles()
+    protected function getUploadValidationTitles()
     {
         return $this->getValidationTitles();
     }

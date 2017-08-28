@@ -19,6 +19,8 @@ class Number extends NamedElement
     {
         $this->max = (int)$value;
 
+        $this->addValidationRule('max:' . $value);
+
         return $this;
     }
 
