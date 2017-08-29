@@ -25,11 +25,11 @@ class DateTime extends Column
      */
     public function getFormat()
     {
-        if (is_null($this->format)) {
-            $this->format = config('admin.datetime_format');
+        if ($this->format) {
+            return $this->format;
         }
 
-        return $this->format;
+        return config('admin.datetime_format');
     }
 
     /**
@@ -37,11 +37,11 @@ class DateTime extends Column
      */
     public function getTimezone()
     {
-        if (is_null($this->timezone)) {
-            $this->timezone = config('app.timezone');
+        if ($this->timezone) {
+            return $this->timezone;
         }
 
-        return $this->timezone;
+        return config('app.timezone');
     }
 
     /**

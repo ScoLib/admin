@@ -8,7 +8,7 @@ class Textarea extends NamedElement
 
     protected $rows = 2;
 
-    protected $autoSize = true;
+    protected $autoSize = false;
 
     public function getRows()
     {

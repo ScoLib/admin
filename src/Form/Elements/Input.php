@@ -12,6 +12,8 @@ class Input extends NamedElement
 
     protected $size = '';
 
+    protected $readonly = false;
+
     public function getSize()
     {
         return $this->size;
@@ -42,6 +44,10 @@ class Input extends NamedElement
 
     protected function getModelColumn()
     {
+        // Doctrine\DBAL\Platforms\MySQL57Platform not support "enum" "string"
+        $databasePlatform = DB::getDoctrineSchemaManager()->getDatabasePlatform();
+        $databasePlatform->registerDoctrineTypeMapping('enum', 'string');
+
         $table  = DB::getTablePrefix() . $this->getModel()->getTable();
         $column = $this->getName();
         return DB::getDoctrineColumn($table, $column);
@@ -58,8 +64,9 @@ class Input extends NamedElement
 
     public function setMaxLength($value)
     {
-        $this->maxLength = (int)$value;
-
+        $value           = intval($value);
+        $this->maxLength = $value;
+        $this->addValidationRule('min:' . $value);
         return $this;
     }
 
@@ -70,7 +77,22 @@ class Input extends NamedElement
 
     public function setMinLength($value)
     {
-        $this->minLength = (int)$value;
+        $value           = intval($value);
+        $this->minLength = $value;
+
+        $this->addValidationRule('max:' . $value);
+
+        return $this;
+    }
+
+    public function isReadonly()
+    {
+        return $this->readonly;
+    }
+
+    public function readonly()
+    {
+        $this->readonly = true;
 
         return $this;
     }
@@ -81,6 +103,7 @@ class Input extends NamedElement
                 'minLength' => $this->getMinLength(),
                 'maxLength' => $this->getMaxLength(),
                 'size'      => $this->getSize(),
+                'readonly'  => $this->isReadonly(),
             ];
     }
 }

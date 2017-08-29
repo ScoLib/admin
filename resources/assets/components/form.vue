@@ -1,6 +1,9 @@
 <style>
-    .el-upload__input{
+    .el-upload__input {
         display:none!important;
+    }
+    .el-switch {
+        margin: 7px 0px;
     }
 </style>
 
@@ -23,6 +26,7 @@
                 <div class="col-xs-12 col-sm-9">
                     <slot :name="element.key" :element="element">
                         <el-select
+                                v-if="element.type == 'select'"
                                 placeholder="请选择"
                                 :class="element.class"
                                 :popper-class="element.popperClass"
@@ -30,8 +34,7 @@
                                 :size="element.size"
                                 :disabled="element.disabled"
                                 filterable
-                                v-model="currentValue[element.key]"
-                                v-if="element.type == 'select'">
+                                v-model="currentValue[element.key]">
                             <el-option
                                     :value="option.value"
                                     :key="option.value"
@@ -41,8 +44,8 @@
                         </el-select>
 
                         <el-radio-group
-                                v-model="currentValue[element.key]"
-                                v-else-if="element.type == 'radio'">
+                                v-else-if="element.type == 'radio'"
+                                v-model="currentValue[element.key]">
                             <el-radio
                                     v-for="option in element.options"
                                     :key="option.value"
@@ -53,8 +56,8 @@
                         </el-radio-group>
 
                         <el-checkbox-group
-                                v-model="currentValue[element.key]"
-                                v-else-if="element.type == 'checkbox'">
+                                v-else-if="element.type == 'checkbox'"
+                                v-model="currentValue[element.key]">
                             <el-checkbox
                                     v-for="option in element.options"
                                     :key="option.value"
@@ -65,42 +68,59 @@
                         </el-checkbox-group>
 
                         <el-date-picker
+                                v-else-if="['date', 'datetime'].indexOf(element.type) > -1"
                                 :value="currentValue[element.key]"
-                                type="datetime"
+                                :type="element.type"
                                 :disabled="element.disabled"
-                                format="yyyy-MM-dd HH:mm:ss"
+                                :readonly="element.readonly"
+                                :size="element.size"
+                                :format="element.format"
                                 placeholder="选择日期时间"
-                                @input="handleDateChange($event, element.key)"
-                                v-else-if="element.type == 'date'">
+                                @input="handleDateChange($event, element.key)">
                         </el-date-picker>
 
                         <el-input-number
+                                v-else-if="element.type == 'number'"
                                 v-model="currentValue[element.key]"
                                 :disabled="element.disabled"
                                 :min="element.min"
-                                :max="element.max"
-                                v-else-if="element.type == 'number'">
+                                :max="element.max">
                         </el-input-number>
 
                         <v-file
+                                v-else-if="element.type == 'file'"
                                 :element="element"
-                                v-model="currentValue[element.key]"
-                                v-else-if="element.type == 'file'">
+                                v-model="currentValue[element.key]">
                         </v-file>
 
                         <v-image
+                                v-else-if="element.type == 'image'"
                                 :element="element"
-                                v-model="currentValue[element.key]"
-                                v-else-if="element.type == 'image'">
+                                v-model="currentValue[element.key]">
                         </v-image>
 
                         <v-images
+                                v-else-if="element.type == 'images'"
                                 :element="element"
-                                v-model="currentValue[element.key]"
-                                v-else-if="element.type == 'images'">
+                                v-model="currentValue[element.key]">
                         </v-images>
 
+                        <el-switch
+                                v-else-if="element.type == 'elswitch'"
+                                v-model="currentValue[element.key]"
+                                :on-text="element.text[0]"
+                                :off-text="element.text[1]"
+                                :on-color="element.color[0]"
+                                :off-color="element.color[1]"
+                                :on-value="element.values[0]"
+                                :off-value="element.values[1]"
+                                :name="element.key"
+                                :disabled="element.disabled"
+                                :width="element.width">
+                        </el-switch>
+
                         <el-input
+                                v-else-if="element.type == 'textarea'"
                                 :type="element.type"
                                 :name="element.key"
                                 :placeholder="element.placeholder ? element.placeholder : element.title"
@@ -110,8 +130,7 @@
                                 :minlength="element.minLength"
                                 :maxlength="element.maxLength"
                                 :autosize="element.autosize"
-                                v-model="currentValue[element.key]"
-                                v-else-if="element.type == 'textarea'">
+                                v-model="currentValue[element.key]">
                         </el-input>
 
                         <template v-else-if="typeof element.type === 'undefined' || ['text', 'email', 'password'].indexOf(element.type) > -1">
@@ -179,7 +198,10 @@
         },
         methods: {
             handleDateChange(date, key) {
+                console.log(date, key);
+                var options = {hour12: false};
                 if (date instanceof Date) {
+                    console.log(date.toLocaleString(undefined, options));
                     this.currentValue[key] = date.toLocaleString();
                 }
                 if (date instanceof Array) {
@@ -191,6 +213,7 @@
                         }
                     })
                 }
+                console.log(this.currentValue);
             },
             getFile(e) {
                 console.log('sssss')

@@ -4,6 +4,9 @@ namespace Sco\Admin\Form;
 
 use Illuminate\Foundation\Application;
 use Sco\Admin\Contracts\Form\ElementFactoryInterface;
+use Sco\Admin\Form\Elements\Date;
+use Sco\Admin\Form\Elements\DateTime;
+use Sco\Admin\Form\Elements\ElSwitch;
 use Sco\Admin\Form\Elements\Email;
 use Sco\Admin\Form\Elements\File;
 use Sco\Admin\Form\Elements\Hidden;
@@ -27,6 +30,9 @@ use Sco\Admin\Traits\AliasBinder;
  * @method \Sco\Admin\Form\Elements\Image image($name, $title)
  * @method \Sco\Admin\Form\Elements\Images images($name, $title)
  * @method \Sco\Admin\Form\Elements\Hidden hidden($name)
+ * @method \Sco\Admin\Form\Elements\ElSwitch elswitch($name, $title)
+ * @method \Sco\Admin\Form\Elements\Date date($name, $title)
+ * @method \Sco\Admin\Form\Elements\DateTime datetime($name, $title)
  */
 class ElementFactory implements ElementFactoryInterface
 {
@@ -49,6 +55,9 @@ class ElementFactory implements ElementFactoryInterface
             'file'     => File::class,
             'image'    => Image::class,
             'images'   => Images::class,
+            'elswitch' => ElSwitch::class,
+            'date'     => Date::class,
+            'datetime' => DateTime::class,
         ]);
     }
 }
