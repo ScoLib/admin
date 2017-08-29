@@ -5,13 +5,13 @@
  */
 $navigation->setFromArray([
     [
-        'title'    => '系统管理',
+        'title'    => trans('admin::nav.system'),
         'icon'     => 'fa fa-edit',
         'priority' => 500,
         'id'       => 'system',
         'pages'    => [
             [
-                'title' => '操作日志',
+                'title' => trans('admin::nav.action_log'),
                 'url'   => route('admin.model.index', ['model' => 'logs'], false),
             ],
         ],

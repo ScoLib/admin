@@ -100,16 +100,30 @@
                                 v-else-if="element.type == 'images'">
                         </v-images>
 
-                        <template v-else-if="typeof element.type === 'undefined' || ['text', 'textarea', 'email', 'password'].indexOf(element.type) > -1">
+                        <el-input
+                                :type="element.type"
+                                :name="element.key"
+                                :placeholder="element.placeholder ? element.placeholder : element.title"
+                                :disabled="element.disabled"
+                                :readonly="element.readonly"
+                                :rows="element.rows"
+                                :minlength="element.minLength"
+                                :maxlength="element.maxLength"
+                                :autosize="element.autosize"
+                                v-model="currentValue[element.key]"
+                                v-else-if="element.type == 'textarea'">
+                        </el-input>
+
+                        <template v-else-if="typeof element.type === 'undefined' || ['text', 'email', 'password'].indexOf(element.type) > -1">
                             <el-input
                                     :type="element.type"
                                     :name="element.key"
                                     :placeholder="element.placeholder ? element.placeholder : element.title"
                                     :disabled="element.disabled"
                                     :readonly="element.readonly"
-                                    :rows="element.rows"
                                     :minlength="element.minLength"
                                     :maxlength="element.maxLength"
+                                    :size="element.size"
                                     v-model="currentValue[element.key]">
                             </el-input>
                         </template>

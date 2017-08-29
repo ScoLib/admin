@@ -7,10 +7,10 @@ class Email extends Text
 {
     protected $type = 'email';
 
-    public function __construct($name, $title)
+    protected function getDefaultValidationRules()
     {
-        parent::__construct($name, $title);
-
-        $this->addValidationRule('email');
+        return parent::getDefaultValidationRules() + [
+                'email' => 'email',
+            ];
     }
 }

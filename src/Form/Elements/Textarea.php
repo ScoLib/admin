@@ -8,6 +8,8 @@ class Textarea extends NamedElement
 
     protected $rows = 2;
 
+    protected $autoSize = true;
+
     public function getRows()
     {
         return $this->rows;
@@ -20,10 +22,35 @@ class Textarea extends NamedElement
         return $this;
     }
 
+    /**
+     * @return bool|array
+     */
+    public function getAutoSize()
+    {
+        return $this->autoSize;
+    }
+
+    /**
+     * @param int $max
+     * @param int $min
+     *
+     * @return $this
+     */
+    public function setAutoSize($max, $min = 1)
+    {
+        $this->autoSize = [
+            'minRows' => intval($min),
+            'maxRows' => intval($max),
+        ];
+
+        return $this;
+    }
+
     public function toArray()
     {
         return parent::toArray() + [
-                'rows' => $this->getRows()
+                'rows'     => $this->getRows(),
+                'autosize' => $this->getAutoSize(),
             ];
     }
 }

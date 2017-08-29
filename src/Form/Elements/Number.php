@@ -33,6 +33,8 @@ class Number extends NamedElement
     {
         $this->min = (int)$value;
 
+        $this->addValidationRule('min:' . $value);
+
         return $this;
     }
 
@@ -41,6 +43,13 @@ class Number extends NamedElement
         $this->step = (int)$value;
 
         return $this;
+    }
+
+    protected function getDefaultValidationRules()
+    {
+        return parent::getDefaultValidationRules() + [
+            'numeric' => 'numeric'
+            ];
     }
 
     public function toArray()

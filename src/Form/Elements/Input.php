@@ -10,6 +10,27 @@ class Input extends NamedElement
     protected $maxLength;
     protected $minLength = 0;
 
+    protected $size = '';
+
+    public function getSize()
+    {
+        return $this->size;
+    }
+
+    public function largeSize()
+    {
+        $this->size = 'large';
+
+        return $this;
+    }
+
+    public function miniSize()
+    {
+        $this->size = 'mini';
+
+        return $this;
+    }
+
     protected function getModelFieldLength()
     {
         $column = $this->getModelColumn();
@@ -59,6 +80,7 @@ class Input extends NamedElement
         return parent::toArray() + [
                 'minLength' => $this->getMinLength(),
                 'maxLength' => $this->getMaxLength(),
+                'size'      => $this->getSize(),
             ];
     }
 }
