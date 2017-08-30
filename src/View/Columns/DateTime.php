@@ -10,12 +10,14 @@ class DateTime extends Column
 
     /**
      * Datetime format.
+     *
      * @var string
      */
     protected $format;
 
     /**
      * Datetime timezone.
+     *
      * @var string
      */
     protected $timezone;
@@ -77,7 +79,7 @@ class DateTime extends Column
     protected function getFormatValue($date)
     {
         if (!is_null($date)) {
-            if (!$date instanceof Carbon) {
+            if (!($date instanceof Carbon)) {
                 $date = Carbon::parse($date);
             }
 

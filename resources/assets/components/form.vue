@@ -68,15 +68,15 @@
                         </el-checkbox-group>
 
                         <el-date-picker
-                                v-else-if="['date', 'datetime'].indexOf(element.type) > -1"
-                                :value="currentValue[element.key]"
+                                v-else-if="['date', 'datetime', 'daterange', 'datetimerange'].indexOf(element.type) > -1"
+                                v-model="currentValue[element.key]"
                                 :type="element.type"
                                 :disabled="element.disabled"
                                 :readonly="element.readonly"
+                                :editable="element.editable"
                                 :size="element.size"
-                                :format="element.format"
-                                placeholder="选择日期时间"
-                                @input="handleDateChange($event, element.key)">
+                                :format="element.pickerFormat"
+                                placeholder="选择日期时间">
                         </el-date-picker>
 
                         <el-input-number
@@ -197,28 +197,6 @@
             }
         },
         methods: {
-            handleDateChange(date, key) {
-                console.log(date, key);
-                var options = {hour12: false};
-                if (date instanceof Date) {
-                    console.log(date.toLocaleString(undefined, options));
-                    this.currentValue[key] = date.toLocaleString();
-                }
-                if (date instanceof Array) {
-                    console.log(date);
-                    this.currentValue[key] = [];
-                    date.forEach(d => {
-                        if (d instanceof Date) {
-                            this.currentValue[key].push(d.toLocaleString());
-                        }
-                    })
-                }
-                console.log(this.currentValue);
-            },
-            getFile(e) {
-                console.log('sssss')
-                console.log(e);
-            }
         },
         watch: {
             value(val) {

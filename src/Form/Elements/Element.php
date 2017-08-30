@@ -11,6 +11,7 @@ abstract class Element implements ElementInterface
     protected $type;
 
     protected $name;
+
     protected $title;
 
     protected $disabled = false;
@@ -29,6 +30,11 @@ abstract class Element implements ElementInterface
     {
         $this->name  = $name;
         $this->title = $title;
+    }
+
+    public function getType()
+    {
+        return $this->type;
     }
 
     public function getName()
@@ -152,9 +158,9 @@ abstract class Element implements ElementInterface
     public function toArray()
     {
         return [
-            'key'      => $this->name,
-            'title'    => $this->title,
-            'type'     => $this->type,
+            'key'      => $this->getName(),
+            'title'    => $this->getTitle(),
+            'type'     => $this->getType(),
             'disabled' => $this->isDisabled(),
         ];
     }

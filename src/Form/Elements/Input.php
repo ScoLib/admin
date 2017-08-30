@@ -3,6 +3,7 @@
 namespace Sco\Admin\Form\Elements;
 
 use DB;
+use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Types\Type;
 
 class Input extends NamedElement
@@ -36,12 +37,15 @@ class Input extends NamedElement
     protected function getModelFieldLength()
     {
         $column = $this->getModelColumn();
-        if ($column->getType()->getName() == Type::STRING) {
+        if ($column instanceof Column && $column->getType()->getName() == Type::STRING) {
             return $column->getLength();
         }
         return;
     }
 
+    /**
+     * @return \Doctrine\DBAL\Schema\Column
+     */
     protected function getModelColumn()
     {
         // Doctrine\DBAL\Platforms\MySQL57Platform not support "enum" "string"
@@ -50,7 +54,9 @@ class Input extends NamedElement
 
         $table  = DB::getTablePrefix() . $this->getModel()->getTable();
         $column = $this->getName();
-        return DB::getDoctrineColumn($table, $column);
+        if ($column) {
+            return DB::getDoctrineColumn($table, $column);
+        }
     }
 
     public function getMaxLength()
