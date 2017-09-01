@@ -7,7 +7,6 @@ class PermissionsTableSeeder extends Seeder
     public function run()
     {
         $this->storePermission('admin.dashboard', '访问后台');
-        $this->storePermission('manage_log', '管理操作日志');
 
         $this->storePermission('view_user', '查看用户');
         $this->storePermission('create_user', '创建用户');

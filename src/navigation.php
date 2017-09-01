@@ -9,12 +9,6 @@ $navigation->setFromArray([
         'icon'     => 'fa fa-edit',
         'priority' => 500,
         'id'       => 'system',
-        'pages'    => [
-            [
-                'title' => trans('admin::nav.action_log'),
-                'url'   => route('admin.model.index', ['model' => 'logs'], false),
-            ],
-        ],
     ],
     [
         'title'    => '用户管理',

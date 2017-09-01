@@ -7,7 +7,6 @@ use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\ServiceProvider;
 use Laracasts\Utilities\JavaScript\JavaScriptServiceProvider;
-use Sco\ActionLog\LaravelServiceProvider;
 use Sco\Admin\Contracts\Form\ElementFactoryInterface;
 use Sco\Admin\Contracts\Form\FormFactoryInterface;
 use Sco\Admin\Contracts\RepositoryInterface;
@@ -41,7 +40,6 @@ class AdminServiceProvider extends ServiceProvider
     ];
 
     protected $providers = [
-        LaravelServiceProvider::class,
         JavaScriptServiceProvider::class,
         ResourcesServiceProvider::class,
         NavigationServiceProvider::class,
