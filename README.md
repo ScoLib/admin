@@ -8,7 +8,7 @@
 [![Quality Score][ico-code-quality]][link-code-quality]
 [![Total Downloads][ico-downloads]][link-downloads]
 
-基于Laravel5.4的一个后台管理包
+基于Laravel5.*的一个后台管理包
 
 
 ## Install
@@ -100,6 +100,7 @@ npm install
 npm run production
 ```
 
+## Laravel5.4
 
 Via Composer
 
@@ -113,6 +114,10 @@ Via Composer
 Sco\Admin\Providers\AdminServiceProvider::class,
     
 ```
+
+## Laravel 5.5
+
+`composer require scolib/admin:1.1.x@dev`
 
 编辑auth.php
 ```php
