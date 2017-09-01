@@ -14,7 +14,6 @@ class NavigationServiceProvider extends ServiceProvider
 {
     public function boot()
     {
-        $this->app->call([$this, 'registerNavigation']);
     }
 
     public function register()
@@ -28,13 +27,5 @@ class NavigationServiceProvider extends ServiceProvider
         // overwrite Navigation Page Bind
         $this->app->bind(PageInterface::class, Page::class);
         $this->app->bind(BadgeInterface::class, Badge::class);
-    }
-
-    /**
-     * @param NavigationInterface $navigation
-     */
-    public function registerNavigation(NavigationInterface $navigation)
-    {
-        require __DIR__ . '/../../src/navigation.php';
     }
 }
