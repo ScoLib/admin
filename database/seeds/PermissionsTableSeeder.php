@@ -23,7 +23,6 @@ class PermissionsTableSeeder extends Seeder
         $this->storePermission('edit_permission', '编辑权限');
         $this->storePermission('delete_permission', '删除权限');
 
-        //$this->storePermission('admin.system.menu', '菜单');
     }
 
     private function storePermission($name, $displayName, $description = '')
