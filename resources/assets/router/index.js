@@ -76,6 +76,8 @@ router.beforeEach((to, from, next) => {
                     }).catch(error => {
                         next({name: 'admin.403'});
                     })*/
+            // } else {
+            //     next();
             // }
         } else {
             next();

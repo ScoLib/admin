@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import UrlPrefix from '../util/url-prefix'
-import Parent from '../views/parent.vue'
-import Blank from '../views/blank.vue'
+import Layout from '../components/layout'
 
 Vue.use(UrlPrefix);
 
@@ -32,10 +31,7 @@ export default [
     },
     {
         path: `/${prefix}`,
-        component: Parent,
-        meta: {
-            title: '首页'
-        },
+        component: Layout,
         children: [
             {
                 path: '/',
@@ -49,7 +45,7 @@ export default [
                 }
             },
             {
-                path: `/${prefix}/500`,
+                path: `500`,
                 component (resolve) {
                     require(['../views/errors/500.vue'], resolve);
                 },
@@ -60,128 +56,49 @@ export default [
                     msg: '',
                 },
             },
-/*            {
-                path: 'system',
-                component: Blank,
-                meta: {
-                    title: '系统管理'
+            {
+                path: 'logs',
+                component (resolve) {
+                    require(['../views/system/log/index.vue'], resolve);
                 },
-                children: [
-                    {
-                        path: 'log',
-                        component (resolve) {
-                            require(['../views/system/log/index.vue'], resolve);
-                        },
-                        name: 'admin.system.log',
-                        meta: {
-                            title: '操作日志',
-                            auth: true,
-                        },
-                    },
-                    {
-                        path: 'menu',
-                        component (resolve) {
-                            require(['../views/system/menu/index.vue'], resolve);
-                        },
-                        name: 'admin.system.menu',
-                        meta: {
-                            title: '菜单管理',
-                            auth: true,
-                        },
-                    }
-                ],
+                name: 'admin.logs',
+                meta: {
+                    title: '操作日志',
+                    auth: true,
+                },
             },
             {
-                path: 'users',
-                component: Blank,
-                meta: {
-                    title: '用户管理'
+                path: ':model/:id/edit',
+                component (resolve) {
+                    require(['../views/model/edit.vue'], resolve);
                 },
-                children: [
-                    {
-                        path: 'user',
-                        component (resolve) {
-                            require(['../views/users/user/index.vue'], resolve);
-                        },
-                        name: 'admin.users.user',
-                        meta: {
-                            title: '用户',
-                            auth: true,
-                        }
-                    },
-                    {
-                        path: 'role',
-                        component (resolve) {
-                            require(['../views/users/role/index.vue'], resolve);
-                        },
-                        name: 'admin.users.role',
-                        meta: {
-                            title: '角色管理',
-                            auth: true,
-                        },
-                    },
-                    {
-                        path: 'role/create',
-                        component (resolve) {
-                            require(['../views/users/role/form.vue'], resolve);
-                        },
-                        name: 'admin.users.role.create',
-                        meta: {
-                            title: '创建角色',
-                            auth: true,
-                        }
-                    },
-                    {
-                        path: 'role/:id/edit',
-                        component (resolve) {
-                            require(['../views/users/role/form.vue'], resolve);
-                        },
-                        name: 'admin.users.role.edit',
-                        meta: {
-                            title: '编辑角色',
-                            auth: true,
-                        },
-                    },
-                ],
-            },*/
+                name: 'admin.model.edit',
+                meta: {
+                    auth: true,
+                    title: '编辑',
+                },
+            },
+            {
+                path: ':model/create',
+                component (resolve) {
+                    require(['../views/model/create.vue'], resolve);
+                },
+                name: 'admin.model.create',
+                meta: {
+                    auth: true,
+                    title: '创建',
+                },
+            },
             {
                 path: ':model',
-                component: Blank,
-                children: [
-                    {
-                        path: ':id/edit',
-                        component (resolve) {
-                            require(['../views/model/edit.vue'], resolve);
-                        },
-                        name: 'admin.model.edit',
-                        meta: {
-                            auth: true,
-                            title: '编辑',
-                        },
-                    },
-                    {
-                        path: 'create',
-                        component (resolve) {
-                            require(['../views/model/create.vue'], resolve);
-                        },
-                        name: 'admin.model.create',
-                        meta: {
-                            auth: true,
-                            title: '创建',
-                        },
-                    },
-                    {
-                        path: '/',
-                        component (resolve) {
-                            require(['../views/model/index.vue'], resolve);
-                        },
-                        name: 'admin.model.index',
-                        meta: {
-                            auth: true,
-                            title: '',
-                        }
-                    },
-                ],
+                component (resolve) {
+                    require(['../views/model/index.vue'], resolve);
+                },
+                name: 'admin.model.index',
+                meta: {
+                    auth: true,
+                    title: '',
+                }
             },
         ],
     }

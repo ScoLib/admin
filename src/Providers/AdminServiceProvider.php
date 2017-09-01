@@ -6,7 +6,6 @@ use Carbon\Carbon;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\ServiceProvider;
-use Laracasts\Utilities\JavaScript\JavaScriptServiceProvider;
 use Sco\Admin\Contracts\Form\ElementFactoryInterface;
 use Sco\Admin\Contracts\Form\FormFactoryInterface;
 use Sco\Admin\Contracts\RepositoryInterface;
@@ -35,12 +34,10 @@ class AdminServiceProvider extends ServiceProvider
 
     protected $middlewares = [
         'admin.guest'     => \Sco\Admin\Http\Middleware\RedirectIfAuthenticated::class,
-        'admin.phptojs'   => \Sco\Admin\Http\Middleware\PHPVarToJavaScript::class,
         'admin.can.route' => \Sco\Admin\Http\Middleware\RouteAuthorize::class,
     ];
 
     protected $providers = [
-        JavaScriptServiceProvider::class,
         ResourcesServiceProvider::class,
         NavigationServiceProvider::class,
         ComponentServiceProvider::class,

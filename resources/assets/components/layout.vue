@@ -10,10 +10,10 @@
 </template>
 
 <script>
-    import AppHeader from '../components/layouts/header.vue';
-    import AppSidebar from '../components/layouts/sidebar.vue';
-    import AppContent from '../components/layouts/content.vue';
-    import AppFooter from '../components/layouts/footer.vue';
+    import AppHeader from './layouts/header.vue';
+    import AppSidebar from './layouts/sidebar.vue';
+    import AppContent from './layouts/content.vue';
+    import AppFooter from './layouts/footer.vue';
 
     export default {
         data () {

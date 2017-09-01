@@ -150,7 +150,7 @@
             },
             getResults() {
                 this.tableLoading = true;
-                this.$http.get('/admin/system/log/list', {params: this.searchParams})
+                this.$http.get('/admin/logs/list', {params: this.searchParams})
                     .then(response => {
                         this.tableLoading = false;
                         this.pageData = response.data;

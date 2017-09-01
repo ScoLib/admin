@@ -8,11 +8,10 @@
                 <small></small>
             </h1>
             <ol class="breadcrumb">
-                <li v-for="(entry, key) in breads">
-                    <router-link :to="{name: 'admin.dashboard'}" v-if="key == 0">
-                        <i class="fa fa-dashboard"></i>{{ entry.title }}
+                <li>
+                    <router-link :to="{name: 'admin.dashboard'}">
+                        <i class="fa fa-dashboard"></i> 首页
                     </router-link>
-                    <a href="#" v-else>{{ entry.title }}</a>
                 </li>
 
                 <li class="active">{{ title }}</li>
@@ -39,16 +38,6 @@
             title () {
                 return this.$store.state.metaTitle;
             },
-            breads () {
-                let breads = [];
-//                console.log(this.$route.matched);
-                this.$route.matched.forEach(route => {
-                    if (typeof route.parent === 'object' && route.parent.meta.title) {
-                        breads.push({path: route.parent.path, title: route.parent.meta.title});
-                    }
-                });
-                return breads;
-            }
         }
     }
 </script>
