@@ -25,9 +25,4 @@ use Zizaco\Entrust\EntrustRole;
  */
 class Role extends EntrustRole
 {
-    protected $events = [
-        'created'  => \Sco\ActionLog\Events\ModelWasCreated::class,
-        'updated'  => \Sco\ActionLog\Events\ModelWasUpdated::class,
-        'deleted'  => \Sco\ActionLog\Events\ModelWasDeleted::class,
-    ];
 }

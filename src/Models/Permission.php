@@ -33,10 +33,4 @@ use Zizaco\Entrust\EntrustPermission;
 class Permission extends EntrustPermission
 {
     protected $guarded = ['created_at', 'updated_at'];
-
-    protected $events = [
-        'created'  => \Sco\ActionLog\Events\ModelWasCreated::class,
-        'updated'  => \Sco\ActionLog\Events\ModelWasUpdated::class,
-        'deleted'  => \Sco\ActionLog\Events\ModelWasDeleted::class,
-    ];
 }
