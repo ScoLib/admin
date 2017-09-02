@@ -21,4 +21,6 @@ return [
 
     'components' => [
     ],
+    'navigation' => [
+    ],
 ];
