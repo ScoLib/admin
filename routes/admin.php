@@ -3,7 +3,6 @@
 Route::group([
     'prefix'     => config('admin.url_prefix'),
     'middleware' => 'web',
-    'namespace'  => '\Sco\Admin\Http\Controllers',
     'as'         => 'admin.',
 ], function () {
 
@@ -12,19 +11,19 @@ Route::group([
         //登录页
         Route::get('login', [
             'as'         => 'login',
-            'uses'       => 'LoginController@showLoginForm',
+            'uses'       => '\Sco\Admin\Http\Controllers\Auth\LoginController@showLoginForm',
         ]);
 
         //登录提交
         Route::post('login', [
             'as'   => 'login.submit',
-            'uses' => 'LoginController@login',
+            'uses' => '\Sco\Admin\Http\Controllers\Auth\LoginController@login',
         ]);
 
         //退出
         Route::get('logout', [
             'as'   => 'logout',
-            'uses' => 'LoginController@logout',
+            'uses' => '\Sco\Admin\Http\Controllers\Auth\LoginController@logout',
         ]);
     });
 
@@ -69,67 +68,67 @@ Route::group([
     ], function () {
         Route::get('list', [
             'as'         => 'list',
-            'uses'       => 'AdminController@getList',
+            'uses'       => '\Sco\Admin\Http\Controllers\AdminController@getList',
         ]);
 
         Route::get('config', [
             'as'         => 'config',
-            'uses'       => 'AdminController@config',
+            'uses'       => '\Sco\Admin\Http\Controllers\AdminController@config',
         ]);
 
         Route::get('create/info', [
             'as'         => 'create.info',
-            'uses'       => 'AdminController@getCreateInfo',
+            'uses'       => '\Sco\Admin\Http\Controllers\AdminController@getCreateInfo',
         ]);
 
         Route::get('create', [
             'as'         => 'create',
-            'uses'       => 'AdminController@create',
+            'uses'       => '\Sco\Admin\Http\Controllers\AdminController@create',
         ]);
 
         Route::post('store', [
             'as'         => 'store',
-            'uses'       => 'AdminController@store',
+            'uses'       => '\Sco\Admin\Http\Controllers\AdminController@store',
         ]);
 
         Route::get('{id}/edit', [
             'as'         => 'edit',
-            'uses'       => 'AdminController@edit',
+            'uses'       => '\Sco\Admin\Http\Controllers\AdminController@edit',
             'where'      => ['id' => '[0-9]+'],
         ]);
 
         Route::get('{id}/edit/info', [
             'as'         => 'edit.info',
-            'uses'       => 'AdminController@getEditInfo',
+            'uses'       => '\Sco\Admin\Http\Controllers\AdminController@getEditInfo',
             'where'      => ['id' => '[0-9]+'],
         ]);
 
         Route::post('{id}/edit', [
             'as'         => 'update',
-            'uses'       => 'AdminController@update',
+            'uses'       => '\Sco\Admin\Http\Controllers\AdminController@update',
             'where'      => ['id' => '[0-9]+'],
         ]);
 
         /*Route::post('batch/delete', [
             'as'         => 'batch.delete',
-            'uses'       => 'AdminController@batchDelete',
+            'uses'       => '\Sco\Admin\Http\Controllers\AdminController@batchDelete',
         ]);*/
 
         Route::delete('{id}/delete', [
             'as'         => 'delete',
-            'uses'       => 'AdminController@delete',
+            'uses'       => '\Sco\Admin\Http\Controllers\AdminController@delete',
             'where'      => ['id' => '[0-9]+'],
         ]);
 
         Route::delete('{id}/destroy', [
             'as'         => 'destroy',
-            'uses'       => 'AdminController@forceDelete',
+            'uses'       => '\Sco\Admin\Http\Controllers\AdminController@forceDelete',
             'where'      => ['id' => '[0-9]+'],
         ]);
 
         Route::post('{id}/restore', [
             'as'         => 'restore',
-            'uses'       => 'AdminController@restore',
+            'uses'       => '\Sco\Admin\Http\Controllers\AdminController@restore',
             'where'      => ['id' => '[0-9]+'],
         ]);
 
@@ -140,7 +139,7 @@ Route::group([
 
         Route::get('/', [
             'as'         => 'index',
-            'uses'       => 'AdminController@index',
+            'uses'       => '\Sco\Admin\Http\Controllers\AdminController@index',
         ]);
     });
 });

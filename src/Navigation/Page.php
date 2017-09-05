@@ -49,6 +49,6 @@ class Page extends \KodiComponents\Navigation\Page
             return $this->getComponent()->getViewUrl();
         }
 
-        return parent::getUrl();
+        return $this->url;
     }
 }

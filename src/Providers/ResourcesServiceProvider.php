@@ -15,7 +15,7 @@ class ResourcesServiceProvider extends ServiceProvider
     public function boot()
     {
         // 路由文件
-        $this->loadRoutes();
+        //$this->loadRoutes();
 
         // 后台模板目录
         $this->loadViewsFrom(
