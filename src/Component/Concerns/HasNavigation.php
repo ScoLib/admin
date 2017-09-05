@@ -36,7 +36,7 @@ trait HasNavigation
      */
     protected function makePage($priority = 100, $badge = null)
     {
-        $page = new Page($this->getTitle(), $this->getViewUrl());
+        $page = new Page($this);
         $page->setPriority($priority);
         $page->setAccessLogic(function () {
             return $this->isView();
@@ -57,7 +57,7 @@ trait HasNavigation
      *
      * @return string
      */
-    protected function getViewUrl(array $parameters = [])
+    public function getViewUrl(array $parameters = [])
     {
         array_unshift($parameters, $this->getName());
 

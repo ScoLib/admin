@@ -15,7 +15,7 @@ interface WithNavigation
      * @param int  $priority
      * @param null $badge
      *
-     * @return \Sco\Admin\Navigation\Page
+     * @return \KodiComponents\Navigation\Contracts\PageInterface
      */
     public function addToNavigation($priority = 100, $badge = null);
 }

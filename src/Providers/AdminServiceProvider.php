@@ -4,28 +4,19 @@ namespace Sco\Admin\Providers;
 
 use Carbon\Carbon;
 use Illuminate\Contracts\Debug\ExceptionHandler;
-use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\ServiceProvider;
 use Sco\Admin\Contracts\Form\ElementFactoryInterface;
 use Sco\Admin\Contracts\Form\FormFactoryInterface;
 use Sco\Admin\Contracts\RepositoryInterface;
 use Sco\Admin\Contracts\View\ColumnFactoryInterface;
 use Sco\Admin\Contracts\View\ViewFactoryInterface;
-use Sco\Admin\Facades\AdminFormFacade;
 use Sco\Admin\Form\ElementFactory;
 use Sco\Admin\Exceptions\Handler;
-use Sco\Admin\Facades\AdminColumnFacade;
-use Sco\Admin\Facades\AdminElementFacade;
-use Sco\Admin\Facades\AdminNavigationFacade;
-use Sco\Admin\Facades\AdminViewFacade;
 use Sco\Admin\Form\FormFactory;
 use Sco\Admin\Repositories\Repository;
 use Sco\Admin\View\ColumnFactory;
 use Sco\Admin\View\ViewFactory;
 
-/**
- *
- */
 class AdminServiceProvider extends ServiceProvider
 {
     protected $commands = [
@@ -35,12 +26,6 @@ class AdminServiceProvider extends ServiceProvider
     protected $middlewares = [
         'admin.guest'     => \Sco\Admin\Http\Middleware\RedirectIfAuthenticated::class,
         'admin.can.route' => \Sco\Admin\Http\Middleware\RouteAuthorize::class,
-    ];
-
-    protected $providers = [
-        ResourcesServiceProvider::class,
-        NavigationServiceProvider::class,
-        ComponentServiceProvider::class,
     ];
 
     public function getBasePath()
@@ -75,10 +60,8 @@ class AdminServiceProvider extends ServiceProvider
         );
 
         $this->registerExceptionHandler();
-        $this->registerAliases();
         $this->registerMiddleware();
         $this->registerFactory();
-        $this->registerProviders();
         $this->app->bind(RepositoryInterface::class, Repository::class);
         $this->commands($this->commands);
     }
@@ -87,27 +70,6 @@ class AdminServiceProvider extends ServiceProvider
     {
         foreach ($this->middlewares as $key => $middleware) {
             $this->app['router']->aliasMiddleware($key, $middleware);
-        }
-    }
-
-    protected function registerAliases()
-    {
-        AliasLoader::getInstance([
-            'AdminNavigation' => AdminNavigationFacade::class,
-
-            'AdminView'   => AdminViewFacade::class,
-            'AdminColumn' => AdminColumnFacade::class,
-
-            'AdminForm'    => AdminFormFacade::class,
-            'AdminElement' => AdminElementFacade::class,
-
-        ]);
-    }
-
-    protected function registerProviders()
-    {
-        foreach ($this->providers as $provider) {
-            $this->app->register($provider);
         }
     }
 

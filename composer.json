@@ -50,8 +50,18 @@
         },
         "laravel": {
             "providers": [
-                "Sco\\Admin\\Providers\\AdminServiceProvider"
-            ]
+                "Sco\\Admin\\Providers\\AdminServiceProvider",
+                "Sco\\Admin\\Providers\\ResourcesServiceProvider",
+                "Sco\\Admin\\Providers\\NavigationServiceProvider",
+                "Sco\\Admin\\Providers\\ComponentServiceProvider"
+            ],
+            "aliases": {
+                "AdminColumn": "Sco\\Admin\\Facades\\AdminColumnFacade",
+                "AdminElement": "Sco\\Admin\\Facades\\AdminElementFacade",
+                "AdminForm": "Sco\\Admin\\Facades\\AdminFormFacade",
+                "AdminNavigation": "Sco\\Admin\\Facades\\AdminNavigationFacade",
+                "AdminView": "Sco\\Admin\\Facades\\AdminViewFacade"
+            }
         }
     },
     "config": {
