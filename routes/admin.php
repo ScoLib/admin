@@ -28,13 +28,16 @@ Route::group([
     });
 
     Route::group(['middleware' => ['auth']], function () {
-        Route::get('/', [
+        Route::view('/', 'admin::app')
+            ->name('dashboard')
+            ->middleware('admin.can.route');
+        /*Route::get('/', [
             'as'         => 'dashboard',
             'uses'       => function () {
                 return view('admin::app');
             },
             'middleware' => 'admin.can.route',
-        ]);
+        ]);*/
 
         Route::get('403', [
             'as'   => '403',

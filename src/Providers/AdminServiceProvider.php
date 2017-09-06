@@ -5,6 +5,7 @@ namespace Sco\Admin\Providers;
 use Carbon\Carbon;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Support\ServiceProvider;
+use Sco\Admin\Admin;
 use Sco\Admin\Contracts\Form\ElementFactoryInterface;
 use Sco\Admin\Contracts\Form\FormFactoryInterface;
 use Sco\Admin\Contracts\RepositoryInterface;
@@ -62,6 +63,7 @@ class AdminServiceProvider extends ServiceProvider
         $this->registerExceptionHandler();
         $this->registerMiddleware();
         $this->registerFactory();
+        $this->app->instance('admin.instance', new Admin($this->app));
         $this->app->bind(RepositoryInterface::class, Repository::class);
         $this->commands($this->commands);
     }
