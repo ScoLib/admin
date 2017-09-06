@@ -27,11 +27,14 @@ axios.interceptors.response.use(null, error => {
         }
         // console.log(router.app.$Message);
         console.log('axios response', error.response);
-        if (typeof error.response.data == 'object') {
+        // if (typeof error.response.data.message != 'undefined') {
+        //     router.app.$message.error(error.response.data.message);
+        // }
+        // if (typeof error.response.data == 'object') {
             return Promise.reject(error);
-        } else {
-            router.app.$message.error(error.response.data);
-        }
+        // } else {
+        //     router.app.$message.error(error.response.data);
+        // }
     } else if (error.request) {
         // The request was made but no response was received
         // `error.request` is an instance of XMLHttpRequest in the browser and an instance of

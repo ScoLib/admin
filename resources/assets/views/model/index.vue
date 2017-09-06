@@ -175,53 +175,6 @@
                         this.pageData = response.data;
                     }).catch(error => {})
             },
-
-            batchDelete() {
-                if (this.selection.length == 0) {
-                    this.$message.error('请选择操作对象');
-                    return false;
-                }
-
-                this.$confirm(`确定要执行批量删除${this.config.title}操作吗？`, '提示', {
-                    type: 'warning',
-                    beforeClose: (action, instance, done) => {
-                        if (action == 'confirm') {
-                            instance.confirmButtonLoading = true;
-                            //                            instance.confirmButtonText = '执行中...';
-                            this.$http.post(`/${this.getUrlPrefix()}/${this.$route.params.model}/batch/delete`, {
-                                'ids': this.selection
-                            }).then(response => {
-                                instance.confirmButtonLoading = false;
-                                instance.close();
-                                this.$message.success('删除成功');
-                                this.getResults();
-                            }).catch(error => {
-                                instance.confirmButtonLoading = false;
-                                instance.close();
-                            })
-                        } else {
-                            done();
-                        }
-                    }
-                }).then(action => {}).catch(action => {});
-
-                /*this.$confirm({
-                    title: '提示',
-                    content: `确定要执行批量删除${this.config.title}操作吗？`,
-                    loading: true,
-                    onOk: () => {
-                        this.$http.post(`/${this.urlPrefix}/${this.$route.params.model}/batch/delete`, {'ids': this.selection})
-                            .then(response => {
-                                this.$Modal.remove();
-                                this.$message.success('删除成功');
-                                this.getResults();
-                            }).catch(error => {
-                                this.$Modal.remove();
-                            })
-                    }
-                });*/
-            },
-
         }
     }
 </script>

@@ -7,6 +7,7 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Contracts\Debug\ExceptionHandler as ExceptionHandlerContract;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Sco\Admin\Contracts\ExceptionInterface;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -141,10 +142,11 @@ class Handler implements ExceptionHandlerContract
         }
     }
 
-    protected function isAdmin($request)
+    protected function isAdmin(Request $request)
     {
         $route = $request->route();
-        return $route && strpos($route->getPrefix(), config('admin.url_prefix')) === 0;
+        $prefix = ltrim($route->getPrefix(), '/');
+        return $route && strpos($prefix, config('admin.url_prefix')) === 0;
     }
 
     /**

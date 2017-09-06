@@ -92,8 +92,8 @@
                     this.$router.push({ name: 'admin.model.index', params: {model: this.$route.params.model}})
                 }).catch(error => {
                     this.buttonLoading = false;
-                    if (typeof error.response.data == 'object') {
-                        this.errors = error.response.data;
+                    if (typeof error.response.data.errors == 'object') {
+                        this.errors = error.response.data.errors;
                     }
                 })
             },
@@ -111,7 +111,7 @@
                         });
                     }).catch(error => {
                         if (error.response) {
-                            this.$message.error(error.response.data)
+                            this.$message.error(error.response.data.message)
                         }
                 })
             },

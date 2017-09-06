@@ -27,7 +27,7 @@ Route::group([
         ]);
     });
 
-    Route::group(['middleware' => ['auth']], function () {
+    Route::group(['middleware' => ['admin.auth']], function () {
         Route::view('/', 'admin::app')
             ->name('dashboard')
             ->middleware('admin.can.route');
@@ -39,19 +39,22 @@ Route::group([
             'middleware' => 'admin.can.route',
         ]);*/
 
-        Route::get('403', [
+        Route::view('403', 'admin::app')->name('403');
+        Route::view('500', 'admin::app')->name('500');
+
+        /*Route::get('403', [
             'as'   => '403',
             'uses' => function () {
                 return view('admin::app');
             },
-        ]);
+        ]);*/
 
-        Route::get('500', [
+        /*Route::get('500', [
             'as'   => '500',
             'uses' => function () {
                 return view('admin::app');
             },
-        ]);
+        ]);*/
     });
 
     Route::group(['middleware' => ['auth']], function () {
@@ -140,9 +143,11 @@ Route::group([
             'uses'       => 'UploadController@formElement',
         ]);
 
-        Route::get('/', [
+        Route::view('/', 'admin::app')->name('index');
+
+        /*Route::get('/', [
             'as'         => 'index',
             'uses'       => '\Sco\Admin\Http\Controllers\AdminController@index',
-        ]);
+        ]);*/
     });
 });

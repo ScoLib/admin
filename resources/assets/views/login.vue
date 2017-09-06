@@ -86,7 +86,9 @@
                     this.$router.push({name: 'admin.dashboard'});
                 }).catch(error => {
                     this.buttonLoading = false;
-                    this.errors = error.response.data;
+                    if (typeof error.response.data.errors == 'object') {
+                        this.errors = error.response.data.errors;
+                    }
                 })
             }
         }

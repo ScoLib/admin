@@ -25,6 +25,7 @@ class AdminServiceProvider extends ServiceProvider
     ];
 
     protected $middlewares = [
+        'admin.auth'      => \Sco\Admin\Http\Middleware\Authenticate::class,
         'admin.guest'     => \Sco\Admin\Http\Middleware\RedirectIfAuthenticated::class,
         'admin.can.route' => \Sco\Admin\Http\Middleware\RouteAuthorize::class,
     ];
@@ -60,7 +61,7 @@ class AdminServiceProvider extends ServiceProvider
             'admin'
         );
 
-        $this->registerExceptionHandler();
+        //$this->registerExceptionHandler();
         $this->registerMiddleware();
         $this->registerFactory();
         $this->app->instance('admin.instance', new Admin($this->app));

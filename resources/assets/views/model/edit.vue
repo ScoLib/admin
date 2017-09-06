@@ -80,8 +80,8 @@
                     this.$router.push({ name: 'admin.model.index', params: {model: this.$route.params.model}})
                 }).catch(error => {
                     this.buttonLoading = false;
-                    if (typeof error.response.data == 'object') {
-                        this.errors = error.response.data;
+                    if (typeof error.response.data.errors == 'object') {
+                        this.errors = error.response.data.errors;
                     }
                 })
             },
@@ -95,7 +95,7 @@
                     this.formLoading = false;
                     this.info = response.data;
                 }).catch(error => {
-                    this.$message.error(error.response.data)
+                    this.$message.error(error.response.data.message)
                 })
             },
             refresh() {
