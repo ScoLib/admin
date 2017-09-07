@@ -1,11 +1,10 @@
 <?php
 
-
 namespace Sco\Admin\Form\Elements;
 
 use Illuminate\Database\Eloquent\Model;
+use InvalidArgumentException;
 use Sco\Admin\Contracts\RepositoryInterface;
-use Sco\Admin\Exceptions\InvalidArgumentException;
 
 class Select extends NamedElement
 {

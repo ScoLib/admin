@@ -2,8 +2,9 @@
 
 namespace Sco\Admin\Component;
 
+use BadMethodCallException;
+use InvalidArgumentException;
 use Illuminate\Foundation\Application;
-use Illuminate\Http\Request;
 use Sco\Admin\Component\Concerns\HasEvents;
 use Sco\Admin\Component\Concerns\HasNavigation;
 use Sco\Admin\Contracts\ComponentInterface;
@@ -11,8 +12,6 @@ use Sco\Admin\Contracts\Form\FormInterface;
 use Sco\Admin\Contracts\RepositoryInterface;
 use Sco\Admin\Contracts\View\ViewInterface;
 use Sco\Admin\Contracts\WithNavigation;
-use Sco\Admin\Exceptions\BadMethodCallException;
-use Sco\Admin\Exceptions\InvalidArgumentException;
 
 abstract class Component implements
     ComponentInterface,

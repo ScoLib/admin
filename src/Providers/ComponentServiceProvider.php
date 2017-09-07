@@ -4,11 +4,11 @@ namespace Sco\Admin\Providers;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
+use InvalidArgumentException;
 use Sco\Admin\Component\Component;
 use Sco\Admin\Contracts\ComponentInterface;
 use Sco\Admin\Contracts\Initializable;
 use Sco\Admin\Contracts\WithNavigation;
-use Sco\Admin\Exceptions\InvalidArgumentException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ComponentServiceProvider extends ServiceProvider

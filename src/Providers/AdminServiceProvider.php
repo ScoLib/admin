@@ -3,7 +3,6 @@
 namespace Sco\Admin\Providers;
 
 use Carbon\Carbon;
-use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Support\ServiceProvider;
 use Sco\Admin\Admin;
 use Sco\Admin\Contracts\Form\ElementFactoryInterface;
@@ -12,7 +11,6 @@ use Sco\Admin\Contracts\RepositoryInterface;
 use Sco\Admin\Contracts\View\ColumnFactoryInterface;
 use Sco\Admin\Contracts\View\ViewFactoryInterface;
 use Sco\Admin\Form\ElementFactory;
-use Sco\Admin\Exceptions\Handler;
 use Sco\Admin\Form\FormFactory;
 use Sco\Admin\Repositories\Repository;
 use Sco\Admin\View\ColumnFactory;
@@ -60,8 +58,7 @@ class AdminServiceProvider extends ServiceProvider
             $this->getBasePath() . '/config/admin.php',
             'admin'
         );
-
-        //$this->registerExceptionHandler();
+        
         $this->registerMiddleware();
         $this->registerFactory();
         $this->app->instance('admin.instance', new Admin($this->app));
@@ -74,17 +71,6 @@ class AdminServiceProvider extends ServiceProvider
         foreach ($this->middlewares as $key => $middleware) {
             $this->app['router']->aliasMiddleware($key, $middleware);
         }
-    }
-
-    protected function registerExceptionHandler()
-    {
-        $exceptHandler = app(ExceptionHandler::class);
-        $this->app->singleton(
-            ExceptionHandler::class,
-            function () use ($exceptHandler) {
-                return new Handler($exceptHandler);
-            }
-        );
     }
 
     protected function registerFactory()

@@ -3,10 +3,10 @@
 namespace Sco\Admin\Form;
 
 use Illuminate\Database\Eloquent\Model;
+use InvalidArgumentException;
 use Sco\Admin\Contracts\Form\Elements\ElementInterface;
 use Sco\Admin\Contracts\Form\FormInterface;
 use Sco\Admin\Contracts\Validatable;
-use Sco\Admin\Exceptions\InvalidArgumentException;
 use Validator;
 
 class Form implements

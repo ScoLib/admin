@@ -2,7 +2,7 @@
 
 namespace Sco\Admin\Traits;
 
-use Sco\Admin\Exceptions\BadMethodCallException;
+use BadMethodCallException;
 
 trait AliasBinder
 {

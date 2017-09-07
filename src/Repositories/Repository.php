@@ -6,9 +6,9 @@ namespace Sco\Admin\Repositories;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Application;
+use InvalidArgumentException;
 use Sco\Admin\Contracts\RepositoryInterface;
 use Sco\Admin\Contracts\WithModel;
-use Sco\Admin\Exceptions\RepositoryException;
 
 class Repository implements RepositoryInterface, WithModel
 {
@@ -61,7 +61,7 @@ class Repository implements RepositoryInterface, WithModel
     public function setClass($class)
     {
         if (!class_exists($class)) {
-            throw new RepositoryException("Model class {$class} not found.");
+            throw new InvalidArgumentException("Model class {$class} not found.");
         }
 
         $this->class = $class;
