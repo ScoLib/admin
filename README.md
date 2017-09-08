@@ -132,8 +132,6 @@ Sco\Admin\Providers\AdminServiceProvider::class,
 `--tag: assets/config/views/lang/routes`
 ```php
 php artisan vendor:publish --provider="Sco\Admin\Providers\ResourcesServiceProvider" --force
-php artisan migrate
-php artisan db:seed --class=AdminTableSeeder
 ```
 
 ## 更新日志

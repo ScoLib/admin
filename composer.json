@@ -28,10 +28,7 @@
     "autoload": {
         "psr-4": {
             "Sco\\Admin\\": "src"
-        },
-        "classmap": [
-            "database"
-        ]
+        }
     },
     "autoload-dev": {
         "psr-4": {
