@@ -42,12 +42,12 @@ class Select extends NamedElement
     public function getOptions()
     {
         if ($this->options instanceof \Closure) {
-            $options = $this->options();
+            $options = ($this->options)();
         } elseif (is_string($this->options) || $this->options instanceof Model) {
             $options = $this->setOptionsFromModel($this->options);
-        }
-
-        if (!is_array($options)) {
+        } elseif (is_array($this->options)) {
+            $options = $this->options;
+        } else {
             throw new InvalidArgumentException('Form select element options must be array(key=>value)');
         }
 
@@ -85,7 +85,12 @@ class Select extends NamedElement
         }
 
         if (!($options instanceof Model)) {
-            throw new InvalidArgumentException('Form select element options class must be instanced of Illuminate\Database\Eloquent\Model');
+            throw new InvalidArgumentException(
+                sprintf(
+                    'Form select element options class must be instanced of "%s".',
+                    Model::class
+                )
+            );
         }
 
         $key = $this->getOptionsValueAttribute() ?: $options->getKeyName();

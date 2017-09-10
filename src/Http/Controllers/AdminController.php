@@ -9,8 +9,12 @@ use Sco\Admin\Contracts\ComponentInterface;
 
 class AdminController extends Controller
 {
-    public function index()
+    public function index(ComponentInterface $component)
     {
+        if (!$component->isView()) {
+            throw new AuthorizationException();
+        }
+
         return view('admin::app');
     }
 

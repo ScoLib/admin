@@ -17,6 +17,5 @@ class AuthenticationException extends \Exception
         return $request->expectsJson()
             ? response()->json(['message' => $this->message], 401)
             : redirect()->guest(route('admin.login'));
-
     }
 }

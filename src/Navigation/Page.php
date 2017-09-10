@@ -2,7 +2,6 @@
 
 namespace Sco\Admin\Navigation;
 
-
 class Page extends \KodiComponents\Navigation\Page
 {
     /**

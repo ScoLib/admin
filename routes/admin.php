@@ -31,123 +31,97 @@ Route::group([
         Route::view('/', 'admin::app')
             ->name('dashboard')
             ->middleware('admin.can.route');
-        /*Route::get('/', [
-            'as'         => 'dashboard',
-            'uses'       => function () {
-                return view('admin::app');
-            },
-            'middleware' => 'admin.can.route',
-        ]);*/
 
         Route::view('403', 'admin::app')->name('403');
         Route::view('500', 'admin::app')->name('500');
 
-        /*Route::get('403', [
-            'as'   => '403',
-            'uses' => function () {
-                return view('admin::app');
-            },
-        ]);*/
-
-        /*Route::get('500', [
-            'as'   => '500',
-            'uses' => function () {
-                return view('admin::app');
-            },
-        ]);*/
-    });
-
-    Route::group(['middleware' => ['auth']], function () {
         Route::get('menu', [
             'as'   => 'menu',
             'uses' => function () {
                 return response()->json(AdminNavigation::getPages()->filterByAccessRights());
             },
         ]);
-    });
 
-    Route::pattern('model', '[a-z_/]+');
-    Route::group([
-        'middleware' => ['auth'],
-        'prefix'     => '{model}',
-        'as'         => 'model.',
-    ], function () {
-        Route::get('list', [
-            'as'         => 'list',
-            'uses'       => '\Sco\Admin\Http\Controllers\AdminController@getList',
-        ]);
+        Route::pattern('model', '[a-z_/]+');
+        Route::group([
+            'prefix'     => '{model}',
+            'as'         => 'model.',
+        ], function () {
+            Route::get('list', [
+                'as'         => 'list',
+                'uses'       => '\Sco\Admin\Http\Controllers\AdminController@getList',
+            ]);
 
-        Route::get('config', [
-            'as'         => 'config',
-            'uses'       => '\Sco\Admin\Http\Controllers\AdminController@config',
-        ]);
+            Route::get('config', [
+                'as'         => 'config',
+                'uses'       => '\Sco\Admin\Http\Controllers\AdminController@config',
+            ]);
 
-        Route::get('create/info', [
-            'as'         => 'create.info',
-            'uses'       => '\Sco\Admin\Http\Controllers\AdminController@getCreateInfo',
-        ]);
+            Route::get('create/info', [
+                'as'         => 'create.info',
+                'uses'       => '\Sco\Admin\Http\Controllers\AdminController@getCreateInfo',
+            ]);
 
-        Route::get('create', [
-            'as'         => 'create',
-            'uses'       => '\Sco\Admin\Http\Controllers\AdminController@create',
-        ]);
+            Route::get('create', [
+                'as'         => 'create',
+                'uses'       => '\Sco\Admin\Http\Controllers\AdminController@create',
+            ]);
 
-        Route::post('store', [
-            'as'         => 'store',
-            'uses'       => '\Sco\Admin\Http\Controllers\AdminController@store',
-        ]);
+            Route::post('store', [
+                'as'         => 'store',
+                'uses'       => '\Sco\Admin\Http\Controllers\AdminController@store',
+            ]);
 
-        Route::get('{id}/edit', [
-            'as'         => 'edit',
-            'uses'       => '\Sco\Admin\Http\Controllers\AdminController@edit',
-            'where'      => ['id' => '[0-9]+'],
-        ]);
+            Route::get('{id}/edit', [
+                'as'         => 'edit',
+                'uses'       => '\Sco\Admin\Http\Controllers\AdminController@edit',
+                'where'      => ['id' => '[0-9]+'],
+            ]);
 
-        Route::get('{id}/edit/info', [
-            'as'         => 'edit.info',
-            'uses'       => '\Sco\Admin\Http\Controllers\AdminController@getEditInfo',
-            'where'      => ['id' => '[0-9]+'],
-        ]);
+            Route::get('{id}/edit/info', [
+                'as'         => 'edit.info',
+                'uses'       => '\Sco\Admin\Http\Controllers\AdminController@getEditInfo',
+                'where'      => ['id' => '[0-9]+'],
+            ]);
 
-        Route::post('{id}/edit', [
-            'as'         => 'update',
-            'uses'       => '\Sco\Admin\Http\Controllers\AdminController@update',
-            'where'      => ['id' => '[0-9]+'],
-        ]);
+            Route::post('{id}/edit', [
+                'as'         => 'update',
+                'uses'       => '\Sco\Admin\Http\Controllers\AdminController@update',
+                'where'      => ['id' => '[0-9]+'],
+            ]);
 
-        /*Route::post('batch/delete', [
-            'as'         => 'batch.delete',
-            'uses'       => '\Sco\Admin\Http\Controllers\AdminController@batchDelete',
-        ]);*/
+            /*Route::post('batch/delete', [
+                'as'         => 'batch.delete',
+                'uses'       => '\Sco\Admin\Http\Controllers\AdminController@batchDelete',
+            ]);*/
 
-        Route::delete('{id}/delete', [
-            'as'         => 'delete',
-            'uses'       => '\Sco\Admin\Http\Controllers\AdminController@delete',
-            'where'      => ['id' => '[0-9]+'],
-        ]);
+            Route::delete('{id}/delete', [
+                'as'         => 'delete',
+                'uses'       => '\Sco\Admin\Http\Controllers\AdminController@delete',
+                'where'      => ['id' => '[0-9]+'],
+            ]);
 
-        Route::delete('{id}/destroy', [
-            'as'         => 'destroy',
-            'uses'       => '\Sco\Admin\Http\Controllers\AdminController@forceDelete',
-            'where'      => ['id' => '[0-9]+'],
-        ]);
+            Route::delete('{id}/destroy', [
+                'as'         => 'destroy',
+                'uses'       => '\Sco\Admin\Http\Controllers\AdminController@forceDelete',
+                'where'      => ['id' => '[0-9]+'],
+            ]);
 
-        Route::post('{id}/restore', [
-            'as'         => 'restore',
-            'uses'       => '\Sco\Admin\Http\Controllers\AdminController@restore',
-            'where'      => ['id' => '[0-9]+'],
-        ]);
+            Route::post('{id}/restore', [
+                'as'         => 'restore',
+                'uses'       => '\Sco\Admin\Http\Controllers\AdminController@restore',
+                'where'      => ['id' => '[0-9]+'],
+            ]);
 
-        Route::post('upload/{field}/{id?}', [
-            'as'         => 'upload.file',
-            'uses'       => 'UploadController@formElement',
-        ]);
+            Route::post('upload/{field}/{id?}', [
+                'as'         => 'upload.file',
+                'uses'       => '\Sco\Admin\Http\Controllers\UploadController@formElement',
+            ]);
 
-        Route::view('/', 'admin::app')->name('index');
-
-        /*Route::get('/', [
-            'as'         => 'index',
-            'uses'       => '\Sco\Admin\Http\Controllers\AdminController@index',
-        ]);*/
+            Route::get('/', [
+                'as'         => 'index',
+                'uses'       => '\Sco\Admin\Http\Controllers\AdminController@index',
+            ]);
+        });
     });
 });
