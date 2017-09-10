@@ -4,6 +4,8 @@ namespace Sco\Admin\Form;
 
 use Illuminate\Foundation\Application;
 use Sco\Admin\Contracts\Form\ElementFactoryInterface;
+use Sco\Admin\Form\Elements\Cascader;
+use Sco\Admin\Form\Elements\Checkbox;
 use Sco\Admin\Form\Elements\Date;
 use Sco\Admin\Form\Elements\DateRange;
 use Sco\Admin\Form\Elements\DateTime;
@@ -16,14 +18,16 @@ use Sco\Admin\Form\Elements\Image;
 use Sco\Admin\Form\Elements\Images;
 use Sco\Admin\Form\Elements\Number;
 use Sco\Admin\Form\Elements\Password;
+use Sco\Admin\Form\Elements\Radio;
 use Sco\Admin\Form\Elements\Select;
 use Sco\Admin\Form\Elements\Text;
 use Sco\Admin\Form\Elements\Textarea;
+use Sco\Admin\Form\Elements\Tree;
 use Sco\Admin\Traits\AliasBinder;
 
 /**
  * @method \Sco\Admin\Form\Elements\Text text($name, $title)
- * @method \Sco\Admin\Form\Elements\Text email($name, $title)
+ * @method \Sco\Admin\Form\Elements\Email email($name, $title)
  * @method \Sco\Admin\Form\Elements\Select select($name, $title, $options)
  * @method \Sco\Admin\Form\Elements\Textarea textarea($name, $title)
  * @method \Sco\Admin\Form\Elements\Number number($name, $title)
@@ -50,8 +54,10 @@ class ElementFactory implements ElementFactoryInterface
 
         $this->registerAliases([
             'text'          => Text::class,
-            'select'        => Select::class,
+            'radio'         => Radio::class,
+            'checkbox'      => Checkbox::class,
             'textarea'      => Textarea::class,
+            'select'        => Select::class,
             'hidden'        => Hidden::class,
             'number'        => Number::class,
             'password'      => Password::class,
@@ -64,6 +70,8 @@ class ElementFactory implements ElementFactoryInterface
             'datetime'      => DateTime::class,
             'daterange'     => DateRange::class,
             'datetimerange' => DateTimeRange::class,
+            'cascader'      => Cascader::class,
+            'tree'          => Tree::class,
         ]);
     }
 }

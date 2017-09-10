@@ -8,7 +8,7 @@ use Sco\Admin\View\Columns\Custom;
 use Sco\Admin\View\Columns\DateTime;
 use Sco\Admin\View\Columns\Image;
 use Sco\Admin\View\Columns\Link;
-use Sco\Admin\View\Columns\Lists;
+use Sco\Admin\View\Columns\Tags;
 use Sco\Admin\View\Columns\Text;
 
 /**
@@ -17,7 +17,7 @@ use Sco\Admin\View\Columns\Text;
  * @method static \Sco\Admin\View\Columns\Image image($name, $label)
  * @method static \Sco\Admin\View\Columns\Link link($name, $label)
  * @method static \Sco\Admin\View\Columns\Custom custom($name, $label)
- * @method static \Sco\Admin\View\Columns\Lists lists($name, $label)
+ * @method static \Sco\Admin\View\Columns\Tags tags($name, $label)
  */
 class ColumnFactory implements ColumnFactoryInterface
 {
@@ -30,7 +30,7 @@ class ColumnFactory implements ColumnFactoryInterface
             'datetime' => DateTime::class,
             'image'    => Image::class,
             'link'     => Link::class,
-            'lists'    => Lists::class,
+            'tags'     => Tags::class,
             'custom'   => Custom::class,
         ]);
     }
