@@ -49,13 +49,17 @@ class Input extends NamedElement
     protected function getModelColumn()
     {
         // Doctrine\DBAL\Platforms\MySQL57Platform not support "enum" "string"
-        $databasePlatform = DB::getDoctrineSchemaManager()->getDatabasePlatform();
+        $schema = DB::getDoctrineSchemaManager();
+        $databasePlatform = $schema->getDatabasePlatform();
         $databasePlatform->registerDoctrineTypeMapping('enum', 'string');
 
         $table  = DB::getTablePrefix() . $this->getModel()->getTable();
         $column = $this->getName();
         if ($column) {
-            return DB::getDoctrineColumn($table, $column);
+            $columns = $schema->listTableDetails($table);
+            if ($columns->hasColumn($column)) {
+                return $columns->getColumn($column);
+            }
         }
     }
 

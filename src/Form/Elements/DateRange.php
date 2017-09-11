@@ -2,9 +2,13 @@
 
 namespace Sco\Admin\Form\Elements;
 
+use Illuminate\Http\Request;
+
 class DateRange extends Date
 {
     protected $type = 'daterange';
+
+    protected $pickerFormat = 'yyyy-MM-dd';
 
     protected $startName;
 
@@ -20,7 +24,7 @@ class DateRange extends Date
 
     public function getName()
     {
-        return '';
+        return $this->getStartName() . '_' . $this->getEndName();
     }
 
     public function getStartName()
@@ -49,5 +53,21 @@ class DateRange extends Date
             $model->getAttribute($this->getStartName()),
             $model->getAttribute($this->getEndName()),
         ];
+    }
+
+    protected function getDefaultValidationRules()
+    {
+        return [
+            'array' => 'array',
+        ];
+    }
+
+    public function save(Request $request)
+    {
+        $model = $this->getModel();
+
+        list($startValue, $endValue) = $this->getValueFromRequest($request);
+        $model->setAttribute($this->getStartName(), $this->prepareValue($startValue));
+        $model->setAttribute($this->getEndName(), $this->prepareValue($endValue));
     }
 }

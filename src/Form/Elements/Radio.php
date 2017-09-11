@@ -1,10 +1,8 @@
 <?php
 
-
 namespace Sco\Admin\Form\Elements;
 
-
-class Radio
+class Radio extends Select
 {
-
+    protected $type = 'radio';
 }

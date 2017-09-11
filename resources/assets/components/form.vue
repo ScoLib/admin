@@ -2,8 +2,11 @@
     .el-upload__input {
         display:none!important;
     }
-    .el-switch {
+    .el-switch .el-checkbox-group {
         margin: 7px 0px;
+    }
+    .el-checkbox {
+        margin-bottom: 0px;
     }
 </style>
 
@@ -33,6 +36,7 @@
                                 :name="element.key"
                                 :size="element.size"
                                 :disabled="element.disabled"
+                                :multiple="element.multiple"
                                 filterable
                                 v-model="currentValue[element.key]">
                             <el-option
@@ -45,6 +49,7 @@
 
                         <el-radio-group
                                 v-else-if="element.type == 'radio'"
+                                :size="element.size"
                                 v-model="currentValue[element.key]">
                             <el-radio
                                     v-for="option in element.options"
@@ -57,6 +62,7 @@
 
                         <el-checkbox-group
                                 v-else-if="element.type == 'checkbox'"
+                                :size="element.size"
                                 v-model="currentValue[element.key]">
                             <el-checkbox
                                     v-for="option in element.options"

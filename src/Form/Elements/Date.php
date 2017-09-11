@@ -121,7 +121,7 @@ class Date extends Input
 
     protected function getDefaultValue()
     {
-        return Carbon::create()
+        return Carbon::now()
             ->timezone($this->getTimezone())
             ->format($this->getFormat());
     }
@@ -143,6 +143,8 @@ class Date extends Input
 
     protected function prepareValue($value)
     {
-        return strtotime($value);
+        $value = Carbon::parse($value);
+        $value->timezone($this->getTimezone());
+        return $value;
     }
 }
