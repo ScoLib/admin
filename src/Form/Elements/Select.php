@@ -48,7 +48,12 @@ class Select extends NamedElement
         } elseif (is_array($this->options)) {
             $options = $this->options;
         } else {
-            throw new InvalidArgumentException('Form select element options must be array(key=>value)');
+            throw new InvalidArgumentException(
+                sprintf(
+                    "The form %s element's options must be return array(key=>value)",
+                    $this->getType()
+                )
+            );
         }
 
         return collect($options)->mapWithKeys(function ($value, $key) {

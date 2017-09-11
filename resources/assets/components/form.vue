@@ -60,18 +60,26 @@
                             </el-radio>
                         </el-radio-group>
 
-                        <el-checkbox-group
-                                v-else-if="element.type == 'checkbox'"
-                                :size="element.size"
-                                v-model="currentValue[element.key]">
+                        <template v-else-if="element.type == 'checkbox'">
                             <el-checkbox
-                                    v-for="option in element.options"
-                                    :key="option.value"
-                                    :label="option.value"
-                                    :disabled="option.disabled">
-                                {{option.label}}
+                                    :indeterminate="isIndeterminate"
+                                    v-model="checkAll"
+                                    @change="handleCheckAllChange($event, element)">
+                                全选
                             </el-checkbox>
-                        </el-checkbox-group>
+                            <el-checkbox-group
+                                    :size="element.size"
+                                    @change="handleCheckedChange($event, element)"
+                                    v-model="currentValue[element.key]">
+                                <el-checkbox
+                                        v-for="option in element.options"
+                                        :key="option.value"
+                                        :label="option.value"
+                                        :disabled="option.disabled">
+                                    {{option.label}}
+                                </el-checkbox>
+                            </el-checkbox-group>
+                        </template>
 
                         <el-date-picker
                                 v-else-if="['date', 'datetime', 'daterange', 'datetimerange'].indexOf(element.type) > -1"
@@ -174,7 +182,9 @@
         name: 'vForm',
         data() {
             return {
-                currentValue: this.value
+                currentValue: this.value,
+                checkAll: false,
+                isIndeterminate: false,
             }
         },
         components: {
@@ -203,6 +213,21 @@
             }
         },
         methods: {
+            handleCheckAllChange(event, element) {
+                this.currentValue[element.key] = [];
+                if (event.target.checked) {
+                    const _this = this;
+                    element.options.forEach(function (item) {
+                        _this.currentValue[element.key].push(item.value);
+                    })
+                }
+                this.isIndeterminate = false;
+            },
+            handleCheckedChange(value, element) {
+                let checkedCount = value.length;
+                this.checkAll = checkedCount === element.options.length;
+                this.isIndeterminate = checkedCount > 0 && checkedCount < element.options.length;
+            },
         },
         watch: {
             value(val) {
