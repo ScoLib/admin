@@ -62,8 +62,9 @@
 
                         <template v-else-if="element.type == 'checkbox'">
                             <el-checkbox
-                                    :indeterminate="isIndeterminate"
-                                    v-model="checkAll"
+                                    v-if="element.showCheckAll"
+                                    :indeterminate="isIndeterminate[element.key]"
+                                    v-model="checkAll[element.key]"
                                     @change="handleCheckAllChange($event, element)">
                                 全选
                             </el-checkbox>
@@ -147,7 +148,7 @@
                                 v-model="currentValue[element.key]">
                         </el-input>
 
-                        <template v-else-if="typeof element.type === 'undefined' || ['text', 'email', 'password'].indexOf(element.type) > -1">
+                        <template v-else-if="['text', 'email', 'password'].indexOf(element.type) > -1">
                             <el-input
                                     :type="element.type"
                                     :name="element.key"
@@ -183,8 +184,8 @@
         data() {
             return {
                 currentValue: this.value,
-                checkAll: false,
-                isIndeterminate: false,
+                checkAll: [],
+                isIndeterminate: [],
             }
         },
         components: {
@@ -221,12 +222,12 @@
                         _this.currentValue[element.key].push(item.value);
                     })
                 }
-                this.isIndeterminate = false;
+                this.isIndeterminate[element.key] = false;
             },
             handleCheckedChange(value, element) {
                 let checkedCount = value.length;
-                this.checkAll = checkedCount === element.options.length;
-                this.isIndeterminate = checkedCount > 0 && checkedCount < element.options.length;
+                this.checkAll[element.key] = checkedCount === element.options.length;
+                this.isIndeterminate[element.key] = checkedCount > 0 && checkedCount < element.options.length;
             },
         },
         watch: {

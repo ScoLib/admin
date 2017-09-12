@@ -7,7 +7,8 @@ class Checkbox extends Select
     protected $type = 'checkbox';
 
     protected $max;
-    protected $min = 0;
+    protected $min          = 0;
+    protected $showCheckAll = false;
 
     public function getMax()
     {
@@ -37,16 +38,47 @@ class Checkbox extends Select
         return $this;
     }
 
+    public function isShowCheckAll()
+    {
+        return $this->showCheckAll;
+    }
+
+    public function enableShowCheckAll()
+    {
+        $this->showCheckAll = true;
+
+        return $this;
+    }
+
+    public function getValue()
+    {
+        $value = parent::getValue();
+        if (empty($value)) {
+            return [];
+        }
+        return explode(',', $value);
+    }
+
     protected function getDefaultValue()
     {
         return [];
     }
 
+    protected function prepareValue($value)
+    {
+        if (empty($value)) {
+            return '';
+        }
+
+        return implode(',', $value);
+    }
+
     public function toArray()
     {
         return parent::toArray() + [
-                'min' => $this->getMin(),
-                'max' => $this->getMax(),
+                'min'          => $this->getMin(),
+                'max'          => $this->getMax(),
+                'showCheckAll' => $this->isShowCheckAll(),
             ];
     }
 }

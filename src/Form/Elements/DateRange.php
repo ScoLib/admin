@@ -49,9 +49,10 @@ class DateRange extends Date
         if (is_null($model) || !$model->exists) {
             return $value;
         }
+
         return [
-            $model->getAttribute($this->getStartName()),
-            $model->getAttribute($this->getEndName()),
+            $this->dateToString($model->getAttribute($this->getStartName())),
+            $this->dateToString($model->getAttribute($this->getEndName())),
         ];
     }
 

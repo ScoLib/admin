@@ -36,6 +36,11 @@ class Select extends NamedElement
         return $this;
     }
 
+    public function getValue()
+    {
+        return (string)parent::getValue();
+    }
+
     /**
      * @return \Illuminate\Support\Collection
      */
@@ -60,7 +65,7 @@ class Select extends NamedElement
             return [
                 $key => [
                     'label' => $value,
-                    'value' => $key,
+                    'value' => (string)$key,
                 ],
             ];
         })->values();
@@ -108,8 +113,7 @@ class Select extends NamedElement
         if (is_null(($label = $this->getOptionsLabelAttribute()))) {
             throw new InvalidArgumentException('Form select element must set label attribute');
         }
-
-        return array_pluck($options->all(), $this->getOptionsLabelAttribute(), $key);
+        return $options->pluck($this->getOptionsLabelAttribute(), $key);
     }
 
     /**
