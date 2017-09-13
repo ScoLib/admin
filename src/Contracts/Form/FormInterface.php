@@ -51,12 +51,11 @@ interface FormInterface extends
     public function setElementModel(Model $model);
 
     /**
-     * @param array $data
      *
      * @return $this
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function validate(array $data = []);
+    public function validate();
 
     public function save();
 

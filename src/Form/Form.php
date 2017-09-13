@@ -108,12 +108,10 @@ class Form implements
     /**
      * {@inheritdoc}
      */
-    public function validate(array $data = [])
+    public function validate()
     {
-        $data = empty($data) ? request()->all() : $data;
-
         Validator::validate(
-            $data,
+            request()->all(),
             $this->getValidationRules(),
             $this->getValidationMessages(),
             $this->getValidationTitles()
@@ -173,8 +171,20 @@ class Form implements
     protected function saveElements()
     {
         $this->getElements()->each(function (ElementInterface $element) {
-            $element->save(request());
+            $element->save();
         });
+    }
+
+    protected function finishSaveElements()
+    {
+        $this->getElements()->each(function (ElementInterface $element) {
+            $element->finishSave();
+        });
+    }
+
+    protected function finishSave()
+    {
+        $this->finishSaveElements();
     }
 
     public function save()
@@ -182,7 +192,11 @@ class Form implements
         $this->saveElements();
 
         $model = $this->getModel();
-        $model->save();
+        $saved = $model->save();
+
+        if ($saved) {
+            $this->finishSave();
+        }
 
         return true;
     }

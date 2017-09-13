@@ -2,7 +2,6 @@
 
 namespace Sco\Admin\Contracts\Form\Elements;
 
-use Illuminate\Http\Request;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
 use JsonSerializable;
@@ -39,5 +38,7 @@ interface ElementInterface extends
      */
     public function setTitle($value);
 
-    public function save(Request $request);
+    public function save();
+
+    public function finishSave();
 }

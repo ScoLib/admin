@@ -8,6 +8,8 @@ class Date extends Input
 {
     protected $type = 'date';
 
+    protected $defaultValue = '';
+
     /**
      * Date Picker format
      *
@@ -117,13 +119,6 @@ class Date extends Input
                 'pickerFormat' => $this->getPickerFormat(),
                 'editable' => $this->isEditable(),
             ];
-    }
-
-    protected function getDefaultValue()
-    {
-        return Carbon::now()
-            ->timezone($this->getTimezone())
-            ->format($this->getFormat());
     }
 
     public function getValue()

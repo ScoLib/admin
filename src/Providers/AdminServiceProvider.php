@@ -40,8 +40,6 @@ class AdminServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Carbon::setLocale($this->app['config']->get('app.locale'));
-
         if ($this->app->runningInConsole()) {
             $this->loadMigrationsFrom($this->getBasePath() . '/database/migrations');
         }
@@ -58,7 +56,7 @@ class AdminServiceProvider extends ServiceProvider
             $this->getBasePath() . '/config/admin.php',
             'admin'
         );
-        
+
         $this->registerMiddleware();
         $this->registerFactory();
         $this->app->instance('admin.instance', new Admin($this->app));

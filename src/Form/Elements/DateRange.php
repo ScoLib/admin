@@ -2,11 +2,11 @@
 
 namespace Sco\Admin\Form\Elements;
 
-use Illuminate\Http\Request;
-
 class DateRange extends Date
 {
     protected $type = 'daterange';
+
+    protected $defaultValue = [];
 
     protected $pickerFormat = 'yyyy-MM-dd';
 
@@ -37,11 +37,6 @@ class DateRange extends Date
         return $this->endName;
     }
 
-    public function getDefaultValue()
-    {
-        return [];
-    }
-
     public function getValue()
     {
         $model = $this->getModel();
@@ -63,11 +58,11 @@ class DateRange extends Date
         ];
     }
 
-    public function save(Request $request)
+    public function save()
     {
         $model = $this->getModel();
 
-        list($startValue, $endValue) = $this->getValueFromRequest($request);
+        list($startValue, $endValue) = $this->getValueFromRequest();
         $model->setAttribute($this->getStartName(), $this->prepareValue($startValue));
         $model->setAttribute($this->getEndName(), $this->prepareValue($endValue));
     }

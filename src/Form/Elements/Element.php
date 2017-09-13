@@ -3,7 +3,6 @@
 namespace Sco\Admin\Form\Elements;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Request;
 use Sco\Admin\Contracts\Form\Elements\ElementInterface;
 
 abstract class Element implements ElementInterface
@@ -61,11 +60,16 @@ abstract class Element implements ElementInterface
         return $this;
     }
 
-    public function save(Request $request)
+    public function save()
     {
         $this->setModelAttribute(
-            $this->getValueFromRequest($request)
+            $this->getValueFromRequest()
         );
+    }
+
+    public function finishSave()
+    {
+        //
     }
 
     protected function setModelAttribute($value)
@@ -77,9 +81,9 @@ abstract class Element implements ElementInterface
         );
     }
 
-    protected function getValueFromRequest(Request $request)
+    protected function getValueFromRequest()
     {
-        return $request->input($this->getName());
+        return request()->input($this->getName());
     }
 
     /**
@@ -92,6 +96,9 @@ abstract class Element implements ElementInterface
         return $value;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getModel()
     {
         return $this->model;

@@ -16,6 +16,7 @@ use Sco\Admin\Form\Elements\File;
 use Sco\Admin\Form\Elements\Hidden;
 use Sco\Admin\Form\Elements\Image;
 use Sco\Admin\Form\Elements\Images;
+use Sco\Admin\Form\Elements\MultiSelect;
 use Sco\Admin\Form\Elements\Number;
 use Sco\Admin\Form\Elements\Password;
 use Sco\Admin\Form\Elements\Radio;
@@ -29,6 +30,7 @@ use Sco\Admin\Traits\AliasBinder;
  * @method \Sco\Admin\Form\Elements\Text text($name, $title)
  * @method \Sco\Admin\Form\Elements\Email email($name, $title)
  * @method \Sco\Admin\Form\Elements\Select select($name, $title, $options)
+ * @method \Sco\Admin\Form\Elements\MultiSelect multiselect($name, $title, $options)
  * @method \Sco\Admin\Form\Elements\Radio radio($name, $title, $options)
  * @method \Sco\Admin\Form\Elements\Checkbox checkbox($name, $title, $options)
  * @method \Sco\Admin\Form\Elements\Textarea textarea($name, $title)
@@ -60,6 +62,7 @@ class ElementFactory implements ElementFactoryInterface
             'checkbox'      => Checkbox::class,
             'textarea'      => Textarea::class,
             'select'        => Select::class,
+            'multiselect'   => MultiSelect::class,
             'hidden'        => Hidden::class,
             'number'        => Number::class,
             'password'      => Password::class,

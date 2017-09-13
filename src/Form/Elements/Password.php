@@ -2,15 +2,13 @@
 
 namespace Sco\Admin\Form\Elements;
 
-use Illuminate\Http\Request;
-
 class Password extends Text
 {
     protected $type = 'password';
 
-    public function save(Request $request)
+    public function save()
     {
-        $value = $this->getValueFromRequest($request);
+        $value = $this->getValueFromRequest();
         if ($this->getModel()->exists && empty($value)) {
             return;
         }

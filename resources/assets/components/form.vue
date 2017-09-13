@@ -8,6 +8,9 @@
     .el-checkbox {
         margin-bottom: 0px;
     }
+    .el-select-multi {
+        width: 100%;
+    }
 </style>
 
 <template>
@@ -31,7 +34,7 @@
                         <el-select
                                 v-if="element.type == 'select'"
                                 placeholder="请选择"
-                                :class="element.class"
+                                :class="element.multiple ? 'el-select-multi' : ''"
                                 :popper-class="element.popperClass"
                                 :name="element.key"
                                 :size="element.size"

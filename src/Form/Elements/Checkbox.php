@@ -6,6 +6,8 @@ class Checkbox extends Select
 {
     protected $type = 'checkbox';
 
+    protected $defaultValue = [];
+
     protected $max;
     protected $min          = 0;
     protected $showCheckAll = false;
@@ -57,11 +59,6 @@ class Checkbox extends Select
             return [];
         }
         return explode(',', $value);
-    }
-
-    protected function getDefaultValue()
-    {
-        return [];
     }
 
     protected function prepareValue($value)

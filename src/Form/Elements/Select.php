@@ -49,7 +49,7 @@ class Select extends NamedElement
         if ($this->options instanceof \Closure) {
             $options = ($this->options)();
         } elseif (is_string($this->options) || $this->options instanceof Model) {
-            $options = $this->setOptionsFromModel($this->options);
+            $options = $this->setOptionsFromModel();
         } elseif (is_array($this->options)) {
             $options = $this->options;
         } else {
@@ -84,17 +84,38 @@ class Select extends NamedElement
     }
 
     /**
-     * @param Model|string $options
      *
      * @return array
      */
-    protected function setOptionsFromModel($options)
+    protected function setOptionsFromModel()
     {
-        if (is_string($options)) {
-            $options = app($options);
+        $model = $this->getOptionsModel();
+
+        $key = $this->getOptionsValueAttribute() ?: $model->getKeyName();
+
+        $repository = app(RepositoryInterface::class);
+        $repository->setModel($model);
+        $query = $repository->getQuery();
+
+        $results = $query->get();
+        if (is_null(($label = $this->getOptionsLabelAttribute()))) {
+            throw new InvalidArgumentException('Form select element must set label attribute');
+        }
+        return $results->pluck($this->getOptionsLabelAttribute(), $key);
+    }
+
+    /**
+     * @return Model
+     */
+    public function getOptionsModel()
+    {
+        $model = $this->options;
+
+        if (is_string($model)) {
+            $model = app($model);
         }
 
-        if (!($options instanceof Model)) {
+        if (!($model instanceof Model)) {
             throw new InvalidArgumentException(
                 sprintf(
                     'Form select element options class must be instanced of "%s".',
@@ -103,17 +124,7 @@ class Select extends NamedElement
             );
         }
 
-        $key = $this->getOptionsValueAttribute() ?: $options->getKeyName();
-
-        $repository = app(RepositoryInterface::class);
-        $repository->setModel($options);
-        $query = $repository->getQuery();
-
-        $options = $query->get();
-        if (is_null(($label = $this->getOptionsLabelAttribute()))) {
-            throw new InvalidArgumentException('Form select element must set label attribute');
-        }
-        return $options->pluck($this->getOptionsLabelAttribute(), $key);
+        return $model;
     }
 
     /**
