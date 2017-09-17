@@ -76,7 +76,7 @@ class Input extends NamedElement
     {
         $value           = intval($value);
         $this->maxLength = $value;
-        $this->addValidationRule('min:' . $value);
+        $this->addValidationRule('max:' . $value);
         return $this;
     }
 
@@ -90,7 +90,7 @@ class Input extends NamedElement
         $value           = intval($value);
         $this->minLength = $value;
 
-        $this->addValidationRule('max:' . $value);
+        $this->addValidationRule('min:' . $value);
 
         return $this;
     }

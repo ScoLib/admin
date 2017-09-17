@@ -3,6 +3,7 @@
 namespace Sco\Admin\Form\Elements;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Http\Request;
 
 class MultiSelect extends Select
@@ -50,8 +51,12 @@ class MultiSelect extends Select
             return;
         }
         $attribute = $this->getName();
+        $values = $this->getValueFromRequest();
 
         $relation = $this->getModel()->{$attribute}();
+        if ($relation instanceof BelongsToMany) {
+            $relation->sync($values);
+        }
     }
 
     public function toArray()
