@@ -45,6 +45,15 @@ class MultiSelect extends Select
         }
     }
 
+    protected function prepareValue($value)
+    {
+        if (!is_array($value)) {
+            return $value;
+        }
+
+        return implode(',', $value);
+    }
+
     public function finishSave()
     {
         if (!($this->isOptionsModel() && $this->isRelation())) {

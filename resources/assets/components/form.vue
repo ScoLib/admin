@@ -137,6 +137,17 @@
                                 :width="element.width">
                         </el-switch>
 
+                        <el-tree
+                                v-else-if="element.type == 'tree'"
+                                :data="element.options"
+                                show-checkbox
+                                node-key="id"
+                                :ref="'tree_' + element.key"
+                                default-expand-all
+                                @check-change="changeTree(element.key)"
+                                :default-checked-keys="currentValue[element.key]">
+                        </el-tree>
+
                         <el-input
                                 v-else-if="element.type == 'textarea'"
                                 :type="element.type"
@@ -232,6 +243,18 @@
                 this.checkAll[element.key] = checkedCount === element.options.length;
                 this.isIndeterminate[element.key] = checkedCount > 0 && checkedCount < element.options.length;
             },
+            changeTree(key) {
+                let ref = `tree_${key}`;
+                let $refs = this.$refs[ref][0];
+                let keys = $refs.getCheckedKeys();
+
+                let nodesDOM = $refs.$el.querySelectorAll('.el-tree-node');
+                let nodesVue = [].map.call(nodesDOM, node => node.__vue__);
+                nodesVue.filter(item => item.node.indeterminate === true).forEach(_vue => {
+                    keys.push(_vue.node.data.id);
+                });
+                this.currentValue[key] = keys;
+            }
         },
         watch: {
             value(val) {

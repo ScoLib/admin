@@ -31,6 +31,7 @@ use Sco\Admin\Traits\AliasBinder;
  * @method \Sco\Admin\Form\Elements\Email email($name, $title)
  * @method \Sco\Admin\Form\Elements\Select select($name, $title, $options)
  * @method \Sco\Admin\Form\Elements\MultiSelect multiselect($name, $title, $options)
+ * @method \Sco\Admin\Form\Elements\Tree tree($name, $title, $options)
  * @method \Sco\Admin\Form\Elements\Radio radio($name, $title, $options)
  * @method \Sco\Admin\Form\Elements\Checkbox checkbox($name, $title, $options)
  * @method \Sco\Admin\Form\Elements\Textarea textarea($name, $title)
