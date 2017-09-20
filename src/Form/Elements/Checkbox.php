@@ -61,15 +61,6 @@ class Checkbox extends Select
         return explode(',', $value);
     }
 
-    protected function prepareValue($value)
-    {
-        if (empty($value)) {
-            return '';
-        }
-
-        return implode(',', $value);
-    }
-
     public function toArray()
     {
         return parent::toArray() + [

@@ -93,7 +93,11 @@ abstract class Element implements ElementInterface
      */
     protected function prepareValue($value)
     {
-        return $value;
+        if (!is_array($value)) {
+            return $value;
+        }
+
+        return implode(',', $value);
     }
 
     /**

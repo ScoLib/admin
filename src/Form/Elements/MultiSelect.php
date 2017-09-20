@@ -28,30 +28,11 @@ class MultiSelect extends Select
         return $value;
     }
 
-    protected function isOptionsModel()
-    {
-        return is_string($this->options) || $this->options instanceof Model;
-    }
-
-    protected function isRelation()
-    {
-        return method_exists($this->getModel(), $this->getName());
-    }
-
     public function save()
     {
         if (!($this->isOptionsModel() && $this->isRelation())) {
             parent::save();
         }
-    }
-
-    protected function prepareValue($value)
-    {
-        if (!is_array($value)) {
-            return $value;
-        }
-
-        return implode(',', $value);
     }
 
     public function finishSave()

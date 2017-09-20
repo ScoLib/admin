@@ -1,6 +1,6 @@
 import Vue from 'vue'
-import UrlPrefix from '../util/url-prefix'
-import Layout from '../components/layout'
+import UrlPrefix from './util/url-prefix'
+import Layout from './components/layout'
 
 Vue.use(UrlPrefix);
 
@@ -10,7 +10,7 @@ export default [
     {
         path: `/${prefix}/login`,
         component (resolve) {
-            require(['../views/login.vue'], resolve);
+            require(['./views/login.vue'], resolve);
         },
         name: 'admin.login',
         meta: {
@@ -21,7 +21,7 @@ export default [
     {
         path: `/${prefix}/403`,
         component (resolve) {
-            require(['../views/errors/403.vue'], resolve);
+            require(['./views/errors/403.vue'], resolve);
         },
         name: 'admin.403',
         meta: {
@@ -36,7 +36,7 @@ export default [
             {
                 path: '/',
                 component (resolve) {
-                    require(['../views/dashboard.vue'], resolve);
+                    require(['./views/dashboard.vue'], resolve);
                 },
                 name: 'admin.dashboard',
                 meta: {
@@ -47,7 +47,7 @@ export default [
             {
                 path: `500`,
                 component (resolve) {
-                    require(['../views/errors/500.vue'], resolve);
+                    require(['./views/errors/500.vue'], resolve);
                 },
                 name: 'admin.500',
                 meta: {
@@ -59,7 +59,7 @@ export default [
             {
                 path: 'logs',
                 component (resolve) {
-                    require(['../views/system/log/index.vue'], resolve);
+                    require(['./views/system/log/index.vue'], resolve);
                 },
                 name: 'admin.logs',
                 meta: {
@@ -70,7 +70,7 @@ export default [
             {
                 path: ':model/:id/edit',
                 component (resolve) {
-                    require(['../views/model/edit.vue'], resolve);
+                    require(['./views/model/edit.vue'], resolve);
                 },
                 name: 'admin.model.edit',
                 meta: {
@@ -81,7 +81,7 @@ export default [
             {
                 path: ':model/create',
                 component (resolve) {
-                    require(['../views/model/create.vue'], resolve);
+                    require(['./views/model/create.vue'], resolve);
                 },
                 name: 'admin.model.create',
                 meta: {
@@ -92,7 +92,7 @@ export default [
             {
                 path: ':model',
                 component (resolve) {
-                    require(['../views/model/index.vue'], resolve);
+                    require(['./views/model/index.vue'], resolve);
                 },
                 name: 'admin.model.index',
                 meta: {
