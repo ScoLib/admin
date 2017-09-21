@@ -9,17 +9,14 @@ axios.defaults.withCredentials = true;
 
 axios.interceptors.response.use(null, error => {
     if (error.response) {
-        if (error.response.status == 500) {
-            // console.log('500', error.response)
+        if ([500, 404, 403].indexOf(error.response.status) > -1) {
+            console.log([500, 404, 403].indexOf(error.response.status));
+            // console.log(`admin.${error.response.status}`);
             router.app.$store.commit('setErrorMsg', error.response.data);
-            router.push({name: 'admin.500'})
+            router.push({name: `admin.${error.response.status}`});
             return Promise.reject(error);
         }
-        if (error.response.status == 403) {
-            // console.log('403', error.response)
-            router.push({name: 'admin.403'})
-            return Promise.reject(error);
-        }
+
         if (error.response.status == 401) {
             // console.log('401', error.response)
             router.push({name: 'admin.login'})

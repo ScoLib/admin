@@ -45,44 +45,17 @@ class LoginController extends Controller
         return view('admin::app');
     }
 
-    protected function validateLogin(Request $request)
-    {
-        $this->validate($request, [
-            $this->username() => 'required|string',
-            'password'        => 'required|string',
-        ]);
-    }
-
-    protected function sendFailedLoginResponse(Request $request)
-    {
-        $errors = [$this->username() => [trans('admin::auth.failed')]];
-
-        if ($request->expectsJson()) {
-            return response()->json($errors, 422);
-        }
-
-        return redirect()->back()
-            ->withInput($request->only($this->username(), 'remember'))
-            ->withErrors($errors);
-    }
-
     /**
      * The user has been authenticated.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Sco\Admin\Models\Manager $user
+     * @param  mixed $user
      *
      * @return mixed
      */
     protected function authenticated(Request $request, $user)
     {
-        return [
-            'id'   => $user->id,
-            'name' => $user->name,
-            'role' => $user->roles->makeHidden([
-                'description', 'created_at', 'updated_at', 'pivot', 'perms',
-            ])->first(null, collect()),
-        ];
+        return $user;
     }
 
     /**
@@ -96,9 +69,7 @@ class LoginController extends Controller
     {
         $this->guard()->logout();
 
-        $request->session()->flush();
-
-        $request->session()->regenerate();
+        $request->session()->invalidate();
 
         return redirect(route('admin.login'));
     }

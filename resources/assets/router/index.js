@@ -24,8 +24,8 @@ const router = new VueRouter({
     routes,
     mode: 'history',
     linkActiveClass: 'active',
-    scrollBehavior (to, from, savedPosition) {
-        return savedPosition || { x: 0, y: 0 }
+    scrollBehavior(to, from, savedPosition) {
+        return savedPosition || {x: 0, y: 0}
     }
 });
 
@@ -36,15 +36,9 @@ const setTitle = (title) => {
 
 //路由开始前
 router.beforeEach((to, from, next) => {
-    // console.log('to', to);
+    console.log('to', to);
     // console.log(from);
     // console.log(window.Admin);
-
-    /*if (typeof window.Admin != 'undefined') {
-        if (window.Admin.LoggedUser) {
-            router.app.$store.commit('setUser', window.Admin.LoggedUser);
-        }
-    }*/
 
     if (to.meta.title) {
         setTitle(to.meta.title);
@@ -53,35 +47,20 @@ router.beforeEach((to, from, next) => {
     if (to.fullPath != '/#') {
         router.app.$Progress.start();
 
-        if (to.meta.auth) {
-            // if (typeof window.Admin != 'undefined' && window.Admin.PermList) {
-                // store.commit('setPermissions', window.Admin.PermList);
-            // }
 
-            if (Object.keys(router.app.$store.state.user).length == 0) {
-                next({name: 'admin.login'});
-            }
-
-            if (typeof to.name == 'undefined' || to.name == '') {
-                return next({name: 'admin.403'});
-            }
-
-            // if (to.name.indexOf('admin.model.') == -1) {
-
-                next();
-                /*router.app.axios.get(`/${router.app.$store.state.urlPrefix}/check/perm/${to.name}`)
-                    .then(response => {
-                        setTitle(to.meta.title)
-                        next();
-                    }).catch(error => {
-                        next({name: 'admin.403'});
-                    })*/
-            // } else {
-            //     next();
-            // }
-        } else {
-            next();
+        if (to.name != 'admin.login' && Object.keys(router.app.$store.state.user).length == 0) {
+            return next({name: 'admin.login'});
         }
+
+        /*if (typeof to.name == 'undefined' || to.name == '') {
+            return next({name: 'admin.403'});
+        }*/
+
+        if (['admin.404', 'admin.403', 'admin.500'].indexOf(to.name) > -1) {
+            router.app.$Progress.fail();
+        }
+
+        next();
     }
 });
 

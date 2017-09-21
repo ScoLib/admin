@@ -18,9 +18,7 @@ const getConfigs = (to, from, next) => {
                 });
                 setTitle(to.meta.title + response.data.title);
                 next();
-            }).catch(error => {
-            next({name: 'admin.403'});
-        })
+            }).catch(error => {})
     } else {
         var　title = to.meta.title + models[to.params.model].title;
         setTitle(title)
