@@ -36,7 +36,7 @@ const setTitle = (title) => {
 
 //路由开始前
 router.beforeEach((to, from, next) => {
-    console.log('to', to);
+    // console.log('to', to);
     // console.log(from);
     // console.log(window.Admin);
 

@@ -139,13 +139,13 @@
 
                         <el-tree
                                 v-else-if="element.type == 'tree'"
-                                :data="element.options"
+                                :data="element.nodes"
                                 show-checkbox
                                 node-key="id"
                                 :ref="'tree_' + element.key"
                                 default-expand-all
-                                @check-change="changeTree(element.key)"
-                                :default-checked-keys="currentValue[element.key]">
+                                @check-change="setTreeCheckedKeys(element.key)"
+                                :default-checked-keys="getTreeCheckedKeys(element.nodes, currentValue[element.key])">
                         </el-tree>
 
                         <el-input
@@ -243,7 +243,8 @@
                 this.checkAll[element.key] = checkedCount === element.options.length;
                 this.isIndeterminate[element.key] = checkedCount > 0 && checkedCount < element.options.length;
             },
-            changeTree(key) {
+            // 设置选中的节点（包括半选中节点）
+            setTreeCheckedKeys(key) {
                 let ref = `tree_${key}`;
                 let $refs = this.$refs[ref][0];
                 let keys = $refs.getCheckedKeys();
@@ -254,7 +255,22 @@
                     keys.push(_vue.node.data.id);
                 });
                 this.currentValue[key] = keys;
-            }
+            },
+            // 处理需要设置为选中的节点（移除半选中节点，只保留最深层的）
+            getTreeCheckedKeys(nodes, checkedKeys) {
+                let list = [];
+                nodes.forEach(node => {
+                    if (typeof node.children !== 'undefined' && node.children.length > 0) {
+                        list = list.concat(this.getTreeCheckedKeys(node.children, checkedKeys));
+                    } else {
+                        if (checkedKeys.indexOf(node.id) > -1) {
+                            list.push(node.id);
+                        }
+                    }
+                })
+//                console.log(list)
+                return list;
+            },
         },
         watch: {
             value(val) {
