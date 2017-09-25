@@ -8,6 +8,8 @@ use Sco\Admin\Navigation\Page;
 
 trait HasNavigation
 {
+    protected $icon;
+
     /**
      * {@inheritdoc}
      */
@@ -37,10 +39,11 @@ trait HasNavigation
     protected function makePage($priority = 100, $badge = null)
     {
         $page = new Page($this);
-        $page->setPriority($priority);
-        $page->setAccessLogic(function () {
-            return $this->isView();
-        });
+        $page->setPriority($priority)
+            ->setIcon($this->getIcon())
+            ->setAccessLogic(function () {
+                return $this->isView();
+            });
 
         if ($badge) {
             if (!($badge instanceof BadgeInterface)) {
@@ -62,5 +65,17 @@ trait HasNavigation
         array_unshift($parameters, $this->getName());
 
         return route('admin.model.index', $parameters, false);
+    }
+
+    public function getIcon()
+    {
+        return $this->icon;
+    }
+
+    public function setIcon($value)
+    {
+        $this->icon = $value;
+
+        return $this;
     }
 }

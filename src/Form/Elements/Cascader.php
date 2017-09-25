@@ -2,14 +2,16 @@
 
 namespace Sco\Admin\Form\Elements;
 
-class Cascader extends Element
+class Cascader extends Tree
 {
     protected $type = 'cascader';
 
-    public function __construct($name, $title, $options)
-    {
-        parent::__construct($name, $title);
+    protected $names = [];
 
-        $this->setOptions($options);
+    public function __construct(array $names, $title, $options)
+    {
+        parent::__construct(implode('_', $names), $title);
+
+        $this->names = $names;
     }
 }

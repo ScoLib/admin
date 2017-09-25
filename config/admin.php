@@ -11,12 +11,12 @@ return [
     'datetime_format' => 'Y-m-d H:i:s',
 
     'upload' => [
-        'disk' => 'public',
+        'disk'       => 'public',
         'extensions' => [
-            'file' => 'jpg,gif,png,jpeg,zip,rar,tar,gz,7z,doc,docx,txt,xml',
+            'file'  => 'jpg,gif,png,jpeg,zip,rar,tar,gz,7z,doc,docx,txt,xml',
             'image' => 'jpg,jpeg,png,gif',
         ],
-        'directory' => 'admin/uploads',
+        'directory'  => 'admin/uploads',
     ],
 
     'components' => [
