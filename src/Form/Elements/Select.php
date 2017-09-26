@@ -3,17 +3,19 @@
 namespace Sco\Admin\Form\Elements;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use InvalidArgumentException;
 use Sco\Admin\Contracts\RepositoryInterface;
 
 class Select extends NamedElement
 {
-
     protected $type = 'select';
 
     protected $size = '';
 
     protected $options;
+
+    protected $extraOptions;
 
     protected $optionsLabelAttribute;
 
@@ -24,6 +26,8 @@ class Select extends NamedElement
         parent::__construct($name, $title);
 
         $this->setOptions($options);
+
+        $this->extraOptions = new Collection();
     }
 
     public function getSize()
@@ -53,6 +57,22 @@ class Select extends NamedElement
         return method_exists($this->getModel(), $this->getName());
     }
 
+    public function addOptions($options)
+    {
+        foreach ($options as $key => $option) {
+            $this->addOption($key, $option);
+        }
+
+        return $this;
+    }
+
+    public function addOption($key, $value)
+    {
+        $this->extraOptions->put($key, $value);
+
+        return $this;
+    }
+
     public function getOptions()
     {
         if ($this->options instanceof \Closure) {
@@ -66,6 +86,8 @@ class Select extends NamedElement
                 "The form select element's options must be return array(key=>value)"
             );
         }
+
+        //$options = collect($options)->merge();
 
         return collect($options)->mapWithKeys(function ($value, $key) {
             return [

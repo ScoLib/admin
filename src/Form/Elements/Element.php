@@ -149,6 +149,19 @@ abstract class Element implements ElementInterface
         }*/
     }
 
+    /**
+     * @param mixed $value
+     *
+     * @return $this
+     */
+    public function setDefaultValue($value)
+    {
+        $this->defaultValue = $value;
+
+        return $this;
+    }
+
+
     protected function getDefaultValue()
     {
         return $this->defaultValue;
