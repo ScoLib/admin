@@ -16,9 +16,14 @@ class Repository implements RepositoryInterface, WithModel
 
     protected $model;
 
+    /**
+     * @var Model
+     */
     protected $class;
 
     protected $with = [];
+
+    protected $globalScopes = [];
 
     public function __construct(Application $app)
     {
@@ -77,9 +82,22 @@ class Repository implements RepositoryInterface, WithModel
      */
     public function getQuery()
     {
-        return $this->getModel()
-            ->query()
-            ->with($this->getWith());
+        $model = $this->getModel();
+        foreach ($this->getGlobalScopes() as $identifier => $scope) {
+            $model::addGlobalScope($identifier, $scope);
+        }
+
+        return $model->query()->with($this->getWith());
+    }
+
+    public function addGlobalScope($scopes)
+    {
+        $this->globalScopes = $scopes;
+    }
+
+    public function getGlobalScopes()
+    {
+        return $this->globalScopes;
     }
 
     public function find($id)

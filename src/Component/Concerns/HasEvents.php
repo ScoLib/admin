@@ -32,7 +32,8 @@ trait HasEvents
 
         $method = $halt ? 'until' : 'fire';
         return static::$dispatcher->{$method}(
-            "admin.component.{$event}: " . static::class, $this
+            "admin.component.{$event}: " . static::class,
+            $this
         );
     }
 

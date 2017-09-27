@@ -47,7 +47,6 @@ class Tree extends NamedElement
         } else {
             return explode(',', $value);
         }
-
     }
 
     public function save()

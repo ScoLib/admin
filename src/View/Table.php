@@ -69,20 +69,14 @@ class Table extends View
 
     public function get()
     {
-        $repository = $this->getRepository();
-        //$orderBy = $this->config->get('orderBy', [$repository->getKeyName(), 'desc']);
-        $query = $repository->getQuery();
-
-        if ($repository->isRestorable()) {
-            $query->withTrashed();
-        }
+        $builder = $this->getQuery();
 
         if ($this->usePagination()) {
-            $data = $query->paginate($this->perPage, ['*'], $this->pageName);
+            $data = $builder->paginate($this->perPage, ['*'], $this->pageName);
 
             $data->setCollection($this->parseRows($data->getCollection()));
         } else {
-            $data = $this->parseRows($query->get());
+            $data = $this->parseRows($builder->get());
         }
 
         return $data;

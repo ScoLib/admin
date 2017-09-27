@@ -87,7 +87,9 @@ class Select extends NamedElement
             );
         }
 
-        //$options = collect($options)->merge();
+        $this->extraOptions->each(function ($value, $key) use ($options) {
+            $options[$key] = $value;
+        });
 
         return collect($options)->mapWithKeys(function ($value, $key) {
             return [

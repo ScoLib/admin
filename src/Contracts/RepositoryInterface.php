@@ -50,6 +50,10 @@ interface RepositoryInterface
      */
     public function getQuery();
 
+    public function addGlobalScope($scopes);
+
+    public function getGlobalScopes();
+
     /**
      * @param $id
      *
