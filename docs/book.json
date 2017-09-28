@@ -1,0 +1,55 @@
+{
+    "title": "Sco Admin",
+    "description": "Sco Admin",
+    "author": "klgd",
+    "output.name": "site",
+    "language": "zh-hans",
+    "gitbook": "3.2.3",
+    "root": ".",
+    "structure": {
+        "readme": "README.md"
+    },
+    "links": {
+        "sidebar": {
+            "Home": "http://www.scophp.com"
+        }
+    },
+    "plugins": [
+        "-lunr",
+        "-search",
+        "-highlight",
+        "-livereload",
+        "search-plus",
+        "simple-page-toc",
+        "github",
+        "github-buttons",
+        "edit-link",
+        "disqus"
+    ],
+    "pluginsConfig": {
+        "theme-default": {
+            "showLevel": true
+        },
+        "disqus": {
+            "shortName": "scophpdocs"
+        },
+        "github": {
+            "url": "https://github.com/scolib/admin"
+        },
+        "github-buttons": {
+            "repo": "scolib/admin",
+            "types": [
+                "star"
+            ],
+            "size": "small"
+        },
+        "simple-page-toc": {
+            "maxDepth": 3,
+            "skipFirstH1": true
+        },
+        "edit-link": {
+            "base": "https://github.com/scolib/admin/edit/master/docs",
+            "label": "Edit This Page"
+        }
+    }
+}
