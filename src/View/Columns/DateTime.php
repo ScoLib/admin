@@ -70,15 +70,15 @@ class DateTime extends Column
         return $this;
     }
 
-    public function getModelValue()
+    public function getValue()
     {
-        $value = parent::getModelValue();
+        $value = parent::getValue();
         return $this->getFormatValue($value);
     }
 
     protected function getFormatValue($date)
     {
-        if (!is_null($date)) {
+        if (!empty($date)) {
             if (!($date instanceof Carbon)) {
                 $date = Carbon::parse($date);
             }

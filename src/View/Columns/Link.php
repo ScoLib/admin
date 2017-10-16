@@ -26,11 +26,11 @@ class Link extends Column
         return $this;
     }
 
-    public function getModelValue()
+    public function getValue()
     {
         return [
             'url'   => $this->getUrl(),
-            'title' => parent::getModelValue(),
+            'title' => parent::getValue(),
         ];
     }
 }

@@ -21,7 +21,12 @@ abstract class Column implements ColumnInterface
 
     protected $fixed = false;
 
+    /**
+     * @var Model
+     */
     protected $model;
+
+    protected $defaultValue = '';
 
     protected $template = '<span>{{value}}</span>';
 
@@ -110,7 +115,28 @@ abstract class Column implements ColumnInterface
         ];
     }
 
-    public function getModelValue()
+    public function setDefaultValue($value)
+    {
+        $this->defaultValue = $value;
+
+        return $this;
+    }
+
+    public function getDefaultValue()
+    {
+        return $this->defaultValue;
+    }
+
+    public function getValue()
+    {
+        $value = $this->getModelValue();
+        if (is_null($value)) {
+            $value = $this->getDefaultValue();
+        }
+        return $value;
+    }
+
+    protected function getModelValue()
     {
         return $this->getValueFromObject($this->getModel(), $this->getName());
     }

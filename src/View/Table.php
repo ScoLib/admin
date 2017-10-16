@@ -97,7 +97,7 @@ class Table extends View
                     ColumnInterface $column
                 ) use ($row) {
                     return [
-                        $column->getName() => $column->setModel($row)->getModelValue()
+                        $column->getName() => $column->setModel($row)->getValue()
                     ];
                 });
 

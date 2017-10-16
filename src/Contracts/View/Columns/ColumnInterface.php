@@ -25,7 +25,7 @@ interface ColumnInterface extends
 
     public function isFixed();
 
-    public function getModelValue();
+    public function getValue();
 
     public function getTemplate();
 

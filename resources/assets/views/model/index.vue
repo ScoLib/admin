@@ -49,7 +49,7 @@
                                 :fixed="column.fixed"
                                 v-for="column in config.view.columns"
                                 :key="column.name">
-                            <template scope="scope">
+                            <template slot-scope="scope">
                                 <v-column
                                         :renderContent="column.render"
                                         :template="column.template"
@@ -65,7 +65,7 @@
                                 width="120"
                                 column-key="action"
                                 v-if="isActionColumn">
-                            <template scope="scope">
+                            <template slot-scope="scope">
                                 <action-column
                                         :scope="scope"
                                         @change="getResults">

@@ -48,9 +48,9 @@ class Image extends Column
         return $this;
     }
 
-    public function getModelValue()
+    public function getValue()
     {
-        $value = parent::getModelValue();
+        $value = parent::getValue();
         if (!empty($value) && (strpos($value, '://') === false)) {
             if (($disk = $this->getDisk())) {
                 $value = \Storage::disk($disk)->url($value);
