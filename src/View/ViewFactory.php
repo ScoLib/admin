@@ -7,6 +7,8 @@ use Sco\Admin\Traits\AliasBinder;
 
 /**
  * @method static \Sco\Admin\View\Table table()
+ * @method static \Sco\Admin\View\Tree tree()
+ * @method static \Sco\Admin\View\Image image()
  */
 class ViewFactory implements ViewFactoryInterface
 {
@@ -16,6 +18,8 @@ class ViewFactory implements ViewFactoryInterface
     {
         $this->registerAliases([
             'table' => Table::class,
+            'tree'  => Tree::class,
+            'image' => Image::class,
         ]);
     }
 }

@@ -21,10 +21,13 @@ abstract class View implements ViewInterface, Arrayable
 
     protected $scopes = [];
 
+    protected $type;
+
     public function setRepository(RepositoryInterface $repository)
     {
         $this->repository = $repository;
         $this->repository->with($this->getWith());
+
         return $this;
     }
 
@@ -77,10 +80,14 @@ abstract class View implements ViewInterface, Arrayable
         $this->scopes['orderBy'] = function (Builder $builder) use ($column, $direction) {
             $builder->orderBy($column, $direction);
         };
+
+        return $this;
     }
 
     public function toArray()
     {
-        return [];
+        return [
+            'type' => $this->type,
+        ];
     }
 }

@@ -155,8 +155,6 @@ abstract class Component implements
     {
         $view = $this->fireView();
 
-        $this->getRepository();
-
         $view->setRepository($this->getRepository());
 
         return $view->get();

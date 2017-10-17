@@ -14,6 +14,8 @@ class Table extends View
 
     protected $columns;
 
+    protected $type = 'table';
+
     public function __construct()
     {
         $this->columns = new Collection();
@@ -33,13 +35,19 @@ class Table extends View
         return $this;
     }
 
+    /**
+     * @return \Illuminate\Support\Collection
+     */
     public function getColumns()
     {
         return $this->columns;
     }
 
     /**
-     * {@inheritdoc}
+     * @param int    $perPage
+     * @param string $pageName
+     *
+     * @return $this
      */
     public function paginate($perPage = 25, $pageName = 'page')
     {
@@ -50,7 +58,7 @@ class Table extends View
     }
 
     /**
-     * {@inheritdoc}
+     * @return $this
      */
     public function disablePagination()
     {
