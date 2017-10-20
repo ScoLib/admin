@@ -17,7 +17,7 @@ if (typeof jQuery === "undefined") {
 }
 
 require('jquery-slimscroll');
-
+require('nestable2')
 
 /* AdminLTE
  *

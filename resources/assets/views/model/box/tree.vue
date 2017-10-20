@@ -1,3 +1,6 @@
+<style>
+    @import '~nestable2/dist/jquery.nestable.min.css';
+</style>
 <template>
     <div class="box">
         <v-header></v-header>
@@ -31,9 +34,6 @@
 
 <script>
     import vHeader from './header.vue'
-    import 'nestable2/dist/jquery.nestable.min.css'
-
-    console.log($.fn)
 
     export default {
         name: 'vTree',
@@ -44,8 +44,6 @@
             vHeader,
         },
         mounted() {
-            console.log(window.jQuery.fn);
-            console.log($.fn.nestable);
             $('.dd').nestable({ /* config options */ });
         }
     }

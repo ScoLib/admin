@@ -24,6 +24,7 @@ NPM
     "font-awesome": "^4.7.0",
     "jquery": "^2.2.4",
     "jquery-slimscroll": "^1.3.8",
+    "nestable2": "^1.5.0",
     "v-img": "^0.*",
     "vue": "^2.*",
     "vue-i18n": "^6.*",
@@ -78,6 +79,7 @@ mix.webpackConfig({
         'vue-router',
         'element-ui',
         'jquery-slimscroll',
+        'nestable2',
         'vue-i18n',
         'vuex'
     ])
