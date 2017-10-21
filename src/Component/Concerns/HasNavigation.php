@@ -2,6 +2,7 @@
 
 namespace Sco\Admin\Component\Concerns;
 
+use InvalidArgumentException;
 use KodiComponents\Navigation\Contracts\BadgeInterface;
 use Sco\Admin\Navigation\Badge;
 use Sco\Admin\Navigation\Page;
@@ -9,6 +10,8 @@ use Sco\Admin\Navigation\Page;
 trait HasNavigation
 {
     protected $icon;
+
+    protected $parentPageId;
 
     /**
      * {@inheritdoc}
@@ -23,8 +26,24 @@ trait HasNavigation
      */
     public function addToNavigation($priority = 100, $badge = null)
     {
+        $nav = $this->getNavigation();
+        if ($this->hasParentPageId()) {
+            $nav = $nav->getPages()->findById($this->getParentPageId());
+            if (is_null($nav)) {
+                throw new InvalidArgumentException(
+                    sprintf(
+                        'Not Found "%s" navigation',
+                        $this->getParentPageId()
+                    )
+                );
+            }
+
+        }
+
         $page = $this->makePage($priority, $badge);
-        $this->getNavigation()->addPage($page);
+
+        $nav->addPage($page);
+
         return $page;
     }
 
@@ -52,7 +71,26 @@ trait HasNavigation
             $page->addBadge($badge);
         }
 
+        $page->setIcon($this->getIcon());
+
         return $page;
+    }
+
+    public function hasParentPageId()
+    {
+        return $this->parentPageId !== null;
+    }
+
+    public function getParentPageId()
+    {
+        return $this->parentPageId;
+    }
+
+    public function setParentPageId($value)
+    {
+        $this->parentPageId = $value;
+
+        return $this;
     }
 
     /**
