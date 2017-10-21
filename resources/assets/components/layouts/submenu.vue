@@ -27,7 +27,10 @@
                     </small>
                 </span>
             </a>
-            <Submenu v-if="Object.keys(child.pages).length > 0" :childs="child.pages"></Submenu>
+            <Submenu
+                    v-if="Object.keys(child.pages).length > 0"
+                    :childs="child.pages">
+            </Submenu>
         </router-link>
     </ul>
 
@@ -61,12 +64,13 @@
             activeClass (child) {
                 var activeClass = [];
                 if (Object.keys(child).length > 0) {
+                    activeClass.push('treeview');
                     var _this = this;
                     Object.keys(child).forEach(index => {
 //                        console.log(child[index].url)
 //                        console.log(_this.$route)
                         if (child[index].url == _this.$route.path) {
-                            activeClass = ['treeview', 'active'];
+                            activeClass.push('active');
                         }
                     });
                 }

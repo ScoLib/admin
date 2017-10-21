@@ -61,6 +61,12 @@
                 this.loading = false;
                 this.menus = response.data;
             }).catch(error => {});
+
+        },
+        mounted() {
+            $('.sidebar-menu').tree({
+
+            });
         },
         computed: {
             user() {
