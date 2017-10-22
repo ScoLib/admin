@@ -37,7 +37,6 @@ trait HasNavigation
                     )
                 );
             }
-
         }
 
         $page = $this->makePage($priority, $badge);
