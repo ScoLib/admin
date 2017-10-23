@@ -10,63 +10,69 @@
 </style>
 <template>
     <div class="box">
-        <v-header></v-header>
+        <v-header @refresh="getResults"></v-header>
         <!-- /.box-header -->
         <!--<v-table></v-table>-->
         <div class="box-body table-responsive">
             <div class="dd">
-                <ol class="dd-list">
-                    <li class="dd-item" data-id="1">
-                        <div class="dd-handle">
-                            Item 1
-                            <div class="hidden-xs btn-group pull-right">
-                                <el-button
-                                        class="btn btn-xs btn-danger margin-l-2"
-
-                                        title="编辑">
-                                    <i class="fa fa-pencil bigger-120"></i>
-                                </el-button>
-                                <el-button
-                                        class="btn btn-xs btn-danger margin-l-2"
-                                        title="删除">
-                                    <i class="fa fa-trash-o bigger-120"></i>
-                                </el-button>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="dd-item" data-id="2">
-                        <div class="dd-handle">Item 2</div>
-                    </li>
-                    <li class="dd-item" data-id="3">
-                        <div class="dd-handle">Item 3</div>
-                        <ol class="dd-list">
-                            <li class="dd-item" data-id="4">
-                                <div class="dd-handle">Item 4</div>
-                            </li>
-                            <li class="dd-item" data-id="5" data-foo="bar">
-                                <div class="dd-nodrag">Item 5</div>
-                            </li>
-                        </ol>
-                    </li>
-                </ol>
+                <subtree :tree-data="tree"></subtree>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+    import mixins from '../mixins'
     import vHeader from './header.vue'
+    import Subtree from './subtree.vue'
 
     export default {
         name: 'vTree',
         data() {
-            return {}
+            return {
+                loading: false,
+                tree: {},
+                seriaData: {}
+            }
         },
         components: {
             vHeader,
+            Subtree,
+        },
+        mixins: [
+            mixins
+        ],
+        created () {
+            this.getResults();
         },
         mounted() {
-            $('.dd').nestable({ /* config options */ });
+            var _this = this;
+            $('.dd').nestable({
+                emptyClass: 'not_need_empty',
+                callback: function (l, e) {
+                    var data = $(l).nestable('serialize');
+                    if (JSON.stringify(_this.seriaData) != JSON.stringify(data)) {
+                        _this.seriaData = data;
+                        _this.$http.post(
+                            `/${_this.getUrlPrefix()}/${_this.$route.params.model}/reorder`,
+                            {data: _this.seriaData}
+                        )
+                    }
+                }
+            });
+            $('.not_need_empty').remove();
+        },
+        watch: {
+        },
+        methods: {
+            getResults() {
+                this.loading = true;
+                this.$http.get(`/${this.getUrlPrefix()}/${this.$route.params.model}/list`)
+                    .then(response => {
+                        this.loading = false;
+                        this.tree = response.data;
+                    }).catch(error => {})
+            },
         }
     }
 </script>

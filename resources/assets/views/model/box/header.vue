@@ -10,7 +10,7 @@
             </router-link>
         </div>
         <div class="btn-group btn-group-sm margin-r-5">
-            <button type="button" class="btn btn-primary" @click.prevent="fetchData">
+            <button type="button" class="btn btn-primary" @click.prevent="refresh">
                 <i class="fa fa-refresh"></i>
                 {{ $t('table.refresh') }}
             </button>
@@ -32,6 +32,11 @@
         ],
         computed: {
 
+        },
+        methods: {
+            refresh() {
+                this.$emit('refresh');
+            }
         }
     }
 </script>

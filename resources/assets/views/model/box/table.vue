@@ -1,6 +1,6 @@
 <template>
     <div class="box">
-        <v-header></v-header>
+        <v-header @refresh="fetchData"></v-header>
         <!-- /.box-header -->
         <!--<v-table></v-table>-->
         <div class="box-body table-responsive">
@@ -84,7 +84,6 @@
                 },
 
                 selection: [],
-                buttonLoading: false,
             }
         },
         mixins: [
