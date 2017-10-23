@@ -56,7 +56,9 @@
                         _this.$http.post(
                             `/${_this.getUrlPrefix()}/${_this.$route.params.model}/reorder`,
                             {data: _this.seriaData}
-                        )
+                        ).then(response => {
+                            
+                        }).catch(error => {})
                     }
                 }
             });
