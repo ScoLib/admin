@@ -5,7 +5,7 @@ namespace Sco\Admin\View\Columns;
 
 class Image extends Column
 {
-    protected $template = '<img v-img :width="value.width" :src="value.image" v-if="value.image">';
+    protected $template = '<img v-viewer="column.options" :width="value.width" :src="value.image" v-if="value.image">';
 
     /**
      * @var string
@@ -39,6 +39,8 @@ class Image extends Column
         if ($this->disk) {
             return $this->disk;
         }
+
+        return config('admin.upload.disk', 'public');
     }
 
     public function setDisk($value)
@@ -63,5 +65,15 @@ class Image extends Column
             'image' => $value,
             'width' => $this->getImageWidth(),
         ];
+    }
+
+    public function toArray()
+    {
+        return parent::toArray() + [
+                'options' => [
+                    'toolbar' => false,
+                    'navbar'  => false,
+                ],
+            ];
     }
 }

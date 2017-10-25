@@ -1,36 +1,40 @@
 export default {
     name: 'vColumn',
     render: function(h) {
-        const prop = this.prop;
         const scope = this.scope;
-        const template = this.template ? this.template : '<span>{{value}}</span>'
-        var render = this.renderContent;
+        // console.log(scope)
+        // console.log(this.column)
+        const template = this.column.template ? this.column.template : '<span>{{value}}</span>'
 
         try {
-            if (!this.renderContent) {
-                Vue.component('column-render', {
-                    template: this.template,
-                    data() {
-                        return {}
-                    },
-                    props: ['row', 'value']
-                });
+            Vue.component('column-render', {
+                template: template,
+                data() {
+                    return {}
+                },
+                props: ['row', 'value', 'column']
+            });
 
-                render = (h, props) => {
-                    return h('column-render', {props});
-                }
+            var render = (h, props) => {
+                return h('column-render', {props});
             }
 
-            return render.call(this._renderProxy, h, { row: scope.row, value: scope.row[prop] });
+            return render.call(
+                this._renderProxy,
+                h,
+                {
+                    column: this.column,
+                    row: scope.row,
+                    value: scope.row[this.column.name]
+                }
+            );
         } catch (e) {
             console.log(e);
-            this.$message.error('column(' + prop +') template is wrong');
+            this.$message.error('column(' + this.column.name +') template is wrong');
         }
     },
     props: {
-        renderContent: Function,
         scope: Object,
-        prop: String,
-        template: String,
+        column: Object,
     },
 }

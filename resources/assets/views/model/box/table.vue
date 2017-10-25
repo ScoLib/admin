@@ -24,10 +24,8 @@
                         :key="column.name">
                     <template slot-scope="scope">
                         <v-column
-                                :renderContent="column.render"
-                                :template="column.template"
                                 :scope="scope"
-                                :prop="column.name">
+                                :column="column">
                         </v-column>
                     </template>
                 </el-table-column>
@@ -66,9 +64,9 @@
     import vColumn from '../../../components/column.js'
     import ActionColumn from '../action-column.vue'
     import mixins from '../mixins'
-    import VueImg from 'v-img';
+    import Viewer from 'v-viewer';
     import vHeader from './header.vue'
-    Vue.use(VueImg);
+    Vue.use(Viewer);
 
     export default {
         name: 'vTable',
