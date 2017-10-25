@@ -99,23 +99,20 @@ class Table extends View
 
     protected function parseRows(Collection $rows)
     {
-        if ($rows) {
-            return $rows->map(function (Model $row) {
-                $newRow = $this->getColumns()->mapWithKeys(function (
-                    ColumnInterface $column
-                ) use ($row) {
-                    return [
-                        $column->getName() => $column->setModel($row)->getValue()
-                    ];
-                });
-
-                // whether this row has been soft deleted
-                if ($this->getRepository()->isRestorable()) {
-                    $newRow->put('_deleted', $row->trashed() ? 1 : 0);
-                }
-                return $newRow;
+        return $rows->map(function (Model $row) {
+            $newRow = $this->getColumns()->mapWithKeys(function (
+                ColumnInterface $column
+            ) use ($row) {
+                return [
+                    $column->getName() => $column->setModel($row)->getValue()
+                ];
             });
-        }
-        return collect();
+
+            // whether this row has been soft deleted
+            if ($this->getRepository()->isRestorable()) {
+                $newRow->put('_deleted', $row->trashed() ? 1 : 0);
+            }
+            return $newRow;
+        });
     }
 }

@@ -29,7 +29,7 @@
             <div :class="['form-group', errors[element.key] ? 'has-error' : '']" v-else>
                 <label class="col-xs-12 col-sm-3 no-padding-right control-label">{{ element.title }}</label>
 
-                <div class="col-xs-12 col-sm-9">
+                <div class="col-xs-12 col-sm-8">
                     <slot :name="element.key" :element="element">
                         <el-select
                                 v-if="element.type == 'select'"

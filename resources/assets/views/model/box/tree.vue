@@ -45,6 +45,11 @@
         created () {
             this.getResults();
         },
+        watch: {
+            '$route'() {
+                this.getResults();
+            }
+        },
         mounted() {
             var _this = this;
             $('.dd').nestable({
