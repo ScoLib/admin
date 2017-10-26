@@ -15,7 +15,7 @@
         <!--<v-table></v-table>-->
         <div class="box-body table-responsive">
             <div class="dd">
-                <subtree :tree-data="tree"></subtree>
+                <subtree :tree-data="tree" @change="getResults"></subtree>
             </div>
         </div>
     </div>

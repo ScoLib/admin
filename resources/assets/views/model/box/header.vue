@@ -5,7 +5,7 @@
                     :to="{ name: 'admin.model.create', params: {model: $route.params.model}}"
                     v-if="config.permissions.create"
                     class="btn btn-default">
-                <i class="fa fa-plus bigger-120"></i>
+                <i class="fa fa-plus"></i>
                 创建 {{ config.title }}
             </router-link>
         </div>

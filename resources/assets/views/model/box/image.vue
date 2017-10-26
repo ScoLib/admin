@@ -8,45 +8,14 @@
                     <ul class="thumbnails clearfix" v-viewer>
                         <!-- #section:pages/gallery -->
                         <li v-for="item in pageData.data">
-                            <img width="150" height="150" alt="150x150" :src="item.url">
-
-                            <!--<div class="tags">
-                                <span class="label-holder">
-                                    <span class="label label-info">breakfast</span>
-                                </span>
-
-                                <span class="label-holder">
-                                    <span class="label label-danger">fruits</span>
-                                </span>
-
-                                <span class="label-holder">
-                                    <span class="label label-success">toast</span>
-                                </span>
-
-                                <span class="label-holder">
-                                    <span class="label label-warning arrowed-in">diet</span>
-                                </span>
-                            </div>-->
-
-                            <div class="tools tools-bottom">
-                                <a href="#">
-                                    <i class="fa fa-link"></i>
-                                </a>
-
-                                <a href="#">
-                                    <i class="fa fa-paperclip"></i>
-                                </a>
-
-                                <router-link
-                                        :to="{name:'admin.model.edit', params:{model:'pictures'}}"
-                                        title="编辑">
-                                    <i class="fa fa-pencil bigger-120"></i>
-                                </router-link>
-
-                                <a href="#">
-                                    <i class="ace-icon fa fa-times red"></i>
-                                </a>
-
+                            <div>
+                                <img width="180" height="180" alt="150x150" :src="item.url">
+                                <div style="padding: 14px;">
+                                    <span>好吃的汉堡</span>
+                                    <div class="bottom clearfix">
+                                        <action-column class="pull-right" :row="item"></action-column>
+                                    </div>
+                                </div>
                             </div>
                         </li>
                     </ul>
@@ -69,6 +38,7 @@
 <script>
     import vHeader from './header.vue'
     import Viewer from 'v-viewer';
+    import ActionColumn from '../action-column.vue'
 
     Vue.use(Viewer);
 
@@ -87,6 +57,7 @@
         },
         components: {
             vHeader,
+            ActionColumn,
         },
         created() {
             this.fetchData();

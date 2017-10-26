@@ -38,7 +38,7 @@
                         v-if="isActionColumn">
                     <template slot-scope="scope">
                         <action-column
-                                :scope="scope"
+                                :row="scope.row"
                                 @change="getResults">
                         </action-column>
                     </template>

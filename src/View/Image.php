@@ -11,7 +11,7 @@ class Image extends Table
 
     protected $disk;
 
-    protected $imageAttributeValue;
+    protected $imagePathAttribute;
 
     public function getDisk()
     {
@@ -29,26 +29,30 @@ class Image extends Table
         return $this;
     }
 
-    public function getImageAttributeValue()
+    public function getImagePathAttribute()
     {
-        return $this->imageAttributeValue;
+        return $this->imagePathAttribute;
     }
 
-    public function setImageAttributeValue($value)
+    public function setImagePathAttribute($value)
     {
-        $this->imageAttributeValue = $value;
+        $this->imagePathAttribute = $value;
 
         return $this;
     }
 
     protected function parseRows(Collection $rows)
     {
-        if (is_null($key = $this->getImageAttributeValue())) {
-            throw new \InvalidArgumentException('must set image attribute');
+        if (is_null($pathKey = $this->getImagePathAttribute())) {
+            throw new \InvalidArgumentException('Must set image attribute');
         }
 
-        return $rows->map(function (Model $row) use ($key) {
-            $path = $row->$key;
+        return $rows->map(function (Model $row) use ($pathKey) {
+            if (!isset($row->$pathKey)) {
+                throw new \InvalidArgumentException("Not Found '{$pathKey}' attribute");
+            }
+
+            $path = $row->$pathKey;
             if (($disk = $this->getDisk())) {
                 $url = \Storage::disk($disk)->url($path);
             } else {
@@ -56,7 +60,7 @@ class Image extends Table
             }
 
             return [
-                'id' => $row->id,
+                'id' => $row->getKey(),
                 'url' => $url,
             ];
         });

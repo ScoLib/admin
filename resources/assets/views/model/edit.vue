@@ -10,7 +10,7 @@
                                 type="button"
                                 class="btn btn-default"
                                 @click.prevent="$router.push({ name: 'admin.model.index', params: {model: $route.params.model}})">
-                            <i class="fa fa-reply bigger-120"></i>
+                            <i class="fa fa-reply"></i>
                             {{ $t('form.back') }}
                         </button>
                     </div>

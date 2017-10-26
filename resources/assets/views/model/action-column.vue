@@ -1,32 +1,32 @@
 <template>
     <div class="hidden-xs btn-group">
         <router-link
-                v-if="config.permissions.edit && !scope.row._deleted"
+                v-if="config.permissions.edit && !row._deleted"
                 class="btn btn-xs btn-info"
-                :to="{name:'admin.model.edit', params:{model:$route.params.model,id:scope.row[config.primaryKey]}}"
+                :to="{name:'admin.model.edit', params:{model:$route.params.model,id:row[config.primaryKey]}}"
                 title="编辑">
-            <i class="fa fa-pencil bigger-120"></i>
+            <i class="fa fa-pencil"></i>
         </router-link>
         <el-button
-                v-if="config.permissions.delete && !scope.row._deleted"
+                v-if="config.permissions.delete && !row._deleted"
                 class="btn btn-xs btn-danger margin-l-2"
-                @click.prevent="deleteModel(scope.row[config.primaryKey])"
+                @click.prevent="deleteModel(row[config.primaryKey])"
                 title="删除">
-            <i class="fa fa-trash-o bigger-120"></i>
+            <i class="fa fa-trash-o"></i>
         </el-button>
         <el-button
-                v-if="config.permissions.delete && scope.row._deleted"
+                v-if="config.permissions.delete && row._deleted"
                 class="btn btn-xs btn-danger margin-l-2"
-                @click.prevent="destroyModel(scope.row[config.primaryKey])"
+                @click.prevent="destroyModel(row[config.primaryKey])"
                 title="彻底删除">
-            <i class="fa fa-trash-o bigger-120"></i>
+            <i class="fa fa-trash-o"></i>
         </el-button>
         <el-button
-                v-if="scope.row._deleted"
+                v-if="row._deleted"
                 class="btn btn-xs btn-warning margin-l-2"
-                @click.prevent="restoreModel(scope.row[config.primaryKey])"
+                @click.prevent="restoreModel(row[config.primaryKey])"
                 title="恢复">
-            <i class="fa fa-reply bigger-120"></i>
+            <i class="fa fa-reply"></i>
         </el-button>
     </div>
 </template>
@@ -45,7 +45,7 @@
 
         },
         props: {
-            scope: Object
+            row: Object,
         },
         methods: {
             deleteModel(id) {
