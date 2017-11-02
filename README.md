@@ -13,25 +13,41 @@
 
 ## Install
 
-Via Composer
+### Laravel 5.5.*
+
+``` bash
+$ composer require scolib/admin:1.1.x@dev
+```
+
+Laravel 5.5 uses Package Auto-Discovery, so doesn't require you to manually add the ServiceProvider.
 
 ### Laravel5.4
 ``` bash
-"scolib/admin": "1.0.x@dev"
+$ composer require scolib/admin:1.0.x@dev
 ```
 
-### Laravel 5.5
-
-``` bash
-composer require scolib/admin:1.1.x@dev
+Add the ServiceProvider to the `providers` array in `config/app.php`
+``` php
+Sco\Admin\Providers\AdminServiceProvider::class,
 ```
+
+## Publish resources file
+
+Copy the package resources to your local with the publish command:
+
+>Has tags: `assets/config/views/lang`
+
+```bash
+$ php artisan vendor:publish --provider="Sco\Admin\Providers\ResourcesServiceProvider"
+```
+
 
 
 ### install `babel-plugin-transform-vue-jsx` [link](https://github.com/vuejs/babel-plugin-transform-vue-jsx)
 
 ### NPM
 ```bash
-npm install\
+$ npm install\
   bootstrap@"^3.3.7"\
   element-ui@"^2.*"\
   font-awesome@"^4.7.0"\
@@ -114,16 +130,7 @@ npm run production
 
 ## Usage
 
-``` php
-Sco\Admin\Providers\AdminServiceProvider::class,
-```
-
-
-
-`--tag: assets/config/views/lang`
-```php
-php artisan vendor:publish --provider="Sco\Admin\Providers\ResourcesServiceProvider" --force
-```
+See [Document](http://scoadmin.scophp.com/) 
 
 ## 更新日志
 
