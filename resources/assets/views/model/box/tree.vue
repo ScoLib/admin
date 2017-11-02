@@ -2,6 +2,7 @@
     @import '~nestable2/dist/jquery.nestable.min.css';
     .dd {
         max-width:inherit;
+        min-height: 70px;
     }
     .dd-handle {
         height: 32px;
@@ -13,8 +14,8 @@
         <v-header @refresh="getResults"></v-header>
         <!-- /.box-header -->
         <!--<v-table></v-table>-->
-        <div class="box-body table-responsive">
-            <div class="dd">
+        <div class="box-body">
+            <div class="dd" v-loading="loading">
                 <subtree :tree-data="tree" @change="getResults"></subtree>
             </div>
         </div>
@@ -73,6 +74,7 @@
         },
         methods: {
             getResults() {
+                this.tree = {};
                 this.loading = true;
                 this.$http.get(`/${this.getUrlPrefix()}/${this.$route.params.model}/list`)
                     .then(response => {

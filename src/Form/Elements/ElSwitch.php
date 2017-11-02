@@ -11,7 +11,7 @@ class ElSwitch extends NamedElement
     protected $color     = [];
     protected $iconClass = [];
 
-    protected $width = 58;
+    protected $width = 40;
 
     public function getWidth()
     {
@@ -30,9 +30,9 @@ class ElSwitch extends NamedElement
         return $this->values;
     }
 
-    public function setValues($on, $off)
+    public function setValues($active, $inactive)
     {
-        $this->values = [$on, $off];
+        $this->values = [$active, $inactive];
 
         return $this;
     }
@@ -42,9 +42,9 @@ class ElSwitch extends NamedElement
         return $this->text;
     }
 
-    public function setText($on, $off)
+    public function setText($active, $inactive)
     {
-        $this->text = [$on, $off];
+        $this->text = [$active, $inactive];
 
         return $this;
     }
@@ -54,9 +54,9 @@ class ElSwitch extends NamedElement
         return $this->color;
     }
 
-    public function setColor($on, $off)
+    public function setColor($active, $inactive)
     {
-        $this->color = [$on, $off];
+        $this->color = [$active, $inactive];
 
         return $this;
     }
@@ -66,9 +66,9 @@ class ElSwitch extends NamedElement
         return $this->iconClass;
     }
 
-    public function setIconClass($on, $off)
+    public function setIconClass($active, $inactive)
     {
-        $this->iconClass = [$on, $off];
+        $this->iconClass = [$active, $inactive];
 
         return $this;
     }

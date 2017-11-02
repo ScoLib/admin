@@ -74,7 +74,7 @@
                         @change="change">
                 </action-column>
             </div>
-            <!--<subtree v-if="item.children" :tree-data="item.children"></subtree>-->
+            <subtree v-if="item.children" :tree-data="item.children"></subtree>
         </li>
     </ol>
 </template>

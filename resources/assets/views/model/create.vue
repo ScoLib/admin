@@ -83,6 +83,8 @@
 //                console.log(this.info.values);
 //                return false;
                 this.buttonLoading = true;
+                this.errors = {};
+
                 this.$http.post(
                     `/${this.getUrlPrefix()}/${this.$route.params.model}/store`,
                     this.info.values

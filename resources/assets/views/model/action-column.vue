@@ -54,14 +54,14 @@
                     beforeClose: (action, instance, done) => {
                         if (action == 'confirm') {
                             instance.confirmButtonLoading = true;
-                            this.$http.delete(`/${this.getUrlPrefix()}/${this.$route.params.model}/${id}/delete`)
-                                .then(response => {
-//                                    console.log(response);
-                                    instance.confirmButtonLoading = false;
-                                    instance.close();
-                                    this.$message.success('删除成功');
-                                    this.$emit('change')
-                                }).catch(error => {
+                            this.$http.delete(
+                                `/${this.getUrlPrefix()}/${this.$route.params.model}/${id}/delete`
+                            ).then(response => {
+                                instance.confirmButtonLoading = false;
+                                instance.close();
+                                this.$message.success('删除成功');
+                                this.$emit('change')
+                            }).catch(error => {
                                 instance.confirmButtonLoading = false;
                                 instance.close();
                             })
@@ -70,22 +70,6 @@
                         }
                     }
                 }).then(action => {}).catch(action => {});
-
-                /*this.$Modal.confirm({
-                    title: '提示',
-                    content: `确定要删除此${this.config.title}吗？`,
-                    loading: true,
-                    onOk: () => {
-                        this.$http.delete(`/${this.urlPrefix}/${this.$route.params.model}/${id}/delete`)
-                            .then(response => {
-                                this.$Modal.remove();
-                                this.$Message.success('删除成功');
-                                this.getResults();
-                            }).catch(error => {
-                            this.$Modal.remove();
-                        })
-                    }
-                });*/
             },
             destroyModel(id) {
                 this.$confirm(`确定要彻底删除此${this.config.title}吗？`, '提示', {
@@ -93,13 +77,14 @@
                     beforeClose: (action, instance, done) => {
                         if (action == 'confirm') {
                             instance.confirmButtonLoading = true;
-                            this.$http.delete(`/${this.getUrlPrefix()}/${this.$route.params.model}/${id}/destroy`)
-                                .then(response => {
-                                    instance.confirmButtonLoading = false;
-                                    instance.close();
-                                    this.$message.success('删除成功');
-                                    this.$emit('change')
-                                }).catch(error => {
+                            this.$http.delete(
+                                `/${this.getUrlPrefix()}/${this.$route.params.model}/${id}/destroy`
+                            ).then(response => {
+                                instance.confirmButtonLoading = false;
+                                instance.close();
+                                this.$message.success('删除成功');
+                                this.$emit('change')
+                            }).catch(error => {
                                 instance.confirmButtonLoading = false;
                                 instance.close();
                             })
@@ -108,22 +93,6 @@
                         }
                     }
                 }).then(action => {}).catch(action => {});
-
-                /*this.$Modal.confirm({
-                    title: '提示',
-                    content: `确定要彻底删除此${this.config.title}吗？`,
-                    loading: true,
-                    onOk: () => {
-                        this.$http.delete(`/${this.getUrlPrefix()}/${this.$route.params.model}/${id}/destroy`)
-                            .then(response => {
-                                this.$Modal.remove();
-                                this.$Message.success('删除成功');
-                                this.getResults();
-                            }).catch(error => {
-                            this.$Modal.remove();
-                        })
-                    }
-                });*/
             },
             restoreModel(id) {
                 this.$confirm(`确定要恢复此${this.config.title}吗？`, '提示', {
@@ -131,37 +100,22 @@
                     beforeClose: (action, instance, done) => {
                         if (action == 'confirm') {
                             instance.confirmButtonLoading = true;
-                            this.$http.post(`/${this.getUrlPrefix()}/${this.$route.params.model}/${id}/restore`)
-                                .then(response => {
-                                    instance.confirmButtonLoading = false;
-                                    instance.close();
-                                    this.$message.success('操作成功');
-                                    this.$emit('change')
-                                }).catch(error => {
-                                    instance.confirmButtonLoading = false;
-                                    instance.close();
-                                })
+                            this.$http.post(
+                                `/${this.getUrlPrefix()}/${this.$route.params.model}/${id}/restore`
+                            ).then(response => {
+                                instance.confirmButtonLoading = false;
+                                instance.close();
+                                this.$message.success('操作成功');
+                                this.$emit('change')
+                            }).catch(error => {
+                                instance.confirmButtonLoading = false;
+                                instance.close();
+                            })
                         } else {
                             done();
                         }
                     }
                 }).then(action => {}).catch(action => {});
-
-                /*this.$Modal.confirm({
-                    title: '提示',
-                    content: `确定要恢复此${this.config.title}吗？`,
-                    loading: true,
-                    onOk: () => {
-                        this.$http.post(`/${this.getUrlPrefix()}/${this.$route.params.model}/${id}/restore`)
-                            .then(response => {
-                                this.$Modal.remove();
-                                this.$Message.success('操作成功');
-                                this.getResults();
-                            }).catch(error => {
-                            this.$Modal.remove();
-                        })
-                    }
-                });*/
             }
         }
     }

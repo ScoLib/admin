@@ -5,7 +5,7 @@
         <!--<v-table></v-table>-->
         <div class="box-body table-responsive">
             <el-table :data="tableData"
-                      v-loading="tableLoading"
+                      v-loading="loading"
                       @selection-change="getSelected">
 
                 <!--<el-table-column
@@ -73,7 +73,7 @@
         data() {
             return {
                 // 列表
-                tableLoading: false,
+                loading: false,
                 pageData: {
                     type: Object|Array,
                     default() {
@@ -136,10 +136,10 @@
                     page = 1;
                 }
                 this.pageData = {};
-                this.tableLoading = true;
+                this.loading = true;
                 this.$http.get(`/${this.getUrlPrefix()}/${this.$route.params.model}/list`, {params: {'page': page}})
                     .then(response => {
-                        this.tableLoading = false;
+                        this.loading = false;
                         this.pageData = response.data;
                     }).catch(error => {})
             },

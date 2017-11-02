@@ -126,12 +126,12 @@
                         <el-switch
                                 v-else-if="element.type == 'elswitch'"
                                 v-model="currentValue[element.key]"
-                                :on-text="element.text[0]"
-                                :off-text="element.text[1]"
-                                :on-color="element.color[0]"
-                                :off-color="element.color[1]"
-                                :on-value="element.values[0]"
-                                :off-value="element.values[1]"
+                                :active-text="element.text[0]"
+                                :inactive-text="element.text[1]"
+                                :active-color="element.color[0]"
+                                :inactive-color="element.color[1]"
+                                :active-value="element.values[0]"
+                                :inactive-value="element.values[1]"
                                 :name="element.key"
                                 :disabled="element.disabled"
                                 :width="element.width">

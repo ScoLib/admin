@@ -20,18 +20,26 @@ class Input extends NamedElement
         return $this->size;
     }
 
-    public function largeSize()
+    public function setSize($value)
     {
-        $this->size = 'large';
+        $this->size = $value;
 
         return $this;
     }
 
+    public function mediumSize()
+    {
+        return $this->setSize('medium');
+    }
+
+    public function smallSize()
+    {
+        return $this->setSize('small');
+    }
+
     public function miniSize()
     {
-        $this->size = 'mini';
-
-        return $this;
+        return $this->setSize('mini');
     }
 
     protected function getModelFieldLength()

@@ -3,16 +3,17 @@
         <v-header @refresh="fetchData"></v-header>
         <!-- /.box-header -->
         <div class="box-body">
-            <div class="row">
+            <div class="row" v-loading="loading" style="min-height: 70px;">
                 <div class="col-xs-12">
                     <ul class="thumbnails clearfix" v-viewer>
                         <!-- #section:pages/gallery -->
                         <li v-for="item in pageData.data">
                             <div>
-                                <img width="180" height="180" alt="150x150" :src="item.url">
-                                <div style="padding: 14px;">
+                                <img width="200" height="200" alt="" :src="item.url">
+                                <div class="tools">
                                     <span>好吃的汉堡</span>
                                     <div class="bottom clearfix">
+                                        <time class="time">2017-11-02 20:23</time>
                                         <action-column class="pull-right" :row="item"></action-column>
                                     </div>
                                 </div>

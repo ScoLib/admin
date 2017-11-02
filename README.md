@@ -13,27 +13,37 @@
 
 ## Install
 
-install `babel-plugin-transform-vue-jsx` [link](https://github.com/vuejs/babel-plugin-transform-vue-jsx)
+Via Composer
 
-NPM
-```json
-  "dependencies": {
-    "axios": "^0.*",
-    "bootstrap": "^3.3.7",
-    "element-ui": "^1.*",
-    "font-awesome": "^4.7.0",
-    "jquery": "^2.2.4",
-    "jquery-slimscroll": "^1.3.8",
-    "nestable2": "^1.5.0",
-    "v-img": "^0.*",
-    "vue": "^2.*",
-    "vue-i18n": "^6.*",
-    "vue-progressbar": "^0.*",
-    "vue-router": "^2.*",
-    "vuex": "^2.*",
-  }
+### Laravel5.4
+``` bash
+"scolib/admin": "1.0.x@dev"
 ```
 
+### Laravel 5.5
+
+``` bash
+composer require scolib/admin:1.1.x@dev
+```
+
+
+### install `babel-plugin-transform-vue-jsx` [link](https://github.com/vuejs/babel-plugin-transform-vue-jsx)
+
+### NPM
+```bash
+npm install\
+  bootstrap@"^3.3.7"\
+  element-ui@"^2.*"\
+  font-awesome@"^4.7.0"\
+  jquery-slimscroll@"^1.3.8"\
+  nestable2@"^1.*"\
+  v-viewer@"^0.*"\
+  vue-i18n@"^6.*"\
+  vue-progressbar@"^0.*"\
+  vue-router@"^2.*"\
+  vuex@"^2.*"\
+  --save-dev
+```
 
 In your `webpack.mix.js`:
 ```javascript
@@ -41,7 +51,7 @@ var adminPublicPath = 'vendor/admin/';
 mix.webpackConfig({
     output: {
         chunkFilename: `${adminPublicPath}js/[name]${
-            mix.config.inProduction ? '.[chunkhash].chunk.js' : '.chunk.js'
+            mix.inProduction() ? '.[chunkhash].chunk.js' : '.chunk.js'
         }`,
         publicPath: '/',
     },
@@ -102,36 +112,15 @@ npm install
 npm run production
 ```
 
-## Laravel5.4
-
-Via Composer
-
-``` bash
-"scolib/admin": "1.0.x@dev"
-```
-
 ## Usage
 
 ``` php
 Sco\Admin\Providers\AdminServiceProvider::class,
-    
 ```
 
-## Laravel 5.5
 
-`composer require scolib/admin:1.1.x@dev`
 
-编辑auth.php
-```php
-    'providers' => [
-        'users' => [
-            'driver' => 'eloquent',
-            'model' => \Sco\Admin\Models\User::class,
-        ],
-    ],
-```
-
-`--tag: assets/config/views/lang/routes`
+`--tag: assets/config/views/lang`
 ```php
 php artisan vendor:publish --provider="Sco\Admin\Providers\ResourcesServiceProvider" --force
 ```

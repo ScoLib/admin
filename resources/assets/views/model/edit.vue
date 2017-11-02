@@ -71,6 +71,7 @@
         methods: {
             save() {
                 this.buttonLoading = true;
+                this.errors = {};
                 this.$http.post(
                     `/${this.getUrlPrefix()}/${this.$route.params.model}/${this.$route.params.id}/edit`,
                     this.info.values
