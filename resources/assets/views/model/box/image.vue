@@ -11,9 +11,8 @@
                             <div>
                                 <img width="200" height="200" alt="" :src="item.url">
                                 <div class="tools">
-                                    <span>好吃的汉堡</span>
                                     <div class="bottom clearfix">
-                                        <time class="time">2017-11-02 20:23</time>
+                                        <span>{{item.name}}</span>
                                         <action-column class="pull-right" :row="item"></action-column>
                                     </div>
                                 </div>

@@ -112,6 +112,7 @@ class Table extends View
             if ($this->getRepository()->isRestorable()) {
                 $newRow->put('_deleted', $row->trashed() ? 1 : 0);
             }
+            $newRow->put('_primary', $row->getKey());
             return $newRow;
         });
     }

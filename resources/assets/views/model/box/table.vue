@@ -5,13 +5,7 @@
         <!--<v-table></v-table>-->
         <div class="box-body table-responsive">
             <el-table :data="tableData"
-                      v-loading="loading"
-                      @selection-change="getSelected">
-
-                <!--<el-table-column
-                        type="selection"
-                        :selectable="selectable">
-                </el-table-column>-->
+                      v-loading="loading">
 
                 <el-table-column
                         :label="column.label"
@@ -119,17 +113,6 @@
         methods: {
             fetchData () {
                 this.getResults();
-            },
-            selectable(row, index) {
-                return true;
-//                return row.name == 'admin' ? false : true;
-            },
-            getSelected(selection) {
-                this.selection = [];
-                selection.forEach(row => {
-                    this.selection.push(row[this.config.primaryKey]);
-                });
-//                console.log(this.selection);
             },
             getResults(page) {
                 if (typeof page === 'undefined') {
