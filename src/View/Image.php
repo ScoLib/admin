@@ -60,7 +60,7 @@ class Image extends Table
             }
 
             return [
-                'id' => $row->getKey(),
+                '_primary' => $row->getKey(),
                 'url' => $url,
             ];
         });
