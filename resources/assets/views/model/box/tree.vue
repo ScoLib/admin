@@ -2,11 +2,17 @@
     @import '~nestable2/dist/jquery.nestable.min.css';
     .dd {
         max-width:inherit;
-        min-height: 70px;
     }
     .dd-handle {
         height: 32px;
         padding: 4px 10px;
+    }
+    .empty-text {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        color: color(#409EFF s(16%) l(44%));
     }
 </style>
 <template>
@@ -15,8 +21,15 @@
         <!-- /.box-header -->
         <!--<v-table></v-table>-->
         <div class="box-body">
-            <div class="dd" v-loading="loading">
-                <subtree :tree-data="tree" @change="getResults"></subtree>
+            <div class="row">
+                <div class="col-xs-12" v-loading="loading">
+                    <div class="dd" v-if="tree.length > 0">
+                        <subtree :tree-data="tree" @change="getResults"></subtree>
+                    </div>
+                    <div v-else style="min-height: 50px;">
+                        <span class="empty-text">暂无数据</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -1,11 +1,20 @@
+<style>
+    .empty-text {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        color: color(#409EFF s(16%) l(44%));
+    }
+</style>
 <template>
     <div class="box">
         <v-header @refresh="fetchData"></v-header>
         <!-- /.box-header -->
         <div class="box-body">
-            <div class="row" v-loading="loading" style="min-height: 70px;">
+            <div class="row" v-loading="loading">
                 <div class="col-xs-12">
-                    <ul class="thumbnails clearfix" v-viewer>
+                    <ul class="thumbnails clearfix" v-viewer v-if="pageData.total">
                         <!-- #section:pages/gallery -->
                         <li v-for="item in pageData.data">
                             <div>
@@ -19,6 +28,9 @@
                             </div>
                         </li>
                     </ul>
+                    <div v-else style="min-height: 50px;">
+                        <span class="empty-text">暂无数据</span>
+                    </div>
                 </div>
             </div>
         </div>
