@@ -51,18 +51,20 @@ class Image extends Table
             if (!isset($row->$pathKey)) {
                 throw new \InvalidArgumentException("Not Found '{$pathKey}' attribute");
             }
-
-            $path = $row->$pathKey;
-            if (($disk = $this->getDisk())) {
-                $url = \Storage::disk($disk)->url($path);
-            } else {
-                $url = asset($path);
-            }
-
-            return [
-                '_primary' => $row->getKey(),
-                'url' => $url,
-            ];
+            $row->setAttribute('_primary', $row->getKey());
+            $row->setAttribute('_url', $this->getUrl($row->$pathKey));
+            return $row;
         });
+    }
+
+    protected function getUrl($path)
+    {
+        if (($disk = $this->getDisk())) {
+            $url = \Storage::disk($disk)->url($path);
+        } else {
+            $url = asset($path);
+        }
+
+        return $url;
     }
 }

@@ -18,10 +18,9 @@
                         <!-- #section:pages/gallery -->
                         <li v-for="item in pageData.data">
                             <div>
-                                <img width="200" height="200" alt="" :src="item.url">
+                                <img width="200" height="200" alt="" :src="item._url">
                                 <div class="tools">
                                     <div class="bottom clearfix">
-                                        <span>{{item.name}}</span>
                                         <action-column class="pull-right" :row="item"></action-column>
                                     </div>
                                 </div>
