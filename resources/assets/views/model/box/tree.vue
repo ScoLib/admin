@@ -64,27 +64,6 @@
                 this.getResults();
             }
         },
-        mounted() {
-            var _this = this;
-            $('.dd').nestable({
-                emptyClass: 'not_need_empty',
-                callback: function (l, e) {
-                    var data = $(l).nestable('serialize');
-                    if (JSON.stringify(_this.seriaData) != JSON.stringify(data)) {
-                        _this.seriaData = data;
-                        _this.$http.post(
-                            `/${_this.getUrlPrefix()}/${_this.$route.params.model}/reorder`,
-                            {data: _this.seriaData}
-                        ).then(response => {
-                            
-                        }).catch(error => {})
-                    }
-                }
-            });
-            $('.not_need_empty').remove();
-        },
-        watch: {
-        },
         methods: {
             getResults() {
                 this.tree = {};
@@ -93,8 +72,29 @@
                     .then(response => {
                         this.loading = false;
                         this.tree = response.data;
+                        var _this = this;
+                        setTimeout(this.nestable, 100)
                     }).catch(error => {})
             },
+            nestable() {
+                var _this = this;
+                $('.dd').nestable({
+                    emptyClass: 'not_need_empty',
+                    callback: function (l, e) {
+                        var data = $(l).nestable('serialize');
+                        if (JSON.stringify(_this.seriaData) != JSON.stringify(data)) {
+                            _this.seriaData = data;
+                            _this.$http.post(
+                                `/${_this.getUrlPrefix()}/${_this.$route.params.model}/reorder`,
+                                {data: _this.seriaData}
+                            ).then(response => {
+
+                            }).catch(error => {})
+                        }
+                    }
+                });
+                $('.not_need_empty').remove();
+            }
         }
     }
 </script>

@@ -114,6 +114,11 @@ Route::group([
                 'where'      => ['id' => '[0-9]+'],
             ]);
 
+            Route::post('reorder', [
+                'as'         => 'reorder',
+                'uses'       => '\Sco\Admin\Http\Controllers\AdminController@reorder',
+            ]);
+
             Route::post('upload/{field}/{id?}', [
                 'as'         => 'upload.file',
                 'uses'       => '\Sco\Admin\Http\Controllers\UploadController@formElement',

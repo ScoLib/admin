@@ -122,4 +122,13 @@ class AdminController extends Controller
         $component->restore($id);
         return response()->json(['message' => 'ok']);
     }
+
+    public function reorder(ComponentInterface $component)
+    {
+        if (!$component->isEdit()) {
+            throw new AuthorizationException();
+        }
+
+        return response()->json(['message' => 'ok']);
+    }
 }
