@@ -2,13 +2,13 @@
 
 namespace DummyNamespace;
 
-use AdminColumn;
-use AdminElement;
-use AdminForm;
-use AdminView;
 use Sco\Admin\Component\Component;
 use Sco\Admin\Contracts\Form\FormInterface;
 use Sco\Admin\Contracts\View\ViewInterface;
+use Sco\Admin\Facades\AdminColumn;
+use Sco\Admin\Facades\AdminElement;
+use Sco\Admin\Facades\AdminForm;
+use Sco\Admin\Facades\AdminView;
 
 class DummyClass extends Component
 {

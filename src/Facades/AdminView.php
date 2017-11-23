@@ -6,12 +6,12 @@ namespace Sco\Admin\Facades;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @mixin \Sco\Admin\View\ColumnFactory
+ * @mixin \Sco\Admin\View\ViewFactory
  */
-class AdminColumnFacade extends Facade
+class AdminView extends Facade
 {
     public static function getFacadeAccessor()
     {
-        return 'admin.column.factory';
+        return 'admin.view.factory';
     }
 }

@@ -10,7 +10,7 @@ use Sco\Admin\Elements\Select;
 /**
  * @mixin \Sco\Admin\Form\ElementFactory
  */
-class AdminElementFacade extends Facade
+class AdminElement extends Facade
 {
     public static function getFacadeAccessor()
     {

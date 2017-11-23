@@ -1,13 +1,17 @@
 <?php
 
+
 namespace Sco\Admin\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
-class AdminFacade extends Facade
+/**
+ * @mixin \Sco\Admin\Form\FormFactory
+ */
+class AdminForm extends Facade
 {
     public static function getFacadeAccessor()
     {
-        return 'admin.instance';
+        return 'admin.form.factory';
     }
 }
