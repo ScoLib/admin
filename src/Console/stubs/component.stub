@@ -1,0 +1,33 @@
+<?php
+
+namespace App\Component;
+
+use AdminElement;
+use AdminForm;
+use AdminView;
+use Sco\Admin\Component\Component;
+
+class Category extends Component
+{
+
+    public function callView()
+    {
+        //
+    }
+
+    /**
+     * @return \Sco\Admin\Contracts\Form\FormInterface
+     */
+    public function callEdit()
+    {
+        //
+    }
+
+    /**
+     * @return \Sco\Admin\Contracts\Form\FormInterface
+     */
+    public function callCreate()
+    {
+        //
+    }
+}

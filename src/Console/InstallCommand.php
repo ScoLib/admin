@@ -45,8 +45,8 @@ class InstallCommand extends Command
         $this->line('  Welcome to Sco Admin  ');
         $this->line('************************');
 
-        $this->publish();
-        $this->migrate();
+        //$this->publish();
+        //$this->migrate();
 
         $this->info('Successfully Installed Sco Admin!');
     }

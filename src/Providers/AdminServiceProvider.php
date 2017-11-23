@@ -17,10 +17,6 @@ use Sco\Admin\View\ViewFactory;
 
 class AdminServiceProvider extends ServiceProvider
 {
-    protected $commands = [
-        \Sco\Admin\Console\InstallCommand::class,
-    ];
-
     protected $middlewares = [
         'admin.auth'      => \Sco\Admin\Http\Middleware\Authenticate::class,
         'admin.guest'     => \Sco\Admin\Http\Middleware\RedirectIfAuthenticated::class,
@@ -60,7 +56,6 @@ class AdminServiceProvider extends ServiceProvider
         $this->registerFactory();
         $this->app->instance('admin.instance', new Admin($this->app));
         $this->app->bind(RepositoryInterface::class, Repository::class);
-        $this->commands($this->commands);
     }
 
     protected function registerMiddleware()
