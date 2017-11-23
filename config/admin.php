@@ -20,6 +20,7 @@ return [
     ],
 
     'components' => [
+        // Model => Component
     ],
     'navigation' => [
     ],
