@@ -11,7 +11,7 @@ class ComponentMakeCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $signature = 'make:component';
+    protected $name = 'make:component';
 
     /**
      * The console command description.

@@ -1,16 +1,42 @@
 <?php
 
-namespace App\Component;
+namespace DummyNamespace;
 
+use AdminColumn;
 use AdminElement;
 use AdminForm;
 use AdminView;
 use Sco\Admin\Component\Component;
+use Sco\Admin\Contracts\Form\FormInterface;
+use Sco\Admin\Contracts\View\ViewInterface;
 
-class Category extends Component
+class DummyClass extends Component
 {
+    /**
+     * Permission observer class
+     *
+     * @var string
+     */
+    //protected $permissionObserver;
 
-    public function callView()
+    /**
+     * Navigator title name.
+     *
+     * @var string
+     */
+    //protected $title;
+
+    /**
+     * Navigator icon class name
+     *
+     * @var string
+     */
+    //protected $icon;
+
+    /**
+     * @return \Sco\Admin\Contracts\View\ViewInterface
+     */
+    public function callView(): ViewInterface
     {
         //
     }
@@ -18,7 +44,7 @@ class Category extends Component
     /**
      * @return \Sco\Admin\Contracts\Form\FormInterface
      */
-    public function callEdit()
+    public function callEdit(): FormInterface
     {
         //
     }
@@ -26,7 +52,7 @@ class Category extends Component
     /**
      * @return \Sco\Admin\Contracts\Form\FormInterface
      */
-    public function callCreate()
+    public function callCreate(): FormInterface
     {
         //
     }
