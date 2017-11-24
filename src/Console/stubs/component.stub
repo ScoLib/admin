@@ -17,21 +17,21 @@ class DummyClass extends Component
      *
      * @var string
      */
-    //protected $permissionObserver;
+    protected $permissionObserver;
 
     /**
      * Navigator title name.
      *
      * @var string
      */
-    //protected $title;
+    protected $title = 'DummyClass';
 
     /**
      * Navigator icon class name
      *
      * @var string
      */
-    //protected $icon;
+    protected $icon;
 
     /**
      * @return \Sco\Admin\Contracts\View\ViewInterface

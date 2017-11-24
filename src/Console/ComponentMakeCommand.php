@@ -3,11 +3,12 @@
 namespace Sco\Admin\Console;
 
 use Illuminate\Console\GeneratorCommand;
+use Symfony\Component\Console\Input\InputOption;
 
 class ComponentMakeCommand extends GeneratorCommand
 {
     /**
-     * The name and signature of the console command.
+     * The console command name.
      *
      * @var string
      */
@@ -20,15 +21,76 @@ class ComponentMakeCommand extends GeneratorCommand
      */
     protected $description = 'Create a new component class(ScoAdmin)';
 
+    /**
+     * The type of class being generated.
+     *
+     * @var string
+     */
     protected $type = 'Component';
 
-    protected function getStub()
+    /**
+     * Execute the console command.
+     *
+     * @return void
+     */
+    public function handle()
     {
-        return __DIR__.'/stubs/component.stub';
+        if (parent::handle() === false && !$this->option('force')) {
+            return;
+        }
+
+        if ($this->option('observer')) {
+            $this->createObserver();
+        }
     }
 
+    /**
+     * Create a new permission observer for the component
+     */
+    protected function createObserver()
+    {
+        $this->call('make:observer', [
+            'name' => $this->argument('name') . 'Observer'
+        ]);
+    }
+
+    /**
+     * Get the stub file for the generator.
+     *
+     * @return string
+     */
+    protected function getStub()
+    {
+        return __DIR__ . '/stubs/component.stub';
+    }
+
+    /**
+     * Get the default namespace for the class.
+     *
+     * @param  string  $rootNamespace
+     * @return string
+     */
     protected function getDefaultNamespace($rootNamespace)
     {
-        return $rootNamespace.'\Components';
+        return $rootNamespace . '\Components';
+    }
+
+    /**
+     * Get the console command options.
+     *
+     * @return array
+     */
+    protected function getOptions()
+    {
+        return [
+            [
+                'observer', 'o', InputOption::VALUE_NONE,
+                'Create a new permission observer for the component',
+            ],
+            [
+                'force', null, InputOption::VALUE_NONE,
+                'Create the class even if the component already exists.',
+            ],
+        ];
     }
 }

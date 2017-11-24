@@ -5,6 +5,7 @@ namespace Sco\Admin\Providers;
 use Illuminate\Support\ServiceProvider;
 use Sco\Admin\Console\ComponentMakeCommand;
 use Sco\Admin\Console\InstallCommand;
+use Sco\Admin\Console\ObserverMakeCommand;
 
 class ArtisanServiceProvider extends ServiceProvider
 {
@@ -13,6 +14,7 @@ class ArtisanServiceProvider extends ServiceProvider
     protected $commands = [
         'Install' => 'command.install',
         'ComponentMake' => 'command.component.make',
+        'ObserverMake' => 'command.observer.make',
     ];
 
     public function register()
@@ -53,6 +55,18 @@ class ArtisanServiceProvider extends ServiceProvider
      * @return void
      */
     protected function registerComponentMakeCommand()
+    {
+        $this->app->singleton('command.observer.make', function ($app) {
+            return new ObserverMakeCommand($app['files']);
+        });
+    }
+
+    /**
+     * Register the command.
+     *
+     * @return void
+     */
+    protected function registerObserverMakeCommand()
     {
         $this->app->singleton('command.component.make', function ($app) {
             return new ComponentMakeCommand($app['files']);
