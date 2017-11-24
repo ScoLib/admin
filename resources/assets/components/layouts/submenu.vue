@@ -42,7 +42,7 @@
         name: 'Submenu',
         props: {
             childs: {
-                type: Object,
+                type: Object|Array,
                 default () {
                     return {};
                 }

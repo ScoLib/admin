@@ -48,7 +48,7 @@
         name: 'AppSidebar',
         data () {
             return {
-                menus: {},
+                menus: Object|Array,
                 loading: false,
             }
         },
