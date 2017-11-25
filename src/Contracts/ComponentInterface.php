@@ -12,6 +12,9 @@ interface ComponentInterface
 
     public function getModel();
 
+    /**
+     * @return mixed|\Sco\Admin\Contracts\RepositoryInterface
+     */
     public function getRepository();
 
     /**
