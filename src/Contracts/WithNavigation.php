@@ -12,10 +12,9 @@ interface WithNavigation
     /**
      * add Navigation
      *
-     * @param int  $priority
      * @param null $badge
      *
      * @return \KodiComponents\Navigation\Contracts\PageInterface
      */
-    public function addToNavigation($priority = 100, $badge = null);
+    public function addToNavigation($badge = null);
 }

@@ -3,8 +3,10 @@
 namespace Sco\Admin\Component;
 
 use BadMethodCallException;
+use Illuminate\Support\Collection;
 use InvalidArgumentException;
 use Illuminate\Foundation\Application;
+use Sco\Admin\Component\Concerns\HasAccess;
 use Sco\Admin\Component\Concerns\HasEvents;
 use Sco\Admin\Component\Concerns\HasNavigation;
 use Sco\Admin\Contracts\ComponentInterface;
@@ -17,8 +19,7 @@ abstract class Component implements
     ComponentInterface,
     WithNavigation
 {
-    use HasEvents,
-        HasNavigation;
+    use HasAccess, HasEvents, HasNavigation;
 
     /**
      * @var
@@ -49,18 +50,6 @@ abstract class Component implements
      */
     protected static $dispatcher;
 
-    /**
-     * @var string
-     */
-    protected $permissionObserver;
-
-    protected $permissions;
-
-    protected $permissionMethods = [
-        'view', 'create', 'edit',
-        'delete', 'destroy', 'restore',
-    ];
-
     public function __construct(Application $app, $modelClass)
     {
         $this->app = $app;
@@ -72,8 +61,6 @@ abstract class Component implements
         if (!$this->name) {
             $this->setDefaultName();
         }
-
-        $this->registerObserver($this->permissionObserver);
 
         $this->bootIfNotBooted();
     }
@@ -114,6 +101,13 @@ abstract class Component implements
         return $this->repository;
     }
 
+    public function getAccesses()
+    {
+        return static::$abilities->mapWithKeys(function ($item, $key) {
+            return [$key => $this->can($item)];
+        });
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -121,9 +115,9 @@ abstract class Component implements
     {
         return collect([
             //'primaryKey'  => $this->getModel()->getKeyName(),
-            'title'       => $this->getTitle(),
-            'permissions' => $this->getPermissions(),
-            'view'        => $this->fireView(),
+            'title'    => $this->getTitle(),
+            'accesses' => $this->getAccesses(),
+            'view'     => $this->fireView(),
             //'elements'    => $this->getElements()->values(),
         ]);
     }
@@ -255,94 +249,35 @@ abstract class Component implements
 
             $this->fireEvent('booting', false);
 
-            $this->boot();
+            static::boot();
 
             $this->fireEvent('booted', false);
         }
     }
 
-    public function boot()
+    /**
+     * The "booting" method of the model.
+     *
+     * @return void
+     */
+    protected static function boot()
     {
-        return true;
+        static::bootTraits();
     }
 
-    public function isView()
+    /**
+     * Boot all of the bootable traits on the model.
+     *
+     * @return void
+     */
+    protected static function bootTraits()
     {
-        return method_exists($this, 'callView') && $this->can('view');
-    }
+        $class = static::class;
 
-    public function isCreate()
-    {
-        return method_exists($this, 'callCreate') && $this->can('create');
-    }
-
-    public function isEdit()
-    {
-        return method_exists($this, 'callEdit') && $this->can('edit');
-    }
-
-    public function isDelete()
-    {
-        return $this->can('delete');
-    }
-
-    public function isDestroy()
-    {
-        return $this->isRestorableModel() && $this->can('destroy');
-    }
-
-    public function isRestore()
-    {
-        return $this->isRestorableModel() && $this->can('restore');
-    }
-
-    protected function isRestorableModel()
-    {
-        return $this->getRepository()->isRestorable();
-    }
-
-    public function registerObserver($class = null)
-    {
-        if (!$class) {
-            return;
-        }
-
-        $className = is_string($class) ? $class : get_class($class);
-
-        foreach ($this->permissionMethods as $method) {
-            if (method_exists($class, $method)) {
-                $this->registerPermission(
-                    $method,
-                    [$this->app->make($className), $method]
-                );
+        foreach (class_uses_recursive($class) as $trait) {
+            if (method_exists($class, $method = 'boot'.class_basename($trait))) {
+                forward_static_call([$class, $method]);
             }
         }
-    }
-
-    public function registerPermission($permission, $callback)
-    {
-        $this->permissions[$permission] = $callback;
-    }
-
-    public function can($permission)
-    {
-        if (is_callable($this->permissions[$permission])) {
-            return call_user_func_array($this->permissions[$permission], [$this]);
-        }
-        return $this->permissions[$permission] ? true : false;
-    }
-
-    public function getPermissions()
-    {
-        $data = collect();
-        foreach ($this->permissionMethods as $perm) {
-            $method = 'is' . ucfirst($perm);
-            if (!method_exists($this, $method)) {
-                $method = 'can';
-            }
-
-            $data->put($perm, $this->{$method}($perm));
-        }
-        return $data;
     }
 }

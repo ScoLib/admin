@@ -13,6 +13,73 @@ trait HasNavigation
 
     protected $parentPageId;
 
+    protected $priority = 100;
+
+    /**
+     * @return mixed
+     */
+    public function getIcon()
+    {
+        return $this->icon;
+    }
+
+    /**
+     * @param mixed $icon
+     *
+     * @return $this
+     */
+    public function setIcon($icon)
+    {
+        $this->icon = $icon;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getParentPageId()
+    {
+        return $this->parentPageId;
+    }
+
+    /**
+     * @param mixed $parentPageId
+     *
+     * @return $this
+     */
+    public function setParentPageId($parentPageId)
+    {
+        $this->parentPageId = $parentPageId;
+
+        return $this;
+    }
+
+    public function hasParentPageId()
+    {
+        return $this->parentPageId !== null;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPriority(): int
+    {
+        return $this->priority;
+    }
+
+    /**
+     * @param int $priority
+     *
+     * @return $this
+     */
+    public function setPriority(int $priority)
+    {
+        $this->priority = $priority;
+
+        return $this;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -24,7 +91,7 @@ trait HasNavigation
     /**
      * {@inheritdoc}
      */
-    public function addToNavigation($priority = 100, $badge = null)
+    public function addToNavigation($badge = null)
     {
         $nav = $this->getNavigation();
         if ($this->hasParentPageId()) {
@@ -39,7 +106,7 @@ trait HasNavigation
             }
         }
 
-        $page = $this->makePage($priority, $badge);
+        $page = $this->makePage($badge);
 
         $nav->addPage($page);
 
@@ -49,15 +116,14 @@ trait HasNavigation
     /**
      * page
      *
-     * @param int  $priority
      * @param null $badge
      *
      * @return \Sco\Admin\Navigation\Page
      */
-    protected function makePage($priority = 100, $badge = null)
+    protected function makePage($badge = null)
     {
         $page = new Page($this);
-        $page->setPriority($priority)
+        $page->setPriority($this->getPriority())
             ->setIcon($this->getIcon())
             ->setAccessLogic(function () {
                 return $this->isView();
@@ -75,23 +141,6 @@ trait HasNavigation
         return $page;
     }
 
-    public function hasParentPageId()
-    {
-        return $this->parentPageId !== null;
-    }
-
-    public function getParentPageId()
-    {
-        return $this->parentPageId;
-    }
-
-    public function setParentPageId($value)
-    {
-        $this->parentPageId = $value;
-
-        return $this;
-    }
-
     /**
      * @param array $parameters
      *
@@ -102,17 +151,5 @@ trait HasNavigation
         array_unshift($parameters, $this->getName());
 
         return route('admin.model.index', $parameters, false);
-    }
-
-    public function getIcon()
-    {
-        return $this->icon;
-    }
-
-    public function setIcon($value)
-    {
-        $this->icon = $value;
-
-        return $this;
     }
 }
