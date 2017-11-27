@@ -79,6 +79,9 @@ class DateTime extends Column
     protected function getFormatValue($date)
     {
         if (!empty($date)) {
+            if (is_numeric($date)) {
+                $date = Carbon::createFromTimestamp($date);
+            }
             if (!($date instanceof Carbon)) {
                 $date = Carbon::parse($date);
             }

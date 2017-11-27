@@ -94,6 +94,7 @@
                                 :editable="element.editable"
                                 :size="element.size"
                                 :format="element.pickerFormat"
+                                :value-format="element.pickerFormat"
                                 placeholder="选择日期时间">
                         </el-date-picker>
 

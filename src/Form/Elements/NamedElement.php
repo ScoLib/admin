@@ -38,7 +38,7 @@ class NamedElement extends Element implements Validatable
 
             $rule = 'unique:' . $table . ',' . $this->getName();
             if ($model->exists) {
-                $rule .= ',' . $model->getKey();
+                $rule .= ',' . $model->getKey() . ',' . $model->getKeyName();
             }
             $rules['unique'] = $rule;
         }

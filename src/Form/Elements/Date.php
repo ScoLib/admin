@@ -132,6 +132,10 @@ class Date extends Input
 
     protected function dateToString($value)
     {
+        if (is_numeric($value)) {
+            $value = Carbon::createFromTimestamp($value);
+        }
+
         if (!($value instanceof Carbon)) {
             $value = Carbon::parse($value);
         }
