@@ -3,7 +3,7 @@
         <div class="btn-group btn-group-sm">
             <router-link
                     :to="{ name: 'admin.model.create', params: {model: $route.params.model}}"
-                    v-if="config.permissions.create"
+                    v-if="config.accesses.create"
                     class="btn btn-default">
                 <i class="fa fa-plus"></i>
                 创建 {{ config.title }}

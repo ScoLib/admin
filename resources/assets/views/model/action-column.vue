@@ -1,21 +1,21 @@
 <template>
     <div class="hidden-xs btn-group">
         <router-link
-                v-if="config.permissions.edit && !row._deleted"
+                v-if="config.accesses.edit && !row._deleted"
                 class="btn btn-xs btn-info"
                 :to="{name:'admin.model.edit', params:{model:$route.params.model,id:row._primary}}"
                 title="编辑">
             <i class="fa fa-pencil"></i>
         </router-link>
         <el-button
-                v-if="config.permissions.delete && !row._deleted"
+                v-if="config.accesses.delete && !row._deleted"
                 class="btn btn-xs btn-danger margin-l-2"
                 @click.prevent="deleteModel(row._primary)"
                 title="删除">
             <i class="fa fa-trash-o"></i>
         </el-button>
         <el-button
-                v-if="config.permissions.delete && row._deleted"
+                v-if="config.accesses.delete && row._deleted"
                 class="btn btn-xs btn-danger margin-l-2"
                 @click.prevent="destroyModel(row._primary)"
                 title="彻底删除">

@@ -3,7 +3,6 @@
 namespace Sco\Admin\Component;
 
 use BadMethodCallException;
-use Illuminate\Support\Collection;
 use InvalidArgumentException;
 use Illuminate\Foundation\Application;
 use Sco\Admin\Component\Concerns\HasAccess;
@@ -31,6 +30,11 @@ abstract class Component implements
      */
     protected $app;
 
+    /**
+     * The component display name
+     *
+     * @var string
+     */
     protected $title;
 
     /**
@@ -50,7 +54,7 @@ abstract class Component implements
      */
     protected static $dispatcher;
 
-    public function __construct(Application $app, $modelClass)
+    public function __construct(Application $app, $modelClass = null)
     {
         $this->app = $app;
 
@@ -99,13 +103,6 @@ abstract class Component implements
     public function getRepository()
     {
         return $this->repository;
-    }
-
-    public function getAccesses()
-    {
-        return static::$abilities->mapWithKeys(function ($item, $key) {
-            return [$key => $this->can($item)];
-        });
     }
 
     /**
@@ -249,7 +246,7 @@ abstract class Component implements
 
             $this->fireEvent('booting', false);
 
-            static::boot();
+            $this->boot();
 
             $this->fireEvent('booted', false);
         }
@@ -260,9 +257,9 @@ abstract class Component implements
      *
      * @return void
      */
-    protected static function boot()
+    protected function boot()
     {
-        static::bootTraits();
+        $this->bootTraits();
     }
 
     /**
@@ -270,13 +267,11 @@ abstract class Component implements
      *
      * @return void
      */
-    protected static function bootTraits()
+    protected function bootTraits()
     {
-        $class = static::class;
-
-        foreach (class_uses_recursive($class) as $trait) {
-            if (method_exists($class, $method = 'boot'.class_basename($trait))) {
-                forward_static_call([$class, $method]);
+        foreach (class_uses_recursive($this) as $trait) {
+            if (method_exists($this, $method = 'boot'.class_basename($trait))) {
+                $this->$method();
             }
         }
     }

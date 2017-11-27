@@ -2,22 +2,35 @@
 
 namespace Sco\Admin\Component\Concerns;
 
+use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
+
 trait HasAccess
 {
     /**
      * @var \Illuminate\Support\Collection
      */
-    private static $abilities;
+    protected $abilities;
 
-    protected static $observer = \Sco\Admin\Component\Observer::class;
+    /**
+     * Access observer class
+     *
+     * @var string
+     */
+    protected $observer = \Sco\Admin\Component\Observer::class;
 
+    /**
+     * User exposed observable abilities.
+     *
+     * @var array
+     */
     protected $observables = [];
 
-    public static function bootHasAccess()
+    public function bootHasAccess()
     {
-        static::$abilities = new Collection();
+        $this->abilities = new Collection();
 
-        static::observe(static::$observer);
+        $this->observe($this->observer);
     }
 
     public function isView()
@@ -55,24 +68,27 @@ trait HasAccess
         return $this->getRepository()->isRestorable();
     }
 
-    public static function observe($class)
+    /**
+     * Register an observer with the Component.
+     *
+     * @param $class
+     */
+    public function observe($class)
     {
-        $instance = new static;
-
         $className = is_string($class) ? $class : get_class($class);
 
-        foreach ($instance->getObservableAbilities() as $ability) {
+        foreach ($this->getObservableAbilities() as $ability) {
             if (method_exists($class, $ability)) {
-                $instance->registerAccess(
+                $this->registerAbility(
                     $ability,
-                    [$instance->app->make($className), $ability]
+                    $className . '@' . $ability
                 );
             }
         }
     }
 
     /**
-     * Get the observable event names.
+     * Get the observable ability names.
      *
      * @return array
      */
@@ -87,9 +103,22 @@ trait HasAccess
         );
     }
 
-    public function registerAccess($ability, $callback)
+    public function registerAbility($ability, $callback)
     {
-        static::$abilities->put($ability, $callback);
+        $this->abilities->put($ability, $this->makeAbilityCallback($callback));
+    }
+
+    protected function makeAbilityCallback($callback)
+    {
+        return function ($component) use ($callback) {
+            if (is_callable($callback)) {
+                return $callback($component);
+            }
+            if (is_string($callback)) {
+                list($class, $method) = Str::parseCallback($callback);
+                return call_user_func([$this->app->make($class), $method], $component);
+            }
+        };
     }
 
     /**
@@ -99,16 +128,18 @@ trait HasAccess
      */
     final public function can($ability)
     {
-        if (!static::$abilities->has($ability)) {
+        if (!$this->abilities->has($ability)) {
             return false;
         }
-        $value = static::$abilities->get($ability);
-        if (is_callable($value)) {
-            return call_user_func_array(
-                $value,
-                [$this]
-            );
-        }
-        return $value ? true : false;
+        $value = $this->abilities->get($ability);
+
+        return $value($this) ? true : false;
+    }
+
+    public function getAccesses()
+    {
+        return $this->abilities->mapWithKeys(function ($item, $key) {
+            return [$key => $this->can($key)];
+        });
     }
 }

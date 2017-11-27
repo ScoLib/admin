@@ -9,11 +9,53 @@ use Sco\Admin\Navigation\Page;
 
 trait HasNavigation
 {
+    /**
+     * The page id name
+     *
+     * @var string
+     */
+    protected $pageId;
+
+    /**
+     * The page icon class name
+     *
+     * @var string
+     */
     protected $icon;
 
+    /**
+     * The page belong to page id name
+     *
+     * @var string
+     */
     protected $parentPageId;
 
+    /**
+     * The page priority
+     *
+     * @var int
+     */
     protected $priority = 100;
+
+    /**
+     * @return mixed
+     */
+    public function getPageId()
+    {
+        return $this->pageId;
+    }
+
+    /**
+     * @param mixed $pageId
+     *
+     * @return $this
+     */
+    public function setPageId($pageId)
+    {
+        $this->pageId = $pageId;
+
+        return $this;
+    }
 
     /**
      * @return mixed
@@ -125,6 +167,7 @@ trait HasNavigation
         $page = new Page($this);
         $page->setPriority($this->getPriority())
             ->setIcon($this->getIcon())
+            ->serId($this->getPageId())
             ->setAccessLogic(function () {
                 return $this->isView();
             });

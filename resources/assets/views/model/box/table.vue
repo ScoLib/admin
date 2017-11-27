@@ -98,8 +98,8 @@
             },
 
             isActionColumn() {
-                var permissions = this.config.permissions;
-                return permissions.edit || permissions.delete || permissions.restore;
+                var accesses = this.config.accesses;
+                return accesses.edit || accesses.delete || accesses.restore;
             },
         },
         created () {

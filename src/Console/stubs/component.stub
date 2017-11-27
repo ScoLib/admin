@@ -13,25 +13,18 @@ use Sco\Admin\Facades\AdminView;
 class DummyClass extends Component
 {
     /**
-     * Permission observer class
-     *
-     * @var string
-     */
-    protected static $observer = \Sco\Admin\Component\Observer::class;
-
-    /**
-     * Navigator title name.
+     * The component display name
      *
      * @var string
      */
     protected $title = 'DummyClass';
 
     /**
-     * Navigator icon class name
+     * Access observer class
      *
      * @var string
      */
-    protected $icon;
+    protected $observer = \Sco\Admin\Component\Observer::class;
 
     /**
      * @return \Sco\Admin\Contracts\View\ViewInterface

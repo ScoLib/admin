@@ -70,9 +70,9 @@ interface ComponentInterface
 
     public function isRestore();
 
-    public static function observe($class);
+    public function observe($class);
 
-    public function registerAccess($ability, $callback);
+    public function registerAbility($ability, $callback);
 
     public function can($ability);
 
