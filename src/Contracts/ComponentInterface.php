@@ -70,11 +70,11 @@ interface ComponentInterface
 
     public function isRestore();
 
-    public function registerObserver($class = null);
+    public static function observe($class);
 
-    public function registerPermission($permission, $callback);
+    public function registerAccess($ability, $callback);
 
-    public function can($permission);
+    public function can($ability);
 
-    public function getPermissions();
+    public function getAccesses();
 }
