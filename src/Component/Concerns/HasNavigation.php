@@ -167,7 +167,7 @@ trait HasNavigation
         $page = new Page($this);
         $page->setPriority($this->getPriority())
             ->setIcon($this->getIcon())
-            ->serId($this->getPageId())
+            ->setId($this->getPageId())
             ->setAccessLogic(function () {
                 return $this->isView();
             });
