@@ -44,11 +44,6 @@ class ComponentMakeCommand extends GeneratorCommand
         if ($this->option('observer')) {
             $this->createObserver();
         }
-
-        if ($this->option('model')) {
-            $this->createModel();
-        }
-
     }
 
     /**
@@ -62,17 +57,6 @@ class ComponentMakeCommand extends GeneratorCommand
 
         $this->call('make:observer', [
             'name' => $observerClass,
-        ]);
-    }
-
-    protected function createModel()
-    {
-        $modelClass = $this->parseClass($this->option('model'));
-
-        //$this->info('model:' . $modelClass);
-
-        $this->call('make:model', [
-            'name' => $modelClass,
         ]);
     }
 
@@ -154,11 +138,6 @@ class ComponentMakeCommand extends GeneratorCommand
                 'force', null, InputOption::VALUE_NONE,
                 'Generate the class even if the component already exists.',
             ],
-            [
-                'model', 'm', InputOption::VALUE_OPTIONAL,
-                'Generate a model for the component.',
-            ],
-
         ];
     }
 }
