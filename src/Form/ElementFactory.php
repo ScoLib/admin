@@ -23,6 +23,8 @@ use Sco\Admin\Form\Elements\Radio;
 use Sco\Admin\Form\Elements\Select;
 use Sco\Admin\Form\Elements\Text;
 use Sco\Admin\Form\Elements\Textarea;
+use Sco\Admin\Form\Elements\Time;
+use Sco\Admin\Form\Elements\Timestamp;
 use Sco\Admin\Form\Elements\Tree;
 use Sco\Admin\Traits\AliasBinder;
 
@@ -42,8 +44,10 @@ use Sco\Admin\Traits\AliasBinder;
  * @method \Sco\Admin\Form\Elements\Images images($name, $title)
  * @method \Sco\Admin\Form\Elements\Hidden hidden($name)
  * @method \Sco\Admin\Form\Elements\ElSwitch elswitch($name, $title)
+ * @method \Sco\Admin\Form\Elements\Time time($name, $title)
  * @method \Sco\Admin\Form\Elements\Date date($name, $title)
  * @method \Sco\Admin\Form\Elements\DateTime datetime($name, $title)
+ * @method \Sco\Admin\Form\Elements\Timestamp timestamp($name, $title)
  * @method \Sco\Admin\Form\Elements\DateRange daterange($startName, $endName, $title)
  * @method \Sco\Admin\Form\Elements\DateTimeRange datetimerange($startName, $endName, $title)
  */
@@ -72,8 +76,10 @@ class ElementFactory implements ElementFactoryInterface
             'image'         => Image::class,
             'images'        => Images::class,
             'elswitch'      => ElSwitch::class,
+            'time'          => Time::class,
             'date'          => Date::class,
             'datetime'      => DateTime::class,
+            'timestamp'     => Timestamp::class,
             'daterange'     => DateRange::class,
             'datetimerange' => DateTimeRange::class,
             'cascader'      => Cascader::class,

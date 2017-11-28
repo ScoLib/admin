@@ -132,10 +132,6 @@ class Date extends Input
 
     protected function dateToString($value)
     {
-        if (is_numeric($value)) {
-            $value = Carbon::createFromTimestamp($value);
-        }
-
         if (!($value instanceof Carbon)) {
             $value = Carbon::parse($value);
         }
@@ -145,6 +141,11 @@ class Date extends Input
         return $value->format($this->getFormat());
     }
 
+    /**
+     * @param mixed $value
+     *
+     * @return Carbon
+     */
     protected function prepareValue($value)
     {
         $value = Carbon::parse($value);

@@ -86,17 +86,31 @@
                         </template>
 
                         <el-date-picker
-                                v-else-if="['date', 'datetime', 'daterange', 'datetimerange'].indexOf(element.type) > -1"
-                                v-model="currentValue[element.key]"
-                                :type="element.type"
-                                :disabled="element.disabled"
-                                :readonly="element.readonly"
-                                :editable="element.editable"
-                                :size="element.size"
-                                :format="element.pickerFormat"
-                                :value-format="element.pickerFormat"
-                                placeholder="选择日期时间">
+                            v-else-if="['date', 'datetime', 'daterange', 'datetimerange'].indexOf(element.type) > -1"
+                            v-model="currentValue[element.key]"
+                            :type="element.type"
+                            :disabled="element.disabled"
+                            :readonly="element.readonly"
+                            :editable="element.editable"
+                            :size="element.size"
+                            :format="element.pickerFormat"
+                            :value-format="element.pickerFormat"
+                            placeholder="选择日期时间">
                         </el-date-picker>
+
+                        <el-time-picker
+                            v-else-if="['time', 'timerange'].indexOf(element.type) > -1"
+                            v-model="currentValue[element.key]"
+                            :type="element.type"
+                            :is-range="element.isRange"
+                            :disabled="element.disabled"
+                            :readonly="element.readonly"
+                            :editable="element.editable"
+                            :size="element.size"
+                            :format="element.pickerFormat"
+                            :value-format="element.pickerFormat"
+                            placeholder="选择时间">
+                        </el-time-picker>
 
                         <el-input-number
                                 v-else-if="element.type == 'number'"
