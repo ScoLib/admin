@@ -2,6 +2,11 @@
 
 namespace Sco\Admin\Form\Elements;
 
+/**
+ * Form Element DateRange
+ *
+ * @see http://element.eleme.io/#/zh-CN/component/date-picker
+ */
 class DateRange extends Date
 {
     protected $type = 'daterange';

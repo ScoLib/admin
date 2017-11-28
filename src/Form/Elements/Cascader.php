@@ -2,6 +2,11 @@
 
 namespace Sco\Admin\Form\Elements;
 
+/**
+ * Cascader
+ *
+ * @see http://element.eleme.io/#/zh-CN/component/cascader
+ */
 class Cascader extends Tree
 {
     protected $type = 'cascader';

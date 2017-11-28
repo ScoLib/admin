@@ -4,6 +4,11 @@ namespace Sco\Admin\Form\Elements;
 
 use Carbon\Carbon;
 
+/**
+ * Form Element Date
+ *
+ * @see http://element.eleme.io/#/zh-CN/component/date-picker
+ */
 class Date extends Input
 {
     protected $type = 'date';
@@ -117,7 +122,7 @@ class Date extends Input
         return parent::toArray() + [
                 //'format' => $this->getFormat(),
                 'pickerFormat' => $this->getPickerFormat(),
-                'editable' => $this->isEditable(),
+                'editable'     => $this->isEditable(),
             ];
     }
 

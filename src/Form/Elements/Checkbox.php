@@ -2,6 +2,11 @@
 
 namespace Sco\Admin\Form\Elements;
 
+/**
+ * Checkbox
+ *
+ * @see http://element.eleme.io/#/zh-CN/component/checkbox
+ */
 class Checkbox extends Select
 {
     protected $type = 'checkbox';

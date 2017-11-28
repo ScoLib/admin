@@ -24,7 +24,7 @@ class DummyClass extends Component
      *
      * @var string
      */
-    protected $observer = \Sco\Admin\Component\Observer::class;
+    protected $observer = 'DummyObserver';
 
     /**
      * @return \Sco\Admin\Contracts\View\ViewInterface
