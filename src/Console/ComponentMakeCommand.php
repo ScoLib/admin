@@ -3,6 +3,8 @@
 namespace Sco\Admin\Console;
 
 use Illuminate\Console\GeneratorCommand;
+use Illuminate\Support\Str;
+use InvalidArgumentException;
 use Symfony\Component\Console\Input\InputOption;
 
 class ComponentMakeCommand extends GeneratorCommand
@@ -42,6 +44,11 @@ class ComponentMakeCommand extends GeneratorCommand
         if ($this->option('observer')) {
             $this->createObserver();
         }
+
+        if ($this->option('model')) {
+            $this->createModel();
+        }
+
     }
 
     /**
@@ -49,9 +56,46 @@ class ComponentMakeCommand extends GeneratorCommand
      */
     protected function createObserver()
     {
+        $observerClass = $this->parseClass($this->option('observer'));
+
+        //$this->info('observer:' . $observerClass);
+
         $this->call('make:observer', [
-            'name' => $this->argument('name') . 'Observer',
+            'name' => $observerClass,
         ]);
+    }
+
+    protected function createModel()
+    {
+        $modelClass = $this->parseClass($this->option('model'));
+
+        //$this->info('model:' . $modelClass);
+
+        $this->call('make:model', [
+            'name' => $modelClass,
+        ]);
+    }
+
+    /**
+     * Get the fully-qualified class name.
+     *
+     * @param string $class
+     *
+     * @return string
+     */
+    protected function parseClass($class)
+    {
+        if (preg_match('([^A-Za-z0-9_/\\\\])', $class)) {
+            throw new InvalidArgumentException('Model name contains invalid characters.');
+        }
+
+        $class = trim(str_replace('/', '\\', $class), '\\');
+
+        if (!Str::startsWith($class, $rootNamespace = $this->laravel->getNamespace())) {
+            $class = $rootNamespace . $class;
+        }
+
+        return $class;
     }
 
     /**
@@ -73,12 +117,8 @@ class ComponentMakeCommand extends GeneratorCommand
      */
     protected function buildClass($name)
     {
-        $observerClass = $this->laravel->getNamespace()
-            . 'Observers\\'
-            . $this->argument('name') . 'Observer';
-
         $observer = $this->option('observer')
-            ? $observerClass
+            ? $this->parseClass($this->option('observer'))
             : \Sco\Admin\Component\Observer::class;
 
         return str_replace(
@@ -107,13 +147,18 @@ class ComponentMakeCommand extends GeneratorCommand
     {
         return [
             [
-                'observer', 'o', InputOption::VALUE_NONE,
-                'Create a new permission observer for the component',
+                'observer', 'o', InputOption::VALUE_OPTIONAL,
+                'Generate a new access observer for the component.',
             ],
             [
                 'force', null, InputOption::VALUE_NONE,
-                'Create the class even if the component already exists.',
+                'Generate the class even if the component already exists.',
             ],
+            [
+                'model', 'm', InputOption::VALUE_OPTIONAL,
+                'Generate a model for the component.',
+            ],
+
         ];
     }
 }
