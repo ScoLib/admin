@@ -31,24 +31,11 @@
 
                 <div class="col-xs-12 col-sm-8">
                     <slot :name="element.key" :element="element">
-                        <el-select
+                        <v-select
                                 v-if="element.type == 'select'"
-                                placeholder="请选择"
-                                :class="element.multiple ? 'el-select-multi' : ''"
-                                :popper-class="element.popperClass"
-                                :name="element.key"
-                                :size="element.size"
-                                :disabled="element.disabled"
-                                :multiple="element.multiple"
-                                filterable
+                                :element="element"
                                 v-model="currentValue[element.key]">
-                            <el-option
-                                    :value="option.value"
-                                    :key="option.value"
-                                    :label="option.label"
-                                    v-for="option in element.options">
-                            </el-option>
-                        </el-select>
+                        </v-select>
 
                         <el-radio-group
                                 v-else-if="element.type == 'radio'"
@@ -204,9 +191,10 @@
 </template>
 
 <script>
-    import vFile from './elements/file'
-    import vImage from './elements/image'
-    import vImages from './elements/images'
+    import vFile from './elements/file.vue'
+    import vImage from './elements/image.vue'
+    import vImages from './elements/images.vue'
+    import vSelect from './elements/select.vue'
 
     export default {
         name: 'vForm',
@@ -221,6 +209,7 @@
             vFile,
             vImage,
             vImages,
+            vSelect,
         },
         props: {
             elements: {

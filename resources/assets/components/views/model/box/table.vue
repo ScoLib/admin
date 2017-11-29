@@ -55,9 +55,9 @@
 </template>
 
 <script>
-    import vColumn from '../../../components/column.js'
+    import vColumn from '../column.js'
     import ActionColumn from '../action-column.vue'
-    import mixins from '../mixins'
+    import mixins from '../../../../mixins/get-config'
     import Viewer from 'v-viewer';
     import vHeader from './header.vue'
     Vue.use(Viewer);

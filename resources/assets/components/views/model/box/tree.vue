@@ -36,7 +36,7 @@
 </template>
 
 <script>
-    import mixins from '../mixins'
+    import mixins from '../../../../mixins/get-config'
     import vHeader from './header.vue'
     import Subtree from './subtree.vue'
 

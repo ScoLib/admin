@@ -24,9 +24,12 @@
     import vTable from './box/table.vue'
     import vTree from './box/tree.vue'
     import vImage from './box/image.vue'
-    import mixins from './mixins'
+    import getConfig from '../../../mixins/get-config'
 
     export default {
+        mixins: [
+            getConfig
+        ],
         components: {
             vTable,
             vTree,
@@ -38,9 +41,6 @@
 
             }
         },
-        mixins: [
-            mixins
-        ],
         computed: {
 
         },

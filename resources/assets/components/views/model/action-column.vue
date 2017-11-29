@@ -32,11 +32,11 @@
 </template>
 
 <script>
-    import mixins from './mixins'
+    import getConfig from '../../../mixins/get-config'
 
     export default {
         mixins: [
-            mixins
+            getConfig
         ],
         data() {
             return {}

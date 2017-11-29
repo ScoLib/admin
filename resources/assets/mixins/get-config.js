@@ -1,4 +1,4 @@
-import store from '../../store'
+import store from '../store/index'
 
 const setTitle = (title) => {
     store.commit('setMetaTitle', title);

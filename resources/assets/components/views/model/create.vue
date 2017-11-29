@@ -49,12 +49,12 @@
 </template>
 
 <script>
-    import vForm from '../../components/form.vue';
-    import mixins from './mixins'
+    import vForm from './form.vue';
+    import getConfig from '../../../mixins/get-config'
 
     export default {
         mixins: [
-            mixins
+            getConfig
         ],
         components: {
             vForm

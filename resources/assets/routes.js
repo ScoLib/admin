@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import UrlPrefix from './util/url-prefix'
-import Layout from './components/layout'
+import Layout from './components/layouts/index.vue'
 
 Vue.use(UrlPrefix);
 
@@ -13,7 +13,7 @@ let defRoutes = [
     {
         path: '/',
         component (resolve) {
-            require(['./views/dashboard.vue'], resolve);
+            require(['./components/views/dashboard.vue'], resolve);
         },
         name: 'admin.dashboard',
         meta: {
@@ -21,9 +21,19 @@ let defRoutes = [
         }
     },
     {
+        path: `/${prefix}/403`,
+        component (resolve) {
+            require(['./components/views/error.vue'], resolve);
+        },
+        name: 'admin.403',
+        meta: {
+            title: '403 Forbidden',
+        },
+    },
+    {
         path: '404',
         component (resolve) {
-            require(['./views/errors/404.vue'], resolve);
+            require(['./components/views/error.vue'], resolve);
         },
         name: 'admin.404',
         meta: {
@@ -33,7 +43,7 @@ let defRoutes = [
     {
         path: `500`,
         component (resolve) {
-            require(['./views/errors/500.vue'], resolve);
+            require(['./components/views/error.vue'], resolve);
         },
         name: 'admin.500',
         meta: {
@@ -43,7 +53,7 @@ let defRoutes = [
     {
         path: ':model/:id/edit',
         component (resolve) {
-            require(['./views/model/edit.vue'], resolve);
+            require(['./components/views/model/edit.vue'], resolve);
         },
         name: 'admin.model.edit',
         meta: {
@@ -53,7 +63,7 @@ let defRoutes = [
     {
         path: ':model/create',
         component (resolve) {
-            require(['./views/model/create.vue'], resolve);
+            require(['./components/views/model/create.vue'], resolve);
         },
         name: 'admin.model.create',
         meta: {
@@ -63,7 +73,7 @@ let defRoutes = [
     {
         path: ':model',
         component (resolve) {
-            require(['./views/model/index.vue'], resolve);
+            require(['./components/views/model/index.vue'], resolve);
         },
         name: 'admin.model.index',
         meta: {
@@ -78,21 +88,11 @@ export default [
     {
         path: `/${prefix}/login`,
         component (resolve) {
-            require(['./views/login.vue'], resolve);
+            require(['./components/layouts/login.vue'], resolve);
         },
         name: 'admin.login',
         meta: {
             title: '登录',
-        },
-    },
-    {
-        path: `/${prefix}/403`,
-        component (resolve) {
-            require(['./views/errors/403.vue'], resolve);
-        },
-        name: 'admin.403',
-        meta: {
-            title: '403 Forbidden',
         },
     },
     {
