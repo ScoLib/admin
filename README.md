@@ -47,16 +47,16 @@ $ php artisan vendor:publish --provider="Sco\Admin\Providers\ResourcesServicePro
 ### NPM
 ```bash
 $ npm install\
-  bootstrap@"^3.3.7"\
-  element-ui@"^2.*"\
-  font-awesome@"^4.7.0"\
-  jquery-slimscroll@"^1.3.8"\
-  nestable2@"^1.*"\
-  v-viewer@"^0.*"\
-  vue-i18n@"^6.*"\
-  vue-progressbar@"^0.*"\
-  vue-router@"^2.*"\
-  vuex@"^2.*"\
+  bootstrap\
+  element-ui\
+  font-awesome\
+  jquery-slimscroll\
+  nestable2\
+  v-viewer\
+  vue-i18n\
+  vue-progressbar\
+  vue-router\
+  vuex\
   --save-dev
 ```
 
