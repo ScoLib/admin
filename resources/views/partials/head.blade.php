@@ -6,6 +6,6 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 @yield('meta')
 
-<link rel="stylesheet" href="{{ mix('vendor/admin/css/app.css') }}">
+<link rel="stylesheet" href="{{ mix('css/admin.css') }}">
 @yield('css')
 
