@@ -102,6 +102,11 @@ abstract class Column implements ColumnInterface
         return $this;
     }
 
+    /**
+     * The column options
+     *
+     * @return array
+     */
     public function toArray()
     {
         return [
@@ -115,6 +120,13 @@ abstract class Column implements ColumnInterface
         ];
     }
 
+    /**
+     * Set the column default value
+     *
+     * @param mixed $value
+     *
+     * @return $this
+     */
     public function setDefaultValue($value)
     {
         $this->defaultValue = $value;
@@ -127,6 +139,11 @@ abstract class Column implements ColumnInterface
         return $this->defaultValue;
     }
 
+    /**
+     * Get the column value
+     *
+     * @return string|static
+     */
     public function getValue()
     {
         $value = $this->getModelValue();

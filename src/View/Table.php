@@ -18,6 +18,8 @@ class Table extends View
 
     public function __construct()
     {
+        parent::__construct();
+
         $this->columns = new Collection();
     }
 

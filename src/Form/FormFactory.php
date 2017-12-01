@@ -7,7 +7,7 @@ use Sco\Admin\Contracts\Form\FormFactoryInterface;
 use Sco\Admin\Traits\AliasBinder;
 
 /**
- * @method static \Sco\Admin\Form\Form form(array $elements = [])
+ * @method static Form form(array $elements = [])
  */
 class FormFactory implements FormFactoryInterface
 {

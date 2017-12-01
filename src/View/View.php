@@ -23,6 +23,11 @@ abstract class View implements ViewInterface, Arrayable
 
     protected $type;
 
+    public function __construct()
+    {
+
+    }
+
     public function setRepository(RepositoryInterface $repository)
     {
         $this->repository = $repository;
