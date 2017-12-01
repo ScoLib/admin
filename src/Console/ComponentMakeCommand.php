@@ -144,6 +144,10 @@ class ComponentMakeCommand extends GeneratorCommand
                 'force', null, InputOption::VALUE_NONE,
                 'Generate the class even if the component already exists.',
             ],
+            [
+                'model', 'm', InputOption::VALUE_OPTIONAL,
+                'Generate a model for the component.',
+            ],
         ];
     }
 }

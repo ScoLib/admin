@@ -40,9 +40,11 @@ class DummyClass extends Component
     }
 
     /**
+     * @param mixed $id
+     *
      * @return \Sco\Admin\Contracts\Form\FormInterface
      */
-    public function callEdit(): FormInterface
+    public function callEdit($id): FormInterface
     {
         //
     }
@@ -52,6 +54,6 @@ class DummyClass extends Component
      */
     public function callCreate(): FormInterface
     {
-        //
+        return $this->callEdit(null);
     }
 }
