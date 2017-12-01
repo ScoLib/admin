@@ -26,6 +26,11 @@ class DummyClass extends Component
      */
     protected $observer = 'DummyObserver';
 
+    public function model()
+    {
+        return 'DummyModel';
+    }
+
     /**
      * @return \Sco\Admin\Contracts\View\ViewInterface
      */

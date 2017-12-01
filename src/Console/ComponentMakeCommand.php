@@ -105,8 +105,14 @@ class ComponentMakeCommand extends GeneratorCommand
             ? $this->parseClass($this->option('observer'))
             : \Sco\Admin\Component\Observer::class;
 
+        $model = $this->option('model')
+            ? $this->parseClass($this->option('model'))
+            : '';
+
         return str_replace(
-            'DummyObserver', $observer, parent::buildClass($name)
+            ['DummyObserver', 'DummyModel'],
+            [$observer, $model],
+            parent::buildClass($name)
         );
     }
 

@@ -19,9 +19,5 @@ return [
         'directory'  => 'admin/uploads',
     ],
 
-    'components' => [
-        // Model => Component
-    ],
-    'navigation' => [
-    ],
+    'components' => app_path('Components'),
 ];

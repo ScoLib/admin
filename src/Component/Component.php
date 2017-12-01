@@ -3,6 +3,7 @@
 namespace Sco\Admin\Component;
 
 use BadMethodCallException;
+use Illuminate\Database\Eloquent\Model;
 use InvalidArgumentException;
 use Illuminate\Foundation\Application;
 use Sco\Admin\Component\Concerns\HasAccess;
@@ -54,14 +55,17 @@ abstract class Component implements
      */
     protected static $dispatcher;
 
-    public function __construct(Application $app, $modelClass = null)
+    abstract public function model();
+
+    public function __construct(Application $app, RepositoryInterface $repository)
     {
-        $this->app = $app;
+        $this->app        = $app;
+        $this->repository = $repository;
 
-        $this->repository = $this->app->make(RepositoryInterface::class);
-        $this->repository->setClass($modelClass);
+        $this->makeModel();
 
-        $this->model = $this->repository->getModel();
+        $this->repository->setModel($this->getModel());
+
         if (!$this->name) {
             $this->setDefaultName();
         }
@@ -74,15 +78,45 @@ abstract class Component implements
         $this->name = $this->getModelClassName();
     }
 
+    /**
+     * @return string
+     */
     protected function getModelClassName()
     {
-        return snake_case(
-            str_plural(
+        return snake_case( // 蛇形命名
+            str_plural( // 复数
                 class_basename(
                     get_class($this->getModel())
                 )
             )
         );
+    }
+
+    protected function makeModel()
+    {
+        $class = $this->model();
+        if (empty($class)) {
+            throw new InvalidArgumentException(
+                sprintf(
+                    'The component(%s) method "model()" not found value',
+                    get_class($this)
+                )
+            );
+        }
+
+        $model = $this->app->make($this->model());
+
+        if (!($model instanceof Model)) {
+            throw new InvalidArgumentException(
+                sprintf(
+                    "Class %s must be an instance of %s",
+                    $this->model(),
+                    Model::class
+                )
+            );
+        }
+
+        return $this->model = $model;
     }
 
     public function getName()
@@ -270,7 +304,7 @@ abstract class Component implements
     protected function bootTraits()
     {
         foreach (class_uses_recursive($this) as $trait) {
-            if (method_exists($this, $method = 'boot'.class_basename($trait))) {
+            if (method_exists($this, $method = 'boot' . class_basename($trait))) {
                 $this->$method();
             }
         }
