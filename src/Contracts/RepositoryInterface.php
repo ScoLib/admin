@@ -4,7 +4,7 @@ namespace Sco\Admin\Contracts;
 
 use Illuminate\Database\Eloquent\Model;
 
-interface RepositoryInterface
+interface RepositoryInterface extends WithModel
 {
     public function getClass();
 
@@ -49,10 +49,6 @@ interface RepositoryInterface
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function getQuery();
-
-    public function addGlobalScope($scopes);
-
-    public function getGlobalScopes();
 
     /**
      * @param $id

@@ -2,9 +2,10 @@
 
 namespace Sco\Admin\Contracts\View;
 
+use Sco\Admin\Contracts\Initializable;
 use Sco\Admin\Contracts\RepositoryInterface;
 
-interface ViewInterface
+interface ViewInterface extends Initializable
 {
     /**
      * @param \Sco\Admin\Contracts\RepositoryInterface $repository

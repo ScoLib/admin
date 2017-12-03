@@ -73,6 +73,11 @@ abstract class Component implements
         $this->bootIfNotBooted();
     }
 
+    public function initialize()
+    {
+        //
+    }
+
     protected function setDefaultName()
     {
         $this->name = $this->getModelClassName();
@@ -172,6 +177,9 @@ abstract class Component implements
                 )
             );
         }
+
+        //$view->setComponent($this);
+        $view->initialize();
 
         return $view;
     }

@@ -10,7 +10,7 @@ use InvalidArgumentException;
 use Sco\Admin\Contracts\RepositoryInterface;
 use Sco\Admin\Contracts\WithModel;
 
-class Repository implements RepositoryInterface, WithModel
+class Repository implements RepositoryInterface
 {
     protected $app;
 
@@ -22,8 +22,6 @@ class Repository implements RepositoryInterface, WithModel
     protected $class;
 
     protected $with = [];
-
-    protected $globalScopes = [];
 
     public function __construct(Application $app)
     {
@@ -83,21 +81,8 @@ class Repository implements RepositoryInterface, WithModel
     public function getQuery()
     {
         $model = $this->getModel();
-        foreach ($this->getGlobalScopes() as $identifier => $scope) {
-            $model::addGlobalScope($identifier, $scope);
-        }
 
         return $model->query()->with($this->getWith());
-    }
-
-    public function addGlobalScope($scopes)
-    {
-        $this->globalScopes = $scopes;
-    }
-
-    public function getGlobalScopes()
-    {
-        return $this->globalScopes;
     }
 
     public function find($id)

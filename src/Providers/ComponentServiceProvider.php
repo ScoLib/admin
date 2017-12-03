@@ -49,6 +49,11 @@ class ComponentServiceProvider extends ServiceProvider
         });
     }
 
+    /**
+     * load component class from the paths
+     *
+     * @param mixed $paths
+     */
     protected function loadComponents($paths)
     {
         $paths = array_unique(is_array($paths) ? $paths : (array)$paths);
@@ -78,6 +83,11 @@ class ComponentServiceProvider extends ServiceProvider
         }
     }
 
+    /**
+     * register the component class
+     *
+     * @param string $class
+     */
     protected function registerComponent($class)
     {
         $component = $this->app->make($class);
@@ -91,9 +101,7 @@ class ComponentServiceProvider extends ServiceProvider
             );
         }
 
-        if ($component instanceof Initializable) {
-            $component->initialize();
-        }
+        $component->initialize();
 
         if ($component instanceof WithNavigation) {
             $component->addToNavigation();
