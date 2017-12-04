@@ -4,9 +4,12 @@ namespace Sco\Admin\View;
 
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Collection;
 use Sco\Admin\Contracts\RepositoryInterface;
+use Sco\Admin\Contracts\View\Extensions\ExtensionInterface;
 use Sco\Admin\Contracts\View\ViewInterface;
+use Sco\Admin\View\Extensions\Applies;
+use Sco\Admin\View\Extensions\Filters;
+use Sco\Admin\View\Extensions\Scopes;
 
 abstract class View implements ViewInterface, Arrayable
 {
@@ -20,115 +23,27 @@ abstract class View implements ViewInterface, Arrayable
      */
     protected $repository;
 
-    protected $scopes;
-
-    protected $applies;
-
-    protected $filters;
-
     protected $type;
 
     protected $extensions;
 
     public function __construct()
     {
-        $this->scopes  = new Collection();
-        $this->applies = new Collection();
-        $this->filters = new Collection();
+        $this->extensions = new Extensions();
+
+        $this->extend('scopes', new Scopes());
+        $this->extend('applies', new Applies());
+        $this->extend('filters', new Filters());
     }
 
     public function initialize()
     {
-        //$this->extensions->initialize();
+        $this->extensions->initialize();
     }
 
-    /**
-     * @return \Illuminate\Support\Collection
-     */
-    public function getFilters(): Collection
+    public function extend($name, ExtensionInterface $extension)
     {
-        return $this->filters;
-    }
-
-    /**
-     * @param mixed $filters
-     *
-     * @return $this
-     */
-    public function setFilters($filters)
-    {
-        $filters = is_array($filters) ? $filters : (array)$filters;
-        foreach ($filters as $filter) {
-            $this->addFilter($filter);
-        }
-
-        return $this;
-    }
-
-    public function addFilter($filter)
-    {
-        $this->filters->push($filter);
-    }
-
-    /**
-     * @return \Illuminate\Support\Collection
-     */
-    public function getScopes(): Collection
-    {
-        return $this->scopes;
-    }
-
-    /**
-     * @param mixed $scopes
-     *
-     * @return $this
-     */
-    public function setScopes($scopes)
-    {
-        $scopes = is_array($scopes) ? $scopes : (array)$scopes;
-        foreach ($scopes as $scope) {
-            $this->addScope($scope);
-        }
-
-        return $this;
-    }
-
-
-    public function addScope($scope)
-    {
-        $this->scopes->push($scope);
-
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getApplies()
-    {
-        return $this->applies;
-    }
-
-    /**
-     * @param mixed $applies
-     *
-     * @return $this
-     */
-    public function setApplies($applies)
-    {
-        $applies = is_array($applies) ? $applies : (array)$applies;
-        foreach ($applies as $apply) {
-            $this->addApply($apply);
-        }
-
-        return $this;
-    }
-
-    public function addApply($apply)
-    {
-        $this->applies->push($apply);
-
-        return $this;
+        $this->extensions->put($name, $extension);
     }
 
     public function setRepository(RepositoryInterface $repository)
@@ -197,5 +112,23 @@ abstract class View implements ViewInterface, Arrayable
         return [
             'type' => $this->type,
         ];
+    }
+
+    public function __call($name, $parameters)
+    {
+        dump($name, $parameters);
+        $method = substr($name, 3);
+
+        dump($method, str_plural($method));
+        if (starts_with($name, 'get') && $this->extensions->has(str_plural($method))) {
+            return $this->extensions->get($method);
+        }
+
+        if (starts_with($name, 'set') && $this->extensions->has($method)) {
+            $extension = $this->extensions->get($method);
+
+        }
+
+
     }
 }
