@@ -12,12 +12,13 @@ use Sco\Admin\View\Columns\Tags;
 use Sco\Admin\View\Columns\Text;
 
 /**
- * @method static Text text($name, $label)
- * @method static DateTime datetime($name, $label)
- * @method static Image image($name, $label)
- * @method static Link link($name, $label)
- * @method static Custom custom($name, $label, \Closure $callback = null)
- * @method static Tags tags($name, $label)
+ * @method static Text text($name, $label) text type column
+ * @method static DateTime datetime($name, $label) datetime type column
+ * @method static Image image($name, $label) image type column
+ * @method static Link link($name, $label) link type column
+ * @method static Custom custom($name, $label, \Closure $callback = null) custom type
+ *         column
+ * @method static Tags tags($name, $label) tags type column
  */
 class ColumnFactory implements ColumnFactoryInterface
 {

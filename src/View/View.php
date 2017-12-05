@@ -10,7 +10,22 @@ use Sco\Admin\Contracts\View\ViewInterface;
 use Sco\Admin\View\Extensions\Applies;
 use Sco\Admin\View\Extensions\Filters;
 use Sco\Admin\View\Extensions\Scopes;
+use Sco\Admin\Contracts\View\Filters\FilterInterface;
 
+/**
+ * @method Scopes getScopes() get query scopes
+ * @method $this setScopes($scope, ...$scopes) set query scopes
+ * @method $this addScope($scope, $parameter, ...$parameters) add query scope
+ *
+ * @method Applies getApplies() get query applies
+ * @method $this setApplies(\Closure $apply, ...$applies) set query applies
+ * @method $this addApply(\Closure $apply) add query apply
+ *
+ * @method Filters getFilters()
+ * @method $this setFilters(FilterInterface $filter, ...$filters)
+ * @method $this addFilter(FilterInterface $filter)
+ *
+ */
 abstract class View implements ViewInterface, Arrayable
 {
     /**
@@ -116,19 +131,25 @@ abstract class View implements ViewInterface, Arrayable
 
     public function __call($name, $parameters)
     {
-        dump($name, $parameters);
-        $method = substr($name, 3);
+        $method = snake_case(substr($name, 3));
 
-        dump($method, str_plural($method));
-        if (starts_with($name, 'get') && $this->extensions->has(str_plural($method))) {
+        if (starts_with($name, 'get') && $this->extensions->has($method)) {
             return $this->extensions->get($method);
         }
 
         if (starts_with($name, 'set') && $this->extensions->has($method)) {
             $extension = $this->extensions->get($method);
+            call_user_func_array([$extension, 'set'], $parameters);
 
+            return $this;
         }
 
+        if (starts_with($name, 'add') && $this->extensions->has(str_plural($method))) {
+            $extension = $this->extensions->get(str_plural($method));
+            call_user_func_array([$extension, 'add'], $parameters);
+            return $this;
+        }
 
+        throw new \BadMethodCallException("Call to undefined method [{$name}]");
     }
 }
