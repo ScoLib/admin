@@ -58,7 +58,8 @@
                 "AdminElement": "Sco\\Admin\\Facades\\AdminElement",
                 "AdminForm": "Sco\\Admin\\Facades\\AdminForm",
                 "AdminNavigation": "Sco\\Admin\\Facades\\AdminNavigation",
-                "AdminView": "Sco\\Admin\\Facades\\AdminView"
+                "AdminView": "Sco\\Admin\\Facades\\AdminView",
+                "AdminViewFilter": "Sco\\Admin\\Facades\\AdminViewFilter"
             }
         }
     },

@@ -8,11 +8,13 @@ use Sco\Admin\Contracts\Form\ElementFactoryInterface;
 use Sco\Admin\Contracts\Form\FormFactoryInterface;
 use Sco\Admin\Contracts\RepositoryInterface;
 use Sco\Admin\Contracts\View\ColumnFactoryInterface;
+use Sco\Admin\Contracts\View\FilterFactoryInterface;
 use Sco\Admin\Contracts\View\ViewFactoryInterface;
 use Sco\Admin\Form\ElementFactory;
 use Sco\Admin\Form\FormFactory;
 use Sco\Admin\Repositories\Repository;
 use Sco\Admin\View\ColumnFactory;
+use Sco\Admin\View\FilterFactory;
 use Sco\Admin\View\ViewFactory;
 
 class AdminServiceProvider extends ServiceProvider
@@ -87,5 +89,10 @@ class AdminServiceProvider extends ServiceProvider
             return new ColumnFactory();
         });
         $this->app->alias('admin.column.factory', ColumnFactoryInterface::class);
+
+        $this->app->singleton('admin.view.filter.factory', function () {
+            return new FilterFactory();
+        });
+        $this->app->alias('admin.view.filter.factory', FilterFactoryInterface::class);
     }
 }

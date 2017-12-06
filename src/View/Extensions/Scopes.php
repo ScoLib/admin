@@ -19,7 +19,9 @@ class Scopes extends Extension
     public function apply(Builder $query)
     {
         $this->each(function ($scope) use ($query) {
-
+            $method = array_shift($scope);
+            $parameters = $scope;
+            call_user_func_array([$query, $method], $parameters);
         });
     }
 }
