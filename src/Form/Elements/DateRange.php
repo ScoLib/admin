@@ -21,15 +21,10 @@ class DateRange extends Date
 
     public function __construct($startName, $endName, $title)
     {
+        parent::__construct($startName . '_' . $endName, $title);
+
         $this->startName = $startName;
         $this->endName   = $endName;
-
-        parent::__construct('', $title);
-    }
-
-    public function getName()
-    {
-        return $this->getStartName() . '_' . $this->getEndName();
     }
 
     public function getStartName()

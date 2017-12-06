@@ -14,7 +14,7 @@ class File extends NamedElement
 
     protected $multiSelect = false;
 
-    protected $multiFile = true;
+    //protected $multiFile = true;
 
     protected $showFileList = true;
 

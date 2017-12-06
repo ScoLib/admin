@@ -32,37 +32,93 @@ abstract class Column implements ColumnInterface
 
     public function __construct($name, $label)
     {
-        $this->name  = $name;
-        $this->label = $label;
+        $this->setName($name)->setLabel($label);
     }
 
+    /**
+     * @return string
+     */
     public function getName()
     {
         return $this->name;
     }
 
-    public function setWidth($width)
+    /**
+     * @param string $name
+     *
+     * @return Column
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLabel()
+    {
+        return $this->label;
+    }
+
+    /**
+     * @param string $label
+     *
+     * @return Column
+     */
+    public function setLabel(string $label)
+    {
+        $this->label = $label;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getWidth()
+    {
+        return $this->width;
+    }
+
+    /**
+     * @param int $width
+     *
+     * @return Column
+     */
+    public function setWidth(int $width)
     {
         $this->width = $width;
-
         return $this;
     }
 
-    public function setMinWidth($width)
+    /**
+     * @return int
+     */
+    public function getMinWidth()
     {
-        $this->minWidth = $width;
+        return $this->minWidth;
+    }
 
+    /**
+     * @param int $minWidth
+     *
+     * @return Column
+     */
+    public function setMinWidth(int $minWidth)
+    {
+        $this->minWidth = $minWidth;
         return $this;
     }
 
-    public function isSortable()
+    public function sortable()
     {
         $this->sortable = true;
 
         return $this;
     }
 
-    public function isCustomSortable()
+    public function customSortable()
     {
         $this->sortable = 'custom';
         // TODO
@@ -71,7 +127,7 @@ abstract class Column implements ColumnInterface
         return $this;
     }
 
-    public function isFixed()
+    public function enableFixed()
     {
         $this->fixed = true;
 
@@ -90,15 +146,22 @@ abstract class Column implements ColumnInterface
         return $this;
     }
 
+    /**
+     * @return string
+     */
     public function getTemplate()
     {
         return $this->template;
     }
 
-    public function setTemplate($template)
+    /**
+     * @param string $template
+     *
+     * @return Column
+     */
+    public function setTemplate(string $template)
     {
         $this->template = $template;
-
         return $this;
     }
 
@@ -111,10 +174,10 @@ abstract class Column implements ColumnInterface
     {
         return [
             'name'     => $this->getName(),
-            'label'    => $this->label,
-            'width'    => $this->width,
+            'label'    => $this->getLabel(),
+            'width'    => $this->getWidth(),
             'fixed'    => $this->fixed,
-            'minWidth' => $this->minWidth,
+            'minWidth' => $this->getMinWidth(),
             'sortable' => $this->sortable,
             'template' => $this->getTemplate(),
         ];

@@ -2,7 +2,7 @@
 
 namespace Sco\Admin\View\Filters;
 
-class DateTimeRange
+class DateTimeRange extends DateRange
 {
-
+    protected $type = 'datetimerange';
 }

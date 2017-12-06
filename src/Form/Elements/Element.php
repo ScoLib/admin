@@ -27,8 +27,7 @@ abstract class Element implements ElementInterface
 
     public function __construct($name, $title)
     {
-        $this->name  = $name;
-        $this->title = $title;
+        $this->setName($name)->setTitle($title);
     }
 
     public function getType()

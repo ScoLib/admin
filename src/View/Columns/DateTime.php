@@ -35,6 +35,17 @@ class DateTime extends Column
     }
 
     /**
+     * @param string $format
+     *
+     * @return DateTime
+     */
+    public function setFormat(string $format)
+    {
+        $this->format = $format;
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getTimezone()
@@ -47,21 +58,9 @@ class DateTime extends Column
     }
 
     /**
-     * @param string $format
-     *
-     * @return $this
-     */
-    public function setFormat($format)
-    {
-        $this->format = $format;
-
-        return $this;
-    }
-
-    /**
      * @param string $timezone
      *
-     * @return $this
+     * @return DateTime
      */
     public function setTimezone($timezone)
     {

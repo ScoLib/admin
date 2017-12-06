@@ -21,7 +21,7 @@ class Select extends NamedElement
 
     protected $optionsValueAttribute;
 
-    public function __construct($name, $title, $options)
+    public function __construct($name, $title, $options = null)
     {
         parent::__construct($name, $title);
 

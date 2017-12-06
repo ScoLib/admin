@@ -7,7 +7,18 @@ use Sco\Admin\Contracts\View\Filters\FilterInterface;
 
 abstract class Filter implements FilterInterface
 {
+    protected $type;
+
     protected $value;
+
+    protected $name;
+
+    protected $title;
+
+    public function __construct($name, $title)
+    {
+        $this->setName($name)->setTitle($title);
+    }
 
     /**
      * @return mixed
@@ -29,7 +40,43 @@ abstract class Filter implements FilterInterface
         return $this;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
 
+    /**
+     * @param mixed $name
+     *
+     * @return Filter
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * @param mixed $title
+     *
+     * @return Filter
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+        return $this;
+    }
 
     public function isActive()
     {

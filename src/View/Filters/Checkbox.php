@@ -2,7 +2,7 @@
 
 namespace Sco\Admin\View\Filters;
 
-class Checkbox
+class Checkbox extends Select
 {
-
+    protected $type = 'checkbox';
 }

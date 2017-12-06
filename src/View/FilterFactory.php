@@ -12,7 +12,10 @@ use Sco\Admin\View\Filters\Radio;
 use Sco\Admin\View\Filters\Select;
 
 /**
- * @method static Radio radio()
+ * @method static Input input($name, $title) input form
+ * @method static Radio radio($name, $title, $options = null) radio form
+ * @method static Select select($name, $title, $options = null) select form
+ * @method static Checkbox checkbox($name, $title, $options = null) checkbox form
  */
 class FilterFactory implements FilterFactoryInterface
 {

@@ -15,18 +15,44 @@ interface ColumnInterface extends
 {
     public function getName();
 
-    public function setWidth($width);
+    /**
+     * @param string $name
+     *
+     * @return Column
+     */
+    public function setName($name);
 
-    public function setMinWidth($width);
+    /**
+     * @return string
+     */
+    public function getLabel();
 
-    public function isSortable();
+    /**
+     * @param string $label
+     *
+     * @return Column
+     */
+    public function setLabel(string $label);
 
-    public function isCustomSortable();
+    public function getWidth();
 
-    public function isFixed();
+    public function setWidth(int $width);
+
+    public function getMinWidth();
+
+    public function setMinWidth(int $width);
+
+    public function sortable();
+
+    public function customSortable();
+
+    public function enableFixed();
 
     public function getValue();
 
+    /**
+     * @return string
+     */
     public function getTemplate();
 
     /**
@@ -34,5 +60,5 @@ interface ColumnInterface extends
      *
      * @return $this
      */
-    public function setTemplate($template);
+    public function setTemplate(string $template);
 }

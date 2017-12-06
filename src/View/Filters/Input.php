@@ -2,7 +2,7 @@
 
 namespace Sco\Admin\View\Filters;
 
-class Input
+class Input extends Filter
 {
-
+    protected $type = 'input';
 }
