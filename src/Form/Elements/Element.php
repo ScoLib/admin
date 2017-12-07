@@ -181,7 +181,7 @@ abstract class Element implements ElementInterface
     public function toArray()
     {
         return [
-            'key'      => $this->getName(),
+            'name'     => $this->getName(),
             'title'    => $this->getTitle(),
             'type'     => $this->getType(),
             'disabled' => $this->isDisabled(),

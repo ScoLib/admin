@@ -92,4 +92,28 @@ abstract class Filter implements FilterInterface
     {
 
     }
+
+    public function toArray()
+    {
+        return [
+            'name'  => $this->getName(),
+            'title' => $this->getTitle(),
+            'type'  => $this->type,
+        ];
+    }
+
+    public function jsonSerialize()
+    {
+        return $this->toArray();
+    }
+
+    public function toJson($options = 0)
+    {
+        return json_encode($this->jsonSerialize(), $options);
+    }
+
+    public function __toString()
+    {
+        return $this->toJson();
+    }
 }

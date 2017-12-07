@@ -59,7 +59,7 @@ class Checkbox extends Select
 
     public function getValue()
     {
-        $value = parent::getValue();
+        $value = $this->getValueFromModel();
         if (empty($value)) {
             return [];
         }

@@ -1,3 +1,8 @@
+<style>
+    .el-select-multi {
+        width: 100%;
+    }
+</style>
 <template>
     <el-select
             placeholder="请选择"
@@ -19,29 +24,18 @@
 </template>
 
 <script>
+    import vModel from '../../../../mixins/model';
+
     export default {
         name: 'vSelect',
         data() {
-            return {
-                currentValue: this.value,
-            }
+            return {}
         },
+        mixins: [
+            vModel
+        ],
         props: {
-            element:Object,
-            value: {
-                type: String,
-                default: '',
-            },
+            element: Object,
         },
-        watch: {
-            value(val) {
-//                console.log('value', val);
-                this.currentValue = val;
-            },
-            currentValue(val) {
-//                console.log('current', val);
-                this.$emit('input', val);
-            }
-        }
     }
 </script>

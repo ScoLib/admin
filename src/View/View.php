@@ -125,7 +125,8 @@ abstract class View implements ViewInterface, Arrayable
     public function toArray()
     {
         return [
-            'type' => $this->type,
+            'type'    => $this->type,
+            'filters' => $this->getFilters(),
         ];
     }
 

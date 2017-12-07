@@ -1,15 +1,14 @@
 <style>
     .el-upload__input {
-        display:none!important;
+        display: none !important;
     }
+
     .el-switch .el-checkbox-group {
         margin: 7px 0px;
     }
+
     .el-checkbox {
         margin-bottom: 0px;
-    }
-    .el-select-multi {
-        width: 100%;
     }
 </style>
 
@@ -20,27 +19,28 @@
             <template v-if="element.type == 'hidden'">
                 <el-input
                         :type="element.type"
-                        :name="element.key"
+                        :name="element.name"
                         :disabled="element.disabled"
                         :readonly="element.readonly"
-                        v-model="currentValue[element.key]">
+                        v-model="currentValue[element.name]">
                 </el-input>
             </template>
-            <div :class="['form-group', errors[element.key] ? 'has-error' : '']" v-else>
-                <label class="col-xs-12 col-sm-3 no-padding-right control-label">{{ element.title }}</label>
+            <div :class="['form-group', errors[element.name] ? 'has-error' : '']" v-else>
+                <label class="col-xs-12 col-sm-3 no-padding-right control-label">{{
+                    element.title }}</label>
 
                 <div class="col-xs-12 col-sm-8">
-                    <slot :name="element.key" :element="element">
+                    <slot :name="element.name" :element="element">
                         <v-select
                                 v-if="element.type == 'select'"
                                 :element="element"
-                                v-model="currentValue[element.key]">
+                                v-model="currentValue[element.name]">
                         </v-select>
 
                         <el-radio-group
                                 v-else-if="element.type == 'radio'"
                                 :size="element.size"
-                                v-model="currentValue[element.key]">
+                                v-model="currentValue[element.name]">
                             <el-radio
                                     v-for="option in element.options"
                                     :key="option.value"
@@ -50,58 +50,42 @@
                             </el-radio>
                         </el-radio-group>
 
-                        <template v-else-if="element.type == 'checkbox'">
-                            <el-checkbox
-                                    v-if="element.showCheckAll"
-                                    :indeterminate="isIndeterminate[element.key]"
-                                    v-model="checkAll[element.key]"
-                                    @change="handleCheckAllChange($event, element)">
-                                全选
-                            </el-checkbox>
-                            <el-checkbox-group
-                                    :size="element.size"
-                                    @change="handleCheckedChange($event, element)"
-                                    v-model="currentValue[element.key]">
-                                <el-checkbox
-                                        v-for="option in element.options"
-                                        :key="option.value"
-                                        :label="option.value"
-                                        :disabled="option.disabled">
-                                    {{option.label}}
-                                </el-checkbox>
-                            </el-checkbox-group>
-                        </template>
+                        <v-checkbox
+                                v-else-if="element.type == 'checkbox'"
+                                :element="element"
+                                v-model="currentValue[element.name]">
+                        </v-checkbox>
 
                         <el-date-picker
-                            v-else-if="['date', 'datetime', 'daterange', 'datetimerange'].indexOf(element.type) > -1"
-                            v-model="currentValue[element.key]"
-                            :type="element.type"
-                            :disabled="element.disabled"
-                            :readonly="element.readonly"
-                            :editable="element.editable"
-                            :size="element.size"
-                            :format="element.pickerFormat"
-                            :value-format="element.pickerFormat"
-                            placeholder="选择日期时间">
+                                v-else-if="['date', 'datetime', 'daterange', 'datetimerange'].indexOf(element.type) > -1"
+                                v-model="currentValue[element.name]"
+                                :type="element.type"
+                                :disabled="element.disabled"
+                                :readonly="element.readonly"
+                                :editable="element.editable"
+                                :size="element.size"
+                                :format="element.pickerFormat"
+                                :value-format="element.pickerFormat"
+                                placeholder="选择日期时间">
                         </el-date-picker>
 
                         <el-time-picker
-                            v-else-if="['time', 'timerange'].indexOf(element.type) > -1"
-                            v-model="currentValue[element.key]"
-                            :type="element.type"
-                            :is-range="element.isRange"
-                            :disabled="element.disabled"
-                            :readonly="element.readonly"
-                            :editable="element.editable"
-                            :size="element.size"
-                            :format="element.pickerFormat"
-                            :value-format="element.pickerFormat"
-                            placeholder="选择时间">
+                                v-else-if="['time', 'timerange'].indexOf(element.type) > -1"
+                                v-model="currentValue[element.name]"
+                                :type="element.type"
+                                :is-range="element.isRange"
+                                :disabled="element.disabled"
+                                :readonly="element.readonly"
+                                :editable="element.editable"
+                                :size="element.size"
+                                :format="element.pickerFormat"
+                                :value-format="element.pickerFormat"
+                                placeholder="选择时间">
                         </el-time-picker>
 
                         <el-input-number
                                 v-else-if="element.type == 'number'"
-                                v-model="currentValue[element.key]"
+                                v-model="currentValue[element.name]"
                                 :disabled="element.disabled"
                                 :min="element.min"
                                 :max="element.max">
@@ -110,31 +94,31 @@
                         <v-file
                                 v-else-if="element.type == 'file'"
                                 :element="element"
-                                v-model="currentValue[element.key]">
+                                v-model="currentValue[element.name]">
                         </v-file>
 
                         <v-image
                                 v-else-if="element.type == 'image'"
                                 :element="element"
-                                v-model="currentValue[element.key]">
+                                v-model="currentValue[element.name]">
                         </v-image>
 
                         <v-images
                                 v-else-if="element.type == 'images'"
                                 :element="element"
-                                v-model="currentValue[element.key]">
+                                v-model="currentValue[element.name]">
                         </v-images>
 
                         <el-switch
                                 v-else-if="element.type == 'elswitch'"
-                                v-model="currentValue[element.key]"
+                                v-model="currentValue[element.name]"
                                 :active-text="element.text[0]"
                                 :inactive-text="element.text[1]"
                                 :active-color="element.color[0]"
                                 :inactive-color="element.color[1]"
                                 :active-value="element.values[0]"
                                 :inactive-value="element.values[1]"
-                                :name="element.key"
+                                :name="element.name"
                                 :disabled="element.disabled"
                                 :width="element.width">
                         </el-switch>
@@ -144,16 +128,16 @@
                                 :data="element.nodes"
                                 show-checkbox
                                 node-key="id"
-                                :ref="'tree_' + element.key"
+                                :ref="'tree_' + element.name"
                                 default-expand-all
-                                @check-change="setTreeCheckedKeys(element.key)"
-                                :default-checked-keys="getTreeCheckedKeys(element.nodes, currentValue[element.key])">
+                                @check-change="setTreeCheckedKeys(element.name)"
+                                :default-checked-keys="getTreeCheckedKeys(element.nodes, currentValue[element.name])">
                         </el-tree>
 
                         <el-input
                                 v-else-if="element.type == 'textarea'"
                                 :type="element.type"
-                                :name="element.key"
+                                :name="element.name"
                                 :placeholder="element.placeholder ? element.placeholder : element.title"
                                 :disabled="element.disabled"
                                 :readonly="element.readonly"
@@ -161,26 +145,25 @@
                                 :minlength="element.minLength"
                                 :maxlength="element.maxLength"
                                 :autosize="element.autosize"
-                                v-model="currentValue[element.key]">
+                                v-model="currentValue[element.name]">
                         </el-input>
 
-                        <template v-else-if="['text', 'email', 'password'].indexOf(element.type) > -1">
-                            <el-input
-                                    :type="element.type"
-                                    :name="element.key"
-                                    :placeholder="element.placeholder ? element.placeholder : element.title"
-                                    :disabled="element.disabled"
-                                    :readonly="element.readonly"
-                                    :minlength="element.minLength"
-                                    :maxlength="element.maxLength"
-                                    :size="element.size"
-                                    v-model="currentValue[element.key]">
-                            </el-input>
-                        </template>
+                        <el-input
+                                v-else-if="['text', 'email', 'password'].indexOf(element.type) > -1"
+                                :type="element.type"
+                                :name="element.name"
+                                :placeholder="element.placeholder ? element.placeholder : element.title"
+                                :disabled="element.disabled"
+                                :readonly="element.readonly"
+                                :minlength="element.minLength"
+                                :maxlength="element.maxLength"
+                                :size="element.size"
+                                v-model="currentValue[element.name]">
+                        </el-input>
 
                     </slot>
-                    <span class="help-block" v-if="errors[element.key]">
-                    <template v-for="e in errors[element.key]"> {{ e }} </template>
+                    <span class="help-block" v-if="errors[element.name]">
+                    <template v-for="e in errors[element.name]"> {{ e }} </template>
                 </span>
                 </div>
             </div>
@@ -191,37 +174,33 @@
 </template>
 
 <script>
+    import vModel from '../../../mixins/model'
     import vFile from './elements/file.vue'
     import vImage from './elements/image.vue'
     import vImages from './elements/images.vue'
     import vSelect from './elements/select.vue'
+    import vCheckbox from './elements/checkbox.vue'
 
     export default {
         name: 'vForm',
         data() {
-            return {
-                currentValue: this.value,
-                checkAll: [],
-                isIndeterminate: [],
-            }
+            return {}
         },
+        mixins: [
+            vModel
+        ],
         components: {
             vFile,
             vImage,
             vImages,
             vSelect,
+            vCheckbox,
         },
         props: {
             elements: {
                 type: Array,
-                default () {
-                    return [];
-                }
-            },
-            value: {
-                type: Object,
                 default() {
-                    return {}
+                    return [];
                 }
             },
             errors: {
@@ -232,21 +211,6 @@
             }
         },
         methods: {
-            handleCheckAllChange(event, element) {
-                this.currentValue[element.key] = [];
-                if (event.target.checked) {
-                    const _this = this;
-                    element.options.forEach(function (item) {
-                        _this.currentValue[element.key].push(item.value);
-                    })
-                }
-                this.isIndeterminate[element.key] = false;
-            },
-            handleCheckedChange(value, element) {
-                let checkedCount = value.length;
-                this.checkAll[element.key] = checkedCount === element.options.length;
-                this.isIndeterminate[element.key] = checkedCount > 0 && checkedCount < element.options.length;
-            },
             // 设置选中的节点（包括半选中节点）
             setTreeCheckedKeys(key) {
                 let ref = `tree_${key}`;
@@ -276,15 +240,5 @@
                 return list;
             },
         },
-        watch: {
-            value(val) {
-//                console.log('value', val);
-                this.currentValue = val;
-            },
-            currentValue(val) {
-//                console.log('current', val);
-                this.$emit('input', val);
-            }
-        }
     }
 </script>

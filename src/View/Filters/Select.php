@@ -33,4 +33,11 @@ class Select extends Filter
         $this->options = $options;
         return $this;
     }
+
+    public function toArray()
+    {
+        return parent::toArray() + [
+                'options' => $this->getOptions(),
+            ];
+    }
 }

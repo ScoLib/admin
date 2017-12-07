@@ -17,6 +17,9 @@ class Filters extends Extension
                 )
             );
         }
+
+        $this->push($value);
+        return $this;
     }
 
     public function getActive()
