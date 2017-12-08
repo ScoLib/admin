@@ -6,10 +6,10 @@ class ElSwitch extends NamedElement
 {
     protected $type = 'elswitch';
 
-    protected $text      = ['ON', 'OFF'];
-    protected $values    = ['yes', 'no'];
-    protected $color     = [];
-    protected $iconClass = [];
+    protected $texts       = ['ON', 'OFF'];
+    protected $values      = ['yes', 'no'];
+    protected $colors      = [];
+    protected $iconClasses = [];
 
     protected $width = 40;
 
@@ -30,6 +30,12 @@ class ElSwitch extends NamedElement
         return $this->values;
     }
 
+    /**
+     * @param $active
+     * @param $inactive
+     *
+     * @return ElSwitch
+     */
     public function setValues($active, $inactive)
     {
         $this->values = [$active, $inactive];
@@ -37,38 +43,50 @@ class ElSwitch extends NamedElement
         return $this;
     }
 
-    public function getText()
+    public function getTexts()
     {
-        return $this->text;
+        return $this->texts;
     }
 
-    public function setText($active, $inactive)
+    /**
+     * @param $active
+     * @param $inactive
+     *
+     * @return ElSwitch
+     */
+    public function setTexts($active, $inactive)
     {
-        $this->text = [$active, $inactive];
+        $this->texts = [$active, $inactive];
 
         return $this;
     }
 
-    public function getColor()
+    public function getColors()
     {
-        return $this->color;
+        return $this->colors;
     }
 
-    public function setColor($active, $inactive)
+    /**
+     * @param $active
+     * @param $inactive
+     *
+     * @return ElSwitch
+     */
+    public function setColors($active, $inactive)
     {
-        $this->color = [$active, $inactive];
+        $this->colors = [$active, $inactive];
 
         return $this;
     }
 
-    public function getIconClass()
+    public function getIconClasses()
     {
-        return $this->iconClass;
+        return $this->iconClasses;
     }
 
-    public function setIconClass($active, $inactive)
+    public function setIconClasses($active, $inactive)
     {
-        $this->iconClass = [$active, $inactive];
+        $this->iconClasses = [$active, $inactive];
 
         return $this;
     }
@@ -76,11 +94,11 @@ class ElSwitch extends NamedElement
     public function toArray()
     {
         return parent::toArray() + [
-                'text'      => $this->getText(),
-                'values'    => $this->getValues(),
-                'color'     => $this->getColor(),
-                'iconClass' => $this->getIconClass(),
-                'width'     => $this->getWidth(),
+                'texts'       => $this->getTexts(),
+                'values'      => $this->getValues(),
+                'colors'      => $this->getColors(),
+                'iconClasses' => $this->getIconClasses(),
+                'width'       => $this->getWidth(),
             ];
     }
 }

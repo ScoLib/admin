@@ -28,13 +28,6 @@ class MultiSelect extends Select
         return $value;
     }
 
-    public function save()
-    {
-        if (!($this->isOptionsModel() && $this->isRelation())) {
-            parent::save();
-        }
-    }
-
     public function finishSave()
     {
         if (!($this->isOptionsModel() && $this->isRelation())) {

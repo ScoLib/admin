@@ -3,13 +3,10 @@
         display: none !important;
     }
 
-    .el-switch .el-checkbox-group {
+    .el-switch {
         margin: 7px 0px;
     }
 
-    .el-checkbox {
-        margin-bottom: 0px;
-    }
 </style>
 
 <template>
@@ -66,6 +63,7 @@
                                 :size="element.size"
                                 :format="element.pickerFormat"
                                 :value-format="element.pickerFormat"
+                                unlink-panels
                                 placeholder="选择日期时间">
                         </el-date-picker>
 
@@ -112,10 +110,12 @@
                         <el-switch
                                 v-else-if="element.type == 'elswitch'"
                                 v-model="currentValue[element.name]"
-                                :active-text="element.text[0]"
-                                :inactive-text="element.text[1]"
-                                :active-color="element.color[0]"
-                                :inactive-color="element.color[1]"
+                                :active-icon-class="element.iconClasses[0]"
+                                :inactive-icon-class="element.iconClasses[1]"
+                                :active-text="element.texts[0]"
+                                :inactive-text="element.texts[1]"
+                                :active-color="element.colors[0]"
+                                :inactive-color="element.colors[1]"
                                 :active-value="element.values[0]"
                                 :inactive-value="element.values[1]"
                                 :name="element.name"

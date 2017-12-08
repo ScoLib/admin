@@ -47,6 +47,13 @@ class Select extends NamedElement
         return (string)parent::getValue();
     }
 
+    public function save()
+    {
+        if (!($this->isOptionsModel() && $this->isRelation())) {
+            parent::save();
+        }
+    }
+
     protected function isOptionsModel()
     {
         return is_string($this->options) || $this->options instanceof Model;

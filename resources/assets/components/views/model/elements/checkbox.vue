@@ -1,3 +1,12 @@
+<style>
+    .el-checkbox-group {
+        margin: 7px 0px;
+    }
+
+    .el-checkbox {
+        margin-bottom: 0px;
+    }
+</style>
 <template>
     <div>
         <el-checkbox
