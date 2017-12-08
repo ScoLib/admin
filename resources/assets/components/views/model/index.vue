@@ -37,8 +37,6 @@
         },
         data() {
             return {
-
-
             }
         },
         computed: {

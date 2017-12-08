@@ -2,9 +2,7 @@
 
 namespace Sco\Admin\Form\Elements;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Http\Request;
 
 class MultiSelect extends Select
 {
@@ -14,18 +12,29 @@ class MultiSelect extends Select
     {
         $value = $this->getValueFromModel();
         if (empty($value)) {
-            return $value;
+            return [];
         }
 
         if ($this->isOptionsModel() && $this->isRelation()) {
             $model = $this->getOptionsModel();
             $key = $this->getOptionsValueAttribute() ?: $model->getKeyName();
 
-            $value = $value->pluck($key)->map(function ($item) {
+            return $value->pluck($key)->map(function ($item) {
                 return (string)$item;
             });
+        } elseif (is_string($value)) {
+            if (strpos($value, ',') !== false) {
+                return explode(',', $value);
+            }
+            return (array)$value;
         }
-        return $value;
+    }
+
+    public function save()
+    {
+        if (!($this->isOptionsModel() && $this->isRelation())) {
+            parent::save();
+        }
     }
 
     public function finishSave()
@@ -40,6 +49,16 @@ class MultiSelect extends Select
         if ($relation instanceof BelongsToMany) {
             $relation->sync($values);
         }
+    }
+
+    protected function isOptionsModel()
+    {
+        return is_string($this->options) || $this->options instanceof Model;
+    }
+
+    protected function isRelation()
+    {
+        return method_exists($this->getModel(), $this->getName());
     }
 
     public function toArray()

@@ -1,4 +1,4 @@
-<style>
+<style scoped>
     .el-checkbox-group {
         margin: 7px 0px;
     }
@@ -72,7 +72,3 @@
 
     }
 </script>
-
-<style scoped>
-
-</style>

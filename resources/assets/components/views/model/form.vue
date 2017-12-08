@@ -107,32 +107,17 @@
                                 v-model="currentValue[element.name]">
                         </v-images>
 
-                        <el-switch
+                        <v-switch
                                 v-else-if="element.type == 'elswitch'"
-                                v-model="currentValue[element.name]"
-                                :active-icon-class="element.iconClasses[0]"
-                                :inactive-icon-class="element.iconClasses[1]"
-                                :active-text="element.texts[0]"
-                                :inactive-text="element.texts[1]"
-                                :active-color="element.colors[0]"
-                                :inactive-color="element.colors[1]"
-                                :active-value="element.values[0]"
-                                :inactive-value="element.values[1]"
-                                :name="element.name"
-                                :disabled="element.disabled"
-                                :width="element.width">
-                        </el-switch>
+                                :element="element"
+                                v-model="currentValue[element.name]">
+                        </v-switch>
 
-                        <el-tree
+                        <v-tree
                                 v-else-if="element.type == 'tree'"
-                                :data="element.nodes"
-                                show-checkbox
-                                node-key="id"
-                                :ref="'tree_' + element.name"
-                                default-expand-all
-                                @check-change="setTreeCheckedKeys(element.name)"
-                                :default-checked-keys="getTreeCheckedKeys(element.nodes, currentValue[element.name])">
-                        </el-tree>
+                                :element="element"
+                                v-model="currentValue[element.name]">
+                        </v-tree>
 
                         <el-input
                                 v-else-if="element.type == 'textarea'"
@@ -180,6 +165,8 @@
     import vImages from './elements/images.vue'
     import vSelect from './elements/select.vue'
     import vCheckbox from './elements/checkbox.vue'
+    import vSwitch from './elements/switch.vue'
+    import vTree from './elements/tree.vue'
 
     export default {
         name: 'vForm',
@@ -195,6 +182,8 @@
             vImages,
             vSelect,
             vCheckbox,
+            vSwitch,
+            vTree,
         },
         props: {
             elements: {
@@ -211,34 +200,7 @@
             }
         },
         methods: {
-            // 设置选中的节点（包括半选中节点）
-            setTreeCheckedKeys(key) {
-                let ref = `tree_${key}`;
-                let $refs = this.$refs[ref][0];
-                let keys = $refs.getCheckedKeys();
 
-                let nodesDOM = $refs.$el.querySelectorAll('.el-tree-node');
-                let nodesVue = [].map.call(nodesDOM, node => node.__vue__);
-                nodesVue.filter(item => item.node.indeterminate === true).forEach(_vue => {
-                    keys.push(_vue.node.data.id);
-                });
-                this.currentValue[key] = keys;
-            },
-            // 处理需要设置为选中的节点（移除半选中节点，只保留最深层的）
-            getTreeCheckedKeys(nodes, checkedKeys) {
-                let list = [];
-                nodes.forEach(node => {
-                    if (typeof node.children !== 'undefined' && node.children.length > 0) {
-                        list = list.concat(this.getTreeCheckedKeys(node.children, checkedKeys));
-                    } else {
-                        if (checkedKeys.indexOf(node.id) > -1) {
-                            list.push(node.id);
-                        }
-                    }
-                })
-//                console.log(list)
-                return list;
-            },
         },
     }
 </script>

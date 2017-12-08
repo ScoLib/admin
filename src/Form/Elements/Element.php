@@ -130,22 +130,6 @@ abstract class Element implements ElementInterface
             return $value;
         }
         return $model->getAttribute($this->getName());
-
-        /*$relations = explode('.', $this->getName(), 2);
-        $count = count($relations);
-
-        if ($count == 1) {
-            return $model->getAttribute($this->getName());
-        }
-
-        foreach ($relations as $relation) {
-            if ($model->{$relation} instanceof Model) {
-                $model = $model->{$relation};
-                continue;
-            }
-
-            return $model->getAttribute($relation);
-        }*/
     }
 
     /**

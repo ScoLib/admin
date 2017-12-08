@@ -2,12 +2,14 @@
 
 namespace Sco\Admin\Form\Elements;
 
+use Illuminate\Support\Collection;
+
 /**
  * Checkbox
  *
  * @see http://element.eleme.io/#/zh-CN/component/checkbox
  */
-class Checkbox extends Select
+class Checkbox extends MultiSelect
 {
     protected $type = 'checkbox';
 
@@ -55,15 +57,6 @@ class Checkbox extends Select
         $this->showCheckAll = true;
 
         return $this;
-    }
-
-    public function getValue()
-    {
-        $value = $this->getValueFromModel();
-        if (empty($value)) {
-            return [];
-        }
-        return explode(',', $value);
     }
 
     public function toArray()

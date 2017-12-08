@@ -3,6 +3,7 @@
 namespace Sco\Admin\Form\Elements;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Collection;
 use InvalidArgumentException;
 use Sco\Admin\Contracts\RepositoryInterface;
@@ -40,28 +41,6 @@ class Select extends NamedElement
         $this->size = $value;
 
         return $this;
-    }
-
-    public function getValue()
-    {
-        return (string)parent::getValue();
-    }
-
-    public function save()
-    {
-        if (!($this->isOptionsModel() && $this->isRelation())) {
-            parent::save();
-        }
-    }
-
-    protected function isOptionsModel()
-    {
-        return is_string($this->options) || $this->options instanceof Model;
-    }
-
-    protected function isRelation()
-    {
-        return method_exists($this->getModel(), $this->getName());
     }
 
     public function addOptions($options)
