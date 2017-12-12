@@ -3,20 +3,11 @@
     "description": "Sco Admin",
     "author": "klgd",
     "output.name": "site",
-    "language": "zh-hans",
-    "gitbook": "3.2.3",
-    "root": ".",
-    "structure": {
-        "readme": "README.md"
-    },
-    "links": {
-        "sidebar": {
-            "Home": "http://www.scophp.com"
-        }
-    },
+    "gitbook": ">3.0.0",
     "plugins": [
         "-lunr",
         "-search",
+        "-sharing",
         "-highlight",
         "-livereload",
         "search-plus",
@@ -24,7 +15,7 @@
         "github",
         "github-buttons",
         "edit-link",
-        "disqus"
+        "-disqus"
     ],
     "pluginsConfig": {
         "theme-default": {
