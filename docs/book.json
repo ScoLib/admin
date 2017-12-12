@@ -10,12 +10,14 @@
         "-sharing",
         "-highlight",
         "-livereload",
+        "-disqus",
         "search-plus",
-        "simple-page-toc",
         "github",
         "github-buttons",
         "edit-link",
-        "-disqus"
+        "expandable-chapters",
+        "tbfed-pagefooter",
+        "anchor-navigation-ex"
     ],
     "pluginsConfig": {
         "theme-default": {
@@ -25,22 +27,33 @@
             "shortName": "scophpdocs"
         },
         "github": {
-            "url": "https://github.com/scolib/admin"
+            "url": "https://github.com/ScoLib/admin"
         },
         "github-buttons": {
-            "repo": "scolib/admin",
-            "types": [
-                "star"
-            ],
-            "size": "small"
-        },
-        "simple-page-toc": {
-            "maxDepth": 3,
-            "skipFirstH1": true
+            "buttons": [
+                {
+                    "user": "ScoLib",
+                    "repo": "admin",
+                    "type": "star",
+                    "size": "small",
+                    "count": true
+                }
+            ]
         },
         "edit-link": {
             "base": "https://github.com/scolib/admin/edit/master/docs",
             "label": "Edit This Page"
+        },
+        "tbfed-pagefooter": {
+            "copyright": "Copyright &copy <a href=\"http://www.scophp.com\" target=\"_blank\">scophp.com</a> 2016-2017",
+            "modify_label": "该文件修订时间：",
+            "modify_format": "YYYY-MM-DD HH:mm:ss"
+        },
+        "anchor-navigation-ex": {
+            "isRewritePageTitle": false,
+            "tocLevel1Icon": "fa fa-hand-o-right",
+            "tocLevel2Icon": "fa fa-hand-o-right",
+            "tocLevel3Icon": "fa fa-hand-o-right"
         }
     }
 }
