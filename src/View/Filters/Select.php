@@ -8,6 +8,8 @@ class Select extends Filter
 
     protected $options;
 
+    protected $defaultValue = '';
+
     public function __construct($name, $title, $options = null)
     {
         parent::__construct($name, $title);

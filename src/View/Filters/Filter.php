@@ -15,23 +15,36 @@ abstract class Filter implements FilterInterface
 
     protected $title;
 
+    protected $defaultValue;
+
+    /**
+     * Apply filter to the query.
+     *
+     * @param Builder $query
+     */
+    public function apply(Builder $query)
+    {
+        // TODO
+    }
+
     public function __construct($name, $title)
     {
         $this->setName($name)->setTitle($title);
     }
 
     /**
-     * @return mixed
+     * {@inheritdoc}
      */
     public function getValue()
     {
+        if (is_null($this->value)) {
+            return $this->getDefaultValue();
+        }
         return $this->value;
     }
 
     /**
-     * @param mixed $value
-     *
-     * @return $this
+     * {@inheritdoc}
      */
     public function setValue($value)
     {
@@ -41,7 +54,7 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * @return mixed
+     * {@inheritdoc}
      */
     public function getName()
     {
@@ -49,18 +62,17 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * @param mixed $name
-     *
-     * @return Filter
+     * {@inheritdoc}
      */
     public function setName($name)
     {
         $this->name = $name;
+
         return $this;
     }
 
     /**
-     * @return mixed
+     * {@inheritdoc}
      */
     public function getTitle()
     {
@@ -68,29 +80,36 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * @param mixed $title
-     *
-     * @return Filter
+     * {@inheritdoc}
      */
     public function setTitle($title)
     {
         $this->title = $title;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDefaultValue()
+    {
+        return $this->defaultValue;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setDefaultValue($defaultValue)
+    {
+        $this->defaultValue = $defaultValue;
+
         return $this;
     }
 
     public function isActive()
     {
         return !is_null($this->value);
-    }
-
-    /**
-     * Apply filter to the query.
-     *
-     * @param Builder $query
-     */
-    public function apply(Builder $query)
-    {
-
     }
 
     public function toArray()

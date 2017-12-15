@@ -16,29 +16,33 @@
             </button>
         </div>
         <slot></slot>
-        <v-filter></v-filter>
+        <v-filter
+                v-if="config.view.filters.elements.length > 0"
+                :filters="config.view.filters.elements"
+                v-model="currentValue">
+        </v-filter>
     </div>
 </template>
 
 <script>
-    import mixins from '../../../../mixins/get-config'
+    import mixins from '../../../../mixins/get-config.js'
+    import vModel from '../../../../mixins/model.js'
     import vFilter from './filter'
 
     export default {
         name: 'vHeader',
         data() {
-            return {
-
-            }
+            return {}
         },
         components: {
             vFilter
         },
         mixins: [
-            mixins
+            mixins,
+            vModel
         ],
-        computed: {
-
+        created() {
+            this.currentValue = this.config.view.filters.values
         },
         methods: {
             refresh() {

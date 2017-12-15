@@ -24,7 +24,7 @@ class Filters extends Extension
 
     public function getActive()
     {
-        $this->filter(function (FilterInterface $filter) {
+        return $this->filter(function (FilterInterface $filter) {
             return $filter->isActive();
         });
     }
@@ -33,6 +33,15 @@ class Filters extends Extension
     {
         $this->getActive()->each(function (FilterInterface $filter) use ($query) {
             $filter->apply($query);
+        });
+    }
+
+    public function getValues()
+    {
+        return $this->mapWithKeys(function (FilterInterface $filter) {
+            return [
+                $filter->getName() => $filter->getValue(),
+            ];
         });
     }
 }

@@ -8,6 +8,8 @@ class DateRange extends Filter
 
     protected $pickerFormat = 'yyyy-MM-dd';
 
+    protected $defaultValue = [];
+
     /**
      * @return string
      */

@@ -126,7 +126,10 @@ abstract class View implements ViewInterface, Arrayable
     {
         return [
             'type'    => $this->type,
-            'filters' => $this->getFilters(),
+            'filters' => [
+                'elements' => $this->getFilters(),
+                'values' => $this->getFilters()->getValues()
+            ],
         ];
     }
 
