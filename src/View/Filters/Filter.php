@@ -17,6 +17,8 @@ abstract class Filter implements FilterInterface
 
     protected $defaultValue;
 
+    protected $operator = '=';
+
     /**
      * Apply filter to the query.
      *
@@ -24,12 +26,21 @@ abstract class Filter implements FilterInterface
      */
     public function apply(Builder $query)
     {
-        // TODO
+        $query->where($this->getName(), $this->getOperator(), $this->getValue());
     }
 
     public function __construct($name, $title)
     {
         $this->setName($name)->setTitle($title);
+    }
+
+    public function initialize()
+    {
+        if (is_null($value = $this->getValue())) {
+            $value = request()->input($this->getName());
+        }
+
+        $this->setValue($value);
     }
 
     /**
@@ -103,6 +114,24 @@ abstract class Filter implements FilterInterface
     public function setDefaultValue($defaultValue)
     {
         $this->defaultValue = $defaultValue;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getOperator()
+    {
+        return $this->operator;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setOperator(string $operator)
+    {
+        $this->operator = $operator;
 
         return $this;
     }

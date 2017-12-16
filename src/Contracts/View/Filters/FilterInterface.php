@@ -6,8 +6,9 @@ use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Database\Eloquent\Builder;
 use JsonSerializable;
+use Sco\Admin\Contracts\Initializable;
 
-interface FilterInterface extends Arrayable, Jsonable, JsonSerializable
+interface FilterInterface extends Arrayable, Jsonable, JsonSerializable, Initializable
 {
     /**
      * Is filter active?
@@ -70,4 +71,16 @@ interface FilterInterface extends Arrayable, Jsonable, JsonSerializable
      * @return $this
      */
     public function setDefaultValue($defaultValue);
+
+    /**
+     * @return string
+     */
+    public function getOperator();
+
+    /**
+     * @param string $operator
+     *
+     * @return $this
+     */
+    public function setOperator(string $operator);
 }

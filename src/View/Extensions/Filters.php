@@ -3,10 +3,18 @@
 namespace Sco\Admin\View\Extensions;
 
 use Illuminate\Database\Eloquent\Builder;
+use Sco\Admin\Contracts\Initializable;
 use Sco\Admin\Contracts\View\Filters\FilterInterface;
 
-class Filters extends Extension
+class Filters extends Extension implements Initializable
 {
+    public function initialize()
+    {
+        $this->each(function (FilterInterface $filter) {
+            $filter->initialize();
+        });
+    }
+
     public function add($value)
     {
         if (!($value instanceof FilterInterface)) {

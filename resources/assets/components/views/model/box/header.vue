@@ -16,37 +16,60 @@
             </button>
         </div>
         <slot></slot>
-        <v-filter
-                v-if="config.view.filters.elements.length > 0"
-                :filters="config.view.filters.elements"
-                v-model="currentValue">
-        </v-filter>
+
+        <div class="pull-right" v-if="config.view.filters.elements.length > 0">
+            <el-dialog title="筛选" :visible.sync="showFilter">
+
+                <div class="box-body form-horizontal">
+                    <div class="form-group" v-for="filter in config.view.filters.elements">
+                        <label class="col-sm-3 control-label">{{ filter.title }}</label>
+
+                        <v-element
+                                class="col-sm-9"
+                                :element="filter"
+                                v-model="config.view.filters.values[filter.name]">
+                        </v-element>
+                    </div>
+                </div>
+                <!-- /.box-body -->
+                <div slot="footer" class="dialog-footer">
+                    <el-button @click="showFilter = false" class="btn btn-default">取 消</el-button>
+                    <el-button type="primary" @click="filter" class="btn btn-info pull-right">确 定</el-button>
+                </div>
+
+            </el-dialog>
+
+            <el-button type="primary" class="btn-sm" @click="showFilter = true"><i class="fa fa-filter"></i> 筛选</el-button>
+        </div>
     </div>
 </template>
 
 <script>
     import mixins from '../../../../mixins/get-config.js'
-    import vModel from '../../../../mixins/model.js'
-    import vFilter from './filter'
+    import vElement from '../elements/element.vue'
 
     export default {
         name: 'vHeader',
         data() {
-            return {}
+            return {
+                showFilter:false
+            }
         },
         components: {
-            vFilter
+            vElement,
         },
         mixins: [
             mixins,
-            vModel
         ],
         created() {
-            this.currentValue = this.config.view.filters.values
         },
         methods: {
             refresh() {
                 this.$emit('refresh');
+            },
+            filter() {
+                this.showFilter = false;
+                this.$emit('filter', this.config.view.filters.values);
             }
         }
     }

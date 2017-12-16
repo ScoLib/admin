@@ -53,7 +53,7 @@ class Table extends View
      */
     public function paginate($perPage = 25, $pageName = 'page')
     {
-        $this->perPage = (int)$perPage;
+        $this->perPage  = (int)$perPage;
         $this->pageName = $pageName;
 
         return $this;
@@ -82,7 +82,8 @@ class Table extends View
         $builder = $this->getQuery();
 
         if ($this->usePagination()) {
-            $data = $builder->paginate($this->perPage, ['*'], $this->pageName);
+            $data = $builder->paginate($this->perPage, ['*'], $this->pageName)
+                ->appends(request()->except($this->pageName));
 
             $data->setCollection($this->parseRows($data->getCollection()));
         } else {
@@ -95,8 +96,8 @@ class Table extends View
     public function toArray()
     {
         return parent::toArray() + [
-            'columns' => $this->getColumns(),
-        ];
+                'columns' => $this->getColumns(),
+            ];
     }
 
     protected function parseRows(Collection $rows)
@@ -106,7 +107,7 @@ class Table extends View
                 ColumnInterface $column
             ) use ($row) {
                 return [
-                    $column->getName() => $column->setModel($row)->getValue()
+                    $column->getName() => $column->setModel($row)->getValue(),
                 ];
             });
 
