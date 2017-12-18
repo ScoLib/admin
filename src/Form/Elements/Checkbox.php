@@ -2,8 +2,6 @@
 
 namespace Sco\Admin\Form\Elements;
 
-use Illuminate\Support\Collection;
-
 /**
  * Checkbox
  *

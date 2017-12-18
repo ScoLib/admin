@@ -26,7 +26,7 @@ abstract class Filter implements FilterInterface
      */
     public function apply(Builder $query)
     {
-        $query->where($this->getName(), $this->getOperator(), $this->getValue());
+        $query->where($this->getName(), $this->getOperator(), $this->getValue() . '%');
     }
 
     public function __construct($name, $title)
@@ -37,10 +37,16 @@ abstract class Filter implements FilterInterface
     public function initialize()
     {
         if (is_null($value = $this->getValue())) {
-            $value = request()->input($this->getName());
+            $value = $this->getRequestInputValue();
         }
 
         $this->setValue($value);
+    }
+
+    protected function getRequestInputValue()
+    {
+        $name = $this->getName();
+        return request()->input($name);
     }
 
     /**
@@ -48,10 +54,19 @@ abstract class Filter implements FilterInterface
      */
     public function getValue()
     {
-        if (is_null($this->value)) {
+        return $this->value;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getViewValue()
+    {
+        $value = $this->getValue();
+        if (is_null($value)) {
             return $this->getDefaultValue();
         }
-        return $this->value;
+        return $value;
     }
 
     /**

@@ -59,11 +59,11 @@ abstract class Component implements
 
     public function __construct(Application $app, RepositoryInterface $repository)
     {
-        $this->app        = $app;
-        $this->repository = $repository;
+        $this->app = $app;
 
         $this->makeModel();
 
+        $this->repository = $repository;
         $this->repository->setModel($this->getModel());
 
         if (!$this->name) {
@@ -71,11 +71,6 @@ abstract class Component implements
         }
 
         $this->bootIfNotBooted();
-    }
-
-    public function initialize()
-    {
-        //
     }
 
     protected function setDefaultName()
@@ -95,6 +90,11 @@ abstract class Component implements
                 )
             )
         );
+    }
+
+    public function getModel()
+    {
+        return $this->model;
     }
 
     protected function makeModel()
@@ -134,11 +134,6 @@ abstract class Component implements
         return $this->title;
     }
 
-    public function getModel()
-    {
-        return $this->model;
-    }
-
     public function getRepository()
     {
         return $this->repository;
@@ -161,7 +156,7 @@ abstract class Component implements
     /**
      * {@inheritdoc}
      */
-    public function fireView()
+    final public function fireView()
     {
         if (!method_exists($this, 'callView')) {
             throw new BadMethodCallException('Not Found Method "callView"');
@@ -178,7 +173,7 @@ abstract class Component implements
             );
         }
 
-        //$view->setComponent($this);
+        $view->setModel($this->getModel());
         $view->initialize();
 
         return $view;
@@ -188,7 +183,7 @@ abstract class Component implements
     {
         $view = $this->fireView();
 
-        $view->setRepository($this->getRepository());
+        // $view->setRepository($this->getRepository());
 
         return $view->get();
     }
@@ -196,7 +191,7 @@ abstract class Component implements
     /**
      * {@inheritdoc}
      */
-    public function fireCreate()
+    final public function fireCreate()
     {
         if (!method_exists($this, 'callCreate')) {
             return;
@@ -230,7 +225,7 @@ abstract class Component implements
     /**
      * {@inheritdoc}
      */
-    public function fireEdit($id)
+    final public function fireEdit($id)
     {
         if (!method_exists($this, 'callEdit')) {
             return;
@@ -265,7 +260,7 @@ abstract class Component implements
 
     public function delete($id)
     {
-        $this->getRepository()->findOrFail($id)->delete();
+        $this->getRepository()->delete($id);
         return true;
     }
 

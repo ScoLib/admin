@@ -2,8 +2,13 @@
 
 namespace Sco\Admin\View\Filters;
 
+use Illuminate\Database\Eloquent\Model;
+use Sco\Admin\Traits\SelectOptionsFromModel;
+
 class Select extends Filter
 {
+    use SelectOptionsFromModel;
+
     protected $type = 'select';
 
     protected $options;
@@ -22,7 +27,26 @@ class Select extends Filter
      */
     public function getOptions()
     {
-        return $this->options;
+        if ($this->options instanceof \Closure) {
+            $options = ($this->options)();
+        } elseif (is_string($this->options) || $this->options instanceof Model) {
+            $options = $this->setOptionsFromModel();
+        } elseif (is_array($this->options)) {
+            $options = $this->options;
+        } else {
+            throw new InvalidArgumentException(
+                "The select options must be return array(key=>value)"
+            );
+        }
+
+        return collect($options)->mapWithKeys(function ($value, $key) {
+            return [
+                $key => [
+                    'label' => $value,
+                    'value' => (string)$key,
+                ],
+            ];
+        })->values();
     }
 
     /**
@@ -33,6 +57,7 @@ class Select extends Filter
     public function setOptions($options)
     {
         $this->options = $options;
+
         return $this;
     }
 

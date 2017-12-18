@@ -11,23 +11,24 @@ class MultiSelect extends Select
     public function getValue()
     {
         $value = $this->getValueFromModel();
-        if (empty($value)) {
-            return [];
-        }
 
-        if ($this->isOptionsModel() && $this->isRelation()) {
-            $model = $this->getOptionsModel();
-            $key = $this->getOptionsValueAttribute() ?: $model->getKeyName();
-
-            return $value->pluck($key)->map(function ($item) {
-                return (string)$item;
-            });
-        } elseif (is_string($value)) {
+        if (is_string($value)) {
             if (strpos($value, ',') !== false) {
                 return explode(',', $value);
             }
             return (array)$value;
         }
+
+        if ($this->isOptionsModel() && $this->isRelation()) {
+            $model = $this->getOptionsModel();
+            $key   = $this->getOptionsValueAttribute() ?: $model->getKeyName();
+
+            return $value->pluck($key)->map(function ($item) {
+                return (string)$item;
+            });
+        }
+
+        return $value;
     }
 
     public function save()
@@ -43,7 +44,7 @@ class MultiSelect extends Select
             return;
         }
         $attribute = $this->getName();
-        $values = $this->getValueFromRequest();
+        $values    = $this->getValueFromRequest();
 
         $relation = $this->getModel()->{$attribute}();
         if ($relation instanceof BelongsToMany) {

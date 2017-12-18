@@ -25,6 +25,13 @@ interface FilterInterface extends Arrayable, Jsonable, JsonSerializable, Initial
     public function apply(Builder $query);
 
     /**
+     * Get view filter form value
+     *
+     * @return mixed
+     */
+    public function getViewValue();
+
+    /**
      * @return mixed
      */
     public function getValue();

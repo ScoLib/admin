@@ -2,7 +2,7 @@
 
 namespace Sco\Admin\Contracts;
 
-interface ComponentInterface extends Initializable
+interface ComponentInterface
 {
     public function getName();
 

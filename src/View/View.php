@@ -4,6 +4,7 @@ namespace Sco\Admin\View;
 
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Sco\Admin\Contracts\RepositoryInterface;
 use Sco\Admin\Contracts\View\Extensions\ExtensionInterface;
 use Sco\Admin\Contracts\View\ViewInterface;
@@ -34,6 +35,11 @@ abstract class View implements ViewInterface, Arrayable
     protected $with = [];
 
     /**
+     * @var \Illuminate\Database\Eloquent\Model
+     */
+    protected $model;
+
+    /**
      * @var RepositoryInterface
      */
     protected $repository;
@@ -51,8 +57,29 @@ abstract class View implements ViewInterface, Arrayable
         $this->extend('filters', new Filters());
     }
 
+    /**
+     * @param \Illuminate\Database\Eloquent\Model $model
+     *
+     * @return $this
+     */
+    public function setModel(Model $model)
+    {
+        $this->model = $model;
+
+        return $this;
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    public function getModel()
+    {
+        return $this->model;
+    }
+
     public function initialize()
     {
+        $this->makeRepository();
         $this->extensions->initialize();
     }
 
@@ -61,10 +88,11 @@ abstract class View implements ViewInterface, Arrayable
         $this->extensions->put($name, $extension);
     }
 
-    public function setRepository(RepositoryInterface $repository)
+    protected function makeRepository()
     {
-        $this->repository = $repository;
-        $this->repository->with($this->getWith());
+        $this->repository = app(RepositoryInterface::class)
+            ->setModel($this->getModel())
+            ->with($this->getWith());
 
         return $this;
     }
@@ -96,13 +124,20 @@ abstract class View implements ViewInterface, Arrayable
     {
         $repository = $this->getRepository();
 
-        $builder = $repository->getQuery();
+        $query = $repository->getQuery();
 
         if ($repository->isRestorable()) {
-            $builder->withTrashed();
+            $query->withTrashed();
         }
 
-        return $builder;
+        $this->apply($query);
+
+        return $query;
+    }
+
+    protected function apply(Builder $query)
+    {
+        $this->extensions->apply($query);
     }
 
     /**
@@ -115,9 +150,9 @@ abstract class View implements ViewInterface, Arrayable
      */
     public function orderBy($column, $direction = 'asc')
     {
-        $this->scopes['orderBy'] = function (Builder $builder) use ($column, $direction) {
-            $builder->orderBy($column, $direction);
-        };
+        $this->addApply(function (Builder $query) use ($column, $direction) {
+            $query->orderBy($column, $direction);
+        });
 
         return $this;
     }
@@ -128,7 +163,7 @@ abstract class View implements ViewInterface, Arrayable
             'type'    => $this->type,
             'filters' => [
                 'elements' => $this->getFilters(),
-                'values' => $this->getFilters()->getValues()
+                'values'   => $this->getFilters()->getViewValues(),
             ],
         ];
     }

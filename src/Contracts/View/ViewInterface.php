@@ -3,17 +3,10 @@
 namespace Sco\Admin\Contracts\View;
 
 use Sco\Admin\Contracts\Initializable;
-use Sco\Admin\Contracts\RepositoryInterface;
+use Sco\Admin\Contracts\WithModel;
 
-interface ViewInterface extends Initializable
+interface ViewInterface extends Initializable, WithModel
 {
-    /**
-     * @param \Sco\Admin\Contracts\RepositoryInterface $repository
-     *
-     * @return $this
-     */
-    public function setRepository(RepositoryInterface $repository);
-
     /**
      * @return \Sco\Admin\Contracts\RepositoryInterface
      */

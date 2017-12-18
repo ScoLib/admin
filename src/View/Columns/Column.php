@@ -28,7 +28,7 @@ abstract class Column implements ColumnInterface
 
     protected $defaultValue = '';
 
-    protected $template = '<span>{{value}}</span>';
+    protected $template;
 
     public function __construct($name, $label)
     {

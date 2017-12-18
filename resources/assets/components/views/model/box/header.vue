@@ -27,7 +27,7 @@
                         <v-element
                                 class="col-sm-9"
                                 :element="filter"
-                                v-model="config.view.filters.values[filter.name]">
+                                v-model="currentValue[filter.name]">
                         </v-element>
                     </div>
                 </div>
@@ -46,20 +46,24 @@
 
 <script>
     import mixins from '../../../../mixins/get-config.js'
+    import vModel from '../../../../mixins/model.js'
     import vElement from '../elements/element.vue'
 
     export default {
         name: 'vHeader',
         data() {
             return {
-                showFilter:false
+                showFilter:false,
             }
         },
         components: {
             vElement,
         },
+        computed: {
+        },
         mixins: [
             mixins,
+            vModel,
         ],
         created() {
         },
@@ -69,7 +73,7 @@
             },
             filter() {
                 this.showFilter = false;
-                this.$emit('filter', this.config.view.filters.values);
+                this.$emit('filter');
             }
         }
     }

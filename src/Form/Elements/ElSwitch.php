@@ -7,7 +7,7 @@ class ElSwitch extends NamedElement
     protected $type = 'elswitch';
 
     protected $texts       = ['ON', 'OFF'];
-    protected $values      = ['yes', 'no'];
+    protected $values      = ['1', '0'];
     protected $colors      = [];
     protected $iconClasses = [];
 

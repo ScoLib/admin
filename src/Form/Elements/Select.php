@@ -7,9 +7,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Collection;
 use InvalidArgumentException;
 use Sco\Admin\Contracts\RepositoryInterface;
+use Sco\Admin\Traits\SelectOptionsFromModel;
 
 class Select extends NamedElement
 {
+    use SelectOptionsFromModel;
+
     protected $type = 'select';
 
     protected $size = '';
@@ -17,10 +20,6 @@ class Select extends NamedElement
     protected $options;
 
     protected $extraOptions;
-
-    protected $optionsLabelAttribute;
-
-    protected $optionsValueAttribute;
 
     public function __construct($name, $title, $options = null)
     {
@@ -99,103 +98,9 @@ class Select extends NamedElement
         return $this;
     }
 
-    /**
-     *
-     * @return array
-     */
-    protected function setOptionsFromModel()
+    public function getValue()
     {
-        if (is_null(($label = $this->getOptionsLabelAttribute()))) {
-            throw new InvalidArgumentException(
-                sprintf(
-                    'Form %s element must set label attribute',
-                    $this->getType()
-                )
-            );
-        }
-
-        $model = $this->getOptionsModel();
-
-        $repository = app(RepositoryInterface::class);
-        $repository->setModel($model);
-
-        $results = $repository->getQuery()->get();
-
-        $key = $this->getOptionsValueAttribute() ?: $model->getKeyName();
-
-        return $results->pluck($label, $key);
-    }
-
-    /**
-     * @return Model
-     */
-    public function getOptionsModel()
-    {
-        $model = $this->options;
-
-        if (is_string($model)) {
-            $model = app($model);
-        }
-
-        if (!($model instanceof Model)) {
-            throw new InvalidArgumentException(
-                sprintf(
-                    'Form %s element options class must be instanced of "%s".',
-                    $this->getType(),
-                    Model::class
-                )
-            );
-        }
-
-        return $model;
-    }
-
-    /**
-     * 获取 options 标题字段
-     *
-     * @return string
-     */
-    public function getOptionsLabelAttribute()
-    {
-        return $this->optionsLabelAttribute;
-    }
-
-    /**
-     * 设置 options 标题字段
-     *
-     * @param string $value
-     *
-     * @return $this
-     */
-    public function setOptionsLabelAttribute($value)
-    {
-        $this->optionsLabelAttribute = $value;
-
-        return $this;
-    }
-
-    /**
-     * 获取 options value 字段
-     *
-     * @return string
-     */
-    public function getOptionsValueAttribute()
-    {
-        return $this->optionsValueAttribute;
-    }
-
-    /**
-     * 设置 options value 字段
-     *
-     * @param string $value
-     *
-     * @return $this
-     */
-    public function setOptionsValueAttribute($value)
-    {
-        $this->optionsValueAttribute = $value;
-
-        return $this;
+        return (string)parent::getValue();
     }
 
     public function toArray()

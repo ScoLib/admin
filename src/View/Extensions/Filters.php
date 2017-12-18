@@ -44,11 +44,11 @@ class Filters extends Extension implements Initializable
         });
     }
 
-    public function getValues()
+    public function getViewValues()
     {
         return $this->mapWithKeys(function (FilterInterface $filter) {
             return [
-                $filter->getName() => $filter->getValue(),
+                $filter->getName() => $filter->getViewValue(),
             ];
         });
     }

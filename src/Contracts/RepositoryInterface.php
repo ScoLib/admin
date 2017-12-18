@@ -25,9 +25,7 @@ interface RepositoryInterface extends WithModel
      */
     public function findOrFail($id);
 
-    //public function store();
-
-    //public function update();
+    public function delete($id);
 
     public function forceDelete($id);
 

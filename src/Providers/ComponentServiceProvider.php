@@ -101,7 +101,10 @@ class ComponentServiceProvider extends ServiceProvider
             );
         }
 
-        $component->initialize();
+        if ($component instanceof Initializable) {
+            $component->initialize();
+        }
+
 
         if ($component instanceof WithNavigation) {
             $component->addToNavigation();

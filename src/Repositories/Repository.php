@@ -33,6 +33,11 @@ class Repository implements RepositoryInterface
         return $this->model;
     }
 
+    /**
+     * @param \Illuminate\Database\Eloquent\Model $model
+     *
+     * @return $this
+     */
     public function setModel(Model $model)
     {
         $this->model = $model;
@@ -113,14 +118,10 @@ class Repository implements RepositoryInterface
         return $this->getQuery()->onlyTrashed()->findOrFail($id);
     }
 
-    /*public function store()
+    public function delete($id)
     {
+        return $this->findOrFail($id)->delete();
     }
-
-    public function update()
-    {
-    }*/
-
 
     public function forceDelete($id)
     {
@@ -131,7 +132,6 @@ class Repository implements RepositoryInterface
     {
         return $this->findOnlyTrashed($id)->restore();
     }
-
 
     public function isRestorable()
     {

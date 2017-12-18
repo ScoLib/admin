@@ -13,6 +13,7 @@
             :disabled="element.disabled"
             :multiple="element.multiple"
             v-model="currentValue"
+            clearable
             filterable>
         <el-option
                 :value="option.value"

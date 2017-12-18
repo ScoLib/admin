@@ -1,6 +1,10 @@
 <template>
     <div class="box">
-        <v-header @refresh="fetchData" @filter="filter"></v-header>
+        <v-header
+                @refresh="fetchData"
+                @filter="filter"
+                v-model="filterParams">
+        </v-header>
         <!-- /.box-header -->
         <!--<v-table></v-table>-->
         <div class="box-body table-responsive">
@@ -76,7 +80,7 @@
                 },
 
                 selection: [],
-                params: {'page': 1},
+                filterParams: {},
             }
         },
         mixins: [
@@ -113,23 +117,26 @@
         },
         methods: {
             fetchData () {
+                this.filterParams = {};
                 this.getResults();
             },
             getResults(page) {
-                if (typeof page !== 'undefined') {
-                    this.params.page = page;
+                if (typeof page === 'undefined') {
+                    page = 1;
                 }
                 this.pageData = {};
                 this.loading = true;
-                this.$http.get(`/${this.getUrlPrefix()}/${this.$route.params.model}/list`, {params: this.params})
+
+                var params = _.assign({'page': page}, this.filterParams);
+                this.$http.get(`/${this.getUrlPrefix()}/${this.$route.params.model}/list`, {params: params})
                     .then(response => {
                         this.loading = false;
                         this.pageData = response.data;
                     }).catch(error => {})
             },
             filter(params) {
-                this.params = Object.assign(this.params, params);
-                this.getResults(1);
+                _.assign(this.filterParams, params);
+                this.getResults();
             }
         }
     }
