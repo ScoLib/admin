@@ -26,7 +26,35 @@ abstract class Filter implements FilterInterface
      */
     public function apply(Builder $query)
     {
-        $query->where($this->getName(), $this->getOperator(), $this->getValue() . '%');
+        $name = $this->getName();
+        if (strpos($name, '.') !== false) {
+            list($relation, $name) = explode('.', $name, 2);
+            $query->whereHas($relation, function ($q) use ($name) {
+                $this->buildQuery($q, $name);
+            });
+        } else {
+            $this->buildQuery($query, $this->getName());
+        }
+    }
+
+    protected function buildQuery(Builder $query, $name)
+    {
+        $op    = $this->getOperator();
+        $value = $this->getValue();
+
+        switch ($op) {
+            case 'in':
+                $query->whereIn($name, (array)$value);
+                break;
+            case 'between':
+                $query->whereBetween($name, (array)$value);
+                break;
+            case 'like':
+                $value .= '%';
+            default:
+                $query->where($name, $op, $value);
+        }
+
     }
 
     public function __construct($name, $title)
@@ -45,8 +73,13 @@ abstract class Filter implements FilterInterface
 
     protected function getRequestInputValue()
     {
-        $name = $this->getName();
+        $name = $this->getRequestName();
         return request()->input($name);
+    }
+
+    protected function getRequestName()
+    {
+        return str_replace('.', '_', $this->getName());
     }
 
     /**

@@ -23,7 +23,7 @@ class MultiSelect extends Select
             $model = $this->getOptionsModel();
             $key   = $this->getOptionsValueAttribute() ?: $model->getKeyName();
 
-            return $value->pluck($key)->map(function ($item) {
+            return collect($value)->pluck($key)->map(function ($item) {
                 return (string)$item;
             });
         }

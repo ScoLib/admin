@@ -10,6 +10,8 @@ class DateRange extends Filter
 
     protected $defaultValue = [];
 
+    protected $operator = 'between';
+
     /**
      * @return string
      */

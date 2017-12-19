@@ -2,8 +2,7 @@
     <div class="box">
         <v-header
                 @refresh="fetchData"
-                @filter="filter"
-                v-model="filterParams">
+                @filter="filter">
         </v-header>
         <!-- /.box-header -->
         <!--<v-table></v-table>-->
@@ -118,6 +117,7 @@
         methods: {
             fetchData () {
                 this.filterParams = {};
+                // console.log('filterparams', this.filterParams);
                 this.getResults();
             },
             getResults(page) {
@@ -135,7 +135,7 @@
                     }).catch(error => {})
             },
             filter(params) {
-                _.assign(this.filterParams, params);
+                this.filterParams = _.assign({}, params);
                 this.getResults();
             }
         }
