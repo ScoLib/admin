@@ -2,7 +2,6 @@
 
 namespace Sco\Admin\Form\Elements;
 
-use DB;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Types\Type;
 
@@ -53,15 +52,19 @@ class Input extends NamedElement
 
     /**
      * @return \Doctrine\DBAL\Schema\Column
+     * @throws \Doctrine\DBAL\DBALException
+     * @throws \Doctrine\DBAL\Schema\SchemaException
      */
     protected function getModelColumn()
     {
+        $dbConnection = $this->getModel()->getConnection();
+
         // Doctrine\DBAL\Platforms\MySQL57Platform not support "enum" "string"
-        $schema = DB::getDoctrineSchemaManager();
+        $schema = $dbConnection->getDoctrineSchemaManager();
         $databasePlatform = $schema->getDatabasePlatform();
         $databasePlatform->registerDoctrineTypeMapping('enum', 'string');
 
-        $table  = DB::getTablePrefix() . $this->getModel()->getTable();
+        $table  = $dbConnection->getTablePrefix() . $this->getModel()->getTable();
         $column = $this->getName();
         if ($column) {
             $columns = $schema->listTableDetails($table);

@@ -36,7 +36,13 @@ class DummyClass extends Component
      */
     public function callView(): ViewInterface
     {
-        //
+        $view = AdminView::table();
+
+        $view->setColumns([
+DummyColumns
+        ]);
+
+        return $view;
     }
 
     /**
@@ -46,7 +52,9 @@ class DummyClass extends Component
      */
     public function callEdit($id): FormInterface
     {
-        //
+        return AdminForm::form()->setElements([
+
+        ]);
     }
 
     /**

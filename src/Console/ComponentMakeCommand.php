@@ -2,9 +2,12 @@
 
 namespace Sco\Admin\Console;
 
+use Doctrine\DBAL\Schema\Column;
 use Illuminate\Console\GeneratorCommand;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
+use Sco\Admin\Facades\AdminElement;
 use Symfony\Component\Console\Input\InputOption;
 
 class ComponentMakeCommand extends GeneratorCommand
@@ -109,11 +112,69 @@ class ComponentMakeCommand extends GeneratorCommand
             ? $this->parseClass($this->option('model'))
             : '';
 
+        $columns = $this->getViewColumns($model);
+        // $elements = $this->getFormElements($model);
+
+
         return str_replace(
-            ['DummyObserver', 'DummyModel'],
-            [$observer, $model],
+            ['DummyObserver', 'DummyModel', 'DummyColumns'],
+            [$observer, $model, $columns],
             parent::buildClass($name)
         );
+    }
+
+    protected function getViewColumns($model)
+    {
+        $columns = $this->getTableColumns($model);
+        if (!$columns) {
+            return ;
+        }
+
+        $list    = [];
+        foreach ($columns as $column) {
+            $list[] = $this->buildColumn($column);
+        }
+        return implode("\n", $list);
+    }
+
+    protected function buildColumn(Column $column)
+    {
+        $title = $column->getComment() ?? camel_case($column->getName());
+
+        return sprintf(
+            "            AdminColumn::%s('%s', '%s'),",
+            'text',
+            $column->getName(),
+            $title
+        );
+    }
+
+    protected function getFormElements($model)
+    {
+        $columns = $this->getTableColumns($model);
+
+
+    }
+
+    protected function getTableColumns($class)
+    {
+        if (empty($class)) {
+            return;
+        }
+
+        if (!class_exists($class)) {
+            return;
+        }
+
+        $model = new $class();
+        if (!($model instanceof Model)) {
+            return;
+        }
+        $schema = $model->getConnection()->getDoctrineSchemaManager();
+
+        $table = $model->getConnection()->getTablePrefix() . $model->getTable();
+
+        return $schema->listTableColumns($table);
     }
 
     /**

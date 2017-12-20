@@ -23,6 +23,11 @@ trait AliasBinder
         return $this;
     }
 
+    public function getAliases()
+    {
+        return $this->aliases;
+    }
+
     public function getAlias($key)
     {
         return $this->aliases[$key];

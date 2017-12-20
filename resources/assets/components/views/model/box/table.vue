@@ -135,7 +135,7 @@
                     }).catch(error => {})
             },
             filter(params) {
-                this.filterParams = _.assign({}, params);
+                this.filterParams = params;
                 this.getResults();
             }
         }
