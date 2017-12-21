@@ -25,6 +25,7 @@ use Sco\Admin\Form\Elements\Text;
 use Sco\Admin\Form\Elements\Textarea;
 use Sco\Admin\Form\Elements\Time;
 use Sco\Admin\Form\Elements\Timestamp;
+use Sco\Admin\Form\Elements\Tinymce;
 use Sco\Admin\Form\Elements\Tree;
 use Sco\Admin\Traits\AliasBinder;
 
@@ -50,6 +51,7 @@ use Sco\Admin\Traits\AliasBinder;
  * @method static Timestamp timestamp($name, $title)
  * @method static DateRange daterange($startName, $endName, $title)
  * @method static DateTimeRange datetimerange($startName, $endName, $title)
+ * @method static Tinymce tinymce($name, $title)
  */
 class ElementFactory implements ElementFactoryInterface
 {
@@ -84,6 +86,7 @@ class ElementFactory implements ElementFactoryInterface
             'datetimerange' => DateTimeRange::class,
             'cascader'      => Cascader::class,
             'tree'          => Tree::class,
+            'tinymce'       => Tinymce::class,
         ]);
     }
 }
