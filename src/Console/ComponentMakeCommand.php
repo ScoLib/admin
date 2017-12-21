@@ -33,6 +33,31 @@ class ComponentMakeCommand extends GeneratorCommand
      */
     protected $type = 'Component';
 
+    protected $columnTypeMappings = [
+        'smallint' => 'text',
+        'integer'  => 'text',
+        'bigint'   => 'text',
+        'float'    => 'text',
+        'string'   => 'text',
+        'text'     => 'text',
+        'boolean'  => 'mapping',
+        'datetime' => 'datetime',
+        'date'     => 'datetime',
+    ];
+
+    protected $elementTypeMappings = [
+        'smallint' => 'number',
+        'integer'  => 'number',
+        'bigint'   => 'number',
+        'float'    => 'number',
+        'string'   => 'text',
+        'text'     => 'textarea',
+        'boolean'  => 'elswitch',
+        'datetime' => 'datetime',
+        'date'     => 'date',
+        'time'     => 'time',
+    ];
+
     /**
      * Execute the console command.
      *
@@ -112,13 +137,13 @@ class ComponentMakeCommand extends GeneratorCommand
             ? $this->parseClass($this->option('model'))
             : '';
 
-        $columns = $this->getViewColumns($model);
-        // $elements = $this->getFormElements($model);
+        $columns  = $this->getViewColumns($model);
+        $elements = $this->getFormElements($model);
 
 
         return str_replace(
-            ['DummyObserver', 'DummyModel', 'DummyColumns'],
-            [$observer, $model, $columns],
+            ['DummyObserver', 'DummyModel', 'DummyColumns', 'DummyElements'],
+            [$observer, $model, $columns, $elements],
             parent::buildClass($name)
         );
     }
@@ -127,33 +152,62 @@ class ComponentMakeCommand extends GeneratorCommand
     {
         $columns = $this->getTableColumns($model);
         if (!$columns) {
-            return ;
+            return;
         }
 
-        $list    = [];
+        $list = [];
         foreach ($columns as $column) {
-            $list[] = $this->buildColumn($column);
+            $list[] = $this->buildViewColumn($column);
         }
         return implode("\n", $list);
     }
 
-    protected function buildColumn(Column $column)
+    protected function buildViewColumn(Column $column)
     {
-        $title = $column->getComment() ?? camel_case($column->getName());
-
         return sprintf(
             "            AdminColumn::%s('%s', '%s'),",
-            'text',
+            $this->getViewColumnType($column->getType()->getName()),
             $column->getName(),
-            $title
+            $this->getColumnTitle($column)
         );
+    }
+
+    protected function getColumnTitle(Column $column)
+    {
+        return $column->getComment() ?? studly_case($column->getName());
+    }
+
+    protected function getViewColumnType($name)
+    {
+        return $this->columnTypeMappings[$name] ?? 'text';
     }
 
     protected function getFormElements($model)
     {
         $columns = $this->getTableColumns($model);
 
+        $list = [];
+        foreach ($columns as $column) {
+            if (!$column->getAutoincrement()) {
+                $list[] = $this->buildFormElement($column);
+            }
+        }
+        return implode("\n", $list);
+    }
 
+    protected function buildFormElement(Column $column)
+    {
+        return sprintf(
+            "            AdminElement::%s('%s', '%s')->required(),",
+            $this->getFormElementType($column->getType()->getName()),
+            $column->getName(),
+            $this->getColumnTitle($column)
+        );
+    }
+
+    protected function getFormElementType($name)
+    {
+        return $this->elementTypeMappings[$name] ?? 'text';
     }
 
     protected function getTableColumns($class)

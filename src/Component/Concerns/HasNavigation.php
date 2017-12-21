@@ -179,8 +179,6 @@ trait HasNavigation
             $page->addBadge($badge);
         }
 
-        $page->setIcon($this->getIcon());
-
         return $page;
     }
 

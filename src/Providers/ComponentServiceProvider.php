@@ -105,11 +105,10 @@ class ComponentServiceProvider extends ServiceProvider
             $component->initialize();
         }
 
-
         if ($component instanceof WithNavigation) {
             $component->addToNavigation();
         }
 
-        $this->app['admin.components']->put($component->model(), $component);
+        $this->app['admin.components']->put($component->getName(), $component);
     }
 }
