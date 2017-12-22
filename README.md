@@ -57,6 +57,7 @@ $ npm install\
   vue-progressbar\
   vue-router\
   vuex\
+  v-tinymce\
   --save-dev
 ```
 

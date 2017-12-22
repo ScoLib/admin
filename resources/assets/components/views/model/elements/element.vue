@@ -110,11 +110,13 @@
                 v-model="currentValue">
         </el-input>
 
-        <tinymce
+        <v-tinymce
                 v-else-if="element.type == 'tinymce'"
                 :id="element.name"
+                :size="element.size"
+                :options="element.options"
                 v-model="currentValue">
-        </tinymce>
+        </v-tinymce>
         <slot></slot>
     </div>
 </template>
@@ -129,7 +131,8 @@
     import vSwitch from './switch.vue'
     import vTree from './tree.vue'
     import vDatePicker from './date-picker.vue'
-    import tinymce from '../../../tinymce.vue'
+    import vTinymce from 'v-tinymce'
+    Vue.use(vTinymce)
 
     export default {
         name: "vElement",
@@ -148,7 +151,6 @@
             vSwitch,
             vTree,
             vDatePicker,
-            tinymce,
         },
         props: {
             element: Object,
