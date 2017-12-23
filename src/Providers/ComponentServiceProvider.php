@@ -29,6 +29,11 @@ class ComponentServiceProvider extends ServiceProvider
         $this->app->instance('admin.components', new Collection());
     }
 
+    protected function registerInstanceComponent(ComponentInterface $component)
+    {
+        $this->app->instance('admin.instance.component', $component);
+    }
+
     protected function bindRouteModel()
     {
         $aliases = $this->app['admin.components']
@@ -45,7 +50,10 @@ class ComponentServiceProvider extends ServiceProvider
                     )
                 );
             }
-            return $aliases->get($value);
+
+            $this->registerInstanceComponent(($component = $aliases->get($value)));
+
+            return $component;
         });
     }
 

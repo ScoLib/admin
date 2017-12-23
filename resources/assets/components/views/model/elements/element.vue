@@ -114,6 +114,8 @@
                 v-else-if="element.type == 'tinymce'"
                 :id="element.name"
                 :size="element.size"
+                :baseUrl="element.baseUrl"
+                :plugins="element.plugins"
                 :options="element.options"
                 v-model="currentValue">
         </v-tinymce>

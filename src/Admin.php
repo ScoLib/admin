@@ -17,4 +17,9 @@ class Admin
     {
         require __DIR__ . '/../routes/admin.php';
     }
+
+    public function component()
+    {
+        return $this->app['admin.instance.component'];
+    }
 }

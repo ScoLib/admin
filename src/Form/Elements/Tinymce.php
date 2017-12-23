@@ -6,26 +6,79 @@ class Tinymce extends NamedElement
 {
     protected $type = 'tinymce';
 
-    protected $size;
+    protected $size = 'basic';
 
-    protected $options;
+    protected $options = [];
+
+    protected $baseUrl;
+
+    protected $plugins;
+
+    public function basicToolbar()
+    {
+        $this->size = 'basic';
+
+        return $this;
+    }
+
+    public function simpleToolbar()
+    {
+        $this->size = 'simple';
+
+        return $this;
+    }
+
+    /**
+     * @param array $toolbar
+     *
+     * @return Tinymce
+     */
+    public function setToolbar(array $toolbar)
+    {
+        $this->options['toolbar'] = $toolbar;
+
+        return $this;
+    }
 
     /**
      * @return mixed
      */
-    public function getSize()
+    public function getBaseUrl()
     {
-        return $this->size;
+        if ($this->baseUrl) {
+            return $this->baseUrl;
+        }
+        return url('js/tinymce');
     }
 
     /**
-     * @param mixed $size
+     * @param mixed $baseUrl
      *
      * @return Tinymce
      */
-    public function setSize($size)
+    public function setBaseUrl($baseUrl)
     {
-        $this->size = $size;
+        $this->baseUrl = $baseUrl;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPlugins()
+    {
+        return $this->plugins;
+    }
+
+    /**
+     * @param mixed $plugins
+     *
+     * @return Tinymce
+     */
+    public function setPlugins($plugins)
+    {
+        $this->plugins = $plugins;
 
         return $this;
     }
@@ -52,9 +105,15 @@ class Tinymce extends NamedElement
 
     public function toArray()
     {
-        return parent::toArray() + [
-                'size'    => $this->getSize(),
-                'options' => $this->getOptions(),
-            ];
+        $data = [
+            'size'    => $this->size,
+            'baseUrl' => $this->getBaseUrl(),
+            'options' => $this->getOptions(),
+        ];
+        if (($plugins = $this->getPlugins())) {
+            $data['plugins'] = $plugins;
+        }
+
+        return parent::toArray() + $data;
     }
 }

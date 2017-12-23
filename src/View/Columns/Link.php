@@ -3,6 +3,8 @@
 
 namespace Sco\Admin\View\Columns;
 
+use Sco\Admin\Facades\Admin;
+
 class Link extends Column
 {
     protected $template = '<router-link :to="value.url">{{value.title}}</router-link>';
@@ -14,9 +16,7 @@ class Link extends Column
         if ($this->url) {
             return $this->url;
         }
-        $model = app('admin.components')->get(get_class($this->getModel()))->getName();
-        $id    = $this->getModel()->getKey();
-        return route('admin.model.edit', [$model, $id], false);
+        return $this->getEditUrl();
     }
 
     public function setUrl($value)
@@ -24,6 +24,13 @@ class Link extends Column
         $this->url = $value;
 
         return $this;
+    }
+
+    protected function getEditUrl()
+    {
+        $model = Admin::component()->getName();
+        $id    = $this->getModel()->getKey();
+        return route('admin.model.edit', [$model, $id], false);
     }
 
     public function getValue()

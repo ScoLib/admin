@@ -3,6 +3,7 @@
 namespace Sco\Admin\Form\Elements;
 
 use Illuminate\Http\UploadedFile;
+use Sco\Admin\Facades\Admin;
 use Storage;
 use Validator;
 
@@ -62,10 +63,9 @@ class File extends NamedElement
         if ($this->actionUrl) {
             return $this->actionUrl;
         }
-        $model = app('admin.components')->get(get_class($this->getModel()));
 
         $params       = [
-            'model' => $model->getName(),
+            'model' => Admin::component()->getName(),
             'field' => $this->getName(),
         ];
         $params['id'] = null;

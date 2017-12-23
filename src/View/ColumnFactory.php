@@ -6,6 +6,7 @@ use Sco\Admin\Contracts\View\ColumnFactoryInterface;
 use Sco\Admin\Traits\AliasBinder;
 use Sco\Admin\View\Columns\Custom;
 use Sco\Admin\View\Columns\DateTime;
+use Sco\Admin\View\Columns\Html;
 use Sco\Admin\View\Columns\Image;
 use Sco\Admin\View\Columns\Link;
 use Sco\Admin\View\Columns\Mapping;
@@ -20,6 +21,7 @@ use Sco\Admin\View\Columns\Text;
  * @method static Custom custom($name, $label, \Closure $callback = null) custom type
  *         column
  * @method static Tags tags($name, $label) tags type column
+ * @method static Html html($name, $label) tags type column
  * @method static Mapping mapping($name, $label, $mappings = null) mapping type column
  */
 class ColumnFactory implements ColumnFactoryInterface
@@ -36,6 +38,7 @@ class ColumnFactory implements ColumnFactoryInterface
             'tags'     => Tags::class,
             'custom'   => Custom::class,
             'mapping'  => Mapping::class,
+            'html'     => Html::class,
         ]);
     }
 }
