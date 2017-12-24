@@ -119,6 +119,10 @@
                 :options="element.options"
                 v-model="currentValue">
         </v-tinymce>
+        <mavon-editor
+                v-else-if="element.type == 'markdown'"
+                v-model="currentValue">
+        </mavon-editor>
         <slot></slot>
     </div>
 </template>
@@ -133,8 +137,8 @@
     import vSwitch from './switch.vue'
     import vTree from './tree.vue'
     import vDatePicker from './date-picker.vue'
-    import vTinymce from 'v-tinymce'
-    Vue.use(vTinymce)
+    import vTinymce from 'v-tinymce/src/tinymce.vue'
+    import { mavonEditor } from 'mavon-editor'
 
     export default {
         name: "vElement",
@@ -153,6 +157,8 @@
             vSwitch,
             vTree,
             vDatePicker,
+            vTinymce,
+            mavonEditor,
         },
         props: {
             element: Object,
@@ -161,5 +167,5 @@
 </script>
 
 <style scoped>
-
+    @import '~mavon-editor/dist/css/index.css';
 </style>

@@ -2,6 +2,9 @@
 
 namespace Sco\Admin\Form\Elements;
 
+/**
+ * @see https://www.tinymce.com/
+ */
 class Tinymce extends NamedElement
 {
     protected $type = 'tinymce';

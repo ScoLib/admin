@@ -16,6 +16,7 @@ use Sco\Admin\Form\Elements\File;
 use Sco\Admin\Form\Elements\Hidden;
 use Sco\Admin\Form\Elements\Image;
 use Sco\Admin\Form\Elements\Images;
+use Sco\Admin\Form\Elements\Markdown;
 use Sco\Admin\Form\Elements\MultiSelect;
 use Sco\Admin\Form\Elements\Number;
 use Sco\Admin\Form\Elements\Password;
@@ -52,6 +53,7 @@ use Sco\Admin\Traits\AliasBinder;
  * @method static DateRange daterange($startName, $endName, $title)
  * @method static DateTimeRange datetimerange($startName, $endName, $title)
  * @method static Tinymce tinymce($name, $title)
+ * @method static Markdown markdown($name, $title)
  */
 class ElementFactory implements ElementFactoryInterface
 {
@@ -87,6 +89,7 @@ class ElementFactory implements ElementFactoryInterface
             'cascader'      => Cascader::class,
             'tree'          => Tree::class,
             'tinymce'       => Tinymce::class,
+            'markdown'      => Markdown::class,
         ]);
     }
 }
