@@ -4,30 +4,15 @@ namespace Sco\Admin\View;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use Sco\Admin\Traits\StorageTrait;
 
 class Image extends Table
 {
+    use StorageTrait;
+
     protected $type = 'image';
 
-    protected $disk;
-
     protected $imagePathAttribute;
-
-    public function getDisk()
-    {
-        if ($this->disk) {
-            return $this->disk;
-        }
-
-        return config('admin.upload.disk', 'public');
-    }
-
-    public function setDisk($value)
-    {
-        $this->disk = $value;
-
-        return $this;
-    }
 
     public function getImagePathAttribute()
     {
@@ -52,19 +37,8 @@ class Image extends Table
                 throw new \InvalidArgumentException("Not Found '{$pathKey}' attribute");
             }
             $row->setAttribute('_primary', $row->getKey());
-            $row->setAttribute('_url', $this->getUrl($row->$pathKey));
+            $row->setAttribute('_url', $this->getFileUrl($row->$pathKey));
             return $row;
         });
-    }
-
-    protected function getUrl($path)
-    {
-        if (($disk = $this->getDisk())) {
-            $url = \Storage::disk($disk)->url($path);
-        } else {
-            $url = asset($path);
-        }
-
-        return $url;
     }
 }

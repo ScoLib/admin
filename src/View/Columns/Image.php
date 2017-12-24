@@ -3,16 +3,18 @@
 
 namespace Sco\Admin\View\Columns;
 
+use Sco\Admin\Traits\StorageTrait;
+
 class Image extends Column
 {
+    use StorageTrait;
+
     protected $template = '<img v-viewer="column.options" :width="value.width" :src="value.image" v-if="value.image">';
 
     /**
      * @var string
      */
     protected $imageWidth = '80px';
-
-    protected $disk;
 
     /**
      * @return string
@@ -34,31 +36,11 @@ class Image extends Column
         return $this;
     }
 
-    public function getDisk()
-    {
-        if ($this->disk) {
-            return $this->disk;
-        }
-
-        return config('admin.upload.disk', 'public');
-    }
-
-    public function setDisk($value)
-    {
-        $this->disk = $value;
-
-        return $this;
-    }
-
     public function getValue()
     {
         $value = parent::getValue();
         if (!empty($value) && (strpos($value, '://') === false)) {
-            if (($disk = $this->getDisk())) {
-                $value = \Storage::disk($disk)->url($value);
-            } else {
-                $value = asset($value);
-            }
+            $value = $this->getFileUrl($value);
         }
 
         return [

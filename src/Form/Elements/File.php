@@ -4,11 +4,13 @@ namespace Sco\Admin\Form\Elements;
 
 use Illuminate\Http\UploadedFile;
 use Sco\Admin\Facades\Admin;
-use Storage;
+use Sco\Admin\Traits\StorageTrait;
 use Validator;
 
 class File extends NamedElement
 {
+    use StorageTrait;
+
     protected $type = 'file';
 
     protected $actionUrl;
@@ -28,18 +30,6 @@ class File extends NamedElement
     protected $fileExtensions;
 
     protected $listType = 'text';
-
-    protected $disk;
-
-    /**
-     * @var string|\Closure|null
-     */
-    protected $uploadPath;
-
-    /**
-     * @var \Closure|null
-     */
-    protected $uploadFileNameRule;
 
     protected $uploadValidationRules = [];
 
@@ -227,88 +217,14 @@ class File extends NamedElement
             ];
     }
 
-    public function getDisk()
-    {
-        if ($this->disk) {
-            return $this->disk;
-        }
-
-        return config('admin.upload.disk', 'public');
-    }
-
-    public function setDisk($value)
-    {
-        $this->disk = $value;
-
-        return $this;
-    }
-
-    protected function getDefaultUploadPath(UploadedFile $file)
-    {
-        return config('admin.upload.directory', 'admin/uploads');
-    }
-
-    public function getUploadPath(UploadedFile $file)
-    {
-        if (!($path = $this->uploadPath)) {
-            $path = $this->getDefaultUploadPath($file);
-        }
-        if (is_callable($path)) {
-            return call_user_func($path, $file);
-        }
-
-        return $path;
-    }
-
     /**
-     * The path of file save
-     *
-     * @param string|\Closure $value
-     *
-     * @return $this
-     */
-    public function setUploadPath($value)
-    {
-        $this->uploadPath = $value;
-
-        return $this;
-    }
-
-    /**
-     * Get a filename for the upload file.
+     * Save file to storage
      *
      * @param \Illuminate\Http\UploadedFile $file
      *
-     * @return mixed|string
+     * @return array
+     * @throws \Illuminate\Validation\ValidationException
      */
-    public function getUploadFileName(UploadedFile $file)
-    {
-        if (is_callable($this->uploadFileNameRule)) {
-            return call_user_func($this->uploadFileNameRule, $file);
-        }
-
-        return $this->getDefaultFileName($file);
-    }
-
-    protected function getDefaultFileName(UploadedFile $file)
-    {
-        return $file->hashName();
-    }
-
-    /**
-     * Set the generation rule for the filename of the uploaded file
-     *
-     * @param \Closure $value
-     *
-     * @return $this
-     */
-    public function setUploadFileNameRule(\Closure $value)
-    {
-        $this->uploadFileNameRule = $value;
-
-        return $this;
-    }
-
     public function saveFile(UploadedFile $file)
     {
         Validator::validate(
@@ -335,16 +251,13 @@ class File extends NamedElement
         return collect($value)->implode('path', ',');
     }
 
-    protected function existsFile($path)
-    {
-        return Storage::disk($this->getDisk())->exists($path);
-    }
-
-    protected function getFileUrl($path)
-    {
-        return Storage::disk($this->getDisk())->url($path);
-    }
-
+    /**
+     * Get file info(name path url)
+     *
+     * @param $path
+     *
+     * @return array
+     */
     protected function getFileInfo($path)
     {
         return [
@@ -358,7 +271,7 @@ class File extends NamedElement
     {
         $uploadRules = [
             'image', 'mimes', 'mimetypes', 'size',
-            'dimensions', 'max', 'min', 'between'
+            'dimensions', 'max', 'min', 'between',
         ];
 
         if (in_array($this->getValidationRuleName($rule), $uploadRules)) {
@@ -397,6 +310,11 @@ class File extends NamedElement
         return [$this->getName() => array_values($rules)];
     }
 
+    /**
+     * Get default validation rules
+     *
+     * @return array
+     */
     protected function getDefaultUploadValidationRules()
     {
         return [
@@ -407,11 +325,21 @@ class File extends NamedElement
         ];
     }
 
+    /**
+     * Get validation messages
+     *
+     * @return array
+     */
     protected function getUploadValidationMessages()
     {
         return $this->uploadValidationMessages;
     }
 
+    /**
+     * Get validation custom attributes
+     *
+     * @return array
+     */
     protected function getUploadValidationTitles()
     {
         return $this->getValidationTitles();
