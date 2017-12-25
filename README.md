@@ -58,7 +58,6 @@ $ npm install\
   vue-router\
   vuex\
   v-tinymce\
-  mavon-editor\
   --save-dev
 ```
 

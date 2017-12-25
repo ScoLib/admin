@@ -2,14 +2,15 @@
 
 namespace Sco\Admin\Form\Elements;
 
-/**
- * @see https://github.com/hinesboy/mavonEditor
- */
 class Markdown extends NamedElement
 {
     protected $type = 'markdown';
 
     protected $configs;
+
+    protected $highlight = true;
+
+    protected $autoInit = true;
 
     /**
      * @return array
@@ -33,11 +34,49 @@ class Markdown extends NamedElement
     /**
      * @param array $configs
      *
-     * @return Simplemde
+     * @return Markdown
      */
-    public function setConfigs(array $configs): Simplemde
+    public function setConfigs(array $configs): Markdown
     {
         $this->configs = $configs;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isHighlight(): bool
+    {
+        return $this->highlight ? true : false;
+    }
+
+    /**
+     *
+     * @return Markdown
+     */
+    public function disableHighlight(): Markdown
+    {
+        $this->highlight = false;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAutoInit(): bool
+    {
+        return $this->autoInit ? true : false;
+    }
+
+    /**
+     *
+     * @return Markdown
+     */
+    public function disableAutoInit(): Markdown
+    {
+        $this->autoInit = false;
 
         return $this;
     }
@@ -45,7 +84,9 @@ class Markdown extends NamedElement
     public function toArray()
     {
         return parent::toArray() + [
-                'configs' => $this->getConfigs(),
+                'configs'   => $this->getConfigs(),
+                'highlight' => $this->isHighlight(),
+                'autoInit'  => $this->isAutoInit(),
             ];
     }
 }
