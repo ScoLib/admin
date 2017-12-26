@@ -98,7 +98,7 @@ class ComponentMakeCommand extends GeneratorCommand
     protected function parseClass($class)
     {
         if (preg_match('([^A-Za-z0-9_/\\\\])', $class)) {
-            throw new InvalidArgumentException('Model name contains invalid characters.');
+            throw new InvalidArgumentException('Class name contains invalid characters.');
         }
 
         $class = trim(str_replace('/', '\\', $class), '\\');
@@ -185,6 +185,10 @@ class ComponentMakeCommand extends GeneratorCommand
     protected function getFormElements($model)
     {
         $columns = $this->getTableColumns($model);
+        
+        if (!$columns) {
+            return;
+        }
 
         $list = [];
         foreach ($columns as $column) {
