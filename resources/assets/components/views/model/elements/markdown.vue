@@ -29,6 +29,12 @@
     }
 </script>
 
-<style scoped>
+<style>
     @import '~simplemde/dist/simplemde.min.css';
+    .markdown-editor .fullscreen {
+        z-index: 1031 !important;
+    }
+    .markdown-editor .CodeMirror-fullscreen {
+        z-index: 1031 !important;
+    }
 </style>
