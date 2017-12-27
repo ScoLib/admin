@@ -3,11 +3,11 @@
 
 namespace Sco\Admin\View\Columns;
 
-use Sco\Admin\Traits\StorageTrait;
+use Sco\Admin\Traits\UploadStorageTrait;
 
 class Image extends Column
 {
-    use StorageTrait;
+    use UploadStorageTrait;
 
     protected $template = '<img v-viewer="column.options" :width="value.width" :src="value.image" v-if="value.image">';
 

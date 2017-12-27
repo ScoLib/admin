@@ -4,11 +4,11 @@ namespace Sco\Admin\View;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
-use Sco\Admin\Traits\StorageTrait;
+use Sco\Admin\Traits\UploadStorageTrait;
 
 class Image extends Table
 {
-    use StorageTrait;
+    use UploadStorageTrait;
 
     protected $type = 'image';
 

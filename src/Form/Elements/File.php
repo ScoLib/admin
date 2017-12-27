@@ -4,12 +4,12 @@ namespace Sco\Admin\Form\Elements;
 
 use Illuminate\Http\UploadedFile;
 use Sco\Admin\Facades\Admin;
-use Sco\Admin\Traits\StorageTrait;
+use Sco\Admin\Traits\UploadStorageTrait;
 use Validator;
 
 class File extends NamedElement
 {
-    use StorageTrait;
+    use UploadStorageTrait;
 
     protected $type = 'file';
 

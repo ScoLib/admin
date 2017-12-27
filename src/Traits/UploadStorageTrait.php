@@ -5,20 +5,28 @@ namespace Sco\Admin\Traits;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
-trait StorageTrait
+trait UploadStorageTrait
 {
+    /**
+     * @var string storage disk name
+     */
     protected $disk;
 
     /**
-     * @var string|\Closure|null
+     * @var string|\Closure|null The relative path of file
      */
     protected $uploadPath;
 
     /**
-     * @var \Closure|null
+     * @var \Closure|null The rule of generate file name
      */
     protected $uploadFileNameRule;
 
+    /**
+     * Get Filesystem Disk of the upload file.
+     *
+     * @return string
+     */
     public function getDisk()
     {
         if ($this->disk) {
@@ -33,6 +41,13 @@ trait StorageTrait
         return config('admin.upload.disk', 'public');
     }
 
+    /**
+     * Set Filesystem Disk of the upload file.
+     *
+     * @param string $value
+     *
+     * @return $this
+     */
     public function setDisk($value)
     {
         $this->disk = $value;
@@ -40,6 +55,13 @@ trait StorageTrait
         return $this;
     }
 
+    /**
+     * Get a default relative path of the upload file.
+     *
+     * @param \Illuminate\Http\UploadedFile $file
+     *
+     * @return string
+     */
     protected function getDefaultUploadPath(UploadedFile $file)
     {
         $root = config('admin.upload.directory', 'admin/uploads');
@@ -47,6 +69,13 @@ trait StorageTrait
         return rtrim($root, '/') . date('/Y/m/d');
     }
 
+    /**
+     * Get relative path of the upload file.
+     *
+     * @param \Illuminate\Http\UploadedFile $file
+     *
+     * @return \Closure|mixed|null|string
+     */
     public function getUploadPath(UploadedFile $file)
     {
         if ($this->uploadPath) {
@@ -60,7 +89,7 @@ trait StorageTrait
     }
 
     /**
-     * The path of file save
+     * Set relative path of the upload file.
      *
      * @param string|\Closure $value
      *
@@ -74,7 +103,7 @@ trait StorageTrait
     }
 
     /**
-     * Get a filename for the upload file.
+     * Get a file name of the upload file.
      *
      * @param \Illuminate\Http\UploadedFile $file
      *
@@ -89,6 +118,13 @@ trait StorageTrait
         return $this->getDefaultFileName($file);
     }
 
+    /**
+     * Get a default name of the upload file.
+     *
+     * @param \Illuminate\Http\UploadedFile $file
+     *
+     * @return string
+     */
     protected function getDefaultFileName(UploadedFile $file)
     {
         return $file->hashName();
