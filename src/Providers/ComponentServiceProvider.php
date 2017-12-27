@@ -76,7 +76,7 @@ class ComponentServiceProvider extends ServiceProvider
 
         $namespace = $this->app->getNamespace();
 
-        foreach ((new Finder())->in($paths)->files() as $file) {
+        foreach ((new Finder())->in($paths)->exclude('Observers')->files() as $file) {
             $class = trim($namespace, '\\') . '\\' . str_replace(
                     ['/', '.php'],
                     ['\\', ''],
