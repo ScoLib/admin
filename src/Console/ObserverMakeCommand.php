@@ -34,6 +34,17 @@ class ObserverMakeCommand extends GeneratorCommand
 
     protected function getDefaultNamespace($rootNamespace)
     {
-        return $rootNamespace . '\Observers';
+        return $rootNamespace . '\\' . $this->getComponentNamespace() . '\Observers';
+    }
+
+    protected function getComponentNamespace()
+    {
+        return str_replace(
+            '/',
+            '\\',
+            Str::after(
+                config('admin.components'),
+                app_path() . DIRECTORY_SEPARATOR)
+        );
     }
 }

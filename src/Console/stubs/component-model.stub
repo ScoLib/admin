@@ -3,6 +3,7 @@
 namespace DummyNamespace;
 
 use DummyFullObserverClass;
+use DummyFullModelClass;
 use Sco\Admin\Component\Component;
 use Sco\Admin\Contracts\Form\FormInterface;
 use Sco\Admin\Contracts\View\ViewInterface;
@@ -29,7 +30,7 @@ class DummyClass extends Component
 
     public function model()
     {
-        return ;
+        return DummyModelClass::class;
     }
 
     /**
@@ -38,6 +39,10 @@ class DummyClass extends Component
     public function callView(): ViewInterface
     {
         $view = AdminView::table();
+
+        $view->setColumns([
+DummyColumns
+        ]);
 
         return $view;
     }
@@ -49,7 +54,9 @@ class DummyClass extends Component
      */
     public function callEdit($id): FormInterface
     {
-        return AdminForm::form();
+        return AdminForm::form()->setElements([
+DummyElements
+        ]);
     }
 
     /**

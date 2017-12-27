@@ -42,19 +42,21 @@ trait StorageTrait
 
     protected function getDefaultUploadPath(UploadedFile $file)
     {
-        return config('admin.upload.directory', 'admin/uploads');
+        $root = config('admin.upload.directory', 'admin/uploads');
+
+        return rtrim($root, '/') . date('/Y/m/d');
     }
 
     public function getUploadPath(UploadedFile $file)
     {
-        if (!($path = $this->uploadPath)) {
-            $path = $this->getDefaultUploadPath($file);
-        }
-        if (is_callable($path)) {
-            return call_user_func($path, $file);
+        if ($this->uploadPath) {
+            if (is_callable($this->uploadPath)) {
+                return call_user_func($this->uploadPath, $file);
+            }
+            return $this->uploadPath;
         }
 
-        return $path;
+        return $this->getDefaultUploadPath($file);
     }
 
     /**

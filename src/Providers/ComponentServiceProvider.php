@@ -58,7 +58,7 @@ class ComponentServiceProvider extends ServiceProvider
     }
 
     /**
-     * load component class from the paths
+     * Load component class from the paths
      *
      * @param mixed $paths
      */
@@ -77,15 +77,19 @@ class ComponentServiceProvider extends ServiceProvider
         $namespace = $this->app->getNamespace();
 
         foreach ((new Finder())->in($paths)->files() as $file) {
-            $class = $namespace . str_replace(
+            $class = trim($namespace, '\\') . '\\' . str_replace(
                     ['/', '.php'],
                     ['\\', ''],
-                    Str::after(realpath($file->getPathname()),
-                        app_path() . DIRECTORY_SEPARATOR)
+                    Str::after(
+                        realpath($file->getPathname()),
+                        app_path() . DIRECTORY_SEPARATOR
+                    )
                 );
 
-            if (is_subclass_of($class, Component::class)
-                && !(new \ReflectionClass($class))->isAbstract()) {
+            if (
+                is_subclass_of($class, Component::class)
+                && !(new \ReflectionClass($class))->isAbstract()
+            ) {
                 $this->registerComponent($class);
             }
         }

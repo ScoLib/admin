@@ -145,11 +145,9 @@ abstract class Component implements
     public function getConfigs()
     {
         return collect([
-            //'primaryKey'  => $this->getModel()->getKeyName(),
             'title'    => $this->getTitle(),
             'accesses' => $this->getAccesses(),
             'view'     => $this->fireView(),
-            //'elements'    => $this->getElements()->values(),
         ]);
     }
 

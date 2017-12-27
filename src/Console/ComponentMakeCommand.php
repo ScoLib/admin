@@ -69,7 +69,7 @@ class ComponentMakeCommand extends GeneratorCommand
             return;
         }
 
-        if ($this->option('observer')) {
+        if ($this->hasOption('observer')) {
             $this->createObserver();
         }
     }
@@ -79,13 +79,14 @@ class ComponentMakeCommand extends GeneratorCommand
      */
     protected function createObserver()
     {
-        $observerClass = $this->parseClass($this->option('observer'));
-
-        //$this->info('observer:' . $observerClass);
-
         $this->call('make:observer', [
-            'name' => $observerClass,
+            'name' => $this->getObserverName(),
         ]);
+    }
+
+    protected function getObserverName()
+    {
+        return $this->option('observer') ?? ($this->getNameInput() . 'Observer');
     }
 
     /**
@@ -117,6 +118,10 @@ class ComponentMakeCommand extends GeneratorCommand
      */
     protected function getStub()
     {
+        if ($this->option('model')) {
+            return __DIR__ . '/stubs/component-model.stub';
+        }
+
         return __DIR__ . '/stubs/component.stub';
     }
 
@@ -129,23 +134,85 @@ class ComponentMakeCommand extends GeneratorCommand
      */
     protected function buildClass($name)
     {
-        $observer = $this->option('observer')
-            ? $this->parseClass($this->option('observer'))
-            : \Sco\Admin\Component\Observer::class;
+        $replace = $this->buildObserverReplacements();
 
-        $model = $this->option('model')
-            ? $this->parseClass($this->option('model'))
-            : '';
-
-        $columns  = $this->getViewColumns($model);
-        $elements = $this->getFormElements($model);
+        if ($this->option('model')) {
+            $replace = $this->buildModelReplacements($replace);
+        }
 
 
         return str_replace(
             ['DummyObserver', 'DummyModel', 'DummyColumns', 'DummyElements'],
-            [$observer, $model, $columns, $elements],
+            [$observer, $model, implode("\n", $columns), implode("\n", $elements)],
             parent::buildClass($name)
         );
+    }
+
+    protected function buildObserverReplacements()
+    {
+        if ($this->hasOption('observer')) {
+            $observer = $this->getObserverName();
+        } else {
+            $observer = \Sco\Admin\Component\Observer::class;
+        }
+
+        if (!Str::startsWith($observer, [
+            $this->laravel->getNamespace(),
+            '\\',
+        ])) {
+            $observer = $this->laravel->getNamespace()
+                . '\\' . $this->getComponentNamespace()
+                . '\Observers\\' . $observer;
+        }
+
+        return [
+            'DummyObserverClass'     => class_basename($observer),
+            'DummyFullObserverClass' => $observer,
+        ];
+    }
+
+    protected function buildModelReplacements(array $replace)
+    {
+        $modelClass = $this->parseModel($this->option('model'));
+
+        if (!class_exists($modelClass)) {
+            if ($this->confirm("A {$modelClass} model does not exist. Do you want to generate it?",
+                true)) {
+                $this->call('make:model', ['name' => $modelClass]);
+            }
+        }
+
+        $columns  = $this->getViewColumns($modelClass);
+        $elements = $this->getFormElements($modelClass);
+
+        return array_merge($replace, [
+            'DummyFullModelClass' => $modelClass,
+            'DummyModelClass'     => class_basename($modelClass),
+            'DummyColumns'        => $columns ? implode("\n", $columns) : '',
+            'DummyElements'       => $elements ? implode("\n", $elements) : '',
+        ]);
+    }
+
+    /**
+     * Get the fully-qualified model class name.
+     *
+     * @param  string $model
+     *
+     * @return string
+     */
+    protected function parseModel($model)
+    {
+        if (preg_match('([^A-Za-z0-9_/\\\\])', $model)) {
+            throw new InvalidArgumentException('Model name contains invalid characters.');
+        }
+
+        $model = trim(str_replace('/', '\\', $model), '\\');
+
+        if (!Str::startsWith($model, $rootNamespace = $this->laravel->getNamespace())) {
+            $model = $rootNamespace . $model;
+        }
+
+        return $model;
     }
 
     protected function getViewColumns($model)
@@ -159,7 +226,7 @@ class ComponentMakeCommand extends GeneratorCommand
         foreach ($columns as $column) {
             $list[] = $this->buildViewColumn($column);
         }
-        return implode("\n", $list);
+        return $list;
     }
 
     protected function buildViewColumn(Column $column)
@@ -185,7 +252,7 @@ class ComponentMakeCommand extends GeneratorCommand
     protected function getFormElements($model)
     {
         $columns = $this->getTableColumns($model);
-        
+
         if (!$columns) {
             return;
         }
@@ -196,7 +263,7 @@ class ComponentMakeCommand extends GeneratorCommand
                 $list[] = $this->buildFormElement($column);
             }
         }
-        return implode("\n", $list);
+        return $list;
     }
 
     protected function buildFormElement(Column $column)
@@ -244,7 +311,18 @@ class ComponentMakeCommand extends GeneratorCommand
      */
     protected function getDefaultNamespace($rootNamespace)
     {
-        return $rootNamespace . '\Components';
+        return $rootNamespace . '\\' . $this->getComponentNamespace();
+    }
+
+    protected function getComponentNamespace()
+    {
+        return str_replace(
+            '/',
+            '\\',
+            Str::after(
+                config('admin.components'),
+                app_path() . DIRECTORY_SEPARATOR)
+        );
     }
 
     /**
