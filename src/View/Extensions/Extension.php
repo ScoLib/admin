@@ -7,7 +7,6 @@ use Sco\Admin\Contracts\View\Extensions\ExtensionInterface;
 
 abstract class Extension extends Collection implements ExtensionInterface
 {
-
     abstract public function add($value);
 
     /**
