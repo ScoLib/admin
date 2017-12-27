@@ -1,8 +1,7 @@
 <?php
 
-namespace Sco\Admin\Http\Controllers\Auth;
+namespace Sco\Admin\Http\Controllers;
 
-use Auth;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;

@@ -13,19 +13,19 @@ Route::group([
         //登录页
         Route::get('login', [
             'as'   => 'login',
-            'uses' => '\Sco\Admin\Http\Controllers\Auth\LoginController@showLoginForm',
+            'uses' => '\Sco\Admin\Http\Controllers\LoginController@showLoginForm',
         ]);
 
         //登录提交
         Route::post('login', [
             'as'   => 'login.submit',
-            'uses' => '\Sco\Admin\Http\Controllers\Auth\LoginController@login',
+            'uses' => '\Sco\Admin\Http\Controllers\LoginController@login',
         ]);
 
         //退出
         Route::get('logout', [
             'as'   => 'logout',
-            'uses' => '\Sco\Admin\Http\Controllers\Auth\LoginController@logout',
+            'uses' => '\Sco\Admin\Http\Controllers\LoginController@logout',
         ]);
     });
 
