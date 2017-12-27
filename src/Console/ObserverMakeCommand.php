@@ -45,7 +45,8 @@ class ObserverMakeCommand extends GeneratorCommand
             '\\',
             Str::after(
                 config('admin.components'),
-                app_path() . DIRECTORY_SEPARATOR)
+                app_path() . DIRECTORY_SEPARATOR
+            )
         );
     }
 }

@@ -78,16 +78,15 @@ class ComponentServiceProvider extends ServiceProvider
 
         foreach ((new Finder())->in($paths)->exclude('Observers')->files() as $file) {
             $class = trim($namespace, '\\') . '\\' . str_replace(
-                    ['/', '.php'],
-                    ['\\', ''],
-                    Str::after(
-                        realpath($file->getPathname()),
-                        app_path() . DIRECTORY_SEPARATOR
-                    )
-                );
+                ['/', '.php'],
+                ['\\', ''],
+                Str::after(
+                    realpath($file->getPathname()),
+                    app_path() . DIRECTORY_SEPARATOR
+                )
+            );
 
-            if (
-                is_subclass_of($class, Component::class)
+            if (is_subclass_of($class, Component::class)
                 && !(new \ReflectionClass($class))->isAbstract()
             ) {
                 $this->registerComponent($class);

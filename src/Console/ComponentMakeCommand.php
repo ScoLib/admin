@@ -87,7 +87,9 @@ class ComponentMakeCommand extends GeneratorCommand
         }
 
         return str_replace(
-            array_keys($replace), array_values($replace), parent::buildClass($name)
+            array_keys($replace),
+            array_values($replace),
+            parent::buildClass($name)
         );
     }
 
@@ -97,8 +99,10 @@ class ComponentMakeCommand extends GeneratorCommand
             $observer = $this->parseObserver($this->option('observer'));
 
             if (!class_exists($observer)) {
-                if ($this->confirm("A {$observer} observer does not exist. Do you want to generate it?",
-                    true)) {
+                if ($this->confirm(
+                    "A {$observer} observer does not exist. Do you want to generate it?",
+                    true
+                )) {
                     $this->call('make:observer', [
                         'name' => $observer,
                     ]);
@@ -146,8 +150,10 @@ class ComponentMakeCommand extends GeneratorCommand
         $modelClass = $this->parseModel($this->option('model'));
 
         if (!class_exists($modelClass)) {
-            if ($this->confirm("A {$modelClass} model does not exist. Do you want to generate it?",
-                true)) {
+            if ($this->confirm(
+                "A {$modelClass} model does not exist. Do you want to generate it?",
+                true
+            )) {
                 $this->call('make:model', ['name' => $modelClass]);
             }
         }
@@ -291,7 +297,8 @@ class ComponentMakeCommand extends GeneratorCommand
             '\\',
             Str::after(
                 config('admin.components'),
-                app_path() . DIRECTORY_SEPARATOR)
+                app_path() . DIRECTORY_SEPARATOR
+            )
         );
     }
 

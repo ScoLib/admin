@@ -54,7 +54,6 @@ abstract class Filter implements FilterInterface
             default:
                 $query->where($name, $op, $value);
         }
-
     }
 
     public function __construct($name, $title)

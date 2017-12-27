@@ -41,5 +41,4 @@ abstract class Extension extends Collection implements ExtensionInterface
 
         return $this;
     }
-
 }
