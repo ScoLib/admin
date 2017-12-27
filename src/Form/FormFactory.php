@@ -22,7 +22,7 @@ class FormFactory implements FormFactoryInterface
     {
         $this->app = $app;
 
-        $this->registerAliases([
+        $this->register([
             'form' => Form::class,
         ]);
     }

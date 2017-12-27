@@ -8,7 +8,7 @@ trait AliasBinder
 {
     protected $aliases = [];
 
-    public function registerAliases(array $aliases)
+    public function register(array $aliases)
     {
         foreach ($aliases as $alias => $class) {
             $this->bind($alias, $class);
@@ -20,6 +20,7 @@ trait AliasBinder
     public function bind($alias, $class)
     {
         $this->aliases[$alias] = $class;
+
         return $this;
     }
 
@@ -30,7 +31,7 @@ trait AliasBinder
 
     public function getAlias($key)
     {
-        return $this->aliases[$key];
+        return $this->aliases[$key] ?? false;
     }
 
     /**

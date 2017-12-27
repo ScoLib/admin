@@ -30,7 +30,7 @@ class ColumnFactory implements ColumnFactoryInterface
 
     public function __construct()
     {
-        $this->registerAliases([
+        $this->register([
             'text'     => Text::class,
             'datetime' => DateTime::class,
             'image'    => Image::class,

@@ -7,12 +7,18 @@ use InvalidArgumentException;
 
 trait SelectOptionsFromModel
 {
+    /**
+     * @var string
+     */
     protected $optionsLabelAttribute;
 
+    /**
+     * @var string
+     */
     protected $optionsValueAttribute;
 
     /**
-     * 获取 options 标题字段
+     * Get the options label attribute.
      *
      * @return string
      */
@@ -22,7 +28,7 @@ trait SelectOptionsFromModel
     }
 
     /**
-     * 设置 options 标题字段
+     * Set the options label attribute.
      *
      * @param string $value
      *
@@ -36,7 +42,7 @@ trait SelectOptionsFromModel
     }
 
     /**
-     * 获取 options value 字段
+     * Get the options value attribute.
      *
      * @return string
      */
@@ -46,7 +52,7 @@ trait SelectOptionsFromModel
     }
 
     /**
-     * 设置 options value 字段
+     * Set the options value attribute.
      *
      * @param string $value
      *
@@ -60,6 +66,8 @@ trait SelectOptionsFromModel
     }
 
     /**
+     * Get the options model.
+     *
      * @return Model
      */
     public function getOptionsModel()
@@ -83,10 +91,11 @@ trait SelectOptionsFromModel
     }
 
     /**
+     * Get the options from model.
      *
-     * @return array
+     * @return \Illuminate\Support\Collection
      */
-    protected function setOptionsFromModel()
+    protected function getOptionsFromModel()
     {
         if (is_null(($label = $this->getOptionsLabelAttribute()))) {
             throw new InvalidArgumentException('The select options must set label attribute');
@@ -94,10 +103,6 @@ trait SelectOptionsFromModel
 
         $model = $this->getOptionsModel();
 
-        // $repository = app(RepositoryInterface::class);
-        // $repository->setModel($model);
-
-        // $results = $repository->getQuery()->get();
         /**
          * @var \Illuminate\Support\Collection $results
          */

@@ -25,7 +25,7 @@ class FilterFactory implements FilterFactoryInterface
 
     public function __construct()
     {
-        $this->registerAliases([
+        $this->register([
             'radio'         => Radio::class,
             'checkbox'      => Checkbox::class,
             'text'          => Text::class,

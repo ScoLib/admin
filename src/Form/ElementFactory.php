@@ -65,7 +65,7 @@ class ElementFactory implements ElementFactoryInterface
     {
         $this->app = $app;
 
-        $this->registerAliases([
+        $this->register([
             'text'          => Text::class,
             'radio'         => Radio::class,
             'checkbox'      => Checkbox::class,

@@ -16,7 +16,7 @@ class ViewFactory implements ViewFactoryInterface
 
     public function __construct()
     {
-        $this->registerAliases([
+        $this->register([
             'table' => Table::class,
             'tree'  => Tree::class,
             'image' => Image::class,
