@@ -19,6 +19,20 @@ abstract class Filter implements FilterInterface
 
     protected $operator = '=';
 
+    public function __construct($name, $title)
+    {
+        $this->setName($name)->setTitle($title);
+    }
+
+    public function initialize()
+    {
+        if (is_null($value = $this->getValue())) {
+            $value = $this->getRequestInputValue();
+        }
+
+        $this->setValue($value);
+    }
+
     /**
      * Apply filter to the query.
      *
@@ -37,6 +51,12 @@ abstract class Filter implements FilterInterface
         }
     }
 
+    /**
+     * Build the filter query.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param string                                $name
+     */
     protected function buildQuery(Builder $query, $name)
     {
         $op    = $this->getOperator();
@@ -51,23 +71,11 @@ abstract class Filter implements FilterInterface
                 break;
             case 'like':
                 $value .= '%';
+                $query->where($name, $op, $value);
+                break;
             default:
                 $query->where($name, $op, $value);
         }
-    }
-
-    public function __construct($name, $title)
-    {
-        $this->setName($name)->setTitle($title);
-    }
-
-    public function initialize()
-    {
-        if (is_null($value = $this->getValue())) {
-            $value = $this->getRequestInputValue();
-        }
-
-        $this->setValue($value);
     }
 
     protected function getRequestInputValue()
