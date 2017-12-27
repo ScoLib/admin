@@ -3,6 +3,7 @@
 namespace Sco\Admin\Console;
 
 use Illuminate\Console\GeneratorCommand;
+use Illuminate\Support\Str;
 
 class ObserverMakeCommand extends GeneratorCommand
 {

@@ -7,7 +7,6 @@ use Illuminate\Console\GeneratorCommand;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
-use Sco\Admin\Facades\AdminElement;
 use Symfony\Component\Console\Input\InputOption;
 
 class ComponentMakeCommand extends GeneratorCommand
@@ -59,59 +58,6 @@ class ComponentMakeCommand extends GeneratorCommand
     ];
 
     /**
-     * Execute the console command.
-     *
-     * @return void
-     */
-    public function handle()
-    {
-        if (parent::handle() === false && !$this->option('force')) {
-            return;
-        }
-
-        if ($this->hasOption('observer')) {
-            $this->createObserver();
-        }
-    }
-
-    /**
-     * Create a new permission observer for the component
-     */
-    protected function createObserver()
-    {
-        $this->call('make:observer', [
-            'name' => $this->getObserverName(),
-        ]);
-    }
-
-    protected function getObserverName()
-    {
-        return $this->option('observer') ?? ($this->getNameInput() . 'Observer');
-    }
-
-    /**
-     * Get the fully-qualified class name.
-     *
-     * @param string $class
-     *
-     * @return string
-     */
-    protected function parseClass($class)
-    {
-        if (preg_match('([^A-Za-z0-9_/\\\\])', $class)) {
-            throw new InvalidArgumentException('Class name contains invalid characters.');
-        }
-
-        $class = trim(str_replace('/', '\\', $class), '\\');
-
-        if (!Str::startsWith($class, $rootNamespace = $this->laravel->getNamespace())) {
-            $class = $rootNamespace . $class;
-        }
-
-        return $class;
-    }
-
-    /**
      * Get the stub file for the generator.
      *
      * @return string
@@ -140,35 +86,59 @@ class ComponentMakeCommand extends GeneratorCommand
             $replace = $this->buildModelReplacements($replace);
         }
 
-
         return str_replace(
-            ['DummyObserver', 'DummyModel', 'DummyColumns', 'DummyElements'],
-            [$observer, $model, implode("\n", $columns), implode("\n", $elements)],
-            parent::buildClass($name)
+            array_keys($replace), array_values($replace), parent::buildClass($name)
         );
     }
 
     protected function buildObserverReplacements()
     {
-        if ($this->hasOption('observer')) {
-            $observer = $this->getObserverName();
+        if ($this->option('observer')) {
+            $observer = $this->parseObserver($this->option('observer'));
+
+            if (!class_exists($observer)) {
+                if ($this->confirm("A {$observer} observer does not exist. Do you want to generate it?",
+                    true)) {
+                    $this->call('make:observer', [
+                        'name' => $observer,
+                    ]);
+                }
+            }
         } else {
             $observer = \Sco\Admin\Component\Observer::class;
         }
 
-        if (!Str::startsWith($observer, [
-            $this->laravel->getNamespace(),
-            '\\',
-        ])) {
-            $observer = $this->laravel->getNamespace()
-                . '\\' . $this->getComponentNamespace()
-                . '\Observers\\' . $observer;
+        return [
+            'DummyFullObserverClass' => $observer,
+            'DummyObserverClass'     => class_basename($observer),
+        ];
+    }
+
+    /**
+     * Get the fully-qualified observer class name.
+     *
+     * @param  string $observer
+     *
+     * @return string
+     */
+    protected function parseObserver($observer)
+    {
+        if (preg_match('([^A-Za-z0-9_/\\\\])', $observer)) {
+            throw new InvalidArgumentException('Observer name contains invalid characters.');
         }
 
-        return [
-            'DummyObserverClass'     => class_basename($observer),
-            'DummyFullObserverClass' => $observer,
-        ];
+        $observer = trim(str_replace('/', '\\', $observer), '\\');
+
+        if (!Str::startsWith(
+            $observer,
+            $rootNamespace = $this->laravel->getNamespace()
+        )) {
+            $observer = $rootNamespace . $this->getComponentNamespace()
+                . '\Observers\\'
+                . $observer;
+        }
+
+        return $observer;
     }
 
     protected function buildModelReplacements(array $replace)
