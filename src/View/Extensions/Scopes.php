@@ -16,6 +16,9 @@ class Scopes extends Extension
         return $this;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function apply(Builder $query)
     {
         $this->each(function ($scope) use ($query) {

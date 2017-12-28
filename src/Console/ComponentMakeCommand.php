@@ -290,6 +290,10 @@ class ComponentMakeCommand extends GeneratorCommand
         return $rootNamespace . '\\' . $this->getComponentNamespace();
     }
 
+    /**
+     *
+     * @return string
+     */
     protected function getComponentNamespace()
     {
         return str_replace(

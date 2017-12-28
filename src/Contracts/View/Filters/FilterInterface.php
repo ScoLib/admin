@@ -18,7 +18,7 @@ interface FilterInterface extends Arrayable, Jsonable, JsonSerializable, Initial
     public function isActive();
 
     /**
-     * Apply filter to the query.
+     * Apply the filter to a given Eloquent query builder.
      *
      * @param Builder $query
      */
@@ -44,11 +44,15 @@ interface FilterInterface extends Arrayable, Jsonable, JsonSerializable, Initial
     public function setValue($value);
 
     /**
+     * Get the filter name.
+     *
      * @return string
      */
     public function getName();
 
     /**
+     * Set the filter name.
+     *
      * @param string $name
      *
      * @return $this
@@ -56,11 +60,15 @@ interface FilterInterface extends Arrayable, Jsonable, JsonSerializable, Initial
     public function setName($name);
 
     /**
+     * Get the filter display name.
+     *
      * @return string
      */
     public function getTitle();
 
     /**
+     * Set the filter display name.
+     *
      * @param string $title
      *
      * @return $this
@@ -68,11 +76,15 @@ interface FilterInterface extends Arrayable, Jsonable, JsonSerializable, Initial
     public function setTitle($title);
 
     /**
+     * Get the filter default name.
+     *
      * @return mixed
      */
     public function getDefaultValue();
 
     /**
+     * Set the filter default name.
+     *
      * @param mixed $defaultValue
      *
      * @return $this
@@ -80,11 +92,15 @@ interface FilterInterface extends Arrayable, Jsonable, JsonSerializable, Initial
     public function setDefaultValue($defaultValue);
 
     /**
+     * Get query clause operator.
+     *
      * @return string
      */
     public function getOperator();
 
     /**
+     * Set query clause operator.
+     *
      * @param string $operator
      *
      * @return $this

@@ -92,11 +92,17 @@ abstract class Component implements
         );
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getModel()
     {
         return $this->model;
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Model|mixed
+     */
     protected function makeModel()
     {
         $class = $this->model();
@@ -124,16 +130,25 @@ abstract class Component implements
         return $this->model = $model;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
         return $this->name;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getTitle()
     {
         return $this->title;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getRepository()
     {
         return $this->repository;

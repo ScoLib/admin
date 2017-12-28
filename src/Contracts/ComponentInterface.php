@@ -4,10 +4,30 @@ namespace Sco\Admin\Contracts;
 
 interface ComponentInterface
 {
+    /**
+     * Configure Model class
+     *
+     * @return string
+     */
+    public function model();
+
+    /**
+     * Get name of the component
+     *
+     * @return string
+     */
     public function getName();
 
+    /**
+     * Get display name of the component
+     *
+     * @return string
+     */
     public function getTitle();
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Model
+     */
     public function getModel();
 
     /**

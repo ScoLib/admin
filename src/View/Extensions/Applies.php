@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Builder;
 
 class Applies extends Extension
 {
+    /**
+     * {@inheritdoc}
+     */
     public function add($value)
     {
         if (!($value instanceof Closure)) {
@@ -17,6 +20,9 @@ class Applies extends Extension
         return $this;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function apply(Builder $query)
     {
         $this->each(function ($apply) use ($query) {

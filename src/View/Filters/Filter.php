@@ -34,9 +34,7 @@ abstract class Filter implements FilterInterface
     }
 
     /**
-     * Apply filter to the query.
-     *
-     * @param Builder $query
+     * {@inheritdoc}
      */
     public function apply(Builder $query)
     {

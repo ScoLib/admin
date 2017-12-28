@@ -2,17 +2,24 @@
 
 namespace Sco\Admin\View\Extensions;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Sco\Admin\Contracts\View\Extensions\ExtensionInterface;
 
 abstract class Extension extends Collection implements ExtensionInterface
 {
+    /**
+     * {@inheritdoc}
+     */
     abstract public function add($value);
 
     /**
-     * Wipe item.
-     *
-     * @return $this
+     * {@inheritdoc}
+     */
+    abstract public function apply(Builder $query);
+
+    /**
+     * {@inheritdoc}
      */
     public function clear()
     {
@@ -22,9 +29,7 @@ abstract class Extension extends Collection implements ExtensionInterface
     }
 
     /**
-     * @param $values
-     *
-     * @return $this
+     * {@inheritdoc}
      */
     public function set($values)
     {

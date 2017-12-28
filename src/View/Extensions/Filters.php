@@ -30,6 +30,10 @@ class Filters extends Extension implements Initializable
         return $this;
     }
 
+    /**
+     *
+     * @return \Illuminate\Support\Collection
+     */
     public function getActive()
     {
         return $this->filter(function (FilterInterface $filter) {
@@ -37,6 +41,9 @@ class Filters extends Extension implements Initializable
         });
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function apply(Builder $query)
     {
         $this->getActive()->each(function (FilterInterface $filter) use ($query) {

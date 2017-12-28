@@ -8,12 +8,14 @@ use Illuminate\Support\Str;
 trait HasAccess
 {
     /**
+     * The abilities of access.
+     *
      * @var \Illuminate\Support\Collection
      */
     protected $abilities;
 
     /**
-     * Access observer class
+     * Access observer class.
      *
      * @var string
      */
@@ -26,6 +28,9 @@ trait HasAccess
      */
     protected $observables = [];
 
+    /**
+     * Initialize access.
+     */
     public function bootHasAccess()
     {
         $this->abilities = new Collection();
@@ -33,36 +38,71 @@ trait HasAccess
         $this->observe($this->observer);
     }
 
+    /**
+     * Determine if the entity have access to view.
+     *
+     * @return bool
+     */
     public function isView()
     {
         return method_exists($this, 'callView') && $this->can('view');
     }
 
+    /**
+     * Check if the entity have access to create.
+     *
+     * @return bool
+     */
     public function isCreate()
     {
         return method_exists($this, 'callCreate') && $this->can('create');
     }
 
+    /**
+     * Check if the entity have access to edit.
+     *
+     * @return bool
+     */
     public function isEdit()
     {
         return method_exists($this, 'callEdit') && $this->can('edit');
     }
 
+    /**
+     * Check if the entity have access to delete.
+     *
+     * @return mixed
+     */
     public function isDelete()
     {
         return $this->can('delete');
     }
 
+    /**
+     * Check if the entity have access to destroy.
+     *
+     * @return bool
+     */
     public function isDestroy()
     {
         return $this->isRestorableModel() && $this->can('destroy');
     }
 
+    /**
+     * Check if the entity have access to restore.
+     *
+     * @return bool
+     */
     public function isRestore()
     {
         return $this->isRestorableModel() && $this->can('restore');
     }
 
+    /**
+     * Whether the model can be restored
+     *
+     * @return mixed
+     */
     protected function isRestorableModel()
     {
         return $this->getRepository()->isRestorable();
@@ -103,11 +143,22 @@ trait HasAccess
         );
     }
 
+    /**
+     * register ability to access.
+     *
+     * @param string $ability
+     * @param string|\Closure $callback
+     */
     public function registerAbility($ability, $callback)
     {
         $this->abilities->put($ability, $this->makeAbilityCallback($callback));
     }
 
+    /**
+     * @param string|\Closure $callback
+     *
+     * @return \Closure
+     */
     protected function makeAbilityCallback($callback)
     {
         return function ($component) use ($callback) {
@@ -122,9 +173,11 @@ trait HasAccess
     }
 
     /**
+     * Determine if the entity has a given ability.
+     *
      * @param string $ability
      *
-     * @return mixed
+     * @return bool
      */
     final public function can($ability)
     {
@@ -136,6 +189,11 @@ trait HasAccess
         return $value($this) ? true : false;
     }
 
+    /**
+     * Get all ability.
+     *
+     * @return Collection
+     */
     public function getAccesses()
     {
         return $this->abilities->mapWithKeys(function ($item, $key) {

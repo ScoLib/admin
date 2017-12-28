@@ -7,13 +7,8 @@ use Illuminate\Database\Eloquent\Builder;
 interface ExtensionInterface
 {
     /**
-     * @param $values
+     * Add a extension item.
      *
-     * @return $this
-     */
-    public function set($values);
-
-    /**
      * @param $value
      *
      * @return $this
@@ -21,6 +16,24 @@ interface ExtensionInterface
     public function add($value);
 
     /**
+     * Set extension items.
+     *
+     * @param $values
+     *
+     * @return $this
+     */
+    public function set($values);
+
+    /**
+     * Wipe item.
+     *
+     * @return $this
+     */
+    public function clear();
+
+    /**
+     * Apply the scope to a given Eloquent query builder.
+     *
      * @param \Illuminate\Database\Eloquent\Builder $query
      *
      * @return mixed

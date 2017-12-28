@@ -24,6 +24,14 @@ trait HasEvents
         }
     }
 
+    /**
+     * Fire the given event for the component
+     *
+     * @param string $event
+     * @param bool   $halt
+     *
+     * @return bool
+     */
     protected function fireEvent($event, $halt = true)
     {
         if (!isset(static::$dispatcher)) {

@@ -10,47 +10,51 @@ use Sco\Admin\Navigation\Page;
 trait HasNavigation
 {
     /**
-     * The page id name
+     * The page id name.
      *
      * @var string
      */
     protected $pageId;
 
     /**
-     * The page icon class name
+     * The page icon class name.
      *
      * @var string
      */
     protected $icon;
 
     /**
-     * The page belong to page id name
+     * The page belong to page id name.
      *
      * @var string
      */
     protected $parentPageId;
 
     /**
-     * The page priority
+     * The page priority.
      *
      * @var int
      */
     protected $priority = 100;
 
     /**
-     * @return mixed
+     * Get the page id
+     *
+     * @return string
      */
-    public function getPageId()
+    public function getPageId(): string
     {
         return $this->pageId;
     }
 
     /**
-     * @param mixed $pageId
+     * Set the page id
+     *
+     * @param string $pageId
      *
      * @return $this
      */
-    public function setPageId($pageId)
+    public function setPageId(string $pageId)
     {
         $this->pageId = $pageId;
 
@@ -58,19 +62,23 @@ trait HasNavigation
     }
 
     /**
-     * @return mixed
+     * Get the page icon class name.
+     *
+     * @return string
      */
-    public function getIcon()
+    public function getIcon(): string
     {
         return $this->icon;
     }
 
     /**
-     * @param mixed $icon
+     * Set the page icon class name.
+     *
+     * @param string $icon
      *
      * @return $this
      */
-    public function setIcon($icon)
+    public function setIcon(string $icon)
     {
         $this->icon = $icon;
 
@@ -78,19 +86,20 @@ trait HasNavigation
     }
 
     /**
-     * @return mixed
+     *
+     * @return string
      */
-    public function getParentPageId()
+    public function getParentPageId(): string
     {
         return $this->parentPageId;
     }
 
     /**
-     * @param mixed $parentPageId
+     * @param string $parentPageId
      *
      * @return $this
      */
-    public function setParentPageId($parentPageId)
+    public function setParentPageId(string $parentPageId)
     {
         $this->parentPageId = $parentPageId;
 
@@ -156,9 +165,9 @@ trait HasNavigation
     }
 
     /**
-     * page
+     * Make page
      *
-     * @param null $badge
+     * @param string|Closure|null $badge
      *
      * @return \Sco\Admin\Navigation\Page
      */
@@ -183,6 +192,8 @@ trait HasNavigation
     }
 
     /**
+     * Get the model view url.
+     *
      * @param array $parameters
      *
      * @return string
