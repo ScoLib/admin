@@ -6,11 +6,39 @@ class ElSwitch extends NamedElement
 {
     protected $type = 'elswitch';
 
-    protected $texts       = ['ON', 'OFF'];
-    protected $values      = ['1', '0'];
-    protected $colors      = [];
+    /**
+     * Display Texts
+     *
+     * @var array
+     */
+    protected $texts = ['ON', 'OFF'];
+
+    /**
+     * Switch values.
+     *
+     * @var array
+     */
+    protected $values = ['1', '0'];
+
+    /**
+     * Background colors of display text.
+     *
+     * @var array
+     */
+    protected $colors = [];
+
+    /**
+     * class name of the icon displayed.
+     *
+     * @var array
+     */
     protected $iconClasses = [];
 
+    /**
+     * width of Switch.
+     *
+     * @var int
+     */
     protected $width = 40;
 
     public function getWidth()
@@ -31,8 +59,8 @@ class ElSwitch extends NamedElement
     }
 
     /**
-     * @param $active
-     * @param $inactive
+     * @param string|int $active
+     * @param string|int $inactive
      *
      * @return ElSwitch
      */
@@ -49,12 +77,12 @@ class ElSwitch extends NamedElement
     }
 
     /**
-     * @param $active
-     * @param $inactive
+     * @param string $active
+     * @param string $inactive
      *
      * @return ElSwitch
      */
-    public function setTexts($active, $inactive)
+    public function setTexts(string $active, string $inactive)
     {
         $this->texts = [$active, $inactive];
 
@@ -67,12 +95,12 @@ class ElSwitch extends NamedElement
     }
 
     /**
-     * @param $active
-     * @param $inactive
+     * @param string $active
+     * @param string $inactive
      *
      * @return ElSwitch
      */
-    public function setColors($active, $inactive)
+    public function setColors(string $active, string $inactive)
     {
         $this->colors = [$active, $inactive];
 
@@ -84,7 +112,13 @@ class ElSwitch extends NamedElement
         return $this->iconClasses;
     }
 
-    public function setIconClasses($active, $inactive)
+    /**
+     * @param string $active
+     * @param string $inactive
+     *
+     * @return $this
+     */
+    public function setIconClasses(string $active, string $inactive)
     {
         $this->iconClasses = [$active, $inactive];
 

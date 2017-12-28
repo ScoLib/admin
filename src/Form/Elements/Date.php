@@ -36,13 +36,6 @@ class Date extends Input
         return $this->convertPickerFormat();
     }
 
-    /*public function setFormat($value)
-    {
-        $this->format = $value;
-
-        return $this;
-    }*/
-
     protected function convertPickerFormat()
     {
         return strtr($this->getPickerFormat(), [
@@ -69,7 +62,7 @@ class Date extends Input
      *
      * @return $this
      */
-    public function setPickerFormat($value)
+    public function setPickerFormat(string $value)
     {
         $this->pickerFormat = $value;
 
@@ -93,7 +86,7 @@ class Date extends Input
      *
      * @return $this
      */
-    public function setTimezone($timezone)
+    public function setTimezone(string $timezone)
     {
         $this->timezone = $timezone;
 
