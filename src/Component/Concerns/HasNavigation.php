@@ -12,14 +12,14 @@ trait HasNavigation
     /**
      * The page id name.
      *
-     * @var string
+     * @var string|null
      */
     protected $pageId;
 
     /**
      * The page icon class name.
      *
-     * @var string
+     * @var string|null
      */
     protected $icon;
 
@@ -40,9 +40,9 @@ trait HasNavigation
     /**
      * Get the page id
      *
-     * @return string
+     * @return string|null
      */
-    public function getPageId(): string
+    public function getPageId()
     {
         return $this->pageId;
     }
@@ -64,9 +64,9 @@ trait HasNavigation
     /**
      * Get the page icon class name.
      *
-     * @return string
+     * @return string|null
      */
-    public function getIcon(): string
+    public function getIcon()
     {
         return $this->icon;
     }
