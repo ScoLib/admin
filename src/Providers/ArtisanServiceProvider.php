@@ -12,8 +12,9 @@ class ArtisanServiceProvider extends ServiceProvider
     protected $defer = true;
 
     protected $commands = [
+        'Install'       => 'command.install',
         'ComponentMake' => 'command.component.make',
-        'ObserverMake' => 'command.observer.make',
+        'ObserverMake'  => 'command.observer.make',
     ];
 
     public function register()
@@ -24,7 +25,8 @@ class ArtisanServiceProvider extends ServiceProvider
     /**
      * Register the given commands.
      *
-     * @param  array  $commands
+     * @param  array $commands
+     *
      * @return void
      */
     protected function registerCommands(array $commands)
@@ -34,6 +36,18 @@ class ArtisanServiceProvider extends ServiceProvider
         }
 
         $this->commands(array_values($commands));
+    }
+
+    /**
+     * Register the command.
+     *
+     * @return void
+     */
+    protected function registerInstallCommand()
+    {
+        $this->app->singleton('command.install', function ($app) {
+            return new InstallCommand;
+        });
     }
 
     /**

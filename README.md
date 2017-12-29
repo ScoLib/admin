@@ -1,14 +1,15 @@
-# Laravel Admin
+# Sco Admin
 
-[![StyleCI][ico-styleci]][link-styleci]
-[![Latest Version on Packagist][ico-version]][link-packagist]
-[![Software License][ico-license]](LICENSE.md)
-[![Build Status][ico-travis]][link-travis]
-[![Coverage Status][ico-scrutinizer]][link-scrutinizer]
-[![Quality Score][ico-code-quality]][link-code-quality]
-[![Total Downloads][ico-downloads]][link-downloads]
+[![StyleCI](https://styleci.io/repos/82435198/shield?branch=master)](https://styleci.io/repos/82435198)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/ScoLib/admin.svg?style=flat-square)](https://packagist.org/packages/ScoLib/admin)
+[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](https://github.com/ScoLib/admin/blob/master/LICENSE.md)
+[![Build Status](https://img.shields.io/travis/ScoLib/admin/master.svg?style=flat-square)](https://travis-ci.org/ScoLib/admin)
+[![Coverage Status](https://img.shields.io/scrutinizer/coverage/g/ScoLib/admin.svg?style=flat-square)](https://scrutinizer-ci.com/g/ScoLib/admin/?branch=master)
+[![Quality Score](https://img.shields.io/scrutinizer/g/ScoLib/admin.svg?style=flat-square)](https://scrutinizer-ci.com/g/ScoLib/admin)
+[![Total Downloads](https://img.shields.io/packagist/dt/ScoLib/admin.svg?style=flat-square)](https://packagist.org/packages/ScoLib/admin)
 
-基于Laravel5.*的一个后台管理包
+
+基于 Laravel5.5 的一个后台管理包
 
 
 ## Install
@@ -42,7 +43,7 @@ $ php artisan vendor:publish --provider="Sco\Admin\Providers\ResourcesServicePro
 ```
 
 
-### install `babel-plugin-transform-vue-jsx` [link](https://github.com/vuejs/babel-plugin-transform-vue-jsx)
+### install [`babel-plugin-transform-vue-jsx`](https://github.com/vuejs/babel-plugin-transform-vue-jsx)
 
 ### NPM
 ```bash
@@ -114,26 +115,10 @@ $ composer test
 
 ## Credits
 
-- [klgd][link-author]
-- [All Contributors][link-contributors]
+- [klgd](https://github.com/klgd)
+- [All Contributors](../../contributors)
 
 ## License
 
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
 
-[ico-styleci]: https://styleci.io/repos/82435198/shield?branch=master
-[ico-version]: https://img.shields.io/packagist/v/ScoLib/admin.svg?style=flat-square
-[ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
-[ico-travis]: https://img.shields.io/travis/ScoLib/admin/master.svg?style=flat-square
-[ico-scrutinizer]: https://img.shields.io/scrutinizer/coverage/g/ScoLib/admin.svg?style=flat-square
-[ico-code-quality]: https://img.shields.io/scrutinizer/g/ScoLib/admin.svg?style=flat-square
-[ico-downloads]: https://img.shields.io/packagist/dt/ScoLib/admin.svg?style=flat-square
-
-[link-styleci]: https://styleci.io/repos/82435198
-[link-packagist]: https://packagist.org/packages/ScoLib/admin
-[link-travis]: https://travis-ci.org/ScoLib/admin
-[link-scrutinizer]: https://scrutinizer-ci.com/g/ScoLib/admin/?branch=master
-[link-code-quality]: https://scrutinizer-ci.com/g/ScoLib/admin
-[link-downloads]: https://packagist.org/packages/ScoLib/admin
-[link-author]: https://github.com/klgd
-[link-contributors]: ../../contributors
