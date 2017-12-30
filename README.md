@@ -9,7 +9,9 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/ScoLib/admin.svg?style=flat-square)](https://packagist.org/packages/ScoLib/admin)
 
 
-基于 Laravel5.5 的一个后台管理包
+`Sco Admin` is an administrative interface builder for [`Laravel`](http://laravel.com/).
+
+Inspired by [SleepingOwlAdmin](https://github.com/LaravelRUS/SleepingOwlAdmin) , [FrozenNode/Laravel-Administrator](https://github.com/FrozenNode/Laravel-Administrator) and [Voyager](https://github.com/the-control-group/voyager)
 
 
 ## Install

@@ -1,9 +1,14 @@
 {
     "title": "Sco Admin",
-    "description": "Sco Admin",
+    "description": "Sco Admin Laravel 5.5",
     "author": "klgd",
     "output.name": "site",
     "gitbook": ">3.0.0",
+    "links": {
+        "sidebar": {
+            "Sco Admin": "http://www.scophp.com"
+        }
+    },
     "plugins": [
         "-lunr",
         "-search",
@@ -20,9 +25,6 @@
         "anchor-navigation-ex"
     ],
     "pluginsConfig": {
-        "theme-default": {
-            "showLevel": true
-        },
         "disqus": {
             "shortName": "scophpdocs"
         },
@@ -50,7 +52,8 @@
             "modify_format": "YYYY-MM-DD HH:mm:ss"
         },
         "anchor-navigation-ex": {
-            "isRewritePageTitle": false,
+            "multipleH1": false,
+            "showLevel": false,
             "tocLevel1Icon": "fa fa-hand-o-right",
             "tocLevel2Icon": "fa fa-hand-o-right",
             "tocLevel3Icon": "fa fa-hand-o-right"
