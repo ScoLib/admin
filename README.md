@@ -8,48 +8,33 @@
 [![Quality Score](https://img.shields.io/scrutinizer/g/ScoLib/admin.svg?style=flat-square)](https://scrutinizer-ci.com/g/ScoLib/admin)
 [![Total Downloads](https://img.shields.io/packagist/dt/ScoLib/admin.svg?style=flat-square)](https://packagist.org/packages/ScoLib/admin)
 
-
 `Sco Admin` is an administrative interface builder for [`Laravel`](http://laravel.com/).
+
+The frontend is based on [Element-UI](https://github.com/ElemeFE/element) and [AdminLTE](https://github.com/almasaeed2010/AdminLTE)
 
 Inspired by [SleepingOwlAdmin](https://github.com/LaravelRUS/SleepingOwlAdmin) , [FrozenNode/Laravel-Administrator](https://github.com/FrozenNode/Laravel-Administrator) and [Voyager](https://github.com/the-control-group/voyager)
 
-
 ## Install
 
-### Laravel 5.5.*
-
-``` bash
-$ composer require scolib/admin:1.1.x@dev
-```
-
-Laravel 5.5 uses Package Auto-Discovery, so doesn't require you to manually add the ServiceProvider.
-
-### Laravel5.4
-``` bash
-$ composer require scolib/admin:1.0.x@dev
-```
-
-Add the ServiceProvider to the `providers` array in `config/app.php`
-``` php
-Sco\Admin\Providers\AdminServiceProvider::class,
-```
-
-## Publish resources file
-
-Copy the package resources to your local with the publish command:
-
->Has tags: `assets/config/views/lang`
+### Composer
+require package：
 
 ```bash
-$ php artisan vendor:publish --provider="Sco\Admin\Providers\ResourcesServiceProvider"
+composer require scolib/admin
 ```
 
+### Artisan
+Run install command:
 
-### install [`babel-plugin-transform-vue-jsx`](https://github.com/vuejs/babel-plugin-transform-vue-jsx)
+```bash
+php artisan admin:install
+```
+
+### Install [`babel-plugin-transform-vue-jsx`](https://github.com/vuejs/babel-plugin-transform-vue-jsx)
 
 ### NPM
 ```bash
-$ npm install\
+npm install\
   bootstrap\
   element-ui\
   font-awesome\
