@@ -6,7 +6,9 @@
 * [安装](installation.md)
 * [快速开始](quick-start.md)
 * [配置](configuration.md)
-* [组件](component.md)
+* [FAQ](faq.md)
 
 ## 基本使用
+
+* [组件](component.md)
 

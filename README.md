@@ -35,6 +35,8 @@ php artisan admin:install
 ### NPM
 ```bash
 npm install\
+  less\
+  less-loader\
   bootstrap\
   element-ui\
   font-awesome\
@@ -46,6 +48,7 @@ npm install\
   vue-router\
   vuex\
   v-tinymce\
+  vue-simplemde\
   --save-dev
 ```
 
