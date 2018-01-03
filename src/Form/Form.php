@@ -48,6 +48,7 @@ class Form implements
         if ($key === false) {
             throw new InvalidArgumentException('Not found element');
         }
+
         return $this->getElements()->get($key);
     }
 
@@ -143,6 +144,7 @@ class Form implements
                 $rules += $element->getValidationRules();
             }
         });
+
         return $rules;
     }
 
@@ -154,6 +156,7 @@ class Form implements
                 $messages += $element->getValidationMessages();
             }
         });
+
         return $messages;
     }
 
@@ -165,6 +168,7 @@ class Form implements
                 $titles += $element->getValidationTitles();
             }
         });
+
         return $titles;
     }
 

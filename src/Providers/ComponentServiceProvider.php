@@ -42,7 +42,7 @@ class ComponentServiceProvider extends ServiceProvider
             });
 
         $this->app['router']->bind('model', function ($value, $route) use ($aliases) {
-            if (!$aliases->has($value)) {
+            if (! $aliases->has($value)) {
                 throw new NotFoundHttpException(
                     sprintf(
                         'Not Found model(%s) component.',
@@ -64,7 +64,7 @@ class ComponentServiceProvider extends ServiceProvider
      */
     protected function loadComponents($paths)
     {
-        $paths = array_unique(is_array($paths) ? $paths : (array)$paths);
+        $paths = array_unique(is_array($paths) ? $paths : (array) $paths);
 
         $paths = array_filter($paths, function ($path) {
             return is_dir($path);
@@ -78,16 +78,16 @@ class ComponentServiceProvider extends ServiceProvider
 
         foreach ((new Finder())->in($paths)->exclude('Observers')->files() as $file) {
             $class = trim($namespace, '\\') . '\\' . str_replace(
-                ['/', '.php'],
-                ['\\', ''],
-                Str::after(
-                    realpath($file->getPathname()),
-                    app_path() . DIRECTORY_SEPARATOR
-                )
-            );
+                    ['/', '.php'],
+                    ['\\', ''],
+                    Str::after(
+                        realpath($file->getPathname()),
+                        app_path() . DIRECTORY_SEPARATOR
+                    )
+                );
 
             if (is_subclass_of($class, Component::class)
-                && !(new \ReflectionClass($class))->isAbstract()
+                && ! (new \ReflectionClass($class))->isAbstract()
             ) {
                 $this->registerComponent($class);
             }
@@ -102,7 +102,7 @@ class ComponentServiceProvider extends ServiceProvider
     protected function registerComponent($class)
     {
         $component = $this->app->make($class);
-        if (!($component instanceof ComponentInterface)) {
+        if (! ($component instanceof ComponentInterface)) {
             throw new InvalidArgumentException(
                 sprintf(
                     'Class "%s" must be instanced of "%s".',

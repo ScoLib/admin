@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Sco\Admin\Repositories;
 
 use Illuminate\Database\Eloquent\Model;
@@ -68,7 +67,7 @@ class Repository implements RepositoryInterface
 
     public function setClass($class)
     {
-        if (!class_exists($class)) {
+        if (! class_exists($class)) {
             throw new InvalidArgumentException("Model class {$class} not found.");
         }
 

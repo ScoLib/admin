@@ -6,7 +6,7 @@ class Badge extends \KodiComponents\Navigation\Badge
 {
     public function toArray()
     {
-        if (!$this->hasClassProperty('label-', 'bg-')) {
+        if (! $this->hasClassProperty('label-', 'bg-')) {
             $this->setHtmlAttribute('class', 'label-primary');
         }
 

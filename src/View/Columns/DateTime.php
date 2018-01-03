@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Sco\Admin\View\Columns;
 
 use Carbon\Carbon;
@@ -42,6 +41,7 @@ class DateTime extends Column
     public function setFormat(string $format)
     {
         $this->format = $format;
+
         return $this;
     }
 
@@ -72,16 +72,17 @@ class DateTime extends Column
     public function getValue()
     {
         $value = parent::getValue();
+
         return $this->getFormatValue($value);
     }
 
     protected function getFormatValue($date)
     {
-        if (!empty($date)) {
+        if (! empty($date)) {
             if (is_numeric($date)) {
                 $date = Carbon::createFromTimestamp($date);
             }
-            if (!($date instanceof Carbon)) {
+            if (! ($date instanceof Carbon)) {
                 $date = Carbon::parse($date);
             }
 

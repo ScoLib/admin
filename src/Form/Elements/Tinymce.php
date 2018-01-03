@@ -51,6 +51,7 @@ class Tinymce extends NamedElement
         if ($this->baseUrl) {
             return $this->baseUrl;
         }
+
         return url('js/tinymce');
     }
 

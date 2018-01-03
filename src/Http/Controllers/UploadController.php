@@ -12,10 +12,10 @@ use Sco\Admin\Form\Elements\File;
 class UploadController extends Controller
 {
     /**
-     * @param \Illuminate\Http\Request                $request
+     * @param \Illuminate\Http\Request $request
      * @param \Sco\Admin\Contracts\ComponentInterface $component
-     * @param string                                  $field
-     * @param mixed                                   $id
+     * @param string $field
+     * @param mixed $id
      *
      * @return \Illuminate\Http\JsonResponse
      */
@@ -26,7 +26,7 @@ class UploadController extends Controller
         $id = null
     ) {
         $file = $request->file($field);
-        if (is_null($file) || !($file instanceof UploadedFile)) {
+        if (is_null($file) || ! ($file instanceof UploadedFile)) {
             throw new InvalidArgumentException('must upload file');
         }
 
@@ -37,7 +37,7 @@ class UploadController extends Controller
         }
 
         $element = $form->getElement($field);
-        if (!($element instanceof File)) {
+        if (! ($element instanceof File)) {
             throw new InvalidArgumentException(
                 sprintf(
                     '[%s] element must be instanced of "Sco\Admin\Form\Elements\File".',
@@ -47,6 +47,7 @@ class UploadController extends Controller
         }
 
         $data = $element->saveFile($file);
+
         return response()->json($data);
     }
 }

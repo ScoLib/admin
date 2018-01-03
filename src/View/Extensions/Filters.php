@@ -17,7 +17,7 @@ class Filters extends Extension implements Initializable
 
     public function add($value)
     {
-        if (!($value instanceof FilterInterface)) {
+        if (! ($value instanceof FilterInterface)) {
             throw new \InvalidArgumentException(
                 sprintf(
                     'filter must be %s',
@@ -27,6 +27,7 @@ class Filters extends Extension implements Initializable
         }
 
         $this->push($value);
+
         return $this;
     }
 

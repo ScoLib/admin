@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Sco\Admin\View\Columns;
 
 use Sco\Admin\Traits\UploadStorageTrait;
@@ -39,7 +38,7 @@ class Image extends Column
     public function getValue()
     {
         $value = parent::getValue();
-        if (!empty($value) && (strpos($value, '://') === false)) {
+        if (! empty($value) && (strpos($value, '://') === false)) {
             $value = $this->getFileUrl($value);
         }
 

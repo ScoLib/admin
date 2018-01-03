@@ -82,6 +82,7 @@ trait UploadStorageTrait
             if (is_callable($this->uploadPath)) {
                 return call_user_func($this->uploadPath, $file);
             }
+
             return $this->uploadPath;
         }
 

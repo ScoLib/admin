@@ -28,6 +28,7 @@ class DateRange extends Filter
     public function setPickerFormat(string $pickerFormat): DateRange
     {
         $this->pickerFormat = $pickerFormat;
+
         return $this;
     }
 

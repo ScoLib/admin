@@ -41,6 +41,7 @@ class File extends NamedElement
         if (empty($value)) {
             return [];
         }
+
         return collect(explode(',', $value))->filter(function ($item) {
             return $this->existsFile($item);
         })->map(function ($item) {
@@ -54,7 +55,7 @@ class File extends NamedElement
             return $this->actionUrl;
         }
 
-        $params       = [
+        $params = [
             'model' => Admin::component()->getName(),
             'field' => $this->getName(),
         ];
@@ -156,6 +157,7 @@ class File extends NamedElement
         if ($this->fileExtensions) {
             return $this->fileExtensions;
         }
+
         return $this->getDefaultExtensions();
     }
 
@@ -245,9 +247,10 @@ class File extends NamedElement
 
     protected function prepareValue($value)
     {
-        if (empty($value) || !is_array($value)) {
+        if (empty($value) || ! is_array($value)) {
             return '';
         }
+
         return collect($value)->implode('path', ',');
     }
 
@@ -270,8 +273,14 @@ class File extends NamedElement
     public function addValidationRule($rule, $message = null)
     {
         $uploadRules = [
-            'image', 'mimes', 'mimetypes', 'size',
-            'dimensions', 'max', 'min', 'between',
+            'image',
+            'mimes',
+            'mimetypes',
+            'size',
+            'dimensions',
+            'max',
+            'min',
+            'between',
         ];
 
         if (in_array($this->getValidationRuleName($rule), $uploadRules)) {
@@ -288,6 +297,7 @@ class File extends NamedElement
         if (is_null($message)) {
             return $this;
         }
+
         return $this->addUploadValidationMessage($rule, $message);
     }
 

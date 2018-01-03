@@ -7,7 +7,9 @@ class Number extends NamedElement
     protected $type = 'number';
 
     protected $max;
-    protected $min  = 0;
+
+    protected $min = 0;
+
     protected $step = 1;
 
     public function getMax()
@@ -17,7 +19,7 @@ class Number extends NamedElement
 
     public function setMax($value)
     {
-        $this->max = (int)$value;
+        $this->max = (int) $value;
 
         $this->addValidationRule('max:' . $value);
 
@@ -31,7 +33,7 @@ class Number extends NamedElement
 
     public function setMin($value)
     {
-        $this->min = (int)$value;
+        $this->min = (int) $value;
 
         $this->addValidationRule('min:' . $value);
 
@@ -40,7 +42,7 @@ class Number extends NamedElement
 
     public function setStep($value)
     {
-        $this->step = (int)$value;
+        $this->step = (int) $value;
 
         return $this;
     }
@@ -48,16 +50,16 @@ class Number extends NamedElement
     protected function getDefaultValidationRules()
     {
         return parent::getDefaultValidationRules() + [
-            'numeric' => 'numeric'
+                'numeric' => 'numeric'
             ];
     }
 
     public function toArray()
     {
         return parent::toArray() + [
-                'min'      => $this->getMin(),
-                'max'      => $this->getMax(),
-                'step'     => $this->step,
+                'min'  => $this->getMin(),
+                'max'  => $this->getMax(),
+                'step' => $this->step,
             ];
     }
 }

@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Sco\Admin\View\Columns;
 
 use Illuminate\Database\Eloquent\Model;
@@ -51,6 +50,7 @@ abstract class Column implements ColumnInterface
     public function setName($name)
     {
         $this->name = $name;
+
         return $this;
     }
 
@@ -70,6 +70,7 @@ abstract class Column implements ColumnInterface
     public function setLabel(string $label)
     {
         $this->label = $label;
+
         return $this;
     }
 
@@ -89,6 +90,7 @@ abstract class Column implements ColumnInterface
     public function setWidth(int $width)
     {
         $this->width = $width;
+
         return $this;
     }
 
@@ -108,6 +110,7 @@ abstract class Column implements ColumnInterface
     public function setMinWidth(int $minWidth)
     {
         $this->minWidth = $minWidth;
+
         return $this;
     }
 
@@ -162,6 +165,7 @@ abstract class Column implements ColumnInterface
     public function setTemplate(string $template)
     {
         $this->template = $template;
+
         return $this;
     }
 
@@ -213,6 +217,7 @@ abstract class Column implements ColumnInterface
         if (is_null($value)) {
             $value = $this->getDefaultValue();
         }
+
         return $value;
     }
 
@@ -228,11 +233,11 @@ abstract class Column implements ColumnInterface
 
         if ($instance instanceof Collection) {
             $instance = $instance->pluck($part);
-        } elseif (!is_null($instance)) {
+        } elseif (! is_null($instance)) {
             $instance = $instance->getAttribute($part);
         }
 
-        if (!empty($parts) && !is_null($instance)) {
+        if (! empty($parts) && ! is_null($instance)) {
             return $this->getValueFromObject($instance, implode('.', $parts));
         }
 

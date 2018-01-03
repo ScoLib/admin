@@ -14,6 +14,7 @@ class Tree extends View
     public function get()
     {
         $builder = $this->getQuery();
+
         return $this->getTree($builder->get());
     }
 
@@ -36,12 +37,12 @@ class Tree extends View
         }
 
         return $collection->map(function ($row) use ($key) {
-            if (!isset($row->$key)) {
+            if (! isset($row->$key)) {
                 throw new \InvalidArgumentException("Not Found '{$key}' attribute");
             }
 
             return [
-                'title' => $row->$key,
+                'title'    => $row->$key,
                 'children' => [],
                 '_primary' => $row->getKey(),
             ];

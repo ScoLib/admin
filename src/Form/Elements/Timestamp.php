@@ -23,6 +23,7 @@ class Timestamp extends DateTime
     protected function prepareValue($value)
     {
         $value = parent::prepareValue($value);
+
         return $value->getTimestamp();
     }
 }

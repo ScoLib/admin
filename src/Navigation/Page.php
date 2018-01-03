@@ -23,7 +23,7 @@ class Page extends \KodiComponents\Navigation\Page
 
     public function hasComponent()
     {
-        return !is_null($this->getComponent());
+        return ! is_null($this->getComponent());
     }
 
     public function setIcon($icon)

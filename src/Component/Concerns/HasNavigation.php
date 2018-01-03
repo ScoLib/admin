@@ -182,7 +182,7 @@ trait HasNavigation
             });
 
         if ($badge) {
-            if (!($badge instanceof BadgeInterface)) {
+            if (! ($badge instanceof BadgeInterface)) {
                 $badge = new Badge($badge);
             }
             $page->addBadge($badge);

@@ -186,6 +186,7 @@ abstract class View implements ViewInterface, Arrayable
         if (starts_with($name, 'add') && $this->extensions->has(str_plural($method))) {
             $extension = $this->extensions->get(str_plural($method));
             call_user_func_array([$extension, 'add'], $parameters);
+
             return $this;
         }
 

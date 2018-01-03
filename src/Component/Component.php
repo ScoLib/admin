@@ -15,9 +15,7 @@ use Sco\Admin\Contracts\RepositoryInterface;
 use Sco\Admin\Contracts\View\ViewInterface;
 use Sco\Admin\Contracts\WithNavigation;
 
-abstract class Component implements
-    ComponentInterface,
-    WithNavigation
+abstract class Component implements ComponentInterface, WithNavigation
 {
     use HasAccess, HasEvents, HasNavigation;
 
@@ -66,7 +64,7 @@ abstract class Component implements
         $this->repository = $repository;
         $this->repository->setModel($this->getModel());
 
-        if (!$this->name) {
+        if (! $this->name) {
             $this->setDefaultName();
         }
 
@@ -117,7 +115,7 @@ abstract class Component implements
 
         $model = $this->app->make($this->model());
 
-        if (!($model instanceof Model)) {
+        if (! ($model instanceof Model)) {
             throw new InvalidArgumentException(
                 sprintf(
                     "Class %s must be an instance of %s",
@@ -171,13 +169,13 @@ abstract class Component implements
      */
     final public function fireView()
     {
-        if (!method_exists($this, 'callView')) {
+        if (! method_exists($this, 'callView')) {
             throw new BadMethodCallException('Not Found Method "callView"');
         }
 
         $view = $this->app->call([$this, 'callView']);
 
-        if (!$view instanceof ViewInterface) {
+        if (! $view instanceof ViewInterface) {
             throw new InvalidArgumentException(
                 sprintf(
                     'callView must be instanced of "%s".',
@@ -206,12 +204,12 @@ abstract class Component implements
      */
     final public function fireCreate()
     {
-        if (!method_exists($this, 'callCreate')) {
+        if (! method_exists($this, 'callCreate')) {
             return;
         }
 
         $form = $this->app->call([$this, 'callCreate']);
-        if (!$form instanceof FormInterface) {
+        if (! $form instanceof FormInterface) {
             throw new InvalidArgumentException(
                 sprintf(
                     'callCreate must be instanced of "%s".',
@@ -240,13 +238,13 @@ abstract class Component implements
      */
     final public function fireEdit($id)
     {
-        if (!method_exists($this, 'callEdit')) {
+        if (! method_exists($this, 'callEdit')) {
             return;
         }
 
         $form = $this->app->call([$this, 'callEdit'], ['id' => $id]);
 
-        if (!$form instanceof FormInterface) {
+        if (! $form instanceof FormInterface) {
             throw new InvalidArgumentException(
                 sprintf(
                     'callEdit must be instanced of "%s".',
@@ -274,24 +272,27 @@ abstract class Component implements
     public function delete($id)
     {
         $this->getRepository()->delete($id);
+
         return true;
     }
 
     public function forceDelete($id)
     {
         $this->getRepository()->forceDelete($id);
+
         return true;
     }
 
     public function restore($id)
     {
         $this->getRepository()->restore($id);
+
         return true;
     }
 
     protected function bootIfNotBooted()
     {
-        if (!isset(static::$booted[static::class])) {
+        if (! isset(static::$booted[static::class])) {
             static::$booted[static::class] = true;
 
             $this->fireEvent('booting', false);

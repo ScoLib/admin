@@ -46,14 +46,14 @@ class Table extends View
     }
 
     /**
-     * @param int    $perPage
+     * @param int $perPage
      * @param string $pageName
      *
      * @return $this
      */
     public function paginate($perPage = 25, $pageName = 'page')
     {
-        $this->perPage  = (int)$perPage;
+        $this->perPage = (int) $perPage;
         $this->pageName = $pageName;
 
         return $this;
@@ -116,6 +116,7 @@ class Table extends View
                 $newRow->put('_deleted', $row->trashed() ? 1 : 0);
             }
             $newRow->put('_primary', $row->getKey());
+
             return $newRow;
         });
     }

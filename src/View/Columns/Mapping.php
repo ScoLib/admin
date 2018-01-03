@@ -37,7 +37,7 @@ class Mapping extends Column
             $mappings = $mappings();
         }
 
-        $this->mappings = (array)$mappings;
+        $this->mappings = (array) $mappings;
 
         return $this;
     }
@@ -45,6 +45,7 @@ class Mapping extends Column
     public function getValue()
     {
         $value = parent::getValue();
+
         return $this->mappings[$value] ?? $value;
     }
 }

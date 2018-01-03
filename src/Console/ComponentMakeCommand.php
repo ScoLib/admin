@@ -98,7 +98,7 @@ class ComponentMakeCommand extends GeneratorCommand
         if ($this->option('observer')) {
             $observer = $this->parseObserver($this->option('observer'));
 
-            if (!class_exists($observer)) {
+            if (! class_exists($observer)) {
                 if ($this->confirm(
                     "A {$observer} observer does not exist. Do you want to generate it?",
                     true
@@ -133,7 +133,7 @@ class ComponentMakeCommand extends GeneratorCommand
 
         $observer = trim(str_replace('/', '\\', $observer), '\\');
 
-        if (!Str::startsWith(
+        if (! Str::startsWith(
             $observer,
             $rootNamespace = $this->laravel->getNamespace()
         )) {
@@ -149,7 +149,7 @@ class ComponentMakeCommand extends GeneratorCommand
     {
         $modelClass = $this->parseModel($this->option('model'));
 
-        if (!class_exists($modelClass)) {
+        if (! class_exists($modelClass)) {
             if ($this->confirm(
                 "A {$modelClass} model does not exist. Do you want to generate it?",
                 true
@@ -158,7 +158,7 @@ class ComponentMakeCommand extends GeneratorCommand
             }
         }
 
-        $columns  = $this->getViewColumns($modelClass);
+        $columns = $this->getViewColumns($modelClass);
         $elements = $this->getFormElements($modelClass);
 
         return array_merge($replace, [
@@ -183,7 +183,7 @@ class ComponentMakeCommand extends GeneratorCommand
 
         $model = trim(str_replace('/', '\\', $model), '\\');
 
-        if (!Str::startsWith($model, $rootNamespace = $this->laravel->getNamespace())) {
+        if (! Str::startsWith($model, $rootNamespace = $this->laravel->getNamespace())) {
             $model = $rootNamespace . $model;
         }
 
@@ -193,7 +193,7 @@ class ComponentMakeCommand extends GeneratorCommand
     protected function getViewColumns($model)
     {
         $columns = $this->getTableColumns($model);
-        if (!$columns) {
+        if (! $columns) {
             return;
         }
 
@@ -201,6 +201,7 @@ class ComponentMakeCommand extends GeneratorCommand
         foreach ($columns as $column) {
             $list[] = $this->buildViewColumn($column);
         }
+
         return $list;
     }
 
@@ -228,16 +229,17 @@ class ComponentMakeCommand extends GeneratorCommand
     {
         $columns = $this->getTableColumns($model);
 
-        if (!$columns) {
+        if (! $columns) {
             return;
         }
 
         $list = [];
         foreach ($columns as $column) {
-            if (!$column->getAutoincrement()) {
+            if (! $column->getAutoincrement()) {
                 $list[] = $this->buildFormElement($column);
             }
         }
+
         return $list;
     }
 
@@ -262,12 +264,12 @@ class ComponentMakeCommand extends GeneratorCommand
             return;
         }
 
-        if (!class_exists($class)) {
+        if (! class_exists($class)) {
             return;
         }
 
         $model = new $class();
-        if (!($model instanceof Model)) {
+        if (! ($model instanceof Model)) {
             return;
         }
         $schema = $model->getConnection()->getDoctrineSchemaManager();
@@ -314,15 +316,21 @@ class ComponentMakeCommand extends GeneratorCommand
     {
         return [
             [
-                'observer', 'o', InputOption::VALUE_OPTIONAL,
+                'observer',
+                'o',
+                InputOption::VALUE_OPTIONAL,
                 'Generate a new access observer for the component.',
             ],
             [
-                'force', null, InputOption::VALUE_NONE,
+                'force',
+                null,
+                InputOption::VALUE_NONE,
                 'Generate the class even if the component already exists.',
             ],
             [
-                'model', 'm', InputOption::VALUE_OPTIONAL,
+                'model',
+                'm',
+                InputOption::VALUE_OPTIONAL,
                 'Generate a model for the component.',
             ],
         ];

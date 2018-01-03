@@ -12,11 +12,12 @@ class Applies extends Extension
      */
     public function add($value)
     {
-        if (!($value instanceof Closure)) {
+        if (! ($value instanceof Closure)) {
             throw new \InvalidArgumentException('apply value must be \\Closure');
         }
 
         $this->push($value);
+
         return $this;
     }
 

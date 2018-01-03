@@ -16,15 +16,16 @@ class MultiSelect extends Select
             if (strpos($value, ',') !== false) {
                 return explode(',', $value);
             }
-            return (array)$value;
+
+            return (array) $value;
         }
 
         if ($this->isOptionsModel() && $this->isRelation()) {
             $model = $this->getOptionsModel();
-            $key   = $this->getOptionsValueAttribute() ?: $model->getKeyName();
+            $key = $this->getOptionsValueAttribute() ?: $model->getKeyName();
 
             return collect($value)->pluck($key)->map(function ($item) {
-                return (string)$item;
+                return (string) $item;
             });
         }
 
@@ -33,18 +34,18 @@ class MultiSelect extends Select
 
     public function save()
     {
-        if (!($this->isOptionsModel() && $this->isRelation())) {
+        if (! ($this->isOptionsModel() && $this->isRelation())) {
             parent::save();
         }
     }
 
     public function finishSave()
     {
-        if (!($this->isOptionsModel() && $this->isRelation())) {
+        if (! ($this->isOptionsModel() && $this->isRelation())) {
             return;
         }
         $attribute = $this->getName();
-        $values    = $this->getValueFromRequest();
+        $values = $this->getValueFromRequest();
 
         $relation = $this->getModel()->{$attribute}();
         if ($relation instanceof BelongsToMany) {

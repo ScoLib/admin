@@ -25,7 +25,7 @@ class Checkbox extends MultiSelect
      *
      * @var int
      */
-    protected $min          = 0;
+    protected $min = 0;
 
     /**
      * If show check all button.

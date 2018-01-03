@@ -78,7 +78,7 @@ trait SelectOptionsFromModel
             $model = app($model);
         }
 
-        if (!($model instanceof Model)) {
+        if (! ($model instanceof Model)) {
             throw new InvalidArgumentException(
                 sprintf(
                     'The select options class must be instanced of "%s".',

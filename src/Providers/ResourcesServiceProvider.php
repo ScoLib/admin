@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Sco\Admin\Providers;
 
 use Illuminate\Support\ServiceProvider;

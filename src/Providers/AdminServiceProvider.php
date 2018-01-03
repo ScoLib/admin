@@ -79,7 +79,6 @@ class AdminServiceProvider extends ServiceProvider
         });
         $this->app->alias('admin.element.factory', ElementFactoryInterface::class);
 
-
         $this->app->singleton('admin.view.factory', function () {
             return new ViewFactory();
         });

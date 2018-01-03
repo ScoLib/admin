@@ -48,7 +48,7 @@ trait AliasBinder
 
     /**
      * @param string $alias
-     * @param array  $arguments
+     * @param array $arguments
      *
      * @return object
      */
@@ -61,7 +61,7 @@ trait AliasBinder
 
     public function __call($method, $parameters)
     {
-        if (!$this->hasAlias($method)) {
+        if (! $this->hasAlias($method)) {
             throw new BadMethodCallException("Not Found {$method}");
         }
 

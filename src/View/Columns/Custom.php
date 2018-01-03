@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Sco\Admin\View\Columns;
 
 class Custom extends Column
@@ -37,7 +36,7 @@ class Custom extends Column
     {
         $callback = $this->getCallback();
 
-        if (!is_callable($callback)) {
+        if (! is_callable($callback)) {
             throw new \InvalidArgumentException('Invalid custom column callback');
         }
 

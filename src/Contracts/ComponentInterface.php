@@ -77,7 +77,6 @@ interface ComponentInterface
 
     public function restore($id);
 
-
     public function isView();
 
     public function isCreate();

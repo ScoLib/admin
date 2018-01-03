@@ -25,8 +25,8 @@ class RouteAuthorize
 
     /**
      * @param \Illuminate\Http\Request $request
-     * @param Closure                  $next
-     * @param string                   $permissions
+     * @param Closure $next
+     * @param string $permissions
      *
      * @return mixed
      * @throws \Illuminate\Auth\Access\AuthorizationException
@@ -37,11 +37,11 @@ class RouteAuthorize
             $permissions = [Route::currentRouteName()];
         }
 
-        if (!is_array($permissions)) {
+        if (! is_array($permissions)) {
             $permissions = explode(self::DELIMITER, $permissions);
         }
 
-        if ($this->auth->guest() || !$request->user()->can($permissions)) {
+        if ($this->auth->guest() || ! $request->user()->can($permissions)) {
             throw new AuthorizationException();
         }
 

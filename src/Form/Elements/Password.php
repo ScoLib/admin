@@ -25,6 +25,7 @@ class Password extends Text
                 }
             }
         }
+
         return $rules;
     }
 

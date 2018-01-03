@@ -35,7 +35,7 @@ abstract class Extension extends Collection implements ExtensionInterface
     {
         $this->clear();
 
-        if (!is_array($values)) {
+        if (! is_array($values)) {
             $values = func_get_args();
         }
 

@@ -80,7 +80,7 @@ class Select extends NamedElement
             return [
                 $key => [
                     'label' => $value,
-                    'value' => (string)$key,
+                    'value' => (string) $key,
                 ],
             ];
         })->values();
@@ -100,7 +100,7 @@ class Select extends NamedElement
 
     public function getValue()
     {
-        return (string)parent::getValue();
+        return (string) parent::getValue();
     }
 
     public function toArray()

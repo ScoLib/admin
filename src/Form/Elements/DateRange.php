@@ -24,7 +24,7 @@ class DateRange extends Date
         parent::__construct($startName . '_' . $endName, $title);
 
         $this->startName = $startName;
-        $this->endName   = $endName;
+        $this->endName = $endName;
     }
 
     public function getStartName()
@@ -41,7 +41,7 @@ class DateRange extends Date
     {
         $model = $this->getModel();
         $value = $this->getDefaultValue();
-        if (is_null($model) || !$model->exists) {
+        if (is_null($model) || ! $model->exists) {
             return $value;
         }
 

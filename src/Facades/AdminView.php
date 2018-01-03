@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Sco\Admin\Facades;
 
 use Illuminate\Support\Facades\Facade;

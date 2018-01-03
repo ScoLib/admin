@@ -53,19 +53,19 @@ abstract class Filter implements FilterInterface
      * Build the filter query.
      *
      * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param string                                $name
+     * @param string $name
      */
     protected function buildQuery(Builder $query, $name)
     {
-        $op    = $this->getOperator();
+        $op = $this->getOperator();
         $value = $this->getValue();
 
         switch ($op) {
             case 'in':
-                $query->whereIn($name, (array)$value);
+                $query->whereIn($name, (array) $value);
                 break;
             case 'between':
-                $query->whereBetween($name, (array)$value);
+                $query->whereBetween($name, (array) $value);
                 break;
             case 'like':
                 $value .= '%';
@@ -79,6 +79,7 @@ abstract class Filter implements FilterInterface
     protected function getRequestInputValue()
     {
         $name = $this->getRequestName();
+
         return request()->input($name);
     }
 
@@ -104,6 +105,7 @@ abstract class Filter implements FilterInterface
         if (is_null($value)) {
             return $this->getDefaultValue();
         }
+
         return $value;
     }
 
@@ -191,7 +193,7 @@ abstract class Filter implements FilterInterface
 
     public function isActive()
     {
-        return !is_null($this->value);
+        return ! is_null($this->value);
     }
 
     public function toArray()

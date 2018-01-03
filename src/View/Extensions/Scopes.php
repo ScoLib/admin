@@ -8,11 +8,12 @@ class Scopes extends Extension
 {
     public function add($value)
     {
-        if (!is_array($value)) {
+        if (! is_array($value)) {
             $value = func_get_args();
         }
 
         $this->push($value);
+
         return $this;
     }
 

@@ -119,10 +119,7 @@ trait HasAccess
 
         foreach ($this->getObservableAbilities() as $ability) {
             if (method_exists($class, $ability)) {
-                $this->registerAbility(
-                    $ability,
-                    $className . '@' . $ability
-                );
+                $this->registerAbility($ability, $className . '@' . $ability);
             }
         }
     }
@@ -134,13 +131,14 @@ trait HasAccess
      */
     public function getObservableAbilities()
     {
-        return array_merge(
-            [
-                'view', 'create', 'edit', 'delete',
-                'destroy', 'restore',
-            ],
-            $this->observables
-        );
+        return array_merge([
+            'view',
+            'create',
+            'edit',
+            'delete',
+            'destroy',
+            'restore',
+        ], $this->observables);
     }
 
     /**
@@ -167,6 +165,7 @@ trait HasAccess
             }
             if (is_string($callback)) {
                 list($class, $method) = Str::parseCallback($callback);
+
                 return call_user_func([$this->app->make($class), $method], $component);
             }
         };
@@ -181,7 +180,7 @@ trait HasAccess
      */
     final public function can($ability)
     {
-        if (!$this->abilities->has($ability)) {
+        if (! $this->abilities->has($ability)) {
             return false;
         }
         $value = $this->abilities->get($ability);

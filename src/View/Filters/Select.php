@@ -43,7 +43,7 @@ class Select extends Filter
             return [
                 $key => [
                     'label' => $value,
-                    'value' => (string)$key,
+                    'value' => (string) $key,
                 ],
             ];
         })->values();

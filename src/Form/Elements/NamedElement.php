@@ -15,6 +15,7 @@ class NamedElement extends Element implements Validatable
     public function required($message = null)
     {
         $this->addValidationRule('required', $message);
+
         return $this;
     }
 
@@ -93,7 +94,8 @@ class NamedElement extends Element implements Validatable
 
     protected function getValidationRuleName($rule)
     {
-        list($name, ) = explode(':', (string)$rule, 2);
+        list($name,) = explode(':', (string) $rule, 2);
+
         return $name;
     }
 }

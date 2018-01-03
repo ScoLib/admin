@@ -11,7 +11,7 @@ class AdminController extends Controller
 {
     public function index(ComponentInterface $component)
     {
-        if (!$component->isView()) {
+        if (! $component->isView()) {
             throw new AuthorizationException();
         }
 
@@ -20,17 +20,16 @@ class AdminController extends Controller
 
     public function getList(ComponentInterface $component)
     {
-        if (!$component->isView()) {
+        if (! $component->isView()) {
             throw new AuthorizationException();
         }
 
         return $component->get();
     }
 
-
     public function config(ComponentInterface $component)
     {
-        if (!$component->isView()) {
+        if (! $component->isView()) {
             throw new AuthorizationException();
         }
 
@@ -39,17 +38,18 @@ class AdminController extends Controller
 
     public function getCreateInfo(ComponentInterface $component)
     {
-        if (!$component->isCreate()) {
+        if (! $component->isCreate()) {
             throw new AuthorizationException();
         }
 
         $form = $component->fireCreate();
+
         return $form;
     }
 
     public function create(ComponentInterface $component)
     {
-        if (!$component->isCreate()) {
+        if (! $component->isCreate()) {
             throw new AuthorizationException();
         }
 
@@ -58,7 +58,7 @@ class AdminController extends Controller
 
     public function store(ComponentInterface $component, Request $request)
     {
-        if (!$component->isCreate()) {
+        if (! $component->isCreate()) {
             throw new AuthorizationException();
         }
 
@@ -67,17 +67,18 @@ class AdminController extends Controller
 
     public function getEditInfo(ComponentInterface $component, $id)
     {
-        if (!$component->isEdit()) {
+        if (! $component->isEdit()) {
             throw new AuthorizationException();
         }
 
         $form = $component->fireEdit($id);
+
         return $form;
     }
 
     public function edit(ComponentInterface $component, $id)
     {
-        if (!$component->isEdit()) {
+        if (! $component->isEdit()) {
             throw new AuthorizationException();
         }
 
@@ -86,46 +87,50 @@ class AdminController extends Controller
 
     public function update(ComponentInterface $component, Request $request, $id)
     {
-        if (!$component->isEdit()) {
+        if (! $component->isEdit()) {
             throw new AuthorizationException();
         }
 
         $component->update($id);
+
         return response()->json(['message' => 'ok']);
     }
 
     public function delete(ComponentInterface $component, $id)
     {
-        if (!$component->isDelete()) {
+        if (! $component->isDelete()) {
             throw new AuthorizationException();
         }
 
         $component->delete($id);
+
         return response()->json(['message' => 'ok']);
     }
 
     public function forceDelete(ComponentInterface $component, $id)
     {
-        if (!$component->isDestroy()) {
+        if (! $component->isDestroy()) {
             throw new AuthorizationException();
         }
 
         $component->forceDelete($id);
+
         return response()->json(['message' => 'ok']);
     }
 
     public function restore(ComponentInterface $component, $id)
     {
-        if (!$component->isRestore()) {
+        if (! $component->isRestore()) {
             throw new AuthorizationException();
         }
         $component->restore($id);
+
         return response()->json(['message' => 'ok']);
     }
 
     public function reorder(ComponentInterface $component)
     {
-        if (!$component->isEdit()) {
+        if (! $component->isEdit()) {
             throw new AuthorizationException();
         }
 

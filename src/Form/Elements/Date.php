@@ -125,12 +125,13 @@ class Date extends Input
         if (empty($value)) {
             return '';
         }
+
         return $this->dateToString($value);
     }
 
     protected function dateToString($value)
     {
-        if (!($value instanceof Carbon)) {
+        if (! ($value instanceof Carbon)) {
             $value = Carbon::parse($value);
         }
 
@@ -148,6 +149,7 @@ class Date extends Input
     {
         $value = Carbon::parse($value);
         $value->timezone($this->getTimezone());
+
         return $value;
     }
 }

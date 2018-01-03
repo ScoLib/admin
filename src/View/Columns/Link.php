@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Sco\Admin\View\Columns;
 
 use Sco\Admin\Facades\Admin;
@@ -16,6 +15,7 @@ class Link extends Column
         if ($this->url) {
             return $this->url;
         }
+
         return $this->getEditUrl();
     }
 
@@ -29,7 +29,8 @@ class Link extends Column
     protected function getEditUrl()
     {
         $model = Admin::component()->getName();
-        $id    = $this->getModel()->getKey();
+        $id = $this->getModel()->getKey();
+
         return route('admin.model.edit', [$model, $id], false);
     }
 

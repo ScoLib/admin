@@ -126,9 +126,10 @@ abstract class Element implements ElementInterface
     {
         $model = $this->getModel();
         $value = $this->getDefaultValue();
-        if (is_null($model) || !$model->exists) {
+        if (is_null($model) || ! $model->exists) {
             return $value;
         }
+
         return $model->getAttribute($this->getName());
     }
 
@@ -143,7 +144,6 @@ abstract class Element implements ElementInterface
 
         return $this;
     }
-
 
     protected function getDefaultValue()
     {

@@ -39,10 +39,10 @@ class Tree extends NamedElement
 
         if ($this->isNodesModel() && $this->isRelation()) {
             $model = $this->getNodesModel();
-            $key   = $this->getNodesModelValueAttribute() ?: $model->getKeyName();
+            $key = $this->getNodesModelValueAttribute() ?: $model->getKeyName();
 
             return $value->pluck($key)->map(function ($item) {
-                return (string)$item;
+                return (string) $item;
             });
         } else {
             return explode(',', $value);
@@ -51,18 +51,18 @@ class Tree extends NamedElement
 
     public function save()
     {
-        if (!($this->isNodesModel() && $this->isRelation())) {
+        if (! ($this->isNodesModel() && $this->isRelation())) {
             parent::save();
         }
     }
 
     public function finishSave()
     {
-        if (!($this->isNodesModel() && $this->isRelation())) {
+        if (! ($this->isNodesModel() && $this->isRelation())) {
             return;
         }
         $attribute = $this->getName();
-        $values    = $this->getValueFromRequest();
+        $values = $this->getValueFromRequest();
 
         $relation = $this->getModel()->{$attribute}();
         if ($relation instanceof BelongsToMany) {
@@ -110,12 +110,14 @@ class Tree extends NamedElement
                 if ($value['parent_id'] == $parentId) {
                     return true;
                 }
+
                 return false;
             }
+
             return true;
         })->mapWithKeys(function ($value, $key) use ($nodes) {
             $data = [
-                'id'    => (string)$value['id'],
+                'id'    => (string) $value['id'],
                 'label' => $value['label'],
             ];
 
@@ -188,7 +190,7 @@ class Tree extends NamedElement
             $model = app($model);
         }
 
-        if (!($model instanceof Model)) {
+        if (! ($model instanceof Model)) {
             throw new InvalidArgumentException(
                 sprintf(
                     "Form tree element's nodes class must be instanced of '%s'.",

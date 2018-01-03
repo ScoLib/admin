@@ -8,6 +8,7 @@ use Doctrine\DBAL\Types\Type;
 class Input extends NamedElement
 {
     protected $maxLength;
+
     protected $minLength = 0;
 
     protected $size = '';
@@ -47,6 +48,7 @@ class Input extends NamedElement
         if ($column instanceof Column && $column->getType()->getName() == Type::STRING) {
             return $column->getLength();
         }
+
         return;
     }
 
@@ -64,7 +66,7 @@ class Input extends NamedElement
         $databasePlatform = $schema->getDatabasePlatform();
         $databasePlatform->registerDoctrineTypeMapping('enum', 'string');
 
-        $table  = $dbConnection->getTablePrefix() . $this->getModel()->getTable();
+        $table = $dbConnection->getTablePrefix() . $this->getModel()->getTable();
         $column = $this->getName();
         if ($column) {
             $columns = $schema->listTableDetails($table);
@@ -85,9 +87,10 @@ class Input extends NamedElement
 
     public function setMaxLength($value)
     {
-        $value           = intval($value);
+        $value = intval($value);
         $this->maxLength = $value;
         $this->addValidationRule('max:' . $value);
+
         return $this;
     }
 
@@ -98,7 +101,7 @@ class Input extends NamedElement
 
     public function setMinLength($value)
     {
-        $value           = intval($value);
+        $value = intval($value);
         $this->minLength = $value;
 
         $this->addValidationRule('min:' . $value);
