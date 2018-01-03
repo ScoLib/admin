@@ -29,8 +29,6 @@ class File extends NamedElement
 
     protected $fileExtensions;
 
-    protected $listType = 'text';
-
     protected $uploadValidationRules = [];
 
     protected $uploadValidationMessages = [];
@@ -201,11 +199,6 @@ class File extends NamedElement
         return $this;
     }
 
-    public function getListType()
-    {
-        return $this->listType;
-    }
-
     public function toArray()
     {
         return parent::toArray() + [
@@ -215,7 +208,6 @@ class File extends NamedElement
                 'maxFileSize'      => $this->getMaxFileSize(),
                 'fileUploadsLimit' => $this->getFileUploadsLimit(),
                 'fileExtensions'   => $this->getFileExtensions(),
-                'listType'         => $this->getListType(),
             ];
     }
 

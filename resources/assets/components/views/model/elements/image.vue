@@ -33,7 +33,7 @@
             class="upload-image"
             ref="upload"
             :action="element.action"
-            :name="element.key"
+            :name="element.name"
             :headers="headerInfo"
             :on-success="handleSuccess"
             :on-error="handleError"

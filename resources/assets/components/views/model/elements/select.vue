@@ -8,7 +8,7 @@
             placeholder="请选择"
             :class="element.multiple ? 'el-select-multi' : ''"
             :popper-class="element.popperClass"
-            :name="element.key"
+            :name="element.name"
             :size="element.size"
             :disabled="element.disabled"
             :multiple="element.multiple"

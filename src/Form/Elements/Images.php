@@ -8,6 +8,11 @@ class Images extends File
 
     protected $listType = 'picture';
 
+    public function getListType()
+    {
+        return $this->listType;
+    }
+
     public function cardListType()
     {
         $this->listType = 'picture-card';
@@ -18,5 +23,12 @@ class Images extends File
     protected function getDefaultExtensions()
     {
         return config('admin.upload.extensions.image');
+    }
+
+    public function toArray()
+    {
+        return parent::toArray() + [
+                'listType' => $this->getListType(),
+            ];
     }
 }

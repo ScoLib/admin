@@ -16,8 +16,8 @@ class UploadController extends Controller
      * @param \Sco\Admin\Contracts\ComponentInterface $component
      * @param string $field
      * @param mixed $id
-     *
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function formElement(
         Request $request,
@@ -25,9 +25,13 @@ class UploadController extends Controller
         $field,
         $id = null
     ) {
+        if (! $request->hasFile($field)) {
+            throw new InvalidArgumentException('Not found upload file');
+        }
+
         $file = $request->file($field);
         if (is_null($file) || ! ($file instanceof UploadedFile)) {
-            throw new InvalidArgumentException('must upload file');
+            throw new InvalidArgumentException('Must be upload file');
         }
 
         if (is_null($id)) {
@@ -40,8 +44,9 @@ class UploadController extends Controller
         if (! ($element instanceof File)) {
             throw new InvalidArgumentException(
                 sprintf(
-                    '[%s] element must be instanced of "Sco\Admin\Form\Elements\File".',
-                    $field
+                    '[%s] element must be instanced of "%s".',
+                    $field,
+                    File::class
                 )
             );
         }

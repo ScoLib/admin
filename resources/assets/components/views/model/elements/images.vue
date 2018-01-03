@@ -4,7 +4,7 @@
                 class="upload-images"
                 ref="upload"
                 :action="element.action"
-                :name="element.key"
+                :name="element.name"
                 :headers="headerInfo"
                 :on-preview="handlePreview"
                 :on-remove="handleRemove"

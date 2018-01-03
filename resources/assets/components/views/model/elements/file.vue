@@ -3,7 +3,7 @@
             class="upload-file"
             ref="upload"
             :action="element.action"
-            :name="element.key"
+            :name="element.name"
             :headers="headerInfo"
             :on-remove="handleRemove"
             :on-change="handleChange"
