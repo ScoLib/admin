@@ -3,7 +3,6 @@
 namespace DummyNamespace;
 
 use DummyFullObserverClass;
-use DummyFullModelClass;
 use Sco\Admin\Component\Component;
 use Sco\Admin\Contracts\Form\FormInterface;
 use Sco\Admin\Contracts\View\ViewInterface;
@@ -30,7 +29,7 @@ class DummyClass extends Component
 
     public function model()
     {
-        return DummyModelClass::class;
+        return \DummyFullModelClass::class;
     }
 
     /**

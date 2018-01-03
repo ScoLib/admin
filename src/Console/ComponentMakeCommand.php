@@ -139,7 +139,7 @@ class ComponentMakeCommand extends GeneratorCommand
         )) {
             $observer = $rootNamespace . $this->getComponentNamespace()
                 . '\Observers\\'
-                . $observer;
+                . $observer . 'Observer';
         }
 
         return $observer;
@@ -163,7 +163,6 @@ class ComponentMakeCommand extends GeneratorCommand
 
         return array_merge($replace, [
             'DummyFullModelClass' => $modelClass,
-            'DummyModelClass'     => class_basename($modelClass),
             'DummyColumns'        => $columns ? implode("\n", $columns) : '',
             'DummyElements'       => $elements ? implode("\n", $elements) : '',
         ]);
