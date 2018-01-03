@@ -1,6 +1,6 @@
 # FAQ
 
-# 执行 npm 报错
+## PostCSS Loader 报错
 
 ```javascript
 WARNING in ./node_modules/css-loader?{"url":true,"sourceMap":false,"importLoaders":1}!./node_modules/postcss-loader/lib?{"sourceMap":false,"ident":"postcss","plugins":[null,null]}!./node_modules/resolve-url-loader?{"sourceMap":true,"root":"D://Users//www//admin-demo-by-entrust//node_modules"}!./node_modules/sass-loader/lib/loader.js?{"precision":8,"outputStyle":"expanded","sourceMap":true}!./resources/assets/sass/app.scss

@@ -1,22 +1,18 @@
-# Changelog
+# 更新日志
 
-All Notable changes to `admin` will be documented in this file.
+## [未发布]
 
-Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
-
-## NEXT - YYYY-MM-DD
-
-### Added
+### 新增
 - Nothing
 
-### Deprecated
+### 废弃
 - Nothing
 
-### Fixed
+### 修复
 - Nothing
 
-### Removed
+### 移除
 - Nothing
 
-### Security
+### 安装
 - Nothing

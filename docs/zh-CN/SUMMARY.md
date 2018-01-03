@@ -1,14 +1,16 @@
 # Summary
 
-## 介绍
+## 前言
 
-* [前言](README.md)
-* [安装](installation.md)
-* [快速开始](quick-start.md)
-* [配置](configuration.md)
+* [介绍](README.md)
+* [更新日志](changelog.md)
+* [贡献指南](contributions.md)
 * [FAQ](faq.md)
 
-## 基本使用
+## 入门
 
+* [安装](installation.md)
+* [快速开始](quick-start.md)
+* [配置信息](configuration.md)
 * [组件](component.md)
 
