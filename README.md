@@ -19,22 +19,22 @@ Inspired by [SleepingOwlAdmin](https://github.com/LaravelRUS/SleepingOwlAdmin) ,
 ### Composer
 require package：
 
-```bash
-composer require scolib/admin
+```sh
+$ composer require scolib/admin
 ```
 
 ### Artisan
 Run install command:
 
-```bash
-php artisan admin:install
+```sh
+$ php artisan admin:install
 ```
 
 ### Install [`babel-plugin-transform-vue-jsx`](https://github.com/vuejs/babel-plugin-transform-vue-jsx)
 
 ### NPM
-```bash
-npm install\
+```sh
+$ npm install\
   less\
   less-loader\
   bootstrap\
@@ -82,17 +82,17 @@ if (mix.inProduction()) {
 ```
 
 ```sh
-npm install 
-npm run prod
+$ npm install 
+$ npm run prod
 ```
 
 ## Usage
 
-See [Document](http://scoadmin.scophp.com/) 
+[Document](http://scoadmin.scophp.com/)
 
-## 更新日志
+## Change log
 
- [CHANGELOG](CHANGELOG.md) 
+[CHANGELOG](CHANGELOG.en.md) | [更新日志](CHANGELOG.zh-CN.md) 
 
 ## Testing
 
@@ -100,13 +100,13 @@ See [Document](http://scoadmin.scophp.com/)
 $ composer test
 ```
 
-## 贡献
+## Contributing
 
- [CONTRIBUTING](CONTRIBUTING.md) 和 [CONDUCT](CONDUCT.md) 
+Please see [CONTRIBUTING](CONTRIBUTING.md) and [CONDUCT](CONDUCT.md) for details.
 
-## 安全
+## Security
 
-如果你发现任何安全相关的问题，请发邮件 slice1213@gmail.com
+If you discover any security related issues, please email slice1213@gmail.com instead of using the issue tracker.
 
 ## Credits
 
