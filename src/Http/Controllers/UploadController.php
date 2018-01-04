@@ -27,7 +27,7 @@ class UploadController extends Controller
         $field,
         $id = null
     ) {
-        if (! (is_null($id) && $component->isCreate()) || ! ($id && $component->isEdit())) {
+        if ((is_null($id) && ! $component->isCreate()) || ($id && ! $component->isEdit())) {
             throw new AuthenticationException();
         }
 

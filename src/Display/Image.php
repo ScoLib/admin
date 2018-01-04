@@ -37,9 +37,18 @@ class Image extends Table
                 throw new \InvalidArgumentException("Not Found '{$pathKey}' attribute");
             }
             $row->setAttribute('_primary', $row->getKey());
-            $row->setAttribute('_url', $this->getFileUrl($row->$pathKey));
+            $row->setAttribute('_url', $this->getImageUrl($row->$pathKey));
 
             return $row;
         });
+    }
+
+    protected function getImageUrl($value)
+    {
+        if (! empty($value) && (strpos($value, '://') === false)) {
+            $value = $this->getFileUrl($value);
+        }
+
+        return $value;
     }
 }

@@ -66,7 +66,7 @@ trait UploadStorageTrait
     {
         $root = config('admin.upload.directory', 'admin/uploads');
 
-        return rtrim($root, '/') . date('/Y/m/d');
+        return trim($root, '/') . date('/Y/m/d');
     }
 
     /**
@@ -78,12 +78,12 @@ trait UploadStorageTrait
      */
     public function getUploadPath(UploadedFile $file)
     {
-        if ($this->uploadPath) {
-            if (is_callable($this->uploadPath)) {
-                return call_user_func($this->uploadPath, $file);
+        if (($path = $this->uploadPath)) {
+            if (is_callable($path)) {
+                $path = call_user_func($path, $file);
             }
 
-            return $this->uploadPath;
+            return trim($path, '/');
         }
 
         return $this->getDefaultUploadPath($file);

@@ -7,12 +7,19 @@ use Sco\Admin\Component\Component;
 use Sco\Admin\Contracts\Form\FormInterface;
 use Sco\Admin\Contracts\Display\DisplayInterface;
 use Sco\Admin\Facades\AdminColumn;
+use Sco\Admin\Facades\AdminDisplay;
 use Sco\Admin\Facades\AdminElement;
 use Sco\Admin\Facades\AdminForm;
-use Sco\Admin\Facades\AdminDisplay;
 
 class DummyClass extends Component
 {
+    /**
+     * The page icon class name.
+     *
+     * @var string|null
+     */
+    protected $icon;
+
     /**
      * The component display name
      *
