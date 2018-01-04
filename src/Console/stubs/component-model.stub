@@ -5,11 +5,11 @@ namespace DummyNamespace;
 use DummyFullObserverClass;
 use Sco\Admin\Component\Component;
 use Sco\Admin\Contracts\Form\FormInterface;
-use Sco\Admin\Contracts\View\ViewInterface;
+use Sco\Admin\Contracts\Display\DisplayInterface;
 use Sco\Admin\Facades\AdminColumn;
 use Sco\Admin\Facades\AdminElement;
 use Sco\Admin\Facades\AdminForm;
-use Sco\Admin\Facades\AdminView;
+use Sco\Admin\Facades\AdminDisplay;
 
 class DummyClass extends Component
 {
@@ -33,17 +33,17 @@ class DummyClass extends Component
     }
 
     /**
-     * @return \Sco\Admin\Contracts\View\ViewInterface
+     * @return \Sco\Admin\Contracts\Display\DisplayInterface
      */
-    public function callView(): ViewInterface
+    public function callDisplay(): DisplayInterface
     {
-        $view = AdminView::table();
+        $display = AdminDisplay::table();
 
-        $view->setColumns([
+        $display->setColumns([
 DummyColumns
         ]);
 
-        return $view;
+        return $display;
     }
 
     /**

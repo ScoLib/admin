@@ -39,13 +39,13 @@ trait HasAccess
     }
 
     /**
-     * Determine if the entity have access to view.
+     * Determine if the entity have access to display.
      *
      * @return bool
      */
-    public function isView()
+    public function isDisplay()
     {
-        return method_exists($this, 'callView') && $this->can('view');
+        return method_exists($this, 'callDisplay') && $this->can('display');
     }
 
     /**
@@ -132,7 +132,7 @@ trait HasAccess
     public function getObservableAbilities()
     {
         return array_merge([
-            'view',
+            'display',
             'create',
             'edit',
             'delete',

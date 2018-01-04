@@ -7,6 +7,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Routing\Controller;
 use InvalidArgumentException;
 use Sco\Admin\Contracts\ComponentInterface;
+use Sco\Admin\Exceptions\AuthenticationException;
 use Sco\Admin\Form\Elements\File;
 
 class UploadController extends Controller
@@ -18,6 +19,7 @@ class UploadController extends Controller
      * @param mixed $id
      * @return \Illuminate\Http\JsonResponse
      * @throws \Illuminate\Validation\ValidationException
+     * @throws \Sco\Admin\Exceptions\AuthenticationException
      */
     public function formElement(
         Request $request,
@@ -25,6 +27,10 @@ class UploadController extends Controller
         $field,
         $id = null
     ) {
+        if (! (is_null($id) && $component->isCreate()) || ! ($id && $component->isEdit())) {
+            throw new AuthenticationException();
+        }
+
         if (! $request->hasFile($field)) {
             throw new InvalidArgumentException('Not found upload file');
         }

@@ -6,7 +6,7 @@ use Sco\Admin\Contracts\ComponentInterface;
 
 class Observer
 {
-    public function view(ComponentInterface $component)
+    public function display(ComponentInterface $component)
     {
         return true;
     }

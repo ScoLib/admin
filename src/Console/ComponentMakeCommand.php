@@ -333,6 +333,12 @@ class ComponentMakeCommand extends GeneratorCommand
                 InputOption::VALUE_OPTIONAL,
                 'Generate a model for the component.',
             ],
+            [
+                'display',
+                'd',
+                InputOption::VALUE_OPTIONAL,
+                'Choose a type of data display'
+            ]
         ];
     }
 }

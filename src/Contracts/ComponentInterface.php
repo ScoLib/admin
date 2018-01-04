@@ -41,9 +41,9 @@ interface ComponentInterface
     public function getConfigs();
 
     /**
-     * @return \Sco\Admin\Contracts\View\ViewInterface
+     * @return \Sco\Admin\Contracts\Display\DisplayInterface
      */
-    public function fireView();
+    public function fireDisplay();
 
     public function get();
 
@@ -77,7 +77,7 @@ interface ComponentInterface
 
     public function restore($id);
 
-    public function isView();
+    public function isDisplay();
 
     public function isCreate();
 

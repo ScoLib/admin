@@ -12,7 +12,7 @@ use Sco\Admin\Component\Concerns\HasNavigation;
 use Sco\Admin\Contracts\ComponentInterface;
 use Sco\Admin\Contracts\Form\FormInterface;
 use Sco\Admin\Contracts\RepositoryInterface;
-use Sco\Admin\Contracts\View\ViewInterface;
+use Sco\Admin\Contracts\Display\DisplayInterface;
 use Sco\Admin\Contracts\WithNavigation;
 
 abstract class Component implements ComponentInterface, WithNavigation
@@ -160,43 +160,41 @@ abstract class Component implements ComponentInterface, WithNavigation
         return collect([
             'title'    => $this->getTitle(),
             'accesses' => $this->getAccesses(),
-            'view'     => $this->fireView(),
+            'display'  => $this->fireDisplay(),
         ]);
     }
 
     /**
      * {@inheritdoc}
      */
-    final public function fireView()
+    final public function fireDisplay()
     {
-        if (! method_exists($this, 'callView')) {
-            throw new BadMethodCallException('Not Found Method "callView"');
+        if (! method_exists($this, 'callDisplay')) {
+            throw new BadMethodCallException('Not Found Method "callDisplay"');
         }
 
-        $view = $this->app->call([$this, 'callView']);
+        $display = $this->app->call([$this, 'callDisplay']);
 
-        if (! $view instanceof ViewInterface) {
+        if (! $display instanceof DisplayInterface) {
             throw new InvalidArgumentException(
                 sprintf(
-                    'callView must be instanced of "%s".',
-                    ViewInterface::class
+                    'callDisplay must be instanced of "%s".',
+                    DisplayInterface::class
                 )
             );
         }
 
-        $view->setModel($this->getModel());
-        $view->initialize();
+        $display->setModel($this->getModel());
+        $display->initialize();
 
-        return $view;
+        return $display;
     }
 
     public function get()
     {
-        $view = $this->fireView();
+        $display = $this->fireDisplay();
 
-        // $view->setRepository($this->getRepository());
-
-        return $view->get();
+        return $display->get();
     }
 
     /**

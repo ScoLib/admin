@@ -17,12 +17,12 @@
         </div>
         <slot></slot>
 
-        <div class="pull-right" v-if="config.view.filters.elements.length > 0">
+        <div class="pull-right" v-if="config.display.filters.elements.length > 0">
             <el-dialog title="筛选" :visible.sync="showFilter">
 
                 <div class="box-body form-horizontal">
                     <div class="form-group"
-                         v-for="filter in config.view.filters.elements">
+                         v-for="filter in config.display.filters.elements">
                         <label class="col-sm-3 control-label">{{ filter.title }}</label>
 
                         <v-element
@@ -89,7 +89,7 @@
                 this.$emit('filter', this.currentValue);
             },
             getDefaultValue() {
-                return _.assign({}, this.config.view.filters.values);
+                return _.assign({}, this.config.display.filters.values);
             }
         }
     }

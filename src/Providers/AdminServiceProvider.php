@@ -7,15 +7,15 @@ use Sco\Admin\Admin;
 use Sco\Admin\Contracts\Form\ElementFactoryInterface;
 use Sco\Admin\Contracts\Form\FormFactoryInterface;
 use Sco\Admin\Contracts\RepositoryInterface;
-use Sco\Admin\Contracts\View\ColumnFactoryInterface;
-use Sco\Admin\Contracts\View\FilterFactoryInterface;
-use Sco\Admin\Contracts\View\ViewFactoryInterface;
+use Sco\Admin\Contracts\Display\ColumnFactoryInterface;
+use Sco\Admin\Contracts\Display\FilterFactoryInterface;
+use Sco\Admin\Contracts\Display\DisplayFactoryInterface;
 use Sco\Admin\Form\ElementFactory;
 use Sco\Admin\Form\FormFactory;
 use Sco\Admin\Repositories\Repository;
-use Sco\Admin\View\ColumnFactory;
-use Sco\Admin\View\FilterFactory;
-use Sco\Admin\View\ViewFactory;
+use Sco\Admin\Display\ColumnFactory;
+use Sco\Admin\Display\FilterFactory;
+use Sco\Admin\Display\DisplayFactory;
 
 class AdminServiceProvider extends ServiceProvider
 {
@@ -79,19 +79,19 @@ class AdminServiceProvider extends ServiceProvider
         });
         $this->app->alias('admin.element.factory', ElementFactoryInterface::class);
 
-        $this->app->singleton('admin.view.factory', function () {
-            return new ViewFactory();
+        $this->app->singleton('admin.display.factory', function () {
+            return new DisplayFactory();
         });
-        $this->app->alias('admin.view.factory', ViewFactoryInterface::class);
+        $this->app->alias('admin.display.factory', DisplayFactoryInterface::class);
 
         $this->app->singleton('admin.column.factory', function () {
             return new ColumnFactory();
         });
         $this->app->alias('admin.column.factory', ColumnFactoryInterface::class);
 
-        $this->app->singleton('admin.view.filter.factory', function () {
+        $this->app->singleton('admin.display.filter.factory', function () {
             return new FilterFactory();
         });
-        $this->app->alias('admin.view.filter.factory', FilterFactoryInterface::class);
+        $this->app->alias('admin.display.filter.factory', FilterFactoryInterface::class);
     }
 }

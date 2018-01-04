@@ -11,9 +11,9 @@
 <template>
     <div class="row">
         <div class="col-xs-12">
-            <v-table v-if="config.view.type == 'table'"></v-table>
-            <v-tree v-else-if="config.view.type == 'tree'"></v-tree>
-            <v-image v-else-if="config.view.type == 'image'"></v-image>
+            <v-table v-if="config.display.type == 'table'"></v-table>
+            <v-tree v-else-if="config.display.type == 'tree'"></v-tree>
+            <v-image v-else-if="config.display.type == 'image'"></v-image>
 
         </div>
     </div>

@@ -11,7 +11,7 @@ class AdminController extends Controller
 {
     public function index(ComponentInterface $component)
     {
-        if (! $component->isView()) {
+        if (! $component->isDisplay()) {
             throw new AuthorizationException();
         }
 
@@ -20,7 +20,7 @@ class AdminController extends Controller
 
     public function getList(ComponentInterface $component)
     {
-        if (! $component->isView()) {
+        if (! $component->isDisplay()) {
             throw new AuthorizationException();
         }
 
@@ -29,7 +29,7 @@ class AdminController extends Controller
 
     public function config(ComponentInterface $component)
     {
-        if (! $component->isView()) {
+        if (! $component->isDisplay()) {
             throw new AuthorizationException();
         }
 

@@ -178,7 +178,7 @@ trait HasNavigation
             ->setIcon($this->getIcon())
             ->setId($this->getPageId())
             ->setAccessLogic(function () {
-                return $this->isView();
+                return $this->isDisplay();
             });
 
         if ($badge) {
@@ -192,13 +192,13 @@ trait HasNavigation
     }
 
     /**
-     * Get the model view url.
+     * Get the model display url.
      *
      * @param array $parameters
      *
      * @return string
      */
-    public function getViewUrl(array $parameters = [])
+    public function getDisplayUrl(array $parameters = [])
     {
         array_unshift($parameters, $this->getName());
 

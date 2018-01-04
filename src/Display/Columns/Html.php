@@ -1,0 +1,8 @@
+<?php
+
+namespace Sco\Admin\Display\Columns;
+
+class Html extends Column
+{
+    protected $template = '<span v-html="value"></span>';
+}

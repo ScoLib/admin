@@ -17,7 +17,7 @@
                         :width="column.width"
                         :sortable="column.sortable"
                         :fixed="column.fixed"
-                        v-for="column in config.view.columns"
+                        v-for="column in config.display.columns"
                         :key="column.name">
                     <template slot-scope="scope">
                         <v-column

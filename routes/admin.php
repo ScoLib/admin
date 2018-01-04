@@ -34,9 +34,9 @@ Route::group([
             ->name('dashboard')
             ->middleware('admin.can.route');
 
-        Route::view('403', 'admin::app')->name('403');
-        Route::view('500', 'admin::app')->name('500');
-        Route::view('404', 'admin::app')->name('404');
+        foreach (['403', '404', '500'] as $name) {
+            Route::view($name, 'admin::app')->name($name);
+        }
 
         Route::get('menu', [
             'as'   => 'menu',

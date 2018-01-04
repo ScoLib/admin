@@ -45,7 +45,7 @@ class Page extends \KodiComponents\Navigation\Page
     public function getUrl()
     {
         if ($this->hasComponent()) {
-            return $this->getComponent()->getViewUrl();
+            return $this->getComponent()->getDisplayUrl();
         }
 
         return $this->url;
