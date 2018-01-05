@@ -10,8 +10,8 @@
 
 `Sco-Admin` 是一个 [`Laravel`](http://laravel.com/) 的管理界面构建工具。
 
+前端界面基于 [Element-UI](https://github.com/ElemeFE/element) 和 [AdminLTE](https://github.com/almasaeed2010/AdminLTE) 实现。
 
 
-
-
+{% include "./installation.md" %}
 

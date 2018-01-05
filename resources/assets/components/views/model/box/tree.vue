@@ -39,6 +39,7 @@
     import mixins from '../../../../mixins/get-config'
     import vHeader from './header.vue'
     import Subtree from './subtree.vue'
+    import vNestable from 'v-nestable'
 
     export default {
         name: 'vTree',
