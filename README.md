@@ -35,20 +35,20 @@ $ php artisan admin:install
 ### NPM
 ```sh
 $ npm install\
-  less\
-  less-loader\
   bootstrap\
   element-ui\
   font-awesome\
   jquery-slimscroll\
-  nestable2\
+  less\
+  less-loader\
+  v-nestable\
+  v-tinymce\
   v-viewer\
   vue-i18n\
   vue-progressbar\
   vue-router\
-  vuex\
-  v-tinymce\
   vue-simplemde\
+  vuex\
   --save-dev
 ```
 
