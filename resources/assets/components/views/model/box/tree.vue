@@ -23,7 +23,7 @@
         <div class="box-body">
             <div class="row">
                 <div class="col-xs-12" v-loading="loading">
-                    <div class="dd" v-if="tree.length > 0">
+                    <div class="dd" v-nestable v-if="tree.length > 0">
                         <subtree :tree-data="tree" @change="getResults"></subtree>
                     </div>
                     <div v-else style="min-height: 50px;">
@@ -40,6 +40,7 @@
     import vHeader from './header.vue'
     import Subtree from './subtree.vue'
     import vNestable from 'v-nestable'
+    Vue.use(vNestable, {debug: true})
 
     export default {
         name: 'vTree',
@@ -74,7 +75,7 @@
                         this.loading = false;
                         this.tree = response.data;
                         var _this = this;
-                        setTimeout(this.nestable, 100)
+                        // setTimeout(this.nestable, 100)
                     }).catch(error => {})
             },
             nestable() {
