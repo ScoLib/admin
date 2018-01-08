@@ -41,7 +41,7 @@ $ npm install\
   jquery-slimscroll\
   less\
   less-loader\
-  v-nestable\
+  nestable2\
   v-tinymce\
   v-viewer\
   vue-i18n\

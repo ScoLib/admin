@@ -5,7 +5,6 @@
                 @filter="filter">
         </v-header>
         <!-- /.box-header -->
-        <!--<v-table></v-table>-->
         <div class="box-body table-responsive">
             <el-table :data="tableData"
                       v-loading="loading">
@@ -28,7 +27,7 @@
                 </el-table-column>
 
                 <el-table-column
-                        label="操作"
+                        :label="$t('model.action')"
                         align="center"
                         width="120"
                         column-key="action"
@@ -62,7 +61,7 @@
     import ActionColumn from '../action-column.vue'
     import mixins from '../../../../mixins/get-config'
     import Viewer from 'v-viewer';
-    import vHeader from './header.vue'
+    import vHeader from './partials/header.vue'
     Vue.use(Viewer);
 
     export default {

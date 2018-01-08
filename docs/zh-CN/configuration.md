@@ -2,6 +2,7 @@
 
 `config/admin.php`
 
+
 ```php
 return [
     /**

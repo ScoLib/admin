@@ -134,6 +134,8 @@ class AdminController extends Controller
             throw new AuthorizationException();
         }
 
+        //TODO
+
         return response()->json(['message' => 'ok']);
     }
 }

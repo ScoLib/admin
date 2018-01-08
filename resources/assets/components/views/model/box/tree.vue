@@ -19,15 +19,14 @@
     <div class="box">
         <v-header @refresh="getResults"></v-header>
         <!-- /.box-header -->
-        <!--<v-table></v-table>-->
         <div class="box-body">
             <div class="row">
                 <div class="col-xs-12" v-loading="loading">
-                    <div class="dd" v-nestable v-if="tree.length > 0">
+                    <div class="dd" v-if="tree.length > 0">
                         <subtree :tree-data="tree" @change="getResults"></subtree>
                     </div>
                     <div v-else style="min-height: 50px;">
-                        <span class="empty-text">暂无数据</span>
+                        <span class="empty-text">{{ $t('el.tree.emptyText') }}</span>
                     </div>
                 </div>
             </div>
@@ -37,10 +36,9 @@
 
 <script>
     import mixins from '../../../../mixins/get-config'
-    import vHeader from './header.vue'
-    import Subtree from './subtree.vue'
-    import vNestable from 'v-nestable'
-    Vue.use(vNestable, {debug: true})
+    import vHeader from './partials/header.vue'
+    import Subtree from './partials/subtree.vue'
+    require('nestable2')
 
     export default {
         name: 'vTree',
@@ -64,18 +62,23 @@
         watch: {
             '$route'() {
                 this.getResults();
+            },
+            tree() {
+                this.$nextTick(() => {
+                    this.nestable()
+                })
             }
         },
         methods: {
             getResults() {
-                this.tree = {};
+                if (this.tree.length > 0) {
+                    this.tree = {};
+                }
                 this.loading = true;
                 this.$http.get(`/${this.getUrlPrefix()}/${this.$route.params.model}/list`)
                     .then(response => {
                         this.loading = false;
                         this.tree = response.data;
-                        var _this = this;
-                        // setTimeout(this.nestable, 100)
                     }).catch(error => {})
             },
             nestable() {

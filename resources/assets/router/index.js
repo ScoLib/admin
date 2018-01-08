@@ -1,14 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import routes from '../routes'
-// import util from '../util'
-// import iView from 'iview'
 
-/*iView.LoadingBar.config({
-    color: 'rgb(143, 255, 199)',
-    failedColor: 'red',
-    height: 3
-});*/
 
 import VueProgressBar from 'vue-progressbar'
 
@@ -34,7 +27,7 @@ const setTitle = (title) => {
     document.title = title + ' - ' + window.Admin.Title;
 }
 
-//路由开始前
+// route before
 router.beforeEach((to, from, next) => {
     // console.log('to', to);
     // console.log(from);
@@ -65,7 +58,7 @@ router.beforeEach((to, from, next) => {
 });
 
 
-//路由完成后
+// route after
 router.afterEach(route => {
     router.app.$Progress.finish();
 });

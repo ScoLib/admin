@@ -51,8 +51,8 @@
 </template>
 
 <script>
-    import mixins from '../../../../mixins/get-config.js'
-    import vElement from '../elements/element.vue'
+    import mixins from '../../../../../mixins/get-config.js'
+    import vElement from '../../elements/element.vue'
 
     export default {
         name: 'vHeader',

@@ -10,7 +10,7 @@
             <ol class="breadcrumb">
                 <li>
                     <router-link :to="{name: 'admin.dashboard'}">
-                        <i class="fa fa-dashboard"></i> 首页
+                        <i class="fa fa-dashboard"></i> {{ $t('sco.layout.index') }}
                     </router-link>
                 </li>
 

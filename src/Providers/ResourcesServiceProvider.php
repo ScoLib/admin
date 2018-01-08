@@ -13,15 +13,13 @@ class ResourcesServiceProvider extends ServiceProvider
 
     public function boot()
     {
-        // 路由文件
         //$this->loadRoutes();
 
-        // 后台模板目录
         $this->loadViewsFrom(
             $this->getBasePath() . '/resources/views',
             'admin'
         );
-        // 后台语言包目录
+
         $this->loadTranslationsFrom(
             $this->getBasePath() . '/resources/lang',
             'admin'
@@ -68,12 +66,12 @@ class ResourcesServiceProvider extends ServiceProvider
         ], 'lang');
     }
 
-    protected function publishRoutes()
+    /*protected function publishRoutes()
     {
         $this->publishes([
             $this->getBasePath() . '/routes/admin.php' => base_path('routes/admin.php'),
         ], 'routes');
-    }
+    }*/
 
     protected function loadRoutes()
     {

@@ -11,13 +11,13 @@
         <!-- /.login-logo -->
         <div class="login-box-body">
             <p class="login-box-msg">
-                请输入您的邮箱和密码
+                {{ $t('sco.login.login_tip') }}
             </p>
 
             <div :class="['form-group', 'has-feedback', errors.email ? 'has-error' : '']">
                 <input type="email" name="email"
                        class="form-control"
-                       placeholder="邮箱"
+                       :placeholder="$t('sco.login.email')"
                        @keyup.enter="login"
                        v-model="info.email">
                 <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
@@ -28,7 +28,7 @@
             <div :class="['form-group', 'has-feedback', errors.password ? 'has-error' : '']">
                 <input type="password" name="password"
                        class="form-control"
-                       placeholder="密码"
+                       :placeholder="$t('sco.login.password')"
                        @keyup.enter="login"
                        v-model="info.password">
                 <span class="glyphicon glyphicon-lock form-control-feedback"></span>
@@ -40,7 +40,8 @@
                 <div class="col-xs-8">
                     <div class="checkbox">
                         <label>
-                            <input type="checkbox" name="remember" class="ace" value="1" v-model="info.remember"/> 记住我
+                            <input type="checkbox" name="remember" class="ace"
+                                   value="1" v-model="info.remember"/> {{ $t('sco.login.remember') }}
                         </label>
                     </div>
                 </div>
@@ -51,7 +52,7 @@
                             class="btn btn-primary btn-block btn-flat"
                             :loading="buttonLoading"
                             @click.prevent="login">
-                        登录
+                        {{ $t('sco.login.login') }}
                     </el-button>
                 </div>
                 <!-- /.col -->

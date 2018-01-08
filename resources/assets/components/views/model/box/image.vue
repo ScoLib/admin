@@ -47,7 +47,7 @@
 </template>
 
 <script>
-    import vHeader from './header.vue'
+    import vHeader from './partials/header.vue'
     import Viewer from 'v-viewer';
     import ActionColumn from '../action-column.vue'
 

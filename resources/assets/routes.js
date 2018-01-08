@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import UrlPrefix from './util/url-prefix'
 import Layout from './components/layouts/index.vue'
+import i18n from './locale'
 
 Vue.use(UrlPrefix);
 
@@ -17,7 +18,7 @@ let defRoutes = [
         },
         name: 'admin.dashboard',
         meta: {
-            title: '控制台',
+            title: i18n.t('sco.layout.dashboard'),
         }
     },
     {
@@ -57,7 +58,7 @@ let defRoutes = [
         },
         name: 'admin.model.edit',
         meta: {
-            title: '编辑',
+            title: i18n.t('sco.box.edit'),
         },
     },
     {
@@ -67,7 +68,7 @@ let defRoutes = [
         },
         name: 'admin.model.create',
         meta: {
-            title: '创建',
+            title: i18n.t('sco.box.create'),
         },
     },
     {
@@ -92,7 +93,7 @@ export default [
         },
         name: 'admin.login',
         meta: {
-            title: '登录',
+            title: i18n.t('sco.login.login'),
         },
     },
     {

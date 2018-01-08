@@ -63,7 +63,7 @@
     }
 </style>
 <template>
-    <ol class="dd-list">
+    <ol class="dd-list" v-if="treeData.length > 0">
         <li class="dd-item dd3-item" :data-id="item.id" v-for="item in treeData">
             <div class="dd-handle dd3-handle">Drag</div>
             <div class="dd3-content">
@@ -80,7 +80,7 @@
 </template>
 
 <script>
-    import ActionColumn from '../action-column.vue'
+    import ActionColumn from '../../action-column.vue'
 
     export default {
         name: 'Subtree',
