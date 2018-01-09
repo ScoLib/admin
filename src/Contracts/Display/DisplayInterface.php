@@ -2,6 +2,7 @@
 
 namespace Sco\Admin\Contracts\Display;
 
+use Sco\Admin\Contracts\Display\Extensions\ExtensionInterface;
 use Sco\Admin\Contracts\Initializable;
 use Sco\Admin\Contracts\WithModel;
 
@@ -23,6 +24,18 @@ interface DisplayInterface extends Initializable, WithModel
      * @return $this
      */
     public function with($relations);
+
+    /**
+     * @param string $name
+     * @param \Sco\Admin\Contracts\Display\Extensions\ExtensionInterface $extension
+     * @return $this
+     */
+    public function extend($name, ExtensionInterface $extension);
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function getQuery();
 
     public function get();
 }

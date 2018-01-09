@@ -4,11 +4,12 @@ namespace Sco\Admin\Display;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use Sco\Admin\Display\Concerns\WithPagination;
 use Sco\Admin\Traits\UploadStorageTrait;
 
-class Image extends Table
+class Image extends Display
 {
-    use UploadStorageTrait;
+    use UploadStorageTrait, WithPagination;
 
     protected $type = 'image';
 
@@ -24,6 +25,16 @@ class Image extends Table
         $this->imagePathAttribute = $value;
 
         return $this;
+    }
+
+    public function get()
+    {
+        if ($this->isPagination()) {
+            $data = $this->paginate();
+
+            return $data->setCollection($this->parseRows($data->getCollection()));
+        }
+        return $this->parseRows($this->getQuery()->get());
     }
 
     protected function parseRows(Collection $rows)

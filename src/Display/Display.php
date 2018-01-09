@@ -48,6 +48,8 @@ abstract class Display implements DisplayInterface, Arrayable
 
     protected $extensions;
 
+    abstract public function get();
+
     public function __construct()
     {
         $this->extensions = new Extensions();
@@ -83,9 +85,14 @@ abstract class Display implements DisplayInterface, Arrayable
         $this->extensions->initialize();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function extend($name, ExtensionInterface $extension)
     {
         $this->extensions->put($name, $extension);
+
+        return $this;
     }
 
     protected function makeRepository()
@@ -120,6 +127,9 @@ abstract class Display implements DisplayInterface, Arrayable
         return $this;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getQuery()
     {
         $repository = $this->getRepository();

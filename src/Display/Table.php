@@ -5,12 +5,11 @@ namespace Sco\Admin\Display;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Sco\Admin\Contracts\Display\ColumnInterface;
+use Sco\Admin\Display\Concerns\WithPagination;
 
 class Table extends Display
 {
-    protected $perPage = 20;
-
-    protected $pageName = 'page';
+    use WithPagination;
 
     protected $columns;
 
@@ -45,52 +44,14 @@ class Table extends Display
         return $this->columns;
     }
 
-    /**
-     * @param int $perPage
-     * @param string $pageName
-     *
-     * @return $this
-     */
-    public function paginate($perPage = 25, $pageName = 'page')
-    {
-        $this->perPage = (int) $perPage;
-        $this->pageName = $pageName;
-
-        return $this;
-    }
-
-    /**
-     * @return $this
-     */
-    public function disablePagination()
-    {
-        $this->perPage = 0;
-
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function usePagination()
-    {
-        return $this->perPage > 0;
-    }
-
     public function get()
     {
-        $builder = $this->getQuery();
+        if ($this->isPagination()) {
+            $data = $this->paginate();
 
-        if ($this->usePagination()) {
-            $data = $builder->paginate($this->perPage, ['*'], $this->pageName)
-                ->appends(request()->except($this->pageName));
-
-            $data->setCollection($this->parseRows($data->getCollection()));
-        } else {
-            $data = $this->parseRows($builder->get());
+            return $data->setCollection($this->parseRows($data->getCollection()));
         }
-
-        return $data;
+        return $this->parseRows($this->getQuery()->get());
     }
 
     public function toArray()
