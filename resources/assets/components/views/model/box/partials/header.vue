@@ -6,19 +6,19 @@
                     v-if="config.accesses.create"
                     class="btn btn-default">
                 <i class="fa fa-plus"></i>
-                创建 {{ config.title }}
+                {{ $t('sco.box.create') }} {{ config.title }}
             </router-link>
         </div>
         <div class="btn-group btn-group-sm margin-r-5">
             <button type="button" class="btn btn-primary" @click.prevent="refresh">
                 <i class="fa fa-refresh"></i>
-                {{ $t('table.refresh') }}
+                {{ $t('sco.box.refresh') }}
             </button>
         </div>
         <slot></slot>
 
         <div class="pull-right" v-if="config.display.filters.elements.length > 0">
-            <el-dialog title="筛选" :visible.sync="showFilter">
+            <el-dialog :title="$t('sco.box.filter')" :visible.sync="showFilter">
 
                 <div class="box-body form-horizontal">
                     <div class="form-group"
@@ -34,17 +34,21 @@
                 </div>
                 <!-- /.box-body -->
                 <div slot="footer" class="dialog-footer">
-                    <el-button @click="showFilter = false" class="btn btn-default">取 消
+                    <el-button @click="showFilter = false" class="btn btn-default">
+                        {{ $t('sco.box.cancel') }}
                     </el-button>
-                    <el-button type="primary" @click="doFilter"
-                               class="btn btn-info pull-right">确 定
+                    <el-button
+                        type="primary"
+                        @click="doFilter"
+                        class="btn btn-info pull-right">
+                        {{ $t('sco.box.ok') }}
                     </el-button>
                 </div>
 
             </el-dialog>
 
-            <el-button type="primary" class="btn-sm" @click="filter"><i
-                    class="fa fa-filter"></i> 筛选
+            <el-button type="primary" class="btn-sm" @click="filter">
+                <i class="fa fa-filter"></i> {{ $t('sco.box.filter') }}
             </el-button>
         </div>
     </div>
@@ -93,3 +97,14 @@
         }
     }
 </script>
+
+<style scoped>
+    .form-horizontal .control-label {
+        padding-top: 11px;
+    }
+</style>
+<style>
+    .el-dialog__body {
+        line-height: 1.3;
+    }
+</style>

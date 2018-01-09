@@ -68,7 +68,11 @@ class Select extends NamedElement
             $options = $this->options;
         } else {
             throw new InvalidArgumentException(
-                "The form select element's options must be return array(key=>value)"
+                sprintf(
+                    "The %s element[%s] options must be return array(key=>value)",
+                    $this->getType(),
+                    $this->getName()
+                )
             );
         }
 

@@ -3,7 +3,7 @@
         <div class="col-xs-12">
             <div class="box">
                 <div class="box-header clearfix">
-                    <h3 class="box-title">创建 {{ config.title }}</h3>
+                    <h3 class="box-title">{{ $t('sco.box.create') }} {{ config.title }}</h3>
 
                     <div class="btn-group btn-group-sm pull-right">
                         <button
@@ -11,7 +11,7 @@
                                 class="btn btn-default"
                                 @click.prevent="$router.push({ name: 'admin.model.index', params: {model: $route.params.model}})">
                             <i class="fa fa-reply"></i>
-                            {{ $t('form.back') }}
+                            {{ $t('sco.box.back') }}
                         </button>
                     </div>
                     <div class="btn-group btn-group-sm pull-right margin-r-5">
@@ -32,13 +32,13 @@
                             type="primary"
                             @click="save"
                             :loading="buttonLoading">
-                        {{ $t('form.ok') }}
+                        {{ $t('sco.box.ok') }}
                     </el-button>
 
                     <el-button
                             class="btn btn-primary"
                             @click.prevent="refresh">
-                        {{ $t('table.reset') }}
+                        {{ $t('sco.box.reset') }}
                     </el-button>
 
                 </div>
@@ -90,7 +90,7 @@
                     this.info.values
                 ).then(response => {
                     this.buttonLoading = false;
-                    this.$message.success('操作成功')
+                    this.$message.success(this.$t('sco.box.createSuccess'))
                     this.$router.push({ name: 'admin.model.index', params: {model: this.$route.params.model}})
                 }).catch(error => {
                     this.buttonLoading = false;

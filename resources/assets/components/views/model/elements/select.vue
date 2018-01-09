@@ -1,8 +1,3 @@
-<style>
-    .el-select-multi {
-        width: 100%;
-    }
-</style>
 <template>
     <el-select
             placeholder="请选择"
@@ -40,3 +35,9 @@
         },
     }
 </script>
+
+<style scoped>
+    .el-select-multi {
+        width: 100%;
+    }
+</style>

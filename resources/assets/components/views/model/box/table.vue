@@ -27,7 +27,7 @@
                 </el-table-column>
 
                 <el-table-column
-                        :label="$t('model.action')"
+                        :label="$t('sco.box.action')"
                         align="center"
                         width="120"
                         column-key="action"

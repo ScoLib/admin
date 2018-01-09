@@ -33,5 +33,11 @@
 </script>
 
 <style scoped>
-
+    .el-switch {
+        line-height: 40px;
+        height: 40px;
+    }
+    .el-switch >>> .el-switch__label {
+        height: 40px;
+    }
 </style>

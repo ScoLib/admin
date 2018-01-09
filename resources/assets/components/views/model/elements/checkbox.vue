@@ -1,12 +1,3 @@
-<style scoped>
-    .el-checkbox-group {
-        margin: 7px 0px;
-    }
-
-    .el-checkbox {
-        margin-bottom: 0px;
-    }
-</style>
 <template>
     <div>
         <el-checkbox
@@ -14,7 +5,7 @@
                 :indeterminate="isIndeterminate"
                 v-model="checkAll"
                 @change="handleCheckAllChange">
-            全选
+            {{ $t('sco.box.checkAll') }}
         </el-checkbox>
         <el-checkbox-group
                 :size="element.size"
@@ -72,3 +63,14 @@
 
     }
 </script>
+
+<style scoped>
+    .el-checkbox-group {
+        line-height: 40px;
+        height: 40px;
+    }
+
+    .el-checkbox {
+        margin-bottom: 0px;
+    }
+</style>

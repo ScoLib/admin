@@ -168,4 +168,12 @@
 </script>
 
 <style scoped>
+    .el-radio-group {
+        height: 40px;
+    }
+    .el-radio {
+        line-height: 40px;
+        height: 40px;
+        margin-bottom: 0px;
+    }
 </style>

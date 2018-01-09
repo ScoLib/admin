@@ -175,7 +175,7 @@ abstract class Component implements ComponentInterface, WithNavigation
 
         $display = $this->app->call([$this, 'callDisplay']);
 
-        if (! $display instanceof DisplayInterface) {
+        if (! ($display instanceof DisplayInterface)) {
             throw new InvalidArgumentException(
                 sprintf(
                     'callDisplay must be instanced of "%s".',

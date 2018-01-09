@@ -1,33 +1,3 @@
-<style>
-    .upload-image .thumbnail {
-        width: 100%;
-        height: 100%;
-    }
-    .upload-image .el-upload .el-progress {
-        margin: 10px auto;
-    }
-
-    .upload-image .el-upload--text {
-        background-color: #fbfdff;
-        border: 1px dashed #c0ccda;
-        border-radius: 6px;
-        -webkit-box-sizing: border-box;
-        box-sizing: border-box;
-        width: 148px;
-        height: 148px;
-        cursor: pointer;
-        line-height: 146px;
-        vertical-align: top;
-    }
-    .upload-image .el-upload--text:hover {
-        border-color: #20a0ff;
-        color: #20a0ff;
-    }
-    .upload-image .el-upload--text i {
-        font-size: 28px;
-        color: #8c939d;
-    }
-</style>
 <template>
     <el-upload
             class="upload-image"
@@ -99,3 +69,34 @@
         }
     }
 </script>
+
+<style>
+    .upload-image .thumbnail {
+        width: 100%;
+        height: 100%;
+    }
+    .upload-image .el-upload .el-progress {
+        margin: 10px auto;
+    }
+
+    .upload-image .el-upload--text {
+        background-color: #fbfdff;
+        border: 1px dashed #c0ccda;
+        border-radius: 6px;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        width: 148px;
+        height: 148px;
+        cursor: pointer;
+        line-height: 146px;
+        vertical-align: top;
+    }
+    .upload-image .el-upload--text:hover {
+        border-color: #20a0ff;
+        color: #20a0ff;
+    }
+    .upload-image .el-upload--text i {
+        font-size: 28px;
+        color: #8c939d;
+    }
+</style>

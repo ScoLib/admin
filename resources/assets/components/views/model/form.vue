@@ -1,12 +1,13 @@
-<style>
+<style scoped>
     .el-upload__input {
         display: none !important;
     }
 
-    .el-switch {
-        margin: 7px 0px;
-    }
 
+
+    .form-horizontal .control-label {
+        padding-top: 11px;
+    }
 </style>
 
 <template>
@@ -15,21 +16,22 @@
         <template v-for="element in elements">
             <template v-if="element.type == 'hidden'">
                 <el-input
-                        :type="element.type"
-                        :name="element.name"
-                        :disabled="element.disabled"
-                        :readonly="element.readonly"
-                        v-model="currentValue[element.name]">
+                    :type="element.type"
+                    :name="element.name"
+                    :disabled="element.disabled"
+                    :readonly="element.readonly"
+                    v-model="currentValue[element.name]">
                 </el-input>
             </template>
             <div :class="['form-group', errors[element.name] ? 'has-error' : '']" v-else>
-                <label class="col-xs-12 col-sm-3 no-padding-right control-label">{{
-                    element.title }}</label>
+                <label class="col-xs-12 col-sm-3 no-padding-right control-label">
+                    {{ element.title }}
+                </label>
 
                 <v-element
-                        class="col-xs-12 col-sm-8"
-                        :element="element"
-                        v-model="currentValue[element.name]">
+                    class="col-xs-12 col-sm-8"
+                    :element="element"
+                    v-model="currentValue[element.name]">
                     <span class="help-block" v-if="errors[element.name]">
                         <template v-for="e in errors[element.name]"> {{ e }} </template>
                     </span>
@@ -70,8 +72,6 @@
                 }
             }
         },
-        methods: {
-
-        },
+        methods: {},
     }
 </script>

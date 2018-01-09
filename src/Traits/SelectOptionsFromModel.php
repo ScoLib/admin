@@ -81,7 +81,9 @@ trait SelectOptionsFromModel
         if (! ($model instanceof Model)) {
             throw new InvalidArgumentException(
                 sprintf(
-                    'The select options class must be instanced of "%s".',
+                    'The %s element[%s] options class must be instanced of "%s".',
+                    $this->getType(),
+                    $this->getName(),
                     Model::class
                 )
             );
@@ -98,7 +100,13 @@ trait SelectOptionsFromModel
     protected function getOptionsFromModel()
     {
         if (is_null(($label = $this->getOptionsLabelAttribute()))) {
-            throw new InvalidArgumentException('The select options must set label attribute');
+            throw new InvalidArgumentException(
+                sprintf(
+                    'The %s element[%s] options must set label attribute',
+                    $this->getType(),
+                    $this->getName()
+                )
+            );
         }
 
         $model = $this->getOptionsModel();
