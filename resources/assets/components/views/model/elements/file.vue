@@ -1,10 +1,10 @@
 <template>
     <el-upload
-            class="upload-file"
+            :class="'upload-' + element.type"
             ref="upload"
             :action="element.action"
             :name="element.name"
-            :headers="headerInfo"
+            :headers="{'Accept': '/json'}"
             :on-remove="handleRemove"
             :on-change="handleChange"
             :on-success="handleSuccess"
@@ -18,7 +18,9 @@
             :list-type="element.listType"
             :disabled="element.disabled"
             :file-list="uploadList">
-        <el-button size="small" type="primary">点击上传</el-button>
+        <i class="el-icon-plus" v-if="element.listType === 'picture-card'"></i>
+        <el-button size="small" type="primary" v-else>点击上传</el-button>
+
         <div slot="tip" class="el-upload__tip">
             只能上传 {{ element.fileExtensions }} 文件
             <template v-if="element.maxFileSize">
@@ -33,6 +35,8 @@
 </template>
 
 <script>
+    import vModel from '../../../../mixins/model.js'
+
     import mixins from './mixins'
     import methods from './methods'
 
@@ -40,7 +44,8 @@
         name: 'vFile',
         mixins: [
             mixins,
-            methods
+            methods,
+            vModel,
         ],
         data() {
             return {
@@ -57,7 +62,12 @@
 
         },
         props: {
-
+            element: {
+                type: Object,
+                default() {
+                    return {}
+                }
+            }
         },
         watch: {
 

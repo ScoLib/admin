@@ -1,23 +1,23 @@
 <template>
     <el-upload
-            class="upload-image"
-            ref="upload"
-            :action="element.action"
-            :name="element.name"
-            :headers="headerInfo"
-            :on-success="handleSuccess"
-            :on-error="handleError"
-            :on-progress="handleProgress"
-            :before-upload="beforeUpload"
-            :show-file-list="false"
-            :drag="element.drag"
-            :accept="element.accept"
-            :with-credentials="element.withCredentials"
-            :disabled="element.disabled">
+        class="upload-image"
+        ref="upload"
+        :action="element.action"
+        :name="element.name"
+        :headers="{'Accept': '/json'}"
+        :on-success="handleSuccess"
+        :on-error="handleError"
+        :on-progress="handleProgress"
+        :before-upload="beforeUpload"
+        :show-file-list="false"
+        :drag="element.drag"
+        :accept="element.accept"
+        :with-credentials="element.withCredentials"
+        :disabled="element.disabled">
         <el-progress
-                v-if="progressFile.status === 'uploading'"
-                type="circle"
-                :percentage="parsePercentage(progressFile.percentage)">
+            v-if="progressFile.status === 'uploading'"
+            type="circle"
+            :percentage="parsePercentage(progressFile.percentage)">
         </el-progress>
 
         <img v-else-if="imageUrl" :src="imageUrl" class="thumbnail">
@@ -25,19 +25,19 @@
         <div slot="tip" class="el-upload__tip">
             只能上传 {{ element.fileExtensions }} 图片
             <template v-if="element.maxFileSize">
-                ，不超过 {{ (element.maxFileSize / 1024).toFixed(2) }} MB
+                <br>不超过 {{ (element.maxFileSize / 1024).toFixed(2) }} MB
             </template>
         </div>
     </el-upload>
 </template>
 
 <script>
-    import mixins from './mixins'
+    import vModel from '../../../../mixins/model.js'
 
     export default {
         name: 'vImage',
         mixins: [
-            mixins
+            vModel
         ],
         data() {
             return {
@@ -50,9 +50,38 @@
                 this.imageUrl = this.value[0].url;
             }
         },
+        props: {
+            element: {
+                type: Object,
+                default() {
+                    return {}
+                }
+            }
+        },
         methods: {
             parsePercentage(val) {
                 return parseInt(val, 10);
+            },
+            beforeUpload(file) {
+                // file.size is Byte
+                if (this.element.maxFileSize && (this.element.maxFileSize * 1024) <= file.size) {
+                    var msg = '文件 ' + file.name + ' 太大，不能超过 '
+                        + (this.element.maxFileSize / 1024).toFixed(2) + ' MB';
+                    this.$message.error(msg);
+                    return false;
+                }
+
+                var imgType = file.name.substring(file.name.lastIndexOf(".") + 1).toLowerCase();
+                if (_.indexOf(this.element.fileExtensions.split(','), imgType) == -1) {
+                    this.$message.error(file.name + '文件格式有误');
+                    return false;
+                }
+            },
+            handleError(err, file, fileList) {
+                var res = JSON.parse(err.message);
+                this.$message.error('Upload fail: ' + res.message);
+
+                console.log(res.message);
             },
             handleSuccess(response, file, fileList) {
                 console.log('handleSuccess', response);
@@ -64,7 +93,7 @@
                 this.imageUrl = '';
 
                 this.progressFile = file;
-//                console.log('handleProgress', event, file, fileList);
+                console.log('handleProgress', event, file, fileList);
             },
         }
     }
@@ -75,6 +104,7 @@
         width: 100%;
         height: 100%;
     }
+
     .upload-image .el-upload .el-progress {
         margin: 10px auto;
     }
@@ -91,10 +121,12 @@
         line-height: 146px;
         vertical-align: top;
     }
+
     .upload-image .el-upload--text:hover {
         border-color: #20a0ff;
         color: #20a0ff;
     }
+
     .upload-image .el-upload--text i {
         font-size: 28px;
         color: #8c939d;

@@ -42,7 +42,9 @@
                 :size="element.size"
                 :format="element.pickerFormat"
                 :value-format="element.pickerFormat"
-                placeholder="选择时间">
+                :start-placeholder="$t('sco.box.startTime')"
+                :end-placeholder="$t('sco.box.endTime')"
+                :placeholder="$t('sco.box.selectTime')">
         </el-time-picker>
 
         <el-input-number
@@ -54,7 +56,7 @@
         </el-input-number>
 
         <v-file
-                v-else-if="element.type == 'file'"
+                v-else-if="['file', 'images'].indexOf(element.type) > -1"
                 :element="element"
                 v-model="currentValue">
         </v-file>
@@ -64,12 +66,6 @@
                 :element="element"
                 v-model="currentValue">
         </v-image>
-
-        <v-images
-                v-else-if="element.type == 'images'"
-                :element="element"
-                v-model="currentValue">
-        </v-images>
 
         <v-switch
                 v-else-if="element.type == 'elswitch'"

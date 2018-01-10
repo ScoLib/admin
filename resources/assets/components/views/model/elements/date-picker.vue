@@ -9,7 +9,9 @@
             :format="element.pickerFormat"
             :value-format="element.pickerFormat"
             unlink-panels
-            placeholder="选择日期时间">
+            :start-placeholder="$t('sco.box.startDate')"
+            :end-placeholder="$t('sco.box.endDate')"
+            :placeholder="$t('sco.box.selectDate')">
     </el-date-picker>
 </template>
 

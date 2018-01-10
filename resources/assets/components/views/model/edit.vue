@@ -7,9 +7,9 @@
 
                     <div class="btn-group btn-group-sm pull-right margin-r-5">
                         <button
-                                type="button"
-                                class="btn btn-default"
-                                @click.prevent="$router.push({ name: 'admin.model.index', params: {model: $route.params.model}})">
+                            type="button"
+                            class="btn btn-default"
+                            @click.prevent="$router.push({ name: 'admin.model.index', params: {model: $route.params.model}})">
                             <i class="fa fa-reply"></i>
                             {{ $t('sco.box.back') }}
                         </button>
@@ -17,23 +17,23 @@
                 </div>
                 <!-- /.box-header -->
                 <v-form
-                        :elements="info.elements"
-                        v-model="info.values"
-                        v-loading="formLoading"
-                        :errors="errors">
+                    :elements="info.elements"
+                    v-model="info.values"
+                    v-loading="formLoading"
+                    :errors="errors">
                 </v-form>
 
                 <!-- /.box-body -->
                 <div class="box-footer">
                     <el-button
-                            type="primary"
-                            @click="save"
-                            :loading="buttonLoading">
+                        type="primary"
+                        @click="save"
+                        :loading="buttonLoading">
                         {{ $t('sco.box.ok') }}
                     </el-button>
                     <el-button
-                            class="btn btn-primary"
-                            @click.prevent="refresh">
+                        class="btn btn-primary"
+                        @click.prevent="refresh">
                         {{ $t('sco.box.reset') }}
                     </el-button>
                 </div>
@@ -62,10 +62,8 @@
                 buttonLoading: false,
             }
         },
-        computed: {
-
-        },
-        created () {
+        computed: {},
+        created() {
             this.getEditInfo();
         },
         methods: {
@@ -78,7 +76,10 @@
                 ).then(response => {
                     this.buttonLoading = false;
                     this.$message.success(this.$t('sco.box.editSuccess'))
-                    this.$router.push({ name: 'admin.model.index', params: {model: this.$route.params.model}})
+                    this.$router.push({
+                        name: 'admin.model.index',
+                        params: {model: this.$route.params.model}
+                    })
                 }).catch(error => {
                     this.buttonLoading = false;
                     if (typeof error.response.data.errors == 'object') {

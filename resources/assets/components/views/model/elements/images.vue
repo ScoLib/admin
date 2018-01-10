@@ -5,8 +5,7 @@
                 ref="upload"
                 :action="element.action"
                 :name="element.name"
-                :headers="headerInfo"
-                :on-preview="handlePreview"
+                :headers="{'Accept': '/json'}"
                 :on-remove="handleRemove"
                 :on-change="handleChange"
                 :on-success="handleSuccess"
@@ -34,13 +33,12 @@
             </div>
 
         </el-upload>
-        <!--<el-dialog v-model="dialogVisible" top="0" size="full">
-            <img :src="dialogImageUrl" alt="">
-        </el-dialog>-->
     </div>
 </template>
 
 <script>
+    import vModel from '../../../../mixins/model.js'
+
     import mixins from './mixins'
     import methods from './methods'
 
@@ -48,12 +46,11 @@
         name: 'vImages',
         mixins: [
             mixins,
-            methods
+            methods,
+            vModel,
         ],
         data() {
             return {
-                dialogVisible: false,
-                dialogImageUrl: '',
                 uploadList: [],
             }
         },
@@ -64,10 +61,6 @@
             })
         },
         methods: {
-            handlePreview(file) {
-                this.dialogImageUrl = file.url;
-                this.dialogVisible = true;
-            },
             handleSuccess(response, file, fileList) {
 //                file.id = response.id;
 //                this.currentValue.push(file);
@@ -99,7 +92,12 @@
 
         },
         props: {
-
+            element: {
+                type: Object,
+                default() {
+                    return {}
+                }
+            }
         },
         watch: {
 

@@ -2,7 +2,7 @@
 
 namespace Sco\Admin\Form\Elements;
 
-class Image extends File
+class Image extends BaseFile
 {
     protected $type = 'image';
 

@@ -41,6 +41,14 @@ export default {
             restoreConfirm: '确定要恢复此 {content} 吗？',
 
             checkAll: '全选',
+            selectPlaceholder: '请选择',
+
+            selectDate: '选择日期',
+            selectTime: '选择时间',
+            startDate: '开始日期',
+            startTime: '开始时间',
+            endDate: '结束日期',
+            endTime: '结束时间',
         }
     }
 }

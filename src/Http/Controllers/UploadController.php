@@ -8,7 +8,7 @@ use Illuminate\Routing\Controller;
 use InvalidArgumentException;
 use Sco\Admin\Contracts\ComponentInterface;
 use Sco\Admin\Exceptions\AuthenticationException;
-use Sco\Admin\Form\Elements\File;
+use Sco\Admin\Form\Elements\BaseFile;
 
 class UploadController extends Controller
 {
@@ -47,12 +47,12 @@ class UploadController extends Controller
         }
 
         $element = $form->getElement($field);
-        if (! ($element instanceof File)) {
+        if (! ($element instanceof BaseFile)) {
             throw new InvalidArgumentException(
                 sprintf(
                     '[%s] element must be instanced of "%s".',
                     $field,
-                    File::class
+                    BaseFile::class
                 )
             );
         }

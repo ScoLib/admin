@@ -3,13 +3,15 @@
         <div class="col-xs-12">
             <div class="box">
                 <div class="box-header clearfix">
-                    <h3 class="box-title">{{ $t('sco.box.create') }} {{ config.title }}</h3>
+                    <h3 class="box-title">
+                        {{ $t('sco.box.create') }} {{ config.title }}
+                    </h3>
 
                     <div class="btn-group btn-group-sm pull-right">
                         <button
-                                type="button"
-                                class="btn btn-default"
-                                @click.prevent="$router.push({ name: 'admin.model.index', params: {model: $route.params.model}})">
+                            type="button"
+                            class="btn btn-default"
+                            @click.prevent="$router.push({name: 'admin.model.index', params: {model: $route.params.model}})">
                             <i class="fa fa-reply"></i>
                             {{ $t('sco.box.back') }}
                         </button>
@@ -20,24 +22,24 @@
                 </div>
                 <!-- /.box-header -->
                 <v-form
-                        :elements="info.elements"
-                        v-model="info.values"
-                        v-loading="formLoading"
-                        :errors="errors">
+                    :elements="info.elements"
+                    v-model="info.values"
+                    v-loading="formLoading"
+                    :errors="errors">
                 </v-form>
 
                 <!-- /.box-body -->
                 <div class="box-footer">
                     <el-button
-                            type="primary"
-                            @click="save"
-                            :loading="buttonLoading">
+                        type="primary"
+                        @click="save"
+                        :loading="buttonLoading">
                         {{ $t('sco.box.ok') }}
                     </el-button>
 
                     <el-button
-                            class="btn btn-primary"
-                            @click.prevent="refresh">
+                        class="btn btn-primary"
+                        @click.prevent="refresh">
                         {{ $t('sco.box.reset') }}
                     </el-button>
 
@@ -67,15 +69,12 @@
                 buttonLoading: false,
             }
         },
-        computed: {
-
-        },
-        created () {
+        computed: {},
+        created() {
             if (Object.keys(this.$store.state.modelCreateInfo).indexOf(this.$route.params.model) == -1) {
                 this.getCreateInfo();
             } else {
-                let info = $.extend(true, {}, this.$store.state.modelCreateInfo[this.$route.params.model]);
-                this.info = info;
+                this.info = _.cloneDeep(this.$store.state.modelCreateInfo[this.$route.params.model]);
             }
         },
         methods: {
@@ -91,7 +90,10 @@
                 ).then(response => {
                     this.buttonLoading = false;
                     this.$message.success(this.$t('sco.box.createSuccess'))
-                    this.$router.push({ name: 'admin.model.index', params: {model: this.$route.params.model}})
+                    this.$router.push({
+                        name: 'admin.model.index',
+                        params: {model: this.$route.params.model}
+                    })
                 }).catch(error => {
                     this.buttonLoading = false;
                     if (typeof error.response.data.errors == 'object') {
@@ -106,15 +108,15 @@
                 this.$http.get(`/${this.getUrlPrefix()}/${this.$route.params.model}/create/info`)
                     .then(response => {
                         this.formLoading = false;
-                        this.info = $.extend(true, {}, response.data);
+                        this.info = _.cloneDeep(response.data);
                         this.$store.commit('setModelCreateInfo', {
                             key: this.$route.params.model,
                             value: response.data
                         });
                     }).catch(error => {
-                        if (error.response) {
-                            this.$message.error(error.response.data.message)
-                        }
+                    if (error.response) {
+                        this.$message.error(error.response.data.message)
+                    }
                 })
             },
             refresh() {

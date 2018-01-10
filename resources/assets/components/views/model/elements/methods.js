@@ -46,16 +46,16 @@ export default {
 //                    return false;
 //                }
             // file.size is Byte
-            if (this.element.maxFileSize && this.element.maxFileSize <= file.size) {
+            if (this.element.maxFileSize && this.element.maxFileSize * 1024 <= file.size) {
                 var msg = '文件 ' + file.name + ' 太大，不能超过 '
-                    + (this.element.maxFileSize / 1024 / 1024).toFixed(2) + ' MB';
+                    + (this.element.maxFileSize / 1024).toFixed(2) + ' MB';
                 this.$message.error(msg);
                 return false;
             }
 
             var imgType = file.name.substring(file.name.lastIndexOf(".") + 1).toLowerCase();
-            if ($.inArray(imgType, this.element.fileExtensions.split(',')) == -1) {
-                this.$message.error('文件格式有误');
+            if (_.indexOf(this.element.fileExtensions.split(','), imgType) == -1) {
+                this.$message.error(file.name + '文件格式有误');
                 return false;
             }
         },
