@@ -2,6 +2,7 @@
 
 namespace Sco\Admin\Display;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Sco\Admin\Contracts\Display\ColumnInterface;
@@ -20,6 +21,18 @@ class Table extends Display
         parent::__construct();
 
         $this->columns = new Collection();
+    }
+
+    public function initialize()
+    {
+        parent::initialize();
+
+        $orderBy = request()->query('orderBy', '');
+        $sortedBy = request()->query('sortedBy', '');
+
+        if (! empty($orderBy) && ! empty($sortedBy)) {
+            $this->orderBy($orderBy, $sortedBy);
+        }
     }
 
     /**
@@ -44,6 +57,23 @@ class Table extends Display
         return $this->columns;
     }
 
+    /**
+     * Add an "order by" clause to the query.
+     *
+     * @param  string $column
+     * @param  string $direction
+     *
+     * @return $this
+     */
+    public function orderBy($column, $direction = 'asc')
+    {
+        $this->addApply(function (Builder $query) use ($column, $direction) {
+            $query->orderBy($column, $direction);
+        });
+
+        return $this;
+    }
+
     public function get()
     {
         if ($this->isPagination()) {
@@ -51,6 +81,7 @@ class Table extends Display
 
             return $data->setCollection($this->parseRows($data->getCollection()));
         }
+
         return $this->parseRows($this->getQuery()->get());
     }
 

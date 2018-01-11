@@ -8,7 +8,7 @@ class Image extends Column
 {
     use UploadStorageTrait;
 
-    protected $template = '<img v-viewer="column.options" :width="value.width" :src="value.image" v-if="value.image">';
+    protected $type = 'image';
 
     /**
      * @var string

@@ -23,9 +23,9 @@
         <img v-else-if="imageUrl" :src="imageUrl" class="thumbnail">
         <i class="el-icon-plus" v-else></i>
         <div slot="tip" class="el-upload__tip">
-            只能上传 {{ element.fileExtensions }} 图片
+            {{ $t('sco.box.upload.allowFileExtensions', {extensions: element.fileExtensions}) }}
             <template v-if="element.maxFileSize">
-                <br>不超过 {{ (element.maxFileSize / 1024).toFixed(2) }} MB
+                {{ $t('sco.box.upload.maxFileSize', {max: element.maxFileSize}) }}
             </template>
         </div>
     </el-upload>
@@ -46,8 +46,8 @@
             }
         },
         created() {
-            if (this.value.length) {
-                this.imageUrl = this.value[0].url;
+            if (this.value.length !== 0) {
+                this.imageUrl = this.value.url;
             }
         },
         props: {
@@ -79,14 +79,14 @@
             },
             handleError(err, file, fileList) {
                 var res = JSON.parse(err.message);
-                this.$message.error('Upload fail: ' + res.message);
+                this.$message.error(this.$t('sco.box.upload.fail', {msg: res.message}));
 
                 console.log(res.message);
             },
             handleSuccess(response, file, fileList) {
                 console.log('handleSuccess', response);
 //                this.loading = false;
-                this.currentValue = [response];
+                this.currentValue = response;
                 this.imageUrl = response.url;
             },
             handleProgress(event, file, fileList) {
@@ -99,17 +99,17 @@
     }
 </script>
 
-<style>
-    .upload-image .thumbnail {
+<style scoped>
+    .upload-image >>> .thumbnail {
         width: 100%;
         height: 100%;
     }
 
-    .upload-image .el-upload .el-progress {
+    .upload-image >>> .el-upload .el-progress {
         margin: 10px auto;
     }
 
-    .upload-image .el-upload--text {
+    .upload-image >>> .el-upload--text {
         background-color: #fbfdff;
         border: 1px dashed #c0ccda;
         border-radius: 6px;
@@ -122,12 +122,12 @@
         vertical-align: top;
     }
 
-    .upload-image .el-upload--text:hover {
+    .upload-image >>> .el-upload--text:hover {
         border-color: #20a0ff;
         color: #20a0ff;
     }
 
-    .upload-image .el-upload--text i {
+    .upload-image >>> .el-upload--text i {
         font-size: 28px;
         color: #8c939d;
     }

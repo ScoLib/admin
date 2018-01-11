@@ -49,6 +49,14 @@ export default {
             startTime: '开始时间',
             endDate: '结束日期',
             endTime: '结束时间',
+        },
+        upload: {
+            btn: '上传',
+            fail: '上传失败（{msg}）',
+            allowFileExtensions: '允许上传的格式： {extensions}。',
+            maxFileSize: '文件不能大于 {max} KB。',
+            fileLimit: '上传文件总量不超过 {limit} 个。',
+            removeConfirm: '确定要移除 {file} 吗？',
         }
     }
 }

@@ -6,6 +6,7 @@ use Carbon\Carbon;
 
 class DateTime extends Column
 {
+    protected $type = 'datetime';
 
     /**
      * Datetime format.

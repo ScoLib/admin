@@ -4,6 +4,8 @@ namespace Sco\Admin\Display\Columns;
 
 class Custom extends Column
 {
+    protected $type = 'custom';
+
     protected $callback;
 
     public function __construct($name, $label, \Closure $callback = null)

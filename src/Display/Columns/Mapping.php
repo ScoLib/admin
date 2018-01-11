@@ -4,6 +4,8 @@ namespace Sco\Admin\Display\Columns;
 
 class Mapping extends Column
 {
+    protected $type = 'mapping';
+
     protected $mappings = [
         '0' => 'No',
         '1' => 'Yes',

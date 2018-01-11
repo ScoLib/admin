@@ -25,20 +25,6 @@ abstract class BaseFile extends NamedElement
 
     abstract protected function getDefaultExtensions();
 
-    public function getValue()
-    {
-        $value = $this->getValueFromModel();
-        if (empty($value)) {
-            return [];
-        }
-
-        return collect(explode(',', $value))->filter(function ($item) {
-            return $this->existsFile($item);
-        })->map(function ($item) {
-            return $this->getFileInfo($item);
-        });
-    }
-
     public function getActionUrl()
     {
         if ($this->actionUrl) {
@@ -171,15 +157,6 @@ abstract class BaseFile extends NamedElement
         );
 
         return $this->getFileInfo($path);
-    }
-
-    protected function prepareValue($value)
-    {
-        if (empty($value) || ! is_array($value)) {
-            return '';
-        }
-
-        return collect($value)->implode('path', ',');
     }
 
     /**

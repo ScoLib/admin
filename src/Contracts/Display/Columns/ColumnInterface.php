@@ -13,6 +13,8 @@ interface ColumnInterface extends
     Jsonable,
     JsonSerializable
 {
+    public function getType();
+
     public function getName();
 
     /**
@@ -42,7 +44,9 @@ interface ColumnInterface extends
 
     public function setMinWidth(int $width);
 
-    public function sortable();
+    public function getSortable();
+
+    public function enableSortable();
 
     public function customSortable();
 
@@ -50,15 +54,7 @@ interface ColumnInterface extends
 
     public function getValue();
 
-    /**
-     * @return string
-     */
-    public function getTemplate();
+    public function setDefaultValue($value);
 
-    /**
-     * @param string $template
-     *
-     * @return $this
-     */
-    public function setTemplate(string $template);
+    public function getDefaultValue();
 }

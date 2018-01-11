@@ -70,6 +70,29 @@ class File extends BaseFile
         return $this;
     }
 
+    public function getValue()
+    {
+        $value = $this->getValueFromModel();
+        if (empty($value)) {
+            return [];
+        }
+
+        return collect(explode(',', $value))->filter(function ($item) {
+            return $this->existsFile($item);
+        })->map(function ($item) {
+            return $this->getFileInfo($item);
+        });
+    }
+
+    protected function prepareValue($value)
+    {
+        if (empty($value) || ! is_array($value)) {
+            return '';
+        }
+
+        return collect($value)->implode('path', ',');
+    }
+
     public function toArray()
     {
         return parent::toArray() + [

@@ -6,9 +6,9 @@ use Sco\Admin\Facades\Admin;
 
 class Link extends Column
 {
-    protected $template = '<router-link :to="value.url">{{value.title}}</router-link>';
+    protected $type = 'link';
 
-    private $url;
+    protected $url;
 
     public function getUrl()
     {

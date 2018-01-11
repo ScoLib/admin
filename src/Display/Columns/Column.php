@@ -8,6 +8,8 @@ use Sco\Admin\Contracts\Display\ColumnInterface;
 
 abstract class Column implements ColumnInterface
 {
+    protected $type;
+
     protected $name;
 
     protected $label;
@@ -27,11 +29,17 @@ abstract class Column implements ColumnInterface
 
     protected $defaultValue = '';
 
-    protected $template;
-
     public function __construct($name, $label)
     {
         $this->setName($name)->setLabel($label);
+    }
+
+    /**
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
     }
 
     /**
@@ -114,20 +122,35 @@ abstract class Column implements ColumnInterface
         return $this;
     }
 
-    public function sortable()
+    public function getSortable()
+    {
+        return $this->sortable;
+    }
+
+    /**
+     * @return $this
+     */
+    public function enableSortable()
     {
         $this->sortable = true;
 
         return $this;
     }
 
+    /**
+     *
+     * @return $this
+     */
     public function customSortable()
     {
         $this->sortable = 'custom';
-        // TODO
-        // register sort route
 
         return $this;
+    }
+
+    public function isFixed()
+    {
+        return $this->fixed;
     }
 
     public function enableFixed()
@@ -150,26 +173,6 @@ abstract class Column implements ColumnInterface
     }
 
     /**
-     * @return string
-     */
-    public function getTemplate()
-    {
-        return $this->template;
-    }
-
-    /**
-     * @param string $template
-     *
-     * @return Column
-     */
-    public function setTemplate(string $template)
-    {
-        $this->template = $template;
-
-        return $this;
-    }
-
-    /**
      * The column options
      *
      * @return array
@@ -180,10 +183,10 @@ abstract class Column implements ColumnInterface
             'name'     => $this->getName(),
             'label'    => $this->getLabel(),
             'width'    => $this->getWidth(),
-            'fixed'    => $this->fixed,
+            'fixed'    => $this->isFixed(),
             'minWidth' => $this->getMinWidth(),
-            'sortable' => $this->sortable,
-            'template' => $this->getTemplate(),
+            'sortable' => $this->getSortable(),
+            'type'     => $this->getType(),
         ];
     }
 

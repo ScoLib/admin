@@ -128,7 +128,6 @@
     import vModel from '../../../../mixins/model.js'
     import vFile from './file.vue'
     import vImage from './image.vue'
-    import vImages from './images.vue'
     import vSelect from './select.vue'
     import vCheckbox from './checkbox.vue'
     import vSwitch from './switch.vue'
@@ -148,7 +147,6 @@
         components: {
             vFile,
             vImage,
-            vImages,
             vSelect,
             vCheckbox,
             vSwitch,

@@ -1,41 +1,42 @@
 <template>
     <div class="box">
         <v-header
-                @refresh="fetchData"
-                @filter="filter">
+            @refresh="fetchData"
+            @filter="filter">
         </v-header>
         <!-- /.box-header -->
         <div class="box-body table-responsive">
             <el-table :data="tableData"
+                      @sort-change="sortChange"
                       v-loading="loading">
 
                 <el-table-column
-                        :label="column.label"
-                        :prop="column.name"
-                        :min-width="column.minWidth"
-                        :width="column.width"
-                        :sortable="column.sortable"
-                        :fixed="column.fixed"
-                        v-for="column in config.display.columns"
-                        :key="column.name">
+                    :label="column.label"
+                    :prop="column.name"
+                    :min-width="column.minWidth"
+                    :width="column.width"
+                    :sortable="column.sortable"
+                    :fixed="column.fixed"
+                    v-for="column in config.display.columns"
+                    :key="column.name">
                     <template slot-scope="scope">
                         <v-column
-                                :scope="scope"
-                                :column="column">
+                            :row="scope.row"
+                            :column="column">
                         </v-column>
                     </template>
                 </el-table-column>
 
                 <el-table-column
-                        :label="$t('sco.box.action')"
-                        align="center"
-                        width="120"
-                        column-key="action"
-                        v-if="isActionColumn">
+                    :label="$t('sco.box.action')"
+                    align="center"
+                    width="120"
+                    column-key="action"
+                    v-if="isActionColumn">
                     <template slot-scope="scope">
                         <action-column
-                                :row="scope.row"
-                                @change="getResults">
+                            :row="scope.row"
+                            @change="getResults">
                         </action-column>
                     </template>
                 </el-table-column>
@@ -46,23 +47,21 @@
         <!-- /.box-body -->
         <div v-if="pageData.total" class="box-footer clearfix">
             <el-pagination
-                    layout="total, prev, pager, next"
-                    :page-size="pageData.per_page"
-                    :current-page="pageData.current_page"
-                    @current-change="getResults"
-                    :total="pageData.total">
+                layout="total, prev, pager, next"
+                :page-size="pageData.per_page"
+                :current-page="pageData.current_page"
+                @current-change="getResults"
+                :total="pageData.total">
             </el-pagination>
         </div>
     </div>
 </template>
 
 <script>
-    import vColumn from '../column.js'
+    import vColumn from './columns/column.vue'
     import ActionColumn from '../action-column.vue'
-    import mixins from '../../../../mixins/get-config'
-    import Viewer from 'v-viewer';
+    import vBoxCommon from './box.js'
     import vHeader from './partials/header.vue'
-    Vue.use(Viewer);
 
     export default {
         name: 'vTable',
@@ -71,18 +70,19 @@
                 // 列表
                 loading: false,
                 pageData: {
-                    type: Object|Array,
+                    type: Object | Array,
                     default() {
                         return [];
                     }
                 },
 
                 selection: [],
-                filterParams: {},
+                page: 1,
+                orderBy: {},
             }
         },
         mixins: [
-            mixins
+            vBoxCommon,
         ],
         components: {
             vColumn,
@@ -99,43 +99,31 @@
                 }
                 return this.pageData;
             },
-
-            isActionColumn() {
-                var accesses = this.config.accesses;
-                return accesses.edit || accesses.delete || accesses.restore;
-            },
-        },
-        created () {
-            this.fetchData();
-        },
-        watch: {
-            '$route'() {
-                this.fetchData();
-            }
         },
         methods: {
-            fetchData () {
-                this.filterParams = {};
-                // console.log('filterparams', this.filterParams);
-                this.getResults();
-            },
             getResults(page) {
-                if (typeof page === 'undefined') {
-                    page = 1;
-                }
+                this.page = typeof page === 'undefined' ? 1 : page;
+
                 this.pageData = {};
                 this.loading = true;
 
-                var params = _.assign({'page': page}, this.filterParams);
+                var params = _.assign({'page': this.page}, this.filterParams, this.orderBy);
                 this.$http.get(`/${this.getUrlPrefix()}/${this.$route.params.model}/list`, {params: params})
                     .then(response => {
                         this.loading = false;
                         this.pageData = response.data;
-                    }).catch(error => {})
+                    }).catch(error => {
+                })
             },
-            filter(params) {
-                this.filterParams = params;
-                this.getResults();
+            sortChange({column, prop, order}) {
+                console.log(column, prop, order);
+                /*if (column && column.sortable == 'custom') {
+                    this.orderBy = {
+                        orderBy: prop,
+                        sortedBy: order == 'descending' ? 'desc' : 'asc'
+                    }
+                    this.getResults();
+                }*/
             }
         }
     }

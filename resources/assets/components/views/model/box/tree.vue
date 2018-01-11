@@ -1,12 +1,15 @@
 <style>
     @import '~nestable2/dist/jquery.nestable.min.css';
+
     .dd {
-        max-width:inherit;
+        max-width: inherit;
     }
+
     .dd-handle {
         height: 32px;
         padding: 4px 10px;
     }
+
     .empty-text {
         position: absolute;
         left: 50%;
@@ -35,9 +38,11 @@
 </template>
 
 <script>
-    import mixins from '../../../../mixins/get-config'
+    import vBoxCommon from './box.js'
+
     import vHeader from './partials/header.vue'
     import Subtree from './partials/subtree.vue'
+
     require('nestable2')
 
     export default {
@@ -54,15 +59,9 @@
             Subtree,
         },
         mixins: [
-            mixins
+            vBoxCommon,
         ],
-        created () {
-            this.getResults();
-        },
         watch: {
-            '$route'() {
-                this.getResults();
-            },
             tree() {
                 this.$nextTick(() => {
                     this.nestable()
@@ -75,11 +74,14 @@
                     this.tree = {};
                 }
                 this.loading = true;
-                this.$http.get(`/${this.getUrlPrefix()}/${this.$route.params.model}/list`)
+
+                var params = _.assign({}, this.filterParams);
+                this.$http.get(`/${this.getUrlPrefix()}/${this.$route.params.model}/list`, {params: params})
                     .then(response => {
                         this.loading = false;
                         this.tree = response.data;
-                    }).catch(error => {})
+                    }).catch(error => {
+                })
             },
             nestable() {
                 var _this = this;
@@ -94,7 +96,8 @@
                                 {data: _this.seriaData}
                             ).then(response => {
 
-                            }).catch(error => {})
+                            }).catch(error => {
+                            })
                         }
                     }
                 });
