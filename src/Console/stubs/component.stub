@@ -36,7 +36,7 @@ class DummyClass extends Component
 
     public function model()
     {
-        return ;
+        return \DummyFullModelClass::class;
     }
 
     /**
@@ -44,7 +44,11 @@ class DummyClass extends Component
      */
     public function callDisplay(): DisplayInterface
     {
-        $display = AdminDisplay::table();
+        $display = AdminDisplay::DummyDisplayType();
+
+        $display->setColumns([
+DummyColumns
+        ]);
 
         return $display;
     }
@@ -56,7 +60,9 @@ class DummyClass extends Component
      */
     public function callEdit($id): FormInterface
     {
-        return AdminForm::form();
+        return AdminForm::form()->setElements([
+DummyElements
+        ]);
     }
 
     /**

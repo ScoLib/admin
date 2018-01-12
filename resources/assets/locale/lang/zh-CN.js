@@ -57,6 +57,8 @@ export default {
             maxFileSize: '文件不能大于 {max} KB。',
             fileLimit: '上传文件总量不超过 {limit} 个。',
             removeConfirm: '确定要移除 {file} 吗？',
+            file_extension_wrong: '文件 {file} 格式有误',
+            file_size_wrong: '文件 {file} 大小过大',
         }
     }
 }

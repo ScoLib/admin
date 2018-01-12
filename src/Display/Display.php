@@ -150,6 +150,23 @@ abstract class Display implements DisplayInterface, Arrayable
         $this->extensions->apply($query);
     }
 
+    /**
+     * Add an "order by" clause to the query.
+     *
+     * @param  string $column
+     * @param  string $direction
+     *
+     * @return $this
+     */
+    public function orderBy($column, $direction = 'asc')
+    {
+        $this->addApply(function (Builder $query) use ($column, $direction) {
+            $query->orderBy($column, $direction);
+        });
+
+        return $this;
+    }
+
     public function toArray()
     {
         return [

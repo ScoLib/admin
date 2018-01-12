@@ -23,9 +23,9 @@
         <img v-else-if="imageUrl" :src="imageUrl" class="thumbnail">
         <i class="el-icon-plus" v-else></i>
         <div slot="tip" class="el-upload__tip">
-            {{ $t('sco.box.upload.allowFileExtensions', {extensions: element.fileExtensions}) }}
+            {{ $t('sco.upload.allowFileExtensions', {extensions: element.fileExtensions}) }}
             <template v-if="element.maxFileSize">
-                {{ $t('sco.box.upload.maxFileSize', {max: element.maxFileSize}) }}
+                {{ $t('sco.upload.maxFileSize', {max: element.maxFileSize}) }}
             </template>
         </div>
     </el-upload>
@@ -64,22 +64,20 @@
             },
             beforeUpload(file) {
                 // file.size is Byte
-                if (this.element.maxFileSize && (this.element.maxFileSize * 1024) <= file.size) {
-                    var msg = '文件 ' + file.name + ' 太大，不能超过 '
-                        + (this.element.maxFileSize / 1024).toFixed(2) + ' MB';
-                    this.$message.error(msg);
+                if (this.element.maxFileSize && this.element.maxFileSize * 1024 <= file.size) {
+                    this.$message.warning(this.$t('sco.upload.file_size_wrong', {file: file.name}));
                     return false;
                 }
 
                 var imgType = file.name.substring(file.name.lastIndexOf(".") + 1).toLowerCase();
                 if (_.indexOf(this.element.fileExtensions.split(','), imgType) == -1) {
-                    this.$message.error(file.name + '文件格式有误');
+                    this.$message.warning(this.$t('sco.upload.file_extension_wrong', {file: file.name}));
                     return false;
                 }
             },
             handleError(err, file, fileList) {
                 var res = JSON.parse(err.message);
-                this.$message.error(this.$t('sco.box.upload.fail', {msg: res.message}));
+                this.$message.error(this.$t('sco.upload.fail', {msg: res.message}));
 
                 console.log(res.message);
             },

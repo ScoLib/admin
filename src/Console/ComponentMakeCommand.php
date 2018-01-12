@@ -32,6 +32,8 @@ class ComponentMakeCommand extends GeneratorCommand
      */
     protected $type = 'Component';
 
+    protected $displayTypes = ['table', 'image', 'tree'];
+
     protected $columnTypeMappings = [
         'smallint' => 'text',
         'integer'  => 'text',
@@ -64,10 +66,6 @@ class ComponentMakeCommand extends GeneratorCommand
      */
     protected function getStub()
     {
-        if ($this->option('model')) {
-            return __DIR__ . '/stubs/component-model.stub';
-        }
-
         return __DIR__ . '/stubs/component.stub';
     }
 
@@ -80,11 +78,11 @@ class ComponentMakeCommand extends GeneratorCommand
      */
     protected function buildClass($name)
     {
-        $replace = $this->buildObserverReplacements();
-
-        if ($this->option('model')) {
-            $replace = $this->buildModelReplacements($replace);
-        }
+        $replace = array_merge(
+            ['DummyDisplayType' => $this->getDisplayType()],
+            $this->buildObserverReplacements(),
+            $this->buildModelReplacements()
+        );
 
         return str_replace(
             array_keys($replace),
@@ -93,28 +91,47 @@ class ComponentMakeCommand extends GeneratorCommand
         );
     }
 
+    protected function getDisplayType()
+    {
+        $type = $this->option('display');
+        if (empty($type) || ! in_array($type, $this->displayTypes)) {
+            $type = $this->choice(
+                'What is Display type?',
+                $this->displayTypes,
+                0
+            );
+        }
+
+        return $type;
+    }
+
     protected function buildObserverReplacements()
     {
-        if ($this->option('observer')) {
-            $observer = $this->parseObserver($this->option('observer'));
+        if (! ($observer = $this->option('observer'))) {
+            $observer = $this->anticipate(
+                'What is the observer class name?',
+                [
+                    $class = $this->parseObserver($this->getNameInput())
+                ],
+                $class
+            );
+        }
+        $observerClass = $this->parseObserver($observer);
 
-            if (! class_exists($observer)) {
-                if ($this->confirm(
-                    "A {$observer} observer does not exist. Do you want to generate it?",
-                    true
-                )) {
-                    $this->call('make:observer', [
-                        'name' => $observer,
-                    ]);
-                }
+        if (! class_exists($observerClass)) {
+            if ($this->confirm(
+                "A {$observerClass} observer does not exist. Do you want to generate it?",
+                true
+            )) {
+                $this->call('make:observer', [
+                    'name' => $observerClass,
+                ]);
             }
-        } else {
-            $observer = \Sco\Admin\Component\Observer::class;
         }
 
         return [
-            'DummyFullObserverClass' => $observer,
-            'DummyObserverClass'     => class_basename($observer),
+            'DummyFullObserverClass' => $observerClass,
+            'DummyObserverClass'     => class_basename($observerClass),
         ];
     }
 
@@ -131,7 +148,7 @@ class ComponentMakeCommand extends GeneratorCommand
             throw new InvalidArgumentException('Observer name contains invalid characters.');
         }
 
-        $observer = trim(str_replace('/', '\\', $observer), '\\');
+        $observer = trim(str_replace('/', '\\', $observer), '\\Observer');
 
         if (! Str::startsWith(
             $observer,
@@ -145,9 +162,19 @@ class ComponentMakeCommand extends GeneratorCommand
         return $observer;
     }
 
-    protected function buildModelReplacements(array $replace)
+    protected function buildModelReplacements()
     {
-        $modelClass = $this->parseModel($this->option('model'));
+        if (! ($model = $this->option('model'))) {
+            $model = $this->anticipate(
+                'What is the model class name?',
+                [
+                    $class = $this->parseModel($this->getNameInput())
+                ],
+                $class
+            );
+        }
+
+        $modelClass = $this->parseModel($model);
 
         if (! class_exists($modelClass)) {
             if ($this->confirm(
@@ -161,11 +188,11 @@ class ComponentMakeCommand extends GeneratorCommand
         $columns = $this->getViewColumns($modelClass);
         $elements = $this->getFormElements($modelClass);
 
-        return array_merge($replace, [
+        return [
             'DummyFullModelClass' => $modelClass,
             'DummyColumns'        => $columns ? implode("\n", $columns) : '',
             'DummyElements'       => $elements ? implode("\n", $elements) : '',
-        ]);
+        ];
     }
 
     /**

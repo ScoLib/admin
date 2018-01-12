@@ -57,23 +57,6 @@ class Table extends Display
         return $this->columns;
     }
 
-    /**
-     * Add an "order by" clause to the query.
-     *
-     * @param  string $column
-     * @param  string $direction
-     *
-     * @return $this
-     */
-    public function orderBy($column, $direction = 'asc')
-    {
-        $this->addApply(function (Builder $query) use ($column, $direction) {
-            $query->orderBy($column, $direction);
-        });
-
-        return $this;
-    }
-
     public function get()
     {
         if ($this->isPagination()) {

@@ -6,33 +6,38 @@
             {{ value.title }}
         </router-link>
 
-        <p v-else-if="column.type == 'tags'">
-            <el-tag type="primary" :key="item" v-for="item in value">{{ item }}</el-tag>
-        </p>
+        <el-tag
+            v-else-if="column.type == 'tags'"
+            type="primary"
+            :key="item"
+            v-for="item in value">
+            {{ item }}
+        </el-tag>
 
+        <v-image
+            v-else-if="column.type == 'image'"
+            :row="row"
+            :column="column">
+        </v-image>
 
-        <template v-else-if="column.type == 'image'">
-            <img
-                v-viewer="column.options"
-                :width="value.width"
-                :src="value.image"
-                v-if="value.image">
-        </template>
-
-        <span v-html="value" v-else-if="column.type == 'html'"></span>
+        <span
+            v-else-if="column.type == 'html'"
+            v-html="value">
+        </span>
         <span v-else>{{ value }}</span>
     </div>
 </template>
 
 <script>
-    import Viewer from 'v-viewer';
-
-    Vue.use(Viewer);
+    import vImage from './image.vue'
 
     export default {
         name: "vColumn",
         data() {
             return {}
+        },
+        components: {
+            vImage,
         },
         props: {
             row: Object,
