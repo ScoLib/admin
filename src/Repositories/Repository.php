@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Application;
 use InvalidArgumentException;
 use Sco\Admin\Contracts\RepositoryInterface;
-use Sco\Admin\Contracts\WithModel;
 
 class Repository implements RepositoryInterface
 {

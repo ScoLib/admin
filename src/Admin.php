@@ -23,7 +23,7 @@ class Admin
      */
     public function routes()
     {
-        require __DIR__ . '/../routes/admin.php';
+        return require __DIR__ . '/../routes/admin.php';
     }
 
     /**

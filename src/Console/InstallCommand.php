@@ -3,9 +3,6 @@
 namespace Sco\Admin\Console;
 
 use Illuminate\Console\Command;
-use Symfony\Component\Process\Exception\ProcessFailedException;
-use Symfony\Component\Process\ExecutableFinder;
-use Symfony\Component\Process\Process;
 
 class InstallCommand extends Command
 {
