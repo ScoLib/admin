@@ -19,7 +19,7 @@ trait HasAccess
      *
      * @var string
      */
-    protected $observer = \Sco\Admin\Component\Observer::class;
+    protected $observer;
 
     /**
      * User exposed observable abilities.
@@ -116,6 +116,10 @@ trait HasAccess
     public function observe($class)
     {
         $className = is_string($class) ? $class : get_class($class);
+
+        if (!class_exists($className)) {
+            return;
+        }
 
         foreach ($this->getObservableAbilities() as $ability) {
             if (method_exists($class, $ability)) {

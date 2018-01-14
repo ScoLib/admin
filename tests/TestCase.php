@@ -2,6 +2,9 @@
 
 namespace Sco\Admin;
 
+use Mockery as m;
+use Sco\Admin\Contracts\ComponentInterface;
+
 class TestCase extends \Orchestra\Testbench\TestCase
 {
     protected function setUp()
@@ -36,5 +39,10 @@ class TestCase extends \Orchestra\Testbench\TestCase
             'AdminView'       => 'Sco\Admin\Facades\AdminView',
             'AdminViewFilter' => 'Sco\Admin\Facades\AdminViewFilter'
         ];
+    }
+
+    protected function getComponentMock()
+    {
+        $this->app['admin.instance.component'] = m::mock(ComponentInterface::class);
     }
 }
