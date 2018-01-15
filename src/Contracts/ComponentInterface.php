@@ -94,6 +94,16 @@ interface ComponentInterface extends WithModel
 
     public function restore($id);
 
+    /**
+     * {@inheritdoc}
+     */
+    public function getNavigation();
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addToNavigation($badge = null);
+
     public function isDisplay();
 
     public function isCreate();

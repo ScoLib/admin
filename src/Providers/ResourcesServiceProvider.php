@@ -73,9 +73,9 @@ class ResourcesServiceProvider extends ServiceProvider
         ], 'routes');
     }*/
 
-    protected function loadRoutes()
+    /*protected function loadRoutes()
     {
         $routesFile = $this->getBasePath() . '/routes/admin.php';
         $this->loadRoutesFrom($routesFile);
-    }
+    }*/
 }

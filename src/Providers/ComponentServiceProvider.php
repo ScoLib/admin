@@ -9,7 +9,6 @@ use InvalidArgumentException;
 use Sco\Admin\Component\Component;
 use Sco\Admin\Contracts\ComponentInterface;
 use Sco\Admin\Contracts\Initializable;
-use Sco\Admin\Contracts\WithNavigation;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -117,9 +116,7 @@ class ComponentServiceProvider extends ServiceProvider
             $component->initialize();
         }
 
-        if ($component instanceof WithNavigation) {
-            $component->addToNavigation();
-        }
+        $component->addToNavigation();
 
         $this->app['admin.components']->put($component->getName(), $component);
     }

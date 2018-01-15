@@ -4,6 +4,7 @@ namespace Sco\Admin\Component;
 
 use Mockery as m;
 use Illuminate\Database\Eloquent\Model;
+use Sco\Admin\Contracts\Display\DisplayInterface;
 use Sco\Admin\Contracts\RepositoryInterface;
 use Sco\Admin\TestCase;
 
@@ -14,11 +15,15 @@ class ComponentTest extends TestCase
      */
     protected function getComponent()
     {
+        $reflectedClass = new \ReflectionClass(Component::class);
+        $reflectedProperty = $reflectedClass->getProperty('booted');
+        $reflectedProperty->setAccessible(true);
+        $reflectedProperty->setValue([]);
+
         $stub = $this->getMockForAbstractClass(Component::class, [$this->app]);
         $stub->expects($this->any())
             ->method('model')
             ->willReturn(ComponentTestModel::class);
-
         return $stub;
     }
 
@@ -77,6 +82,15 @@ class ComponentTest extends TestCase
         $this->assertEquals($component, $component->setRepository($repository));
         $this->assertInstanceOf(RepositoryInterface::class, $component->getRepository());
     }
+
+    /*public function testGetConfigs()
+    {
+        $component = $this->getComponent();
+        //$component->shouldReceive('callDisplay')->once()->andReturn(DisplayInterface::class);
+        $configs = $component->getConfigs();
+
+        $this->assertArrayHasKey(['title', 'accesses', 'display'], $configs);
+    }*/
 }
 
 class ComponentTestModel extends Model
