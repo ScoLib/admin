@@ -14,7 +14,6 @@ class TestCase extends \Orchestra\Testbench\TestCase
 
     protected function getEnvironmentSetUp($app)
     {
-
     }
 
     protected function getPackageProviders($app)

@@ -81,10 +81,8 @@ class ComponentTest extends TestCase
 
 class ComponentTestModel extends Model
 {
-
 }
 
 class WrongComponentTestModel
 {
-
 }
