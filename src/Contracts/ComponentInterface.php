@@ -2,7 +2,7 @@
 
 namespace Sco\Admin\Contracts;
 
-interface ComponentInterface
+interface ComponentInterface extends WithModel
 {
     /**
      * Configure Model class
@@ -19,6 +19,14 @@ interface ComponentInterface
     public function getName();
 
     /**
+     * Set name of the component
+     *
+     * @param string $value
+     * @return $this
+     */
+    public function setName(string $value);
+
+    /**
      * Get display name of the component
      *
      * @return string
@@ -26,14 +34,23 @@ interface ComponentInterface
     public function getTitle();
 
     /**
-     * @return \Illuminate\Database\Eloquent\Model
+     * Set display name of the component
+     *
+     * @param string $value
+     * @return $this
      */
-    public function getModel();
+    public function setTitle(string $value);
 
     /**
      * @return mixed|\Sco\Admin\Contracts\RepositoryInterface
      */
     public function getRepository();
+
+    /**
+     * @param \Sco\Admin\Contracts\RepositoryInterface $repository
+     * @return $this
+     */
+    public function setRepository(RepositoryInterface $repository);
 
     /**
      * @return \Illuminate\Support\Collection

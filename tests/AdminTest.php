@@ -14,13 +14,13 @@ class AdminTest extends TestCase
         $this->assertTrue(Route::has('admin.model.index'));
     }
 
-    public function testGetCurrentComponentException()
+    public function testGetComponentException()
     {
         $this->expectException(\ReflectionException::class);
         \Sco\Admin\Facades\Admin::component();
     }
 
-    public function testGetCurrentComponent()
+    public function testGetComponent()
     {
         \Sco\Admin\Facades\Admin::shouldReceive('component')
             ->once()

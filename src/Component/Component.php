@@ -13,9 +13,8 @@ use Sco\Admin\Contracts\ComponentInterface;
 use Sco\Admin\Contracts\Form\FormInterface;
 use Sco\Admin\Contracts\RepositoryInterface;
 use Sco\Admin\Contracts\Display\DisplayInterface;
-use Sco\Admin\Contracts\WithNavigation;
 
-abstract class Component implements ComponentInterface, WithNavigation
+abstract class Component implements ComponentInterface
 {
     use HasAccess, HasEvents, HasNavigation;
 
@@ -55,25 +54,56 @@ abstract class Component implements ComponentInterface, WithNavigation
 
     abstract public function model();
 
-    public function __construct(Application $app, RepositoryInterface $repository)
+    public function __construct(Application $app)
     {
         $this->app = $app;
-
-        $this->makeModel();
-
-        $this->repository = $repository;
-        $this->repository->setModel($this->getModel());
-
-        if (! $this->name) {
-            $this->setDefaultName();
-        }
 
         $this->bootIfNotBooted();
     }
 
-    protected function setDefaultName()
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
     {
-        $this->name = $this->getModelClassName();
+        if (is_null($this->name)) {
+            $this->setName($this->getDefaultName());
+        }
+
+        return $this->name;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setName(string $value)
+    {
+        $this->name = $value;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setTitle(string $value)
+    {
+        $this->title = $value;
+
+        return $this;
+    }
+
+    protected function getDefaultName()
+    {
+        return $this->getModelClassName();
     }
 
     /**
@@ -93,8 +123,22 @@ abstract class Component implements ComponentInterface, WithNavigation
     /**
      * {@inheritdoc}
      */
+    public function setModel(Model $model)
+    {
+        $this->model = $model;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getModel()
     {
+        if (is_null($this->model)) {
+            $this->setModel($this->makeModel());
+        }
+
         return $this->model;
     }
 
@@ -125,23 +169,7 @@ abstract class Component implements ComponentInterface, WithNavigation
             );
         }
 
-        return $this->model = $model;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getTitle()
-    {
-        return $this->title;
+        return $model;
     }
 
     /**
@@ -149,7 +177,29 @@ abstract class Component implements ComponentInterface, WithNavigation
      */
     public function getRepository()
     {
+        if (is_null($this->repository)) {
+            $this->setRepository($this->makeRepository());
+        }
+
         return $this->repository;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setRepository(RepositoryInterface $repository)
+    {
+        $this->repository = $repository;
+
+        return $this;
+    }
+
+    protected function makeRepository()
+    {
+        $repository = $this->app->make(RepositoryInterface::class);
+        $repository->setModel($this->getModel());
+
+        return $repository;
     }
 
     /**

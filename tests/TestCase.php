@@ -40,9 +40,4 @@ class TestCase extends \Orchestra\Testbench\TestCase
             'AdminViewFilter' => 'Sco\Admin\Facades\AdminViewFilter'
         ];
     }
-
-    protected function getComponentMock()
-    {
-        $this->app['admin.instance.component'] = m::mock(ComponentInterface::class);
-    }
 }
