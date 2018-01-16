@@ -27,24 +27,12 @@ $ git clone 上述示例git URL
 $ composer install -vvv
 $ php artisan key:generate
 $ php artisan migrate --seed
+$ npm install
+$ npm run prod
 ```
 
 演示示例已安装完毕。
 
-
-### 如果你需要修改 VueJS 的组件
-
-#### 1. 安装JS包
-
-```sh
-$ npm install
-```
-
-#### 2. 修改后，打包
-
-```sh
-$ npm run prod
-```
 
 ## 方式2：Artisan 创建 Sco-Admin 组件
 

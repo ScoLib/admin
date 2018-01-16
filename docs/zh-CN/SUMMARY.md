@@ -11,7 +11,8 @@
 * [安装](installation.md)
 * [快速开始](quick-start.md)
 * [配置信息](configuration.md)
-* [组件](component.md)
 
-## 基本
+## 组件
+
+* [基本](component.md)
 
