@@ -1,4 +1,4 @@
-# Sco Admin
+# Sco-Admin
 
 [![StyleCI](https://styleci.io/repos/82435198/shield?branch=master)](https://styleci.io/repos/82435198)
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/ScoLib/admin.svg?style=flat-square)](https://packagist.org/packages/ScoLib/admin)

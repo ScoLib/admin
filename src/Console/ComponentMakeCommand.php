@@ -349,25 +349,20 @@ class ComponentMakeCommand extends GeneratorCommand
                 'observer',
                 'o',
                 InputOption::VALUE_OPTIONAL,
-                'Generate a new access observer for the component.',
-            ],
-            [
-                'force',
-                null,
-                InputOption::VALUE_NONE,
-                'Generate the class even if the component already exists.',
+                'The access observer that should be assigned, and generate it if not exists.',
             ],
             [
                 'model',
                 'm',
                 InputOption::VALUE_OPTIONAL,
-                'Generate a model for the component.',
+                'The model that should be assigned, and generate it if not exists.',
             ],
             [
                 'display',
                 'd',
                 InputOption::VALUE_OPTIONAL,
-                'Choose a type of data display'
+                'Choose a type of data display.',
+                $this->displayTypes[0]
             ]
         ];
     }

@@ -46,7 +46,7 @@ Route::group([
             },
         ]);
 
-        Route::pattern('model', '[a-z_/]+');
+        Route::pattern('model', '[a-z_]+');
         Route::group([
             'prefix' => '{model}',
             'as'     => 'model.',

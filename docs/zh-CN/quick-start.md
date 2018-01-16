@@ -1,7 +1,7 @@
 # 快速开始
 
 
-## 使用演示示例
+## 方式1：使用演示示例
 
 - [admin-demo-by-entrust](https://github.com/ScoLib/admin-demo-by-entrust.git)
 
@@ -45,3 +45,7 @@ $ npm install
 ```sh
 $ npm run prod
 ```
+
+## 方式2：Artisan 创建 Sco-Admin 组件
+
+使用 Artisan 命令快速创建组件。

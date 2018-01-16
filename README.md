@@ -1,4 +1,4 @@
-# Sco Admin
+# Sco-Admin
 
 [![StyleCI](https://styleci.io/repos/82435198/shield?branch=master)](https://styleci.io/repos/82435198)
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/ScoLib/admin.svg?style=flat-square)](https://packagist.org/packages/ScoLib/admin)
@@ -8,7 +8,7 @@
 [![Quality Score](https://img.shields.io/scrutinizer/g/ScoLib/admin.svg?style=flat-square)](https://scrutinizer-ci.com/g/ScoLib/admin)
 [![Total Downloads](https://img.shields.io/packagist/dt/ScoLib/admin.svg?style=flat-square)](https://packagist.org/packages/ScoLib/admin)
 
-`Sco Admin` is an administrative interface builder for [`Laravel`](http://laravel.com/).
+`Sco-Admin` is an administrative interface builder for [`Laravel`](http://laravel.com/).
 
 The frontend is based on [Element-UI](https://github.com/ElemeFE/element) and [AdminLTE](https://github.com/almasaeed2010/AdminLTE)
 
