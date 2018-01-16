@@ -13,52 +13,89 @@ class ComponentTest extends TestCase
     /**
      * @return Component|\PHPUnit\Framework\MockObject\MockObject
      */
-    protected function getComponent()
+    protected function getComponentMockNoMethods()
     {
-        $reflectedClass = new \ReflectionClass(Component::class);
-        $reflectedProperty = $reflectedClass->getProperty('booted');
-        $reflectedProperty->setAccessible(true);
-        $reflectedProperty->setValue([]);
-
-        $stub = $this->getMockForAbstractClass(Component::class, [$this->app]);
-        $stub->expects($this->any())
-            ->method('model')
-            ->willReturn(ComponentTestModel::class);
-        return $stub;
+        return $this->getMockForAbstractClass(Component::class, [$this->app]);
     }
 
-    /*protected function getComponentMock()
+    /**
+     * @return Component|\PHPUnit\Framework\MockObject\MockObject
+     */
+    protected function getComponentMockWithMethods()
     {
-        return $this->app['admin.instance.component'] = m::mock(ComponentInterface::class);
-    }*/
+        $methods = ['callDisplay', 'callCreate', 'callEdit'];
+
+        return $this->getMockBuilder(Component::class)
+            ->setConstructorArgs([$this->app])
+            ->setMethods($methods)
+            ->getMockForAbstractClass();
+    }
+
+    /**
+     * @param bool $withMethods
+     * @param string $model
+     * @return \PHPUnit\Framework\MockObject\MockObject|\Sco\Admin\Component\Component
+     */
+    protected function getComponentMockWithModel(
+        $withMethods = true,
+        $model = ComponentTestModel::class
+    ) {
+        $component = $withMethods
+            ? $this->getComponentMockWithMethods()
+            : $this->getComponentMockNoMethods();
+
+        $component->expects($this->any())
+            ->method('model')
+            ->will($this->returnValue($model));
+
+        $p = new \ReflectionProperty($component, 'booted');
+        $p->setAccessible(true);
+        $p->setValue($component, []);
+
+        return $component;
+    }
+
+    protected function getComponentMockWithCallDisplay($display = '')
+    {
+        $component = $this->getComponentMockWithModel();
+        $component->expects($this->any())
+            ->method('callDisplay')
+            ->will($this->returnValue($display));
+
+        return $component;
+    }
+
+    protected function getDisplayMock()
+    {
+        $display = m::mock(DisplayInterface::class);
+        $display->shouldReceive('setModel')->once();
+        $display->shouldReceive('initialize')->once();
+
+        return $display;
+    }
 
     public function testGetModelExceptionOfNotDefineModelMethod()
     {
         $this->expectException(\InvalidArgumentException::class);
-        $stub = $this->getMockForAbstractClass(Component::class, [$this->app]);
-        $stub->getModel();
+        $this->getComponentMockNoMethods()->getModel();
     }
 
     public function testGetModelExceptionOfNotModelClass()
     {
         $this->expectException(\InvalidArgumentException::class);
-        $stub = $this->getMockForAbstractClass(Component::class, [$this->app]);
-
-        $stub->expects($this->any())
-            ->method('model')
-            ->willReturn(WrongComponentTestModel::class);
-
-        $stub->getModel();
+        $this->getComponentMockWithModel(false, WrongComponentTestModel::class)
+            ->getModel();
     }
 
     public function testGetModel()
     {
-        $this->assertInstanceOf(Model::class, $this->getComponent()->getModel());
+        $this->assertInstanceOf(Model::class,
+            $this->getComponentMockWithModel()->getModel());
     }
 
     public function testSetAndGetName()
     {
-        $component = $this->getComponent();
+        $component = $this->getComponentMockWithModel();
         $this->assertEquals('component_test_models', $component->getName());
 
         $this->assertEquals($component, $component->setName('test'));
@@ -67,7 +104,7 @@ class ComponentTest extends TestCase
 
     public function testSetAndGetTitle()
     {
-        $component = $this->getComponent();
+        $component = $this->getComponentMockWithModel();
 
         $this->assertEquals($component, $component->setTitle('title'));
         $this->assertEquals('title', $component->getTitle());
@@ -75,7 +112,7 @@ class ComponentTest extends TestCase
 
     public function testGetAndSetRepository()
     {
-        $component = $this->getComponent();
+        $component = $this->getComponentMockWithModel();
         $this->assertInstanceOf(RepositoryInterface::class, $component->getRepository());
 
         $repository = m::mock(RepositoryInterface::class);
@@ -83,14 +120,41 @@ class ComponentTest extends TestCase
         $this->assertInstanceOf(RepositoryInterface::class, $component->getRepository());
     }
 
-    /*public function testGetConfigs()
+    public function testDisplayNotWithCallDisplay()
     {
-        $component = $this->getComponent();
-        //$component->shouldReceive('callDisplay')->once()->andReturn(DisplayInterface::class);
+        $component = $this->getComponentMockWithModel(false);
+
+        $this->assertNull($component->fireDisplay());
+    }
+
+    public function testDisplayWrongWithCallDisplay()
+    {
+        $component = $this->getComponentMockWithCallDisplay('wrong_display');
+
+        $this->expectException(\InvalidArgumentException::class);
+        $component->fireDisplay();
+    }
+
+    public function testFireDisplay()
+    {
+        $display = $this->getDisplayMock();
+        $component = $this->getComponentMockWithCallDisplay($display);
+
+        $this->assertEquals($display, $component->fireDisplay());
+    }
+
+    public function testGetConfigs()
+    {
+        $display = $this->getDisplayMock();
+
+        $component = $this->getComponentMockWithCallDisplay($display);
+
         $configs = $component->getConfigs();
 
-        $this->assertArrayHasKey(['title', 'accesses', 'display'], $configs);
-    }*/
+        $this->assertArrayHasKey('title', $configs);
+        $this->assertArrayHasKey('accesses', $configs);
+        $this->assertArrayHasKey('display', $configs);
+    }
 }
 
 class ComponentTestModel extends Model

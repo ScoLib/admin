@@ -210,7 +210,7 @@ abstract class Component implements ComponentInterface
         return collect([
             'title'    => $this->getTitle(),
             'accesses' => $this->getAccesses(),
-            'display'  => $this->fireDisplay(),
+            'display'  => $this->fireDisplay() ?: [],
         ]);
     }
 
@@ -220,7 +220,7 @@ abstract class Component implements ComponentInterface
     final public function fireDisplay()
     {
         if (! method_exists($this, 'callDisplay')) {
-            throw new BadMethodCallException('Not Found Method "callDisplay"');
+            return;
         }
 
         $display = $this->app->call([$this, 'callDisplay']);
@@ -243,8 +243,11 @@ abstract class Component implements ComponentInterface
     public function get()
     {
         $display = $this->fireDisplay();
+        if ($display) {
+            return $display->get();
+        }
 
-        return $display->get();
+        return;
     }
 
     /**
@@ -277,8 +280,11 @@ abstract class Component implements ComponentInterface
     public function store()
     {
         $form = $this->fireCreate();
+        if ($form) {
+            return $form->validate()->save();
+        }
 
-        $form->validate()->save();
+        return;
     }
 
     /**
@@ -314,7 +320,11 @@ abstract class Component implements ComponentInterface
     public function update($id)
     {
         $form = $this->fireEdit($id);
-        $form->validate()->save();
+        if ($form) {
+            return $form->validate()->save();
+        }
+
+        return;
     }
 
     public function delete($id)

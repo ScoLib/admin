@@ -58,14 +58,14 @@ interface ComponentInterface extends WithModel
     public function getConfigs();
 
     /**
-     * @return \Sco\Admin\Contracts\Display\DisplayInterface
+     * @return null|\Sco\Admin\Contracts\Display\DisplayInterface
      */
     public function fireDisplay();
 
     public function get();
 
     /**
-     * @return \Sco\Admin\Contracts\Form\FormInterface
+     * @return null|\Sco\Admin\Contracts\Form\FormInterface
      */
     public function fireCreate();
 
@@ -77,7 +77,7 @@ interface ComponentInterface extends WithModel
     /**
      * @param $id
      *
-     * @return \Sco\Admin\Contracts\Form\FormInterface
+     * @return null|\Sco\Admin\Contracts\Form\FormInterface
      */
     public function fireEdit($id);
 
