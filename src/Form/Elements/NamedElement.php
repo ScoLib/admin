@@ -4,7 +4,7 @@ namespace Sco\Admin\Form\Elements;
 
 use Sco\Admin\Contracts\Validatable;
 
-class NamedElement extends Element implements Validatable
+abstract class NamedElement extends Element implements Validatable
 {
     protected $defaultValue = '';
 

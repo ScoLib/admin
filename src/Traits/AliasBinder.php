@@ -49,12 +49,21 @@ trait AliasBinder
     /**
      * @param string $alias
      * @param array $arguments
-     *
      * @return object
+     * @throws \ErrorException
      */
     public function makeClass($alias, array $arguments)
     {
-        $reflection = new \ReflectionClass($this->getAlias($alias));
+        $class = $this->getAlias($alias);
+        $reflection = new \ReflectionClass($class);
+        if ($reflection->isAbstract()) {
+            throw new \ErrorException(
+                sprintf(
+                    'Cannot use %s, it is abstract class',
+                    $class
+                )
+            );
+        }
 
         return $reflection->newInstanceArgs($arguments);
     }

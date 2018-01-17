@@ -5,7 +5,7 @@ namespace Sco\Admin\Form\Elements;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Types\Type;
 
-class Input extends NamedElement
+abstract class Input extends NamedElement
 {
     protected $maxLength;
 
