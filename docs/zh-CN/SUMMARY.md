@@ -5,6 +5,7 @@
 * [介绍](README.md)
 * [更新日志](changelog.md)
 * [常见问题](faq.md)
+* 文本
 
 ## 入门
 
@@ -15,4 +16,16 @@
 ## 组件
 
 * [基本](component.md)
+* [权限](access.md)
+* [导航](navigation.md)
+* [数据显示](display.md)
+* [表单](form.md)
+
+## 表格列
+
+* [文本](columns/text.md)
+
+## 表单元素
+
+* [文本框](elements/text.md)
 
