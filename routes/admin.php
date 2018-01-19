@@ -137,7 +137,6 @@ Route::group([
                 'as'   => 'upload.file',
                 'uses' => '\Sco\Admin\Http\Controllers\UploadController@formElement',
             ]);
-
         });
     });
 });
