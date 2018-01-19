@@ -19,7 +19,7 @@ class InstallCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Install Sco Admin Package.';
+    protected $description = 'Install Sco-Admin Package.';
 
     /**
      * Execute the console command.
@@ -30,13 +30,13 @@ class InstallCommand extends Command
     {
         $this->line('');
         $this->line('************************');
-        $this->line('  Welcome to Sco Admin  ');
+        $this->line('  Welcome to Sco-Admin  ');
         $this->line('************************');
 
         $this->publish();
         $this->routes();
 
-        $this->info('Successfully Installed Sco Admin!');
+        $this->info('Successfully Installed Sco-Admin!');
     }
 
     protected function publish()

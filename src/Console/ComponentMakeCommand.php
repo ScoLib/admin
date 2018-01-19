@@ -23,7 +23,7 @@ class ComponentMakeCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $description = 'Create a new component class(ScoAdmin)';
+    protected $description = 'Create a new component class(Sco-Admin)';
 
     /**
      * The type of class being generated.

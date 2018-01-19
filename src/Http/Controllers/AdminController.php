@@ -6,9 +6,18 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Sco\Admin\Contracts\ComponentInterface;
+use Sco\Admin\Facades\AdminNavigation;
 
 class AdminController extends Controller
 {
+    public function getMenu()
+    {
+        $pages = AdminNavigation::filterByAccessRights()
+            ->sort()
+            ->getPages();
+        return response()->json($pages);
+    }
+
     public function index(ComponentInterface $component)
     {
         if (! $component->isDisplay()) {

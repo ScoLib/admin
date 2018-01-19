@@ -19,7 +19,7 @@ class ObserverMakeCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $description = 'Create a new permission observer class(ScoAdmin)';
+    protected $description = 'Create a new access observer class(Sco-Admin)';
 
     /**
      * The type of class being generated.

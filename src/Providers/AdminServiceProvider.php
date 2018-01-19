@@ -22,7 +22,6 @@ class AdminServiceProvider extends ServiceProvider
     protected $middlewares = [
         'admin.auth'      => \Sco\Admin\Http\Middleware\Authenticate::class,
         'admin.guest'     => \Sco\Admin\Http\Middleware\RedirectIfAuthenticated::class,
-        'admin.can.route' => \Sco\Admin\Http\Middleware\RouteAuthorize::class,
     ];
 
     public function getBasePath()
