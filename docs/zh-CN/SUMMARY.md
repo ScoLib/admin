@@ -19,7 +19,8 @@
 * [权限](access.md)
 * [导航](navigation.md)
 * [数据显示](display.md)
-* [表单](form.md)
+* [创建](create.md)
+* [编辑](edit.md)
 
 ## 表格列
 

@@ -1,9 +1,9 @@
 # 组件
 
-**组件是`Sco-Admin`的核心概念**，针对 `Model` 的所有操作（增删改查）都是在组件内配置来完成的。
-一个组件对应一个 `Model` 
+**组件是`Sco-Admin`的核心概念**。
+权限、对数据的操作、菜单、数据显示、表单等页面布局，都是通过在组件类中配置来实现的。
 
-## 创建一个组件
+## 创建组件类
 
 执行以下命令，并根据命令提示操作：
 ```php
@@ -12,23 +12,23 @@ php artisan make:component [options] [--] <name>
 
 ### 可选 options：
 
-### -o, --observer[=OBSERVER]
+#### -o, --observer[=OBSERVER]
 
 指定组件权限的观察者类。
 不存在，则会被创建。
 
-### -m, --model[=MODEL]
+#### -m, --model[=MODEL]
 
 指定组件对应的 `Model` 类。
 不存在，则会被创建
 
-### -d, --display[=DISPLAY]
+#### -d, --display[=DISPLAY]
 
 指定组件数据展示的类型，默认 `table` 类型
 可选值：`table|tree|image`
 
 
-## 一个组件的基本内容
+## 组件类示例
 
 ```php
 
