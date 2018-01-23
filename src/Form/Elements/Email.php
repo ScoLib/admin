@@ -2,6 +2,11 @@
 
 namespace Sco\Admin\Form\Elements;
 
+/**
+ * Class Email
+ *
+ * @package Sco\Admin\Form\Elements
+ */
 class Email extends Text
 {
     protected $type = 'email';

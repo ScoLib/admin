@@ -7,24 +7,54 @@ use Sco\Admin\Facades\Admin;
 use Sco\Admin\Traits\UploadStorageTrait;
 use Validator;
 
+/**
+ * Class BaseFile
+ *
+ * @package Sco\Admin\Form\Elements
+ * @see http://element.eleme.io/#/en-US/component/upload
+ */
 abstract class BaseFile extends NamedElement
 {
     use UploadStorageTrait;
 
+    /**
+     * @var
+     */
     protected $actionUrl;
 
+    /**
+     * @var bool
+     */
     protected $withCredentials = false;
 
+    /**
+     * @var
+     */
     protected $maxFileSize;
 
+    /**
+     * @var
+     */
     protected $fileExtensions;
 
+    /**
+     * @var array
+     */
     protected $uploadValidationRules = [];
 
+    /**
+     * @var array
+     */
     protected $uploadValidationMessages = [];
 
+    /**
+     * @return mixed
+     */
     abstract protected function getDefaultExtensions();
 
+    /**
+     * @return string
+     */
     public function getActionUrl()
     {
         if ($this->actionUrl) {
@@ -44,6 +74,10 @@ abstract class BaseFile extends NamedElement
         return route('admin.model.upload.file', $params);
     }
 
+    /**
+     * @param $value
+     * @return $this
+     */
     public function setActionUrl($value)
     {
         $this->actionUrl = $value;
@@ -78,6 +112,9 @@ abstract class BaseFile extends NamedElement
         return $this->getDefaultMaxFileSize();
     }
 
+    /**
+     * @return float|int
+     */
     protected function getDefaultMaxFileSize()
     {
         return UploadedFile::getMaxFilesize() / 1024;
@@ -99,6 +136,9 @@ abstract class BaseFile extends NamedElement
         return $this;
     }
 
+    /**
+     * @return mixed
+     */
     public function getFileExtensions()
     {
         if ($this->fileExtensions) {
@@ -124,6 +164,9 @@ abstract class BaseFile extends NamedElement
         return $this;
     }
 
+    /**
+     * @return array
+     */
     public function toArray()
     {
         return parent::toArray() + [
@@ -175,6 +218,11 @@ abstract class BaseFile extends NamedElement
         ];
     }
 
+    /**
+     * @param $rule
+     * @param null $message
+     * @return $this|\Sco\Admin\Form\Elements\BaseFile
+     */
     public function addValidationRule($rule, $message = null)
     {
         $uploadRules = [
@@ -195,6 +243,11 @@ abstract class BaseFile extends NamedElement
         return parent::addValidationRule($rule, $message);
     }
 
+    /**
+     * @param $rule
+     * @param null $message
+     * @return $this|\Sco\Admin\Form\Elements\BaseFile
+     */
     protected function addUploadValidationRule($rule, $message = null)
     {
         $this->uploadValidationRules[$this->getValidationRuleName($rule)] = $rule;
@@ -206,6 +259,11 @@ abstract class BaseFile extends NamedElement
         return $this->addUploadValidationMessage($rule, $message);
     }
 
+    /**
+     * @param $rule
+     * @param $message
+     * @return $this
+     */
     protected function addUploadValidationMessage($rule, $message)
     {
         $key = $this->getName() . '.' . $this->getValidationRuleName($rule);
@@ -215,6 +273,9 @@ abstract class BaseFile extends NamedElement
         return $this;
     }
 
+    /**
+     * @return array
+     */
     protected function getUploadValidationRules()
     {
         $rules = array_merge(

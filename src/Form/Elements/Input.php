@@ -2,106 +2,111 @@
 
 namespace Sco\Admin\Form\Elements;
 
-use Doctrine\DBAL\Schema\Column;
-use Doctrine\DBAL\Types\Type;
-
+/**
+ * Class Input
+ *
+ * @see http://element.eleme.io/#/en-US/component/input
+ * @package Sco\Admin\Form\Elements
+ */
 abstract class Input extends NamedElement
 {
+    /**
+     * @var
+     */
     protected $maxLength;
 
+    /**
+     * @var int
+     */
     protected $minLength = 0;
 
+    /**
+     * @var string
+     */
     protected $size = '';
 
+    /**
+     * @var bool
+     */
     protected $readonly = false;
 
+    /**
+     * @return string
+     */
     public function getSize()
     {
         return $this->size;
     }
 
-    public function setSize($value)
+    /**
+     * @param string $value
+     * @return $this
+     */
+    public function setSize(string $value)
     {
         $this->size = $value;
 
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function mediumSize()
     {
         return $this->setSize('medium');
     }
 
+    /**
+     * @return $this
+     */
     public function smallSize()
     {
         return $this->setSize('small');
     }
 
+    /**
+     * @return $this
+     */
     public function miniSize()
     {
         return $this->setSize('mini');
     }
 
-    protected function getModelFieldLength()
+    /**
+     * @return mixed
+     */
+    public function getMaxLength()
     {
-        $column = $this->getModelColumn();
-        if ($column instanceof Column && $column->getType()->getName() == Type::STRING) {
-            return $column->getLength();
-        }
-
-        return;
+        return $this->maxLength;
     }
 
     /**
-     * @return \Doctrine\DBAL\Schema\Column
-     * @throws \Doctrine\DBAL\DBALException
-     * @throws \Doctrine\DBAL\Schema\SchemaException
+     * @param int $value
+     * @return $this
      */
-    protected function getModelColumn()
+    public function setMaxLength(int $value)
     {
-        $dbConnection = $this->getModel()->getConnection();
-
-        // Doctrine\DBAL\Platforms\MySQL57Platform not support "enum" "string"
-        $schema = $dbConnection->getDoctrineSchemaManager();
-        $databasePlatform = $schema->getDatabasePlatform();
-        $databasePlatform->registerDoctrineTypeMapping('enum', 'string');
-
-        $table = $dbConnection->getTablePrefix() . $this->getModel()->getTable();
-        $column = $this->getName();
-        if ($column) {
-            $columns = $schema->listTableDetails($table);
-            if ($columns->hasColumn($column)) {
-                return $columns->getColumn($column);
-            }
-        }
-    }
-
-    public function getMaxLength()
-    {
-        if ($this->maxLength) {
-            return $this->maxLength;
-        }
-
-        return $this->getModelFieldLength();
-    }
-
-    public function setMaxLength($value)
-    {
-        $value = intval($value);
         $this->maxLength = $value;
         $this->addValidationRule('max:' . $value);
 
         return $this;
     }
 
+    /**
+     * @return int
+     */
     public function getMinLength()
     {
         return $this->minLength;
     }
 
-    public function setMinLength($value)
+    /**
+     * @param int $value
+     * @return $this
+     */
+    public function setMinLength(int $value)
     {
-        $value = intval($value);
         $this->minLength = $value;
 
         $this->addValidationRule('min:' . $value);
@@ -109,11 +114,17 @@ abstract class Input extends NamedElement
         return $this;
     }
 
+    /**
+     * @return bool
+     */
     public function isReadonly()
     {
         return $this->readonly;
     }
 
+    /**
+     * @return $this
+     */
     public function readonly()
     {
         $this->readonly = true;

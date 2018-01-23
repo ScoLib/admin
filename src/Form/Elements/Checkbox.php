@@ -3,9 +3,10 @@
 namespace Sco\Admin\Form\Elements;
 
 /**
- * Checkbox
+ * Class Checkbox
  *
- * @see http://element.eleme.io/#/zh-CN/component/checkbox
+ * @package Sco\Admin\Form\Elements
+ * @see http://element.eleme.io/#/en-US/component/checkbox
  */
 class Checkbox extends MultiSelect
 {

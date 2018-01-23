@@ -7,6 +7,11 @@ use Illuminate\Contracts\Support\Jsonable;
 use JsonSerializable;
 use Sco\Admin\Contracts\WithModel;
 
+/**
+ * Interface ElementInterface
+ *
+ * @package Sco\Admin\Contracts\Form\Elements
+ */
 interface ElementInterface extends
     WithModel,
     Arrayable,
@@ -20,6 +25,9 @@ interface ElementInterface extends
      */
     public function getValue();
 
+    /**
+     * @return string
+     */
     public function getName();
 
     /**
@@ -27,8 +35,11 @@ interface ElementInterface extends
      *
      * @return $this
      */
-    public function setName($value);
+    public function setName(string $value);
 
+    /**
+     * @return string
+     */
     public function getTitle();
 
     /**
@@ -36,9 +47,15 @@ interface ElementInterface extends
      *
      * @return $this
      */
-    public function setTitle($value);
+    public function setTitle(string $value);
 
+    /**
+     * @return mixed
+     */
     public function save();
 
+    /**
+     * @return mixed
+     */
     public function finishSave();
 }

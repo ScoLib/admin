@@ -5,7 +5,8 @@ namespace Sco\Admin\Form\Elements;
 /**
  * Form Element DateTime
  *
- * @see http://element.eleme.io/#/zh-CN/component/datetime-picker
+ * @package Sco\Admin\Form\Elements
+ * @see http://element.eleme.io/#/en-US/component/datetime-picker
  */
 class DateTimeRange extends DateRange
 {

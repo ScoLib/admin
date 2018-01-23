@@ -12,37 +12,72 @@ class Number extends NamedElement
 
     protected $step = 1;
 
+    /**
+     * @return string|int
+     */
     public function getMax()
     {
-        return $this->max;
+        if ($this->max) {
+            return $this->max;
+        }
+
+        return $this->getDefaultMax();
     }
 
-    public function setMax($value)
+    protected function getDefaultMax()
     {
-        $this->max = (int) $value;
+        return 'Infinity';
+    }
+
+    /**
+     * @param int $value
+     * @return $this
+     */
+    public function setMax(int $value)
+    {
+        $this->max = $value;
 
         $this->addValidationRule('max:' . $value);
 
         return $this;
     }
 
+    /**
+     * @return int
+     */
     public function getMin()
     {
         return $this->min;
     }
 
-    public function setMin($value)
+    /**
+     * @param int $value
+     * @return $this
+     */
+    public function setMin(int $value)
     {
-        $this->min = (int) $value;
+        $this->min = $value;
 
         $this->addValidationRule('min:' . $value);
 
         return $this;
     }
 
-    public function setStep($value)
+    /**
+     * @return int
+     */
+    public function getStep()
     {
-        $this->step = (int) $value;
+        return $this->step;
+    }
+
+    /**
+     * @param int $value
+     * @return $this
+     */
+    public function setStep(int $value)
+    {
+        $this->step = $value;
 
         return $this;
     }
@@ -59,7 +94,7 @@ class Number extends NamedElement
         return parent::toArray() + [
                 'min'  => $this->getMin(),
                 'max'  => $this->getMax(),
-                'step' => $this->step,
+                'step' => $this->getStep(),
             ];
     }
 }

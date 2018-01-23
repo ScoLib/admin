@@ -7,7 +7,8 @@ use Carbon\Carbon;
 /**
  * Form Element Date
  *
- * @see http://element.eleme.io/#/zh-CN/component/date-picker
+ * @package Sco\Admin\Form\Elements
+ * @see http://element.eleme.io/#/en-US/component/date-picker
  */
 class Date extends Input
 {
@@ -31,11 +32,17 @@ class Date extends Input
 
     protected $editable = false;
 
+    /**
+     * @return string
+     */
     public function getFormat()
     {
         return $this->convertPickerFormat();
     }
 
+    /**
+     * @return string
+     */
     protected function convertPickerFormat()
     {
         return strtr($this->getPickerFormat(), [
@@ -52,6 +59,9 @@ class Date extends Input
         ]);
     }
 
+    /**
+     * @return string
+     */
     protected function getPickerFormat()
     {
         return $this->pickerFormat;
@@ -93,6 +103,9 @@ class Date extends Input
         return $this;
     }
 
+    /**
+     * @return bool
+     */
     protected function isEditable()
     {
         return $this->editable;

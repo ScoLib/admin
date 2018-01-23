@@ -2,6 +2,12 @@
 
 namespace Sco\Admin\Form\Elements;
 
+/**
+ * Class ElSwitch
+ *
+ * @package Sco\Admin\Form\Elements
+ * @see http://element.eleme.io/#/en-US/component/switch
+ */
 class ElSwitch extends NamedElement
 {
     protected $type = 'elswitch';
@@ -41,18 +47,28 @@ class ElSwitch extends NamedElement
      */
     protected $width = 40;
 
+    /**
+     * @return int
+     */
     public function getWidth()
     {
         return $this->width;
     }
 
-    public function setWidth($value)
+    /**
+     * @param int $value
+     * @return $this
+     */
+    public function setWidth(int $value)
     {
-        $this->width = intval($value);
+        $this->width = $value;
 
         return $this;
     }
 
+    /**
+     * @return array
+     */
     public function getValues()
     {
         return $this->values;
@@ -71,6 +87,9 @@ class ElSwitch extends NamedElement
         return $this;
     }
 
+    /**
+     * @return array
+     */
     public function getTexts()
     {
         return $this->texts;
@@ -89,6 +108,9 @@ class ElSwitch extends NamedElement
         return $this;
     }
 
+    /**
+     * @return array
+     */
     public function getColors()
     {
         return $this->colors;
@@ -107,6 +129,9 @@ class ElSwitch extends NamedElement
         return $this;
     }
 
+    /**
+     * @return array
+     */
     public function getIconClasses()
     {
         return $this->iconClasses;

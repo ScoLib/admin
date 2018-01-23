@@ -2,16 +2,30 @@
 
 namespace Sco\Admin\Form\Elements;
 
+use Illuminate\Validation\Rules\Unique;
 use Sco\Admin\Contracts\Validatable;
 
 abstract class NamedElement extends Element implements Validatable
 {
+    /**
+     * @var mixed
+     */
     protected $defaultValue = '';
 
+    /**
+     * @var array
+     */
     protected $validationRules = [];
 
+    /**
+     * @var array
+     */
     protected $validationMessages = [];
 
+    /**
+     * @param null|string $message
+     * @return $this
+     */
     public function required($message = null)
     {
         $this->addValidationRule('required', $message);
@@ -19,6 +33,10 @@ abstract class NamedElement extends Element implements Validatable
         return $this;
     }
 
+    /**
+     * @param null|string $message
+     * @return $this
+     */
     public function unique($message = null)
     {
         $this->addValidationRule('unique', $message);
@@ -26,6 +44,9 @@ abstract class NamedElement extends Element implements Validatable
         return $this;
     }
 
+    /**
+     * @return array
+     */
     public function getValidationRules()
     {
         $rules = array_merge(
@@ -37,16 +58,20 @@ abstract class NamedElement extends Element implements Validatable
             $model = $this->getModel();
             $table = $model->getTable();
 
-            $rule = 'unique:' . $table . ',' . $this->getName();
+            $rule = new Unique($table, $this->getName());
             if ($model->exists) {
-                $rule .= ',' . $model->getKey() . ',' . $model->getKeyName();
+                $rule->ignore($model->getKey(), $model->getKeyName());
             }
+
             $rules['unique'] = $rule;
         }
 
         return [$this->getName() => array_values($rules)];
     }
 
+    /**
+     * @return array
+     */
     protected function getDefaultValidationRules()
     {
         return [
@@ -72,6 +97,11 @@ abstract class NamedElement extends Element implements Validatable
         return [$this->getName() => $this->getTitle()];
     }
 
+    /**
+     * @param $rule
+     * @param null $message
+     * @return $this
+     */
     public function addValidationRule($rule, $message = null)
     {
         $this->validationRules[$this->getValidationRuleName($rule)] = $rule;
@@ -83,6 +113,11 @@ abstract class NamedElement extends Element implements Validatable
         return $this->addValidationMessage($rule, $message);
     }
 
+    /**
+     * @param $rule
+     * @param $message
+     * @return $this
+     */
     public function addValidationMessage($rule, $message)
     {
         $key = $this->getName() . '.' . $this->getValidationRuleName($rule);
@@ -92,9 +127,13 @@ abstract class NamedElement extends Element implements Validatable
         return $this;
     }
 
-    protected function getValidationRuleName($rule)
+    /**
+     * @param $rule
+     * @return mixed
+     */
+    protected function getValidationRuleName(string $rule)
     {
-        list($name, ) = explode(':', (string) $rule, 2);
+        list($name,) = explode(':', $rule, 2);
 
         return $name;
     }

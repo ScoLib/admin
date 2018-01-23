@@ -148,7 +148,7 @@ class ComponentMakeCommand extends GeneratorCommand
             throw new InvalidArgumentException('Observer name contains invalid characters.');
         }
 
-        $observer = rtrim(str_replace('/', '\\', $observer), 'Observer');
+        $observer = str_replace('/', '\\', $observer);
 
         if (! Str::startsWith($observer, [
             $rootNamespace = $this->laravel->getNamespace(),
@@ -156,7 +156,7 @@ class ComponentMakeCommand extends GeneratorCommand
         ])) {
             $observer = $rootNamespace . $this->getComponentNamespace()
                 . '\Observers\\'
-                . $observer . 'Observer';
+                . rtrim($observer, 'Observer') . 'Observer';
         }
 
         return $observer;
