@@ -6,6 +6,9 @@ class Image extends BaseFile
 {
     protected $type = 'image';
 
+    /**
+     * {@inheritdoc}
+     */
     public function getValue()
     {
         $value = $this->getValueFromModel();
@@ -16,6 +19,9 @@ class Image extends BaseFile
         return $this->getFileInfo($value);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function prepareValue($value)
     {
         if (empty($value) || ! is_array($value)) {
@@ -25,6 +31,9 @@ class Image extends BaseFile
         return $value['path'];
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function getDefaultExtensions()
     {
         return config('admin.upload.extensions.image');

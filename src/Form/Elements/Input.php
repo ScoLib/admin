@@ -5,8 +5,8 @@ namespace Sco\Admin\Form\Elements;
 /**
  * Class Input
  *
- * @see http://element.eleme.io/#/en-US/component/input
  * @package Sco\Admin\Form\Elements
+ * @see http://element.eleme.io/#/en-US/component/input
  */
 abstract class Input extends NamedElement
 {
