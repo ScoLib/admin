@@ -5,6 +5,7 @@ namespace Sco\Admin\Display;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Sco\Admin\Contracts\Initializable;
 use Sco\Admin\Contracts\RepositoryInterface;
 use Sco\Admin\Contracts\Display\Extensions\ExtensionInterface;
 use Sco\Admin\Contracts\Display\DisplayInterface;
@@ -40,7 +41,7 @@ abstract class Display implements DisplayInterface, Arrayable
     protected $model;
 
     /**
-     * @var RepositoryInterface
+     * @var null|RepositoryInterface
      */
     protected $repository;
 
@@ -79,12 +80,6 @@ abstract class Display implements DisplayInterface, Arrayable
         return $this->model;
     }
 
-    public function initialize()
-    {
-        $this->makeRepository();
-        $this->extensions->initialize();
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -97,16 +92,27 @@ abstract class Display implements DisplayInterface, Arrayable
 
     protected function makeRepository()
     {
-        $this->repository = app(RepositoryInterface::class)
+        $repository = app(RepositoryInterface::class)
             ->setModel($this->getModel())
             ->with($this->getWith());
 
-        return $this;
+        return $repository;
     }
 
     public function getRepository()
     {
+        if (is_null($this->repository)) {
+            $this->setRepository($this->makeRepository());
+        }
+
         return $this->repository;
+    }
+
+    public function setRepository(RepositoryInterface $repository)
+    {
+        $this->repository = $repository;
+
+        return $this;
     }
 
     /**
@@ -183,7 +189,12 @@ abstract class Display implements DisplayInterface, Arrayable
         $method = snake_case(substr($name, 3));
 
         if (starts_with($name, 'get') && $this->extensions->has($method)) {
-            return $this->extensions->get($method);
+            $extensions = $this->extensions->get($method);
+            if ($extensions instanceof Initializable) {
+                $extensions->initialize();
+            }
+
+            return $extensions;
         }
 
         if (starts_with($name, 'set') && $this->extensions->has($method)) {

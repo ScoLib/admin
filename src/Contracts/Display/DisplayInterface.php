@@ -3,10 +3,9 @@
 namespace Sco\Admin\Contracts\Display;
 
 use Sco\Admin\Contracts\Display\Extensions\ExtensionInterface;
-use Sco\Admin\Contracts\Initializable;
 use Sco\Admin\Contracts\WithModel;
 
-interface DisplayInterface extends Initializable, WithModel
+interface DisplayInterface extends WithModel
 {
     /**
      * @return \Sco\Admin\Contracts\RepositoryInterface

@@ -43,6 +43,11 @@ abstract class Element implements ElementInterface
     protected $model;
 
     /**
+     * @var \Closure
+     */
+    protected $mutator;
+
+    /**
      * Element constructor.
      *
      * @param string $name
@@ -130,14 +135,38 @@ abstract class Element implements ElementInterface
     }
 
     /**
+     * @return \Closure
+     */
+    public function getMutator(): \Closure
+    {
+        return $this->mutator;
+    }
+
+    /**
+     * @param \Closure $mutator
+     * @return $this
+     */
+    public function setMutator(\Closure $mutator)
+    {
+        $this->mutator = $mutator;
+
+        return $this;
+    }
+
+    public function hasMutator()
+    {
+        return is_callable($this->getMutator());
+    }
+
+    /**
      * @param mixed $value
      *
      * @return mixed
      */
     protected function prepareValue($value)
     {
-        if (is_array($value)) {
-            return implode(',', $value);
+        if ($this->hasMutator()) {
+            $value = call_user_func($this->getMutator(), $value);
         }
 
         return $value;

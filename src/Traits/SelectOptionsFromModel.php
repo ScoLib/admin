@@ -92,6 +92,11 @@ trait SelectOptionsFromModel
         return $model;
     }
 
+    protected function isOptionsModel()
+    {
+        return is_string($this->options) || $this->options instanceof Model;
+    }
+
     /**
      * Get the options from model.
      *

@@ -29,7 +29,7 @@ class Select extends Filter
     {
         if ($this->options instanceof \Closure) {
             $options = ($this->options)();
-        } elseif (is_string($this->options) || $this->options instanceof Model) {
+        } elseif ($this->isOptionsModel()) {
             $options = $this->getOptionsFromModel();
         } elseif (is_array($this->options)) {
             $options = $this->options;

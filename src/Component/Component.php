@@ -235,7 +235,6 @@ abstract class Component implements ComponentInterface
         }
 
         $display->setModel($this->getModel());
-        $display->initialize();
 
         return $display;
     }

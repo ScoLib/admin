@@ -3,11 +3,24 @@
 namespace Sco\Admin\Traits;
 
 use BadMethodCallException;
+use Sco\Admin\Contracts\Initializable;
 
+/**
+ * Trait AliasBinder
+ *
+ * @package Sco\Admin\Traits
+ */
 trait AliasBinder
 {
+    /**
+     * @var array
+     */
     protected $aliases = [];
 
+    /**
+     * @param array $aliases
+     * @return $this
+     */
     public function register(array $aliases)
     {
         foreach ($aliases as $alias => $class) {
@@ -17,19 +30,31 @@ trait AliasBinder
         return $this;
     }
 
-    public function bind($alias, $class)
+    /**
+     * @param string $alias
+     * @param $class
+     * @return $this
+     */
+    public function bind(string $alias, $class)
     {
         $this->aliases[$alias] = $class;
 
         return $this;
     }
 
+    /**
+     * @return array
+     */
     public function getAliases()
     {
         return $this->aliases;
     }
 
-    public function getAlias($key)
+    /**
+     * @param string $key
+     * @return bool
+     */
+    public function getAlias(string $key)
     {
         return $this->aliases[$key] ?? false;
     }
@@ -41,7 +66,7 @@ trait AliasBinder
      *
      * @return bool
      */
-    public function hasAlias($alias)
+    public function hasAlias(string $alias)
     {
         return array_key_exists($alias, $this->aliases);
     }
@@ -51,8 +76,9 @@ trait AliasBinder
      * @param array $arguments
      * @return object
      * @throws \ErrorException
+     * @throws \ReflectionException
      */
-    public function makeClass($alias, array $arguments)
+    protected function makeClass(string $alias, array $arguments)
     {
         $class = $this->getAlias($alias);
         $reflection = new \ReflectionClass($class);
@@ -74,6 +100,12 @@ trait AliasBinder
             throw new BadMethodCallException("Not Found {$method}");
         }
 
-        return $this->makeClass($method, $parameters);
+        $instance = $this->makeClass($method, $parameters);
+
+        if ($instance instanceof Initializable) {
+            $instance->initialize();
+        }
+
+        return $instance;
     }
 }

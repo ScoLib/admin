@@ -53,11 +53,6 @@ class MultiSelect extends Select
         }
     }
 
-    protected function isOptionsModel()
-    {
-        return is_string($this->options) || $this->options instanceof Model;
-    }
-
     protected function isRelation()
     {
         return method_exists($this->getModel(), $this->getName());
