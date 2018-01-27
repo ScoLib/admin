@@ -22,15 +22,34 @@ abstract class Filter implements FilterInterface
     public function __construct($name, $title)
     {
         $this->setName($name)->setTitle($title);
+        $this->setValueFromRequest();
     }
 
-    public function initialize()
+    protected function setValueFromRequest()
     {
-        if (is_null($value = $this->getValue())) {
-            $value = $this->getRequestInputValue();
+        if (!is_null($value = $this->getRequestInputValue())) {
+            $this->setValue($value);
         }
+    }
 
-        $this->setValue($value);
+    protected function getRequestInputValue()
+    {
+        $name = $this->getRequestName();
+
+        return request()->input($name);
+    }
+
+    /**
+     * Dots and spaces in variable names are converted to underscores.
+     * For example <input name="a.b" /> becomes $_REQUEST["a_b"].
+     *
+     * @see http://php.net/manual/en/language.variables.external.php
+     *
+     * @return mixed
+     */
+    protected function getRequestName()
+    {
+        return str_replace('.', '_', $this->getName());
     }
 
     /**
@@ -74,18 +93,6 @@ abstract class Filter implements FilterInterface
             default:
                 $query->where($name, $op, $value);
         }
-    }
-
-    protected function getRequestInputValue()
-    {
-        $name = $this->getRequestName();
-
-        return request()->input($name);
-    }
-
-    protected function getRequestName()
-    {
-        return str_replace('.', '_', $this->getName());
     }
 
     /**

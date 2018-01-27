@@ -3,7 +3,6 @@
 namespace Sco\Admin\Traits;
 
 use BadMethodCallException;
-use Sco\Admin\Contracts\Initializable;
 
 /**
  * Trait AliasBinder
@@ -100,12 +99,6 @@ trait AliasBinder
             throw new BadMethodCallException("Not Found {$method}");
         }
 
-        $instance = $this->makeClass($method, $parameters);
-
-        if ($instance instanceof Initializable) {
-            $instance->initialize();
-        }
-
-        return $instance;
+        return $this->makeClass($method, $parameters);
     }
 }

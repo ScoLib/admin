@@ -6,9 +6,8 @@ use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
 use Illuminate\Database\Eloquent\Builder;
 use JsonSerializable;
-use Sco\Admin\Contracts\Initializable;
 
-interface FilterInterface extends Arrayable, Jsonable, JsonSerializable, Initializable
+interface FilterInterface extends Arrayable, Jsonable, JsonSerializable
 {
     /**
      * Is filter active?

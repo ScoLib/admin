@@ -21,12 +21,11 @@ class Table extends Display
         parent::__construct();
 
         $this->columns = new Collection();
+        $this->orderByFromRequest();
     }
 
-    public function initialize()
+    protected function orderByFromRequest()
     {
-        parent::initialize();
-
         $orderBy = request()->query('orderBy', '');
         $sortedBy = request()->query('sortedBy', '');
 
