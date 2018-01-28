@@ -60,6 +60,7 @@ class ComponentServiceProvider extends ServiceProvider
      * Load component class from the paths
      *
      * @param mixed $paths
+     * @throws \ReflectionException
      */
     protected function loadComponents($paths)
     {

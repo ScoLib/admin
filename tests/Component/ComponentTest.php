@@ -35,6 +35,7 @@ class ComponentTest extends TestCase
      * @param bool $withMethods
      * @param string $model
      * @return \PHPUnit\Framework\MockObject\MockObject|\Sco\Admin\Component\Component
+     * @throws \ReflectionException
      */
     protected function getComponentMockWithModel(
         $withMethods = true,
@@ -69,7 +70,6 @@ class ComponentTest extends TestCase
     {
         $display = m::mock(DisplayInterface::class);
         $display->shouldReceive('setModel')->once();
-        $display->shouldReceive('initialize')->once();
 
         return $display;
     }
