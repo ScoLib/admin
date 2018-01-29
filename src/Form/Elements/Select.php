@@ -15,47 +15,23 @@ class Select extends NamedElement
 
     protected $type = 'select';
 
-    protected $size = '';
+    protected $cast = 'string';
 
     protected $options;
 
-    protected $extraOptions;
-
-    public function __construct($name, $title, $options = null)
+    /**
+     *
+     * @param string $name
+     * @param string $title
+     * @param array|Model $options
+     */
+    public function __construct(string $name, string $title, $options = null)
     {
         parent::__construct($name, $title);
 
-        $this->setOptions($options);
-
-        $this->extraOptions = new Collection();
-    }
-
-    public function getSize()
-    {
-        return $this->size;
-    }
-
-    public function setSize($value)
-    {
-        $this->size = $value;
-
-        return $this;
-    }
-
-    public function addOptions($options)
-    {
-        foreach ($options as $key => $option) {
-            $this->addOption($key, $option);
+        if (! is_null($options)) {
+            $this->setOptions($options);
         }
-
-        return $this;
-    }
-
-    public function addOption($key, $value)
-    {
-        $this->extraOptions->put($key, $value);
-
-        return $this;
     }
 
     public function getOptions()
@@ -75,10 +51,6 @@ class Select extends NamedElement
                 )
             );
         }
-
-        $this->extraOptions->each(function ($value, $key) use ($options) {
-            $options[$key] = $value;
-        });
 
         return collect($options)->mapWithKeys(function ($value, $key) {
             return [
@@ -102,16 +74,10 @@ class Select extends NamedElement
         return $this;
     }
 
-    public function getValue()
-    {
-        return (string) parent::getValue();
-    }
-
     public function toArray()
     {
         return parent::toArray() + [
                 'options' => $this->getOptions(),
-                'size'    => $this->getSize(),
             ];
     }
 }

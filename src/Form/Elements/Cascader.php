@@ -16,21 +16,15 @@ class Cascader extends Tree
     protected $type = 'cascader';
 
     /**
-     * @var array
-     */
-    protected $names = [];
-
-    /**
      *
-     * @param array $names
+     * @param string|array $name
      * @param string $title
-     * @param string|array $options
+     * @param array|\Illuminate\Database\Eloquent\Model $options
      */
-    public function __construct(array $names, $title, $options)
+    public function __construct($name, string $title, $options = null)
     {
-        parent::__construct(implode('_', $names), $title);
+        parent::__construct(implode('_', $name), $title);
 
-        $this->names = $names;
 
         // TODO
     }

@@ -8,6 +8,16 @@ use Sco\Admin\Contracts\Validatable;
 abstract class NamedElement extends Element implements Validatable
 {
     /**
+     * @var string
+     */
+    protected $size = '';
+
+    /**
+     * @var bool
+     */
+    protected $disabled = false;
+
+    /**
      * @var mixed
      */
     protected $defaultValue = '';
@@ -21,6 +31,75 @@ abstract class NamedElement extends Element implements Validatable
      * @var array
      */
     protected $validationMessages = [];
+
+    /**
+     * @return string
+     */
+    public function getSize()
+    {
+        return $this->size;
+    }
+
+    /**
+     * @param string $value
+     * @return $this
+     */
+    public function setSize(string $value)
+    {
+        $this->size = $value;
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function largeSize()
+    {
+        return $this->setSize('large');
+    }
+
+    /**
+     * @return $this
+     */
+    public function mediumSize()
+    {
+        return $this->setSize('medium');
+    }
+
+    /**
+     * @return $this
+     */
+    public function smallSize()
+    {
+        return $this->setSize('small');
+    }
+
+    /**
+     * @return $this
+     */
+    public function miniSize()
+    {
+        return $this->setSize('mini');
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDisabled()
+    {
+        return $this->disabled;
+    }
+
+    /**
+     * @return $this
+     */
+    public function disabled()
+    {
+        $this->disabled = true;
+
+        return $this;
+    }
 
     /**
      * @param null|string $message
@@ -136,5 +215,13 @@ abstract class NamedElement extends Element implements Validatable
         list($name,) = explode(':', $rule, 2);
 
         return $name;
+    }
+
+    public function toArray()
+    {
+        return parent::toArray() + [
+                'size'     => $this->getSize(),
+                'disabled' => $this->isDisabled(),
+            ];
     }
 }

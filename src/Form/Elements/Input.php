@@ -21,57 +21,9 @@ abstract class Input extends NamedElement
     protected $minLength = 0;
 
     /**
-     * @var string
-     */
-    protected $size = '';
-
-    /**
      * @var bool
      */
     protected $readonly = false;
-
-    /**
-     * @return string
-     */
-    public function getSize()
-    {
-        return $this->size;
-    }
-
-    /**
-     * @param string $value
-     * @return $this
-     */
-    public function setSize(string $value)
-    {
-        $this->size = $value;
-
-        return $this;
-    }
-
-    /**
-     * @return $this
-     */
-    public function mediumSize()
-    {
-        return $this->setSize('medium');
-    }
-
-    /**
-     * @return $this
-     */
-    public function smallSize()
-    {
-        return $this->setSize('small');
-    }
-
-    /**
-     * @return $this
-     */
-    public function miniSize()
-    {
-        return $this->setSize('mini');
-    }
 
     /**
      * @return mixed
@@ -137,7 +89,6 @@ abstract class Input extends NamedElement
         return parent::toArray() + [
                 'minLength' => $this->getMinLength(),
                 'maxLength' => $this->getMaxLength(),
-                'size'      => $this->getSize(),
                 'readonly'  => $this->isReadonly(),
             ];
     }

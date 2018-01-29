@@ -23,11 +23,13 @@ class Tree extends NamedElement
 
     protected $nodes;
 
-    public function __construct($name, $title, $nodes)
+    public function __construct(string $name, string $title, $nodes = null)
     {
         parent::__construct($name, $title);
 
-        $this->setNodes($nodes);
+        if ($nodes) {
+            $this->setNodes($nodes);
+        }
     }
 
     public function getValue()

@@ -6,19 +6,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class MultiSelect extends Select
 {
+    protected $cast = 'json';
+
     protected $defaultValue = [];
 
     public function getValue()
     {
-        $value = $this->getValueFromModel();
-
-        if (is_string($value)) {
-            if (strpos($value, ',') !== false) {
-                return explode(',', $value);
-            }
-
-            return (array) $value;
-        }
+        $value = parent::getValue();
 
         if ($this->isOptionsModel() && $this->isRelation()) {
             $model = $this->getOptionsModel();
@@ -29,7 +23,7 @@ class MultiSelect extends Select
             });
         }
 
-        return $value;
+        return (array) $value;
     }
 
     public function save()

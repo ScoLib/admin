@@ -12,8 +12,6 @@ class Checkbox extends MultiSelect
 {
     protected $type = 'checkbox';
 
-    protected $defaultValue = [];
-
     /**
      * maximum number of checkbox checked
      *

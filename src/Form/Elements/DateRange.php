@@ -16,26 +16,19 @@ class DateRange extends Date
 
     protected $pickerFormat = 'yyyy-MM-dd';
 
-    protected $startName;
+    protected $attributes = [];
 
-    protected $endName;
-
-    public function __construct($startName, $endName, $title)
+    public function __construct($name, string $title)
     {
-        parent::__construct($startName . '_' . $endName, $title);
+        $name = (array) $name;
 
-        $this->startName = $startName;
-        $this->endName = $endName;
-    }
+        $this->attributes = $name;
 
-    public function getStartName()
-    {
-        return $this->startName;
-    }
+        if (count($this->attributes) == 1) {
+            $this->setCast('json');
+        }
 
-    public function getEndName()
-    {
-        return $this->endName;
+        parent::__construct(implode('_', $name), $title);
     }
 
     public function getValue()
@@ -44,6 +37,14 @@ class DateRange extends Date
         $value = $this->getDefaultValue();
         if (is_null($model) || ! $model->exists) {
             return $value;
+        }
+
+        if (count($this->attributes) == 2) {
+        } else {
+            $value = $model->getAttribute(array_shift($this->attributes));
+            if (($value = json_decode($value, true)) === false || is_null($value)) {
+                $value = explode(',', $value);
+            }
         }
 
         return [

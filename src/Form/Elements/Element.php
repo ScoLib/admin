@@ -4,6 +4,7 @@ namespace Sco\Admin\Form\Elements;
 
 use Illuminate\Database\Eloquent\Model;
 use Sco\Admin\Contracts\Form\Elements\ElementInterface;
+use Sco\Admin\Form\Elements\Concerns\HasCast;
 
 /**
  * All Element abstract class
@@ -12,6 +13,8 @@ use Sco\Admin\Contracts\Form\Elements\ElementInterface;
  */
 abstract class Element implements ElementInterface
 {
+    use HasCast;
+
     /**
      * @var string
      */
@@ -26,11 +29,6 @@ abstract class Element implements ElementInterface
      * @var string
      */
     protected $title;
-
-    /**
-     * @var bool
-     */
-    protected $disabled = false;
 
     /**
      * @var mixed
@@ -135,9 +133,9 @@ abstract class Element implements ElementInterface
     }
 
     /**
-     * @return \Closure
+     * @return null|\Closure
      */
-    public function getMutator(): \Closure
+    public function getMutator()
     {
         return $this->mutator;
     }
@@ -165,6 +163,14 @@ abstract class Element implements ElementInterface
      */
     protected function prepareValue($value)
     {
+        if ($this->isJsonCastable() && ! is_null($value)) {
+            $value = $this->castValueAsJson($value);
+        }
+
+        if ($this->isCommaCastable() && ! is_null($value)) {
+            $value = $this->castValueAsCommaSeparated($value);
+        }
+
         if ($this->hasMutator()) {
             $value = call_user_func($this->getMutator(), $value);
         }
@@ -196,7 +202,13 @@ abstract class Element implements ElementInterface
      */
     public function getValue()
     {
-        return $this->getValueFromModel();
+        $value = $this->getValueFromModel();
+
+        if ($this->isCastable()) {
+            $value = $this->castValue($value);
+        }
+
+        return $value;
     }
 
     /**
@@ -234,24 +246,6 @@ abstract class Element implements ElementInterface
     }
 
     /**
-     * @return bool
-     */
-    public function isDisabled()
-    {
-        return $this->disabled;
-    }
-
-    /**
-     * @return $this
-     */
-    public function setDisabled()
-    {
-        $this->disabled = true;
-
-        return $this;
-    }
-
-    /**
      * @return array
      */
     public function toArray()
@@ -260,7 +254,6 @@ abstract class Element implements ElementInterface
             'name'     => $this->getName(),
             'title'    => $this->getTitle(),
             'type'     => $this->getType(),
-            'disabled' => $this->isDisabled(),
         ];
     }
 
