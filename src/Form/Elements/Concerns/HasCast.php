@@ -3,6 +3,8 @@
 namespace Sco\Admin\Form\Elements\Concerns;
 
 use Illuminate\Support\Collection;
+use Sco\Admin\Form\Elements\Date;
+use Sco\Admin\Form\Elements\Timestamp;
 
 /**
  * Trait hasCast
@@ -15,6 +17,8 @@ trait HasCast
      * @var string
      */
     protected $cast;
+
+    abstract public function getName();
 
     /**
      * @return string
@@ -50,7 +54,7 @@ trait HasCast
      */
     protected function isDateCastable()
     {
-        return in_array($this->getCast(), ['date', 'datetime']);
+        return in_array($this->getCast(), ['date', 'datetime', 'time', 'timestamp']);
     }
 
     /**
@@ -154,6 +158,20 @@ trait HasCast
     }
 
     /**
+     * @param $value
+     * @return \Carbon\Carbon
+     */
+    protected function castValueAsDateTime($value)
+    {
+        return $this->asDateTime($value);
+    }
+
+    protected function isElementOfDate()
+    {
+        return $this instanceof Date;
+    }
+
+    /**
      * Cast a value to a native PHP type.
      *
      * @param $value
@@ -163,6 +181,10 @@ trait HasCast
     {
         if (is_null($value)) {
             return $value;
+        }
+
+        if ($this->isElementOfDate() && $this->isDateCastable()) {
+            return $this->fromDateTime($value);
         }
 
         switch ($this->getCast()) {
@@ -187,12 +209,6 @@ trait HasCast
                 return new Collection($this->fromJson($value));
             case 'comma':
                 return $this->fromCommaSeparated($value);
-            case 'date':
-                return $this->asDate($value);
-            case 'datetime':
-                return $this->asDateTime($value);
-            case 'timestamp':
-                return $this->asTimestamp($value);
             default:
                 return $value;
         }

@@ -163,16 +163,21 @@ abstract class Element implements ElementInterface
      */
     protected function prepareValue($value)
     {
-        if ($this->isJsonCastable() && ! is_null($value)) {
-            $value = $this->castValueAsJson($value);
-        }
+        if (! is_null($value)) {
+            if ($this->isJsonCastable()) {
+                $value = $this->castValueAsJson($value);
+            } elseif ($this->isCommaCastable()) {
+                $value = $this->castValueAsCommaSeparated($value);
+            } elseif ($this->isElementOfDate() && $this->isDateCastable()) {
+                $value = $this->castValueAsDateTime($value);
+                if ($this instanceof Timestamp) {
+                    $value = $value->getTimestamp();
+                }
+            }
 
-        if ($this->isCommaCastable() && ! is_null($value)) {
-            $value = $this->castValueAsCommaSeparated($value);
-        }
-
-        if ($this->hasMutator()) {
-            $value = call_user_func($this->getMutator(), $value);
+            if ($this->hasMutator()) {
+                $value = call_user_func($this->getMutator(), $value);
+            }
         }
 
         return $value;
@@ -251,9 +256,9 @@ abstract class Element implements ElementInterface
     public function toArray()
     {
         return [
-            'name'     => $this->getName(),
-            'title'    => $this->getTitle(),
-            'type'     => $this->getType(),
+            'name'  => $this->getName(),
+            'title' => $this->getTitle(),
+            'type'  => $this->getType(),
         ];
     }
 

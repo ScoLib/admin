@@ -11,5 +11,7 @@ class Time extends Date
 {
     protected $type = 'time';
 
+    protected $cast = 'time';
+
     protected $pickerFormat = 'HH:mm:ss';
 }

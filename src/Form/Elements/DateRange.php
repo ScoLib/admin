@@ -2,6 +2,8 @@
 
 namespace Sco\Admin\Form\Elements;
 
+use Carbon\Carbon;
+
 /**
  * Form Element DateRange
  *
@@ -33,24 +35,27 @@ class DateRange extends Date
 
     public function getValue()
     {
-        $model = $this->getModel();
-        $value = $this->getDefaultValue();
-        if (is_null($model) || ! $model->exists) {
-            return $value;
-        }
-
-        if (count($this->attributes) == 2) {
+        if (count($this->attributes) == 1) {
+            list($start, $end) = parent::getValue();
         } else {
-            $value = $model->getAttribute(array_shift($this->attributes));
-            if (($value = json_decode($value, true)) === false || is_null($value)) {
-                $value = explode(',', $value);
+            $model = $this->getModel();
+            $value = $this->getDefaultValue();
+            if (is_null($model) || ! $model->exists) {
+                return $value;
             }
+            list($startName, $endName) = $this->attributes;
+            $start = $model->getAttribute($startName);
+            $end = $model->getAttribute($endName);
         }
 
-        return [
-            $this->dateToString($model->getAttribute($this->getStartName())),
-            $this->dateToString($model->getAttribute($this->getEndName())),
-        ];
+        if ($start && $end) {
+            return [
+                $this->fromDateTime(Carbon::parse($start)),
+                $this->fromDateTime(Carbon::parse($end)),
+            ];
+        }
+
+        return [];
     }
 
     protected function getDefaultValidationRules()
@@ -62,10 +67,15 @@ class DateRange extends Date
 
     public function save()
     {
-        $model = $this->getModel();
+        if (count($this->attributes) == 1) {
+            parent::save();
+        } else {
+            $model = $this->getModel();
+            list($startValue, $endValue) = $this->getValueFromRequest();
+            list($startName, $endName) = $this->attributes;
 
-        list($startValue, $endValue) = $this->getValueFromRequest();
-        $model->setAttribute($this->getStartName(), $this->prepareValue($startValue));
-        $model->setAttribute($this->getEndName(), $this->prepareValue($endValue));
+            $model->setAttribute($startName, $this->prepareValue($startValue));
+            $model->setAttribute($endName, $this->prepareValue($endValue));
+        }
     }
 }

@@ -8,6 +8,9 @@ use Sco\Admin\Exceptions\AuthenticationException;
 
 class Authenticate
 {
+    public function __construct()
+    {
+    }
 
     /**
      * Handle an incoming request.

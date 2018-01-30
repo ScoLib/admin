@@ -12,5 +12,7 @@ class DateTime extends Date
 {
     protected $type = 'datetime';
 
+    protected $cast = 'datetime';
+
     protected $pickerFormat = 'yyyy-MM-dd HH:mm:ss';
 }

@@ -3,12 +3,34 @@
 namespace Sco\Admin\Form\Elements;
 
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Sco\Admin\Traits\HasSelectOptions;
 
-class MultiSelect extends Select
+class MultiSelect extends NamedElement
 {
-    protected $cast = 'json';
+    use HasSelectOptions;
+
+    protected $type = 'select';
 
     protected $defaultValue = [];
+
+    /**
+     *
+     * @param string $name
+     * @param string $title
+     * @param array|Model $options
+     */
+    public function __construct(string $name, string $title, $options = null)
+    {
+        parent::__construct($name, $title);
+
+        if (! is_null($options)) {
+            $this->setOptions($options);
+        }
+
+        if (! ($this->isOptionsModel() && $this->isRelation())) {
+            $this->setCast('json');
+        }
+    }
 
     public function getValue()
     {
@@ -55,6 +77,7 @@ class MultiSelect extends Select
     public function toArray()
     {
         return parent::toArray() + [
+                'options'  => $this->getOptions(),
                 'multiple' => true,
             ];
     }

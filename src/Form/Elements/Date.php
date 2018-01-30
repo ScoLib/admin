@@ -14,6 +14,8 @@ class Date extends Input
 {
     protected $type = 'date';
 
+    protected $cast = 'date';
+
     protected $defaultValue = '';
 
     /**
@@ -47,13 +49,9 @@ class Date extends Input
     {
         return strtr($this->getPickerFormat(), [
             'yyyy' => 'Y',
-            //'yy'   => 'y',
             'MM'   => 'm',
-            //'M'    => 'n',
             'dd'   => 'd',
-            //'d'    => 'j',
             'HH'   => 'H',
-            //'H'    => 'G',
             'mm'   => 'i',
             'ss'   => 's',
         ]);
@@ -132,37 +130,42 @@ class Date extends Input
             ];
     }
 
-    public function getValue()
+    /**
+     * Return a timestamp as DateTime object.
+     *
+     * @param  mixed $value
+     * @return Carbon
+     */
+    protected function asDateTime($value)
     {
-        $value = parent::getValue();
-        if (empty($value)) {
-            return '';
+        if ($value instanceof Carbon) {
+            return $value->timezone($this->getTimezone());
         }
 
-        return $this->dateToString($value);
-    }
-
-    protected function dateToString($value)
-    {
-        if (! ($value instanceof Carbon)) {
-            $value = Carbon::parse($value);
+        if ($value instanceof \DateTimeInterface) {
+            return new Carbon(
+                $value->format('Y-m-d H:i:s.u'),
+                $value->getTimezone()
+            );
         }
 
-        $value->timezone($this->getTimezone());
+        if (is_numeric($value)) {
+            return Carbon::createFromTimestamp($value)->timezone($this->getTimezone());
+        }
 
-        return $value->format($this->getFormat());
+        return Carbon::createFromFormat($this->getFormat(), $value);
     }
 
     /**
-     * @param mixed $value
+     * Convert a DateTime to a storable string.
      *
-     * @return Carbon
+     * @param  \DateTime|int $value
+     * @return string
      */
-    protected function prepareValue($value)
+    public function fromDateTime($value)
     {
-        $value = Carbon::parse($value);
-        $value->timezone($this->getTimezone());
-
-        return $value;
+        return empty($value) ? $value : $this->asDateTime($value)
+            ->timezone($this->getTimezone())
+            ->format($this->getFormat());
     }
 }
