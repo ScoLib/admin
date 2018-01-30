@@ -5,6 +5,7 @@ namespace Sco\Admin\Component;
 use Mockery as m;
 use Illuminate\Database\Eloquent\Model;
 use Sco\Admin\Contracts\Display\DisplayInterface;
+use Sco\Admin\Contracts\Form\FormInterface;
 use Sco\Admin\Contracts\RepositoryInterface;
 use Sco\Admin\TestCase;
 
@@ -56,12 +57,12 @@ class ComponentTest extends TestCase
         return $component;
     }
 
-    protected function getComponentMockWithCallDisplay($display = '')
+    protected function getComponentMockWithCallMethod($method, $instance = '')
     {
         $component = $this->getComponentMockWithModel();
         $component->expects($this->any())
-            ->method('callDisplay')
-            ->will($this->returnValue($display));
+            ->method($method)
+            ->will($this->returnValue($instance));
 
         return $component;
     }
@@ -120,16 +121,18 @@ class ComponentTest extends TestCase
         $this->assertInstanceOf(RepositoryInterface::class, $component->getRepository());
     }
 
-    public function testDisplayNotWithCallDisplay()
+    public function testDisplayNotWithCallMethods()
     {
         $component = $this->getComponentMockWithModel(false);
 
         $this->assertNull($component->fireDisplay());
+        $this->assertNull($component->fireCreate());
+        $this->assertNull($component->fireEdit(null));
     }
 
-    public function testDisplayWrongWithCallDisplay()
+    public function testDisplayWithWrongCallDisplay()
     {
-        $component = $this->getComponentMockWithCallDisplay('wrong_display');
+        $component = $this->getComponentMockWithCallMethod('callDisplay', 'wrong_display');
 
         $this->expectException(\InvalidArgumentException::class);
         $component->fireDisplay();
@@ -138,16 +141,63 @@ class ComponentTest extends TestCase
     public function testFireDisplay()
     {
         $display = $this->getDisplayMock();
-        $component = $this->getComponentMockWithCallDisplay($display);
+        $component = $this->getComponentMockWithCallMethod('callDisplay', $display);
 
         $this->assertEquals($display, $component->fireDisplay());
     }
+
+    public function testFireCreateWithWrongCallCreate()
+    {
+        $component = $this->getComponentMockWithCallMethod('callCreate', 'wrong_form');
+
+        $this->expectException(\InvalidArgumentException::class);
+        $component->fireCreate();
+    }
+
+    public function testFireCreate()
+    {
+        $form = m::mock(FormInterface::class);
+        $form->shouldReceive('setModel')->once();
+        $component = $this->getComponentMockWithCallMethod('callCreate', $form);
+
+        $this->assertEquals($form, $component->fireCreate());
+    }
+
+    public function testFireCreateWithWrongCallEdit()
+    {
+        $component = $this->getComponentMockWithCallMethod('callEdit', 'wrong_form');
+
+        $this->expectException(\InvalidArgumentException::class);
+        $component->fireEdit(null);
+    }
+
+    /*public function testFireEdit()
+    {
+        $form = m::mock(FormInterface::class);
+        $form->shouldReceive('setModel')->once();
+
+        $component = $this->getComponentMockWithModel();
+
+        $model = m::mock(ComponentTestModel::class);
+        $repository = m::mock(RepositoryInterface::class);
+        $repository->shouldReceive('findOrFail')->once()->with(1)->andReturn($model);
+
+        $component->expects($this->once())->will($this->returnValue($repository));
+
+        $component->expects($this->any())
+            ->method('callEdit')
+            ->will($this->returnValue($form));
+
+
+        $component = $this->getComponentMockWithCallMethod('callEdit', $form);
+        $component->fireEdit(1);
+    }*/
 
     public function testGetConfigs()
     {
         $display = $this->getDisplayMock();
 
-        $component = $this->getComponentMockWithCallDisplay($display);
+        $component = $this->getComponentMockWithCallMethod('callDisplay', $display);
 
         $configs = $component->getConfigs();
 
@@ -155,6 +205,8 @@ class ComponentTest extends TestCase
         $this->assertArrayHasKey('accesses', $configs);
         $this->assertArrayHasKey('display', $configs);
     }
+
+
 }
 
 class ComponentTestModel extends Model
