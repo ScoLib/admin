@@ -39,9 +39,8 @@ class DateRange extends Date
             list($start, $end) = parent::getValue();
         } else {
             $model = $this->getModel();
-            $value = $this->getDefaultValue();
             if (is_null($model) || ! $model->exists) {
-                return $value;
+                return [];
             }
             list($startName, $endName) = $this->attributes;
             $start = $model->getAttribute($startName);
@@ -68,7 +67,7 @@ class DateRange extends Date
     public function save()
     {
         if (count($this->attributes) == 1) {
-            parent::save();
+            return parent::save();
         } else {
             $model = $this->getModel();
             list($startValue, $endValue) = $this->getValueFromRequest();

@@ -16,8 +16,6 @@ class Date extends Input
 
     protected $cast = 'date';
 
-    protected $defaultValue = '';
-
     /**
      * Date Picker format
      *

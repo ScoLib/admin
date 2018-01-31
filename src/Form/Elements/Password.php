@@ -6,6 +6,8 @@ class Password extends Text
 {
     protected $type = 'password';
 
+    protected $notRequired = false;
+
     public function __construct(string $name, string $title)
     {
         parent::__construct($name, $title);
@@ -16,20 +18,20 @@ class Password extends Text
     public function save()
     {
         $value = $this->getValueFromRequest();
-        if ($this->getModel()->exists && empty($value)) {
+        if (empty($value)) { // empty value don't save
             return;
         }
+
         $this->setModelAttribute($value);
     }
 
     public function getValidationRules()
     {
         $rules = parent::getValidationRules();
-        if ($this->getModel()->exists) {
-            foreach ($rules[$this->getName()] as $key => $rule) {
-                if ($rule == 'required') {
-                    unset($rules[$this->getName()][$key]);
-                }
+
+        if ($this->isNotRequiredWithUpdate() && $this->getModel()->exists) {
+            if (($key = array_search('required', $rules[$this->getName()])) !== false) {
+                unset($rules[$this->getName()][$key]);
             }
         }
 
@@ -55,6 +57,18 @@ class Password extends Text
         $this->setMutator(function ($value) {
             return md5($value);
         });
+
+        return $this;
+    }
+
+    protected function isNotRequiredWithUpdate()
+    {
+        return $this->notRequired;
+    }
+
+    public function notRequiredWithUpdate()
+    {
+        $this->notRequired = true;
 
         return $this;
     }

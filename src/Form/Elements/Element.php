@@ -102,7 +102,7 @@ abstract class Element implements ElementInterface
 
     public function save()
     {
-        $this->setModelAttribute(
+        return $this->setModelAttribute(
             $this->getValueFromRequest()
         );
     }
@@ -114,11 +114,12 @@ abstract class Element implements ElementInterface
 
     /**
      * @param $value
+     * @return Model
      */
     protected function setModelAttribute($value)
     {
         $model = $this->getModel();
-        $model->setAttribute(
+        return $model->setAttribute(
             $this->getName(),
             $this->prepareValue($value)
         );
@@ -211,6 +212,10 @@ abstract class Element implements ElementInterface
     {
         $value = $this->getValueFromModel();
 
+        if (is_null($value)) {
+            return $this->getDefaultValue();
+        }
+
         if ($this->isCastable()) {
             $value = $this->castValue($value);
         }
@@ -224,12 +229,9 @@ abstract class Element implements ElementInterface
     protected function getValueFromModel()
     {
         $model = $this->getModel();
-        $value = $this->getDefaultValue();
-        if (is_null($model) || ! $model->exists) {
-            return $value;
+        if ($model && $model->exists) {
+            return $model->getAttribute($this->getName());
         }
-
-        return $model->getAttribute($this->getName());
     }
 
     /**

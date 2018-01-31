@@ -11,6 +11,8 @@ class MultiSelect extends NamedElement
 
     protected $type = 'select';
 
+    protected $cast = 'json';
+
     protected $defaultValue = [];
 
     /**
@@ -25,10 +27,6 @@ class MultiSelect extends NamedElement
 
         if (! is_null($options)) {
             $this->setOptions($options);
-        }
-
-        if (! ($this->isOptionsModel() && $this->isRelation())) {
-            $this->setCast('json');
         }
     }
 
@@ -51,7 +49,7 @@ class MultiSelect extends NamedElement
     public function save()
     {
         if (! ($this->isOptionsModel() && $this->isRelation())) {
-            parent::save();
+            return parent::save();
         }
     }
 
