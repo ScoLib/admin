@@ -6,6 +6,13 @@ class Password extends Text
 {
     protected $type = 'password';
 
+    public function __construct(string $name, string $title)
+    {
+        parent::__construct($name, $title);
+
+        $this->hashAsBcrypt(); // default hash type
+    }
+
     public function save()
     {
         $value = $this->getValueFromRequest();
@@ -32,5 +39,23 @@ class Password extends Text
     public function getValue()
     {
         return '';
+    }
+
+    protected function hashAsBcrypt()
+    {
+        $this->setMutator(function ($value) {
+            return bcrypt($value);
+        });
+
+        return $this;
+    }
+
+    protected function hashAsMD5()
+    {
+        $this->setMutator(function ($value) {
+            return md5($value);
+        });
+
+        return $this;
     }
 }

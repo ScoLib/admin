@@ -11,7 +11,7 @@ class Image extends BaseFile
      */
     public function getValue()
     {
-        $value = $this->getValueFromModel();
+        $value = parent::getValue();
         if (empty($value) || ! $this->existsFile($value)) {
             return [];
         }
@@ -19,16 +19,11 @@ class Image extends BaseFile
         return $this->getFileInfo($value);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function prepareValue($value)
+    protected function mutateValueAsPath()
     {
-        if (empty($value) || ! is_array($value)) {
-            return '';
-        }
-
-        return $value['path'];
+        $this->setMutator(function ($value) {
+            return empty($value) || ! is_array($value) ? '' : $value['path'];
+        });
     }
 
     /**

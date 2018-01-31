@@ -52,6 +52,15 @@ abstract class BaseFile extends NamedElement
      */
     abstract protected function getDefaultExtensions();
 
+    abstract protected function mutateValueAsPath();
+
+    public function __construct(string $name, string $title)
+    {
+        parent::__construct($name, $title);
+
+        $this->mutateValueAsPath();
+    }
+
     /**
      * @return string
      */

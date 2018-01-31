@@ -19,6 +19,8 @@ class File extends BaseFile
      */
     protected $type = 'file';
 
+    protected $cast = 'json';
+
     /**
      * @var bool
      */
@@ -107,29 +109,40 @@ class File extends BaseFile
      */
     public function getValue()
     {
-        $value = $this->getValueFromModel();
+        $value = parent::getValue();
         if (empty($value)) {
             return [];
         }
 
-        return collect(explode(',', $value))->filter(function ($item) {
+        return collect($value)->filter(function ($item) {
             return $this->existsFile($item);
         })->map(function ($item) {
             return $this->getFileInfo($item);
         });
     }
 
-    /**
-     * @param mixed $value
-     * @return mixed|string
-     */
-    protected function prepareValue($value)
+    protected function mutateValueAsPath()
     {
-        if (empty($value) || ! is_array($value)) {
-            return '';
-        }
+        $this->setMutator(function ($value) {
+            if (empty($value) || ! is_array($value)) {
+                $value = [];
+            }
 
-        return collect($value)->implode('path', ',');
+            $paths = collect($value)->pluck('path');
+
+            if ($this->isJsonCastable()) {
+                return $this->castValueAsJson($paths);
+            }
+
+            if ($this->isCommaCastable()) {
+                return $this->castValueAsCommaSeparated($paths);
+            }
+
+            throw new \InvalidArgumentException(sprintf(
+                '%s value is invalid',
+                get_class($this)
+            ));
+        });
     }
 
     /**

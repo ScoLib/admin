@@ -163,20 +163,22 @@ abstract class Element implements ElementInterface
      */
     protected function prepareValue($value)
     {
-        if (! is_null($value)) {
-            if ($this->isJsonCastable()) {
-                $value = $this->castValueAsJson($value);
-            } elseif ($this->isCommaCastable()) {
-                $value = $this->castValueAsCommaSeparated($value);
-            } elseif ($this->isElementOfDate() && $this->isDateCastable()) {
-                $value = $this->castValueAsDateTime($value);
-                if ($this instanceof Timestamp) {
-                    $value = $value->getTimestamp();
-                }
+        if ($this->hasMutator()) {
+            return call_user_func($this->getMutator(), $value);
+        } elseif ($value && $this->isElementOfDate() && $this->isDateCastable()) {
+            $value = $this->castValueAsDateTime($value);
+            if ($this instanceof Timestamp) {
+                $value = $value->getTimestamp();
             }
 
-            if ($this->hasMutator()) {
-                $value = call_user_func($this->getMutator(), $value);
+            return $value;
+        }
+
+        if (! is_null($value)) {
+            if ($this->isJsonCastable()) {
+                return $this->castValueAsJson($value);
+            } elseif ($this->isCommaCastable()) {
+                return $this->castValueAsCommaSeparated($value);
             }
         }
 
