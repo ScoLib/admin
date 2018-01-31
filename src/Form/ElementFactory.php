@@ -2,10 +2,8 @@
 
 namespace Sco\Admin\Form;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Application;
 use Sco\Admin\Contracts\Form\ElementFactoryInterface;
-use Sco\Admin\Form\Elements\Cascader;
 use Sco\Admin\Form\Elements\Checkbox;
 use Sco\Admin\Form\Elements\Date;
 use Sco\Admin\Form\Elements\DateRange;
@@ -53,7 +51,6 @@ use Sco\Admin\Traits\AliasBinder;
  * @method static Timestamp timestamp(string $name, string $title)
  * @method static DateRange daterange(string|array $name, string $title)
  * @method static DateTimeRange datetimerange(string|array $name, string $title)
- * @method static Cascader cascader(string|array $name, string $title, array|Model $options = null)
  * @method static Tinymce tinymce(string $name, string $title)
  * @method static Markdown markdown(string $name, string $title)
  */
@@ -88,7 +85,6 @@ class ElementFactory implements ElementFactoryInterface
             'timestamp'     => Timestamp::class,
             'daterange'     => DateRange::class,
             'datetimerange' => DateTimeRange::class,
-            'cascader'      => Cascader::class,
             'tree'          => Tree::class,
             'tinymce'       => Tinymce::class,
             'markdown'      => Markdown::class,
