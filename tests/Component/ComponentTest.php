@@ -4,6 +4,7 @@ namespace Sco\Admin\Component;
 
 use Mockery as m;
 use Illuminate\Database\Eloquent\Model;
+use Sco\Admin\Contracts\ComponentInterface;
 use Sco\Admin\Contracts\Display\DisplayInterface;
 use Sco\Admin\Contracts\Form\FormInterface;
 use Sco\Admin\Contracts\RepositoryInterface;
@@ -171,28 +172,11 @@ class ComponentTest extends TestCase
         $component->fireEdit(null);
     }
 
-    /*public function testFireEdit()
+    public function testFireEdit()
     {
-        $form = m::mock(FormInterface::class);
-        $form->shouldReceive('setModel')->once();
-
-        $component = $this->getComponentMockWithModel();
-
-        $model = m::mock(ComponentTestModel::class);
-        $repository = m::mock(RepositoryInterface::class);
-        $repository->shouldReceive('findOrFail')->once()->with(1)->andReturn($model);
-
-        $component->expects($this->once())->will($this->returnValue($repository));
-
-        $component->expects($this->any())
-            ->method('callEdit')
-            ->will($this->returnValue($form));
-
-
-        $component = $this->getComponentMockWithCallMethod('callEdit', $form);
-        $component->fireEdit(1);
-    }*/
-
+        $this->markTestSkipped('Todo fireEdit test for Component');
+    }
+    
     public function testGetConfigs()
     {
         $display = $this->getDisplayMock();
