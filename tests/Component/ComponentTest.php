@@ -189,8 +189,6 @@ class ComponentTest extends TestCase
         $this->assertArrayHasKey('accesses', $configs);
         $this->assertArrayHasKey('display', $configs);
     }
-
-
 }
 
 class ComponentTestModel extends Model

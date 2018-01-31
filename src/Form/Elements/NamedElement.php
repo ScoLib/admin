@@ -212,7 +212,7 @@ abstract class NamedElement extends Element implements Validatable
      */
     protected function getValidationRuleName(string $rule)
     {
-        list($name,) = explode(':', $rule, 2);
+        list($name, ) = explode(':', $rule, 2);
 
         return $name;
     }
