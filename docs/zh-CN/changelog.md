@@ -1,1 +1,0 @@
-{% include "git+https://github.com/ScoLib/admin.git/CHANGELOG.zh-CN.md" %}

@@ -2,14 +2,29 @@
 
 namespace Sco\Admin\Form\Elements;
 
+/**
+ * Class Markdown
+ *
+ * @package Sco\Admin\Form\Elements
+ * @see https://github.com/F-loat/vue-simplemde
+ */
 class Markdown extends NamedElement
 {
     protected $type = 'markdown';
 
+    /**
+     * @var array
+     */
     protected $configs;
 
+    /**
+     * @var bool
+     */
     protected $highlight = true;
 
+    /**
+     * @var bool
+     */
     protected $autoInit = true;
 
     /**
@@ -24,6 +39,9 @@ class Markdown extends NamedElement
         return $this->getDefaultConfigs();
     }
 
+    /**
+     * @return array
+     */
     protected function getDefaultConfigs()
     {
         return [

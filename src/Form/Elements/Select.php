@@ -5,6 +5,12 @@ namespace Sco\Admin\Form\Elements;
 use Illuminate\Database\Eloquent\Model;
 use Sco\Admin\Traits\HasSelectOptions;
 
+/**
+ * Class Select
+ *
+ * @package Sco\Admin\Form\Elements
+ * @see http://element.eleme.io/#/en-US/component/select
+ */
 class Select extends NamedElement
 {
     use HasSelectOptions;
@@ -12,7 +18,6 @@ class Select extends NamedElement
     protected $type = 'select';
 
     protected $cast = 'string';
-
 
     /**
      *

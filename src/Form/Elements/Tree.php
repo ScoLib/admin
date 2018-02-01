@@ -7,6 +7,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use InvalidArgumentException;
 use Sco\Admin\Contracts\RepositoryInterface;
 
+/**
+ * Class Tree
+ *
+ * @package Sco\Admin\Form\Elements
+ * @see http://element.eleme.io/#/en-US/component/tree
+ */
 class Tree extends NamedElement
 {
     protected $type = 'tree';

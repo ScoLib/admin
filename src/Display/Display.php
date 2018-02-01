@@ -60,9 +60,7 @@ abstract class Display implements DisplayInterface, Arrayable
     }
 
     /**
-     * @param \Illuminate\Database\Eloquent\Model $model
-     *
-     * @return $this
+     * {@inheritdoc}
      */
     public function setModel(Model $model)
     {
@@ -72,7 +70,7 @@ abstract class Display implements DisplayInterface, Arrayable
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Model
+     * {@inheritdoc}
      */
     public function getModel()
     {
@@ -98,6 +96,9 @@ abstract class Display implements DisplayInterface, Arrayable
         return $repository;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getRepository()
     {
         if (is_null($this->repository)) {
@@ -107,6 +108,9 @@ abstract class Display implements DisplayInterface, Arrayable
         return $this->repository;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function setRepository(RepositoryInterface $repository)
     {
         $this->repository = $repository;
@@ -115,7 +119,7 @@ abstract class Display implements DisplayInterface, Arrayable
     }
 
     /**
-     * @return string[]
+     * {@inheritdoc}
      */
     public function getWith()
     {
@@ -156,12 +160,7 @@ abstract class Display implements DisplayInterface, Arrayable
     }
 
     /**
-     * Add an "order by" clause to the query.
-     *
-     * @param  string $column
-     * @param  string $direction
-     *
-     * @return $this
+     * {@inheritdoc}
      */
     public function orderBy($column, $direction = 'asc')
     {

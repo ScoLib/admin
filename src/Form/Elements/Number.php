@@ -2,14 +2,35 @@
 
 namespace Sco\Admin\Form\Elements;
 
+/**
+ * Class Number
+ *
+ * @package Sco\Admin\Form\Elements
+ * @see http://element.eleme.io/#/en-US/component/input-number
+ */
 class Number extends NamedElement
 {
     protected $type = 'number';
 
+    /**
+     * the maximum allowed value
+     *
+     * @var int
+     */
     protected $max;
 
-    protected $min = 0;
+    /**
+     * the minimum allowed value
+     *
+     * @var int
+     */
+    protected $min;
 
+    /**
+     * incremental step
+     *
+     * @var int
+     */
     protected $step = 1;
 
     /**
@@ -24,6 +45,9 @@ class Number extends NamedElement
         return $this->getDefaultMax();
     }
 
+    /**
+     * @return string
+     */
     protected function getDefaultMax()
     {
         return 'Infinity';
@@ -47,7 +71,19 @@ class Number extends NamedElement
      */
     public function getMin()
     {
-        return $this->min;
+        if ($this->min) {
+            return $this->min;
+        }
+
+        return $this->getDefaultMin();
+    }
+
+    /**
+     * @return string
+     */
+    protected function getDefaultMin()
+    {
+        return '-Infinity';
     }
 
     /**
@@ -85,7 +121,7 @@ class Number extends NamedElement
     protected function getDefaultValidationRules()
     {
         return parent::getDefaultValidationRules() + [
-                'numeric' => 'numeric'
+                'numeric' => 'numeric',
             ];
     }
 

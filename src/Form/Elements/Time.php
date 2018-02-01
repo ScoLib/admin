@@ -5,7 +5,7 @@ namespace Sco\Admin\Form\Elements;
 /**
  * Form Element Time
  *
- * @see http://element.eleme.io/#/zh-CN/component/time-picker
+ * @see http://element.eleme.io/#/en-US/component/time-picker
  */
 class Time extends Date
 {

@@ -8,17 +8,12 @@ class Password extends Text
 
     protected $notRequired = false;
 
-    public function __construct(string $name, string $title)
-    {
-        parent::__construct($name, $title);
-
-        $this->hashAsBcrypt(); // default hash type
-    }
-
     public function save()
     {
         $value = $this->getValueFromRequest();
-        if (empty($value)) { // empty value don't save
+
+        // empty value don't save
+        if (empty($value)) {
             return;
         }
 

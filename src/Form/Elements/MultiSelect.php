@@ -5,6 +5,12 @@ namespace Sco\Admin\Form\Elements;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Sco\Admin\Traits\HasSelectOptions;
 
+/**
+ * Class MultiSelect
+ *
+ * @package Sco\Admin\Form\Elements
+ * @see http://element.eleme.io/#/en-US/component/select
+ */
 class MultiSelect extends NamedElement
 {
     use HasSelectOptions;

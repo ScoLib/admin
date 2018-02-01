@@ -8,8 +8,18 @@ use Illuminate\Routing\Controller;
 use Sco\Admin\Contracts\ComponentInterface;
 use Sco\Admin\Facades\AdminNavigation;
 
+/**
+ * Class AdminController
+ *
+ * @package Sco\Admin\Http\Controllers
+ */
 class AdminController extends Controller
 {
+    /**
+     * get page left navigation
+     * 
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function getMenu()
     {
         $pages = AdminNavigation::filterByAccessRights()
@@ -18,6 +28,13 @@ class AdminController extends Controller
         return response()->json($pages);
     }
 
+    /**
+     * Component index page
+     * 
+     * @param \Sco\Admin\Contracts\ComponentInterface $component
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
     public function index(ComponentInterface $component)
     {
         if (! $component->isDisplay()) {
@@ -27,6 +44,13 @@ class AdminController extends Controller
         return view('admin::app');
     }
 
+    /**
+     * Component list data
+     * 
+     * @param \Sco\Admin\Contracts\ComponentInterface $component
+     * @return mixed
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
     public function getList(ComponentInterface $component)
     {
         if (! $component->isDisplay()) {
@@ -36,6 +60,13 @@ class AdminController extends Controller
         return $component->get();
     }
 
+    /**
+     * Component config data
+     * 
+     * @param \Sco\Admin\Contracts\ComponentInterface $component
+     * @return \Illuminate\Support\Collection
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
     public function config(ComponentInterface $component)
     {
         if (! $component->isDisplay()) {
@@ -45,6 +76,11 @@ class AdminController extends Controller
         return $component->getConfigs();
     }
 
+    /**
+     * @param \Sco\Admin\Contracts\ComponentInterface $component
+     * @return null|\Sco\Admin\Contracts\Form\FormInterface
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
     public function getCreateInfo(ComponentInterface $component)
     {
         if (! $component->isCreate()) {
@@ -56,6 +92,11 @@ class AdminController extends Controller
         return $form;
     }
 
+    /**
+     * @param \Sco\Admin\Contracts\ComponentInterface $component
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
     public function create(ComponentInterface $component)
     {
         if (! $component->isCreate()) {
@@ -65,6 +106,11 @@ class AdminController extends Controller
         return view('admin::app');
     }
 
+    /**
+     * @param \Sco\Admin\Contracts\ComponentInterface $component
+     * @param \Illuminate\Http\Request $request
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
     public function store(ComponentInterface $component, Request $request)
     {
         if (! $component->isCreate()) {
@@ -74,6 +120,12 @@ class AdminController extends Controller
         $component->store();
     }
 
+    /**
+     * @param \Sco\Admin\Contracts\ComponentInterface $component
+     * @param $id
+     * @return null|\Sco\Admin\Contracts\Form\FormInterface
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
     public function getEditInfo(ComponentInterface $component, $id)
     {
         if (! $component->isEdit()) {
@@ -85,6 +137,12 @@ class AdminController extends Controller
         return $form;
     }
 
+    /**
+     * @param \Sco\Admin\Contracts\ComponentInterface $component
+     * @param $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
     public function edit(ComponentInterface $component, $id)
     {
         if (! $component->isEdit()) {
@@ -94,6 +152,13 @@ class AdminController extends Controller
         return view('admin::app');
     }
 
+    /**
+     * @param \Sco\Admin\Contracts\ComponentInterface $component
+     * @param \Illuminate\Http\Request $request
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
     public function update(ComponentInterface $component, Request $request, $id)
     {
         if (! $component->isEdit()) {
@@ -105,6 +170,12 @@ class AdminController extends Controller
         return response()->json(['message' => 'ok']);
     }
 
+    /**
+     * @param \Sco\Admin\Contracts\ComponentInterface $component
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
     public function delete(ComponentInterface $component, $id)
     {
         if (! $component->isDelete()) {
@@ -116,6 +187,12 @@ class AdminController extends Controller
         return response()->json(['message' => 'ok']);
     }
 
+    /**
+     * @param \Sco\Admin\Contracts\ComponentInterface $component
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
     public function forceDelete(ComponentInterface $component, $id)
     {
         if (! $component->isDestroy()) {
@@ -127,6 +204,12 @@ class AdminController extends Controller
         return response()->json(['message' => 'ok']);
     }
 
+    /**
+     * @param \Sco\Admin\Contracts\ComponentInterface $component
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
     public function restore(ComponentInterface $component, $id)
     {
         if (! $component->isRestore()) {
@@ -137,6 +220,11 @@ class AdminController extends Controller
         return response()->json(['message' => 'ok']);
     }
 
+    /**
+     * @param \Sco\Admin\Contracts\ComponentInterface $component
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
     public function reorder(ComponentInterface $component)
     {
         if (! $component->isEdit()) {

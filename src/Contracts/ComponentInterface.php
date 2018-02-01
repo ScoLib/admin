@@ -95,12 +95,13 @@ interface ComponentInterface extends WithModel
     public function restore($id);
 
     /**
-     * {@inheritdoc}
+     * @return \KodiComponents\Navigation\Contracts\NavigationInterface
      */
     public function getNavigation();
 
     /**
-     * {@inheritdoc}
+     * @param string|Closure|null $badge
+     * @return \Sco\Admin\Navigation\Page
      */
     public function addToNavigation($badge = null);
 
@@ -116,11 +117,34 @@ interface ComponentInterface extends WithModel
 
     public function isRestore();
 
+    /**
+     * Register an observer with the Component.
+     *
+     * @param $class
+     */
     public function observe($class);
 
+    /**
+     * register ability to access.
+     *
+     * @param string $ability
+     * @param string|\Closure $callback
+     */
     public function registerAbility($ability, $callback);
 
+    /**
+     * Determine if the entity has a given ability.
+     *
+     * @param string $ability
+     *
+     * @return bool
+     */
     public function can($ability);
 
+    /**
+     * Get all ability.
+     *
+     * @return Collection
+     */
     public function getAccesses();
 }
