@@ -16,8 +16,8 @@ use Sco\Admin\Facades\AdminNavigation;
 class AdminController extends Controller
 {
     /**
-     * get page left navigation
-     * 
+     * Get page left navigation
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function getMenu()
@@ -30,7 +30,7 @@ class AdminController extends Controller
 
     /**
      * Component index page
-     * 
+     *
      * @param \Sco\Admin\Contracts\ComponentInterface $component
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      * @throws \Illuminate\Auth\Access\AuthorizationException
@@ -46,7 +46,7 @@ class AdminController extends Controller
 
     /**
      * Component list data
-     * 
+     *
      * @param \Sco\Admin\Contracts\ComponentInterface $component
      * @return mixed
      * @throws \Illuminate\Auth\Access\AuthorizationException
@@ -62,7 +62,7 @@ class AdminController extends Controller
 
     /**
      * Component config data
-     * 
+     *
      * @param \Sco\Admin\Contracts\ComponentInterface $component
      * @return \Illuminate\Support\Collection
      * @throws \Illuminate\Auth\Access\AuthorizationException
