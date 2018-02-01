@@ -1,7 +1,5 @@
 <?php
 
-use Sco\Admin\Facades\AdminNavigation;
-
 Route::group([
     'prefix'     => config('admin.url_prefix'),
     'middleware' => 'web',
