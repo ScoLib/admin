@@ -1,13 +1,3 @@
-<style>
-    .el-table table,
-    .el-table__empty-block {
-        width: 100% !important;
-    }
-    .fullscreen-v-img {
-        z-index: 1031;
-    }
-</style>
-
 <template>
     <div class="row">
         <div class="col-xs-12">
