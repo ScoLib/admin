@@ -1,3 +1,11 @@
+<style>
+    .el-table table, .el-table__empty-block {
+        width: 100% !important;
+    }
+    .el-table__body, .el-table__footer, .el-table__header {
+        table-layout: initial;
+    }
+</style>
 <template>
     <div class="box">
         <v-header
@@ -7,7 +15,6 @@
         <!-- /.box-header -->
         <div class="box-body table-responsive">
             <el-table :data="tableData"
-                      @sort-change="sortChange"
                       v-loading="loading">
 
                 <el-table-column
@@ -78,7 +85,6 @@
 
                 selection: [],
                 page: 1,
-                orderBy: {},
             }
         },
         mixins: [
@@ -107,7 +113,7 @@
                 this.pageData = {};
                 this.loading = true;
 
-                var params = _.assign({'page': this.page}, this.filterParams, this.orderBy);
+                var params = _.assign({'page': this.page}, this.filterParams);
                 this.$http.get(`/${this.getUrlPrefix()}/${this.$route.params.model}/list`, {params: params})
                     .then(response => {
                         this.loading = false;
@@ -115,16 +121,6 @@
                     }).catch(error => {
                 })
             },
-            sortChange({column, prop, order}) {
-                console.log(column, prop, order);
-                /*if (column && column.sortable == 'custom') {
-                    this.orderBy = {
-                        orderBy: prop,
-                        sortedBy: order == 'descending' ? 'desc' : 'asc'
-                    }
-                    this.getResults();
-                }*/
-            }
         }
     }
 </script>

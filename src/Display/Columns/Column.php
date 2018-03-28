@@ -130,20 +130,9 @@ abstract class Column implements ColumnInterface
     /**
      * @return $this
      */
-    public function enableSortable()
+    public function sortable()
     {
         $this->sortable = true;
-
-        return $this;
-    }
-
-    /**
-     *
-     * @return $this
-     */
-    public function customSortable()
-    {
-        $this->sortable = 'custom';
 
         return $this;
     }

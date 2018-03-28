@@ -46,9 +46,7 @@ interface ColumnInterface extends
 
     public function getSortable();
 
-    public function enableSortable();
-
-    public function customSortable();
+    public function sortable();
 
     public function enableFixed();
 
