@@ -2,30 +2,8 @@
 
 Route::group([
     'prefix'     => config('admin.url_prefix'),
-    'middleware' => 'web',
     'as'         => 'admin.',
 ], function () {
-
-    // login
-    Route::group(['namespace' => 'Auth'], function () {
-        // login page
-        Route::get('login', [
-            'as'   => 'login',
-            'uses' => '\Sco\Admin\Http\Controllers\LoginController@showLoginForm',
-        ]);
-
-        // submit login
-        Route::post('login', [
-            'as'   => 'login.submit',
-            'uses' => '\Sco\Admin\Http\Controllers\LoginController@login',
-        ]);
-
-        // logout
-        Route::get('logout', [
-            'as'   => 'logout',
-            'uses' => '\Sco\Admin\Http\Controllers\LoginController@logout',
-        ]);
-    });
 
     Route::group(['middleware' => ['admin.auth']], function () {
         if (!Route::has('admin.dashboard')) {
