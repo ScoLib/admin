@@ -5,7 +5,7 @@ Route::group([
     'as'         => 'admin.',
 ], function () {
 
-    Route::group(['middleware' => ['admin.auth']], function () {
+    Route::group([], function () {
         if (!Route::has('admin.dashboard')) {
             Route::view('/', 'admin::app')
                 ->name('dashboard');

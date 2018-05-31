@@ -2,12 +2,12 @@
 
 namespace Sco\Admin\Http\Controllers;
 
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Routing\Controller;
 use InvalidArgumentException;
 use Sco\Admin\Contracts\ComponentInterface;
-use Sco\Admin\Exceptions\AuthenticationException;
 use Sco\Admin\Form\Elements\BaseFile;
 
 class UploadController extends Controller
@@ -15,11 +15,11 @@ class UploadController extends Controller
     /**
      * @param \Illuminate\Http\Request $request
      * @param \Sco\Admin\Contracts\ComponentInterface $component
-     * @param string $field
-     * @param mixed $id
+     * @param $field
+     * @param null $id
      * @return \Illuminate\Http\JsonResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      * @throws \Illuminate\Validation\ValidationException
-     * @throws \Sco\Admin\Exceptions\AuthenticationException
      */
     public function formElement(
         Request $request,
@@ -28,7 +28,7 @@ class UploadController extends Controller
         $id = null
     ) {
         if ((is_null($id) && ! $component->isCreate()) || ($id && ! $component->isEdit())) {
-            throw new AuthenticationException();
+            throw new AuthorizationException();
         }
 
         if (! $request->hasFile($field)) {

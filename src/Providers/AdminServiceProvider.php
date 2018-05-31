@@ -20,7 +20,6 @@ use Sco\Admin\Display\DisplayFactory;
 class AdminServiceProvider extends ServiceProvider
 {
     protected $middlewares = [
-        'admin.auth' => \Sco\Admin\Http\Middleware\Authenticate::class,
     ];
 
     public function getBasePath()
